@@ -11,6 +11,8 @@ export async function GET() {
     SELECT id, title, destination, nights, price_try, capacity, description, image_url, partner_name, status
     FROM packages
     WHERE status = 'active'
+      AND (partner_name IS NULL OR partner_name NOT ILIKE 'test%')
+      AND title NOT ILIKE 'test%'
     ORDER BY created_at DESC;
   `;
   return NextResponse.json({ packages: rows });
