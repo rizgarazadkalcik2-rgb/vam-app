@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { VamPackage } from "@/lib/packages";
 import type { SessionPayload } from "@/lib/session";
+import AdminNav from "./AdminNav";
 
 export default function AdminPanel({
   session,
@@ -12,14 +12,7 @@ export default function AdminPanel({
   session: SessionPayload;
   initialPackages: VamPackage[];
 }) {
-  const router = useRouter();
   const [packages, setPackages] = useState(initialPackages);
-
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/giris");
-    router.refresh();
-  }
 
   async function refresh() {
     const res = await fetch("/api/packages");
@@ -59,35 +52,7 @@ export default function AdminPanel({
   return (
     <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
       <div style={{ maxWidth: 920, margin: "0 auto" }}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 28,
-          }}
-        >
-          <div>
-            <div style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700 }}>
-              Yönetici Paneli
-            </div>
-            <div style={{ fontSize: 13, color: "#6f6558" }}>{session.displayName}</div>
-          </div>
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: "8px 16px",
-              background: "transparent",
-              border: "1px solid #c4522a",
-              color: "#c4522a",
-              borderRadius: 4,
-              fontSize: 12.5,
-              cursor: "pointer",
-            }}
-          >
-            Çıkış Yap
-          </button>
-        </header>
+        <AdminNav displayName={session.displayName} />
 
         <div
           style={{

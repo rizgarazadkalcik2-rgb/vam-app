@@ -1,38 +1,98 @@
-// VAM — Kullanıcı tanımları
-// Yeni acente eklemek için: bcrypt ile şifre hash'i üret, aşağıdaki listeye ekle.
-// Hash üretmek için: node -e "console.log(require('bcryptjs').hashSync('YENI_SIFRE', 10))"
+import { sql } from "@vercel/postgres";
+import bcrypt from "bcryptjs";
+import { ensureSchema } from "./schema";
 
 export type Role = "admin" | "partner";
 
 export interface VamUser {
   id: string;
   username: string;
-  passwordHash: string;
+  password_hash: string;
+  role: Role;
+  display_name: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type SafeUser = Omit<VamUser, "password_hash">;
+
+export async function findUserByUsername(username: string): Promise<VamUser | null> {
+  await ensureSchema();
+  const { rows } = await sql<VamUser>`
+    SELECT * FROM users WHERE LOWER(username) = LOWER(${username}) LIMIT 1;
+  `;
+  return rows[0] || null;
+}
+
+export async function findUserById(id: string): Promise<VamUser | null> {
+  await ensureSchema();
+  const { rows } = await sql<VamUser>`
+    SELECT * FROM users WHERE id = ${id} LIMIT 1;
+  `;
+  return rows[0] || null;
+}
+
+export async function listAllUsers(): Promise<VamUser[]> {
+  await ensureSchema();
+  const { rows } = await sql<VamUser>`
+    SELECT * FROM users ORDER BY created_at DESC;
+  `;
+  return rows;
+}
+
+export async function createUser(data: {
+  username: string;
+  password: string;
   role: Role;
   displayName: string;
+}): Promise<VamUser> {
+  await ensureSchema();
+  const id = `u_${data.role}_${Date.now()}`;
+  const passwordHash = await bcrypt.hash(data.password, 10);
+  const { rows } = await sql<VamUser>`
+    INSERT INTO users (id, username, password_hash, role, display_name, status)
+    VALUES (${id}, ${data.username}, ${passwordHash}, ${data.role}, ${data.displayName}, 'active')
+    RETURNING *;
+  `;
+  return rows[0];
 }
 
-export const USERS: VamUser[] = [
-  {
-    id: "u_admin_1",
-    username: "rizgar",
-    passwordHash: "$2b$10$tUSl4md8QUcMo6g16w.ss.wUKjdPLNbeN06r1vnt.glX/X9FBeYme", // admin123
-    role: "admin",
-    displayName: "Rizgar (Yönetici)",
-  },
-  {
-    id: "u_partner_1",
-    username: "acente1",
-    passwordHash: "$2b$10$Y45./mi6DIopyXAv4VT6KetLLDhppNHsMwiiiRELS/bAt5DPNzxgC", // acente123
-    role: "partner",
-    displayName: "Test Acente 1",
-  },
-];
-
-export function findUserByUsername(username: string): VamUser | undefined {
-  return USERS.find((u) => u.username.toLowerCase() === username.toLowerCase());
+export async function updateUserPassword(id: string, newPassword: string): Promise<boolean> {
+  await ensureSchema();
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  const { rowCount } = await sql`
+    UPDATE users SET password_hash = ${passwordHash}, updated_at = now() WHERE id = ${id};
+  `;
+  return (rowCount ?? 0) > 0;
 }
 
-export function findUserById(id: string): VamUser | undefined {
-  return USERS.find((u) => u.id === id);
+export async function updateUserStatus(id: string, status: "active" | "disabled"): Promise<boolean> {
+  await ensureSchema();
+  const { rowCount } = await sql`
+    UPDATE users SET status = ${status}, updated_at = now() WHERE id = ${id};
+  `;
+  return (rowCount ?? 0) > 0;
+}
+
+export async function updateUserDisplayName(id: string, displayName: string): Promise<boolean> {
+  await ensureSchema();
+  const { rowCount } = await sql`
+    UPDATE users SET display_name = ${displayName}, updated_at = now() WHERE id = ${id};
+  `;
+  return (rowCount ?? 0) > 0;
+}
+
+export async function deleteUser(id: string): Promise<boolean> {
+  await ensureSchema();
+  const { rowCount } = await sql`DELETE FROM users WHERE id = ${id};`;
+  return (rowCount ?? 0) > 0;
+}
+
+export async function usernameExists(username: string): Promise<boolean> {
+  await ensureSchema();
+  const { rows } = await sql`
+    SELECT 1 FROM users WHERE LOWER(username) = LOWER(${username}) LIMIT 1;
+  `;
+  return rows.length > 0;
 }

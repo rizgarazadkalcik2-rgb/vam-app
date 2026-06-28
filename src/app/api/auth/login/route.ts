@@ -15,15 +15,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const user = findUserByUsername(username);
-  if (!user) {
+  const user = await findUserByUsername(username);
+  if (!user || user.status === "disabled") {
     return NextResponse.json(
       { error: "Kullanıcı adı veya şifre hatalı." },
       { status: 401 }
     );
   }
 
-  const valid = await bcrypt.compare(password, user.passwordHash);
+  const valid = await bcrypt.compare(password, user.password_hash);
   if (!valid) {
     return NextResponse.json(
       { error: "Kullanıcı adı veya şifre hatalı." },
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     userId: user.id,
     username: user.username,
     role: user.role,
-    displayName: user.displayName,
+    displayName: user.display_name,
   });
   await setSessionCookie(token);
 
