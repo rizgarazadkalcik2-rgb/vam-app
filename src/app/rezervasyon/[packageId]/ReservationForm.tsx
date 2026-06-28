@@ -84,6 +84,20 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
   return (
     <div style={pageStyle}>
       <div style={cardStyle}>
+        {pkg.image_url && (
+          <img
+            src={pkg.image_url}
+            alt={pkg.title}
+            style={{
+              width: "100%",
+              height: 160,
+              objectFit: "cover",
+              borderRadius: 8,
+              marginBottom: 20,
+              display: "block",
+            }}
+          />
+        )}
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, letterSpacing: "0.15em", color: "#c4522a", textTransform: "uppercase", marginBottom: 8 }}>
             Rezervasyon

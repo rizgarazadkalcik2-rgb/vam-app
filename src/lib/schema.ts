@@ -14,11 +14,15 @@ export async function ensureSchema() {
       price_try NUMERIC NOT NULL,
       capacity INTEGER NOT NULL DEFAULT 0,
       description TEXT,
+      image_url TEXT,
       status TEXT NOT NULL DEFAULT 'active',
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `;
+
+  // Eski tablolarda image_url sütunu yoksa ekle (geriye dönük uyumluluk)
+  await sql`ALTER TABLE packages ADD COLUMN IF NOT EXISTS image_url TEXT;`;
 
   await sql`
     CREATE TABLE IF NOT EXISTS users (

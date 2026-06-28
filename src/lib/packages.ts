@@ -11,6 +11,7 @@ export interface VamPackage {
   price_try: number;
   capacity: number;
   description: string | null;
+  image_url: string | null;
   status: string;
   created_at: string;
   updated_at: string;
@@ -49,11 +50,12 @@ export async function createPackage(data: {
   priceTry: number;
   capacity: number;
   description: string;
+  imageUrl?: string;
 }): Promise<VamPackage> {
   await ensureSchema();
   const { rows } = await sql<VamPackage>`
-    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description)
-    VALUES (${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description})
+    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description, image_url)
+    VALUES (${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description}, ${data.imageUrl || null})
     RETURNING *;
   `;
   return rows[0];
@@ -71,6 +73,7 @@ export async function updatePackage(
     capacity: number;
     description: string;
     status: string;
+    imageUrl?: string;
     newPartnerId?: string;
     newPartnerName?: string;
   }
@@ -84,7 +87,8 @@ export async function updatePackage(
           UPDATE packages
           SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
               price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-              status = ${data.status}, partner_id = ${data.newPartnerId}, partner_name = ${data.newPartnerName},
+              status = ${data.status}, image_url = ${data.imageUrl || null},
+              partner_id = ${data.newPartnerId}, partner_name = ${data.newPartnerName},
               updated_at = now()
           WHERE id = ${id}
           RETURNING *;
@@ -93,7 +97,7 @@ export async function updatePackage(
           UPDATE packages
           SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
               price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-              status = ${data.status}, updated_at = now()
+              status = ${data.status}, image_url = ${data.imageUrl || null}, updated_at = now()
           WHERE id = ${id}
           RETURNING *;
         `
@@ -101,7 +105,7 @@ export async function updatePackage(
         UPDATE packages
         SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
             price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-            status = ${data.status}, updated_at = now()
+            status = ${data.status}, image_url = ${data.imageUrl || null}, updated_at = now()
         WHERE id = ${id} AND partner_id = ${partnerId}
         RETURNING *;
       `;

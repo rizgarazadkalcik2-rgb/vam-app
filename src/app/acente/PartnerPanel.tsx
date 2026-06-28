@@ -13,6 +13,7 @@ const emptyForm = {
   priceTry: 0,
   capacity: 0,
   description: "",
+  imageUrl: "",
 };
 
 export default function PartnerPanel({
@@ -30,6 +31,7 @@ export default function PartnerPanel({
   const [editingId, setEditingId] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -73,6 +75,31 @@ export default function PartnerPanel({
     router.refresh();
   }
 
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    setUploading(false);
+
+    if (!res.ok) {
+      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
+      return;
+    }
+
+    setForm((f) => ({ ...f, imageUrl: data.url }));
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
@@ -109,6 +136,7 @@ export default function PartnerPanel({
       priceTry: Number(pkg.price_try),
       capacity: pkg.capacity,
       description: pkg.description || "",
+      imageUrl: pkg.image_url || "",
     });
   }
 
@@ -235,6 +263,45 @@ export default function PartnerPanel({
             style={{ ...inputStyle, width: "100%", marginBottom: 12, resize: "vertical" }}
           />
 
+          <div style={{ marginBottom: 12 }}>
+            <label
+              style={{
+                display: "block",
+                fontSize: 11.5,
+                color: "#6f6558",
+                marginBottom: 6,
+              }}
+            >
+              Paket Görseli
+            </label>
+            {form.imageUrl && (
+              <img
+                src={form.imageUrl}
+                alt="Önizleme"
+                style={{
+                  width: "100%",
+                  maxHeight: 160,
+                  objectFit: "cover",
+                  borderRadius: 4,
+                  marginBottom: 8,
+                  display: "block",
+                }}
+              />
+            )}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleImageUpload}
+              disabled={uploading}
+              style={{ fontSize: 12.5 }}
+            />
+            {uploading && (
+              <div style={{ fontSize: 12, color: "#835d3e", marginTop: 4 }}>
+                Yükleniyor...
+              </div>
+            )}
+          </div>
+
           {error && (
             <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 12 }}>{error}</div>
           )}
@@ -293,10 +360,24 @@ export default function PartnerPanel({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                gap: 12,
                 boxShadow: "0 1px 3px rgba(28,20,16,0.06)",
               }}
             >
-              <div>
+              {pkg.image_url && (
+                <img
+                  src={pkg.image_url}
+                  alt={pkg.title}
+                  style={{
+                    width: 64,
+                    height: 64,
+                    objectFit: "cover",
+                    borderRadius: 4,
+                    flexShrink: 0,
+                  }}
+                />
+              )}
+              <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600, fontSize: 14 }}>
                   <span style={{ color: "#a27450", fontWeight: 400, fontSize: 12 }}>#{pkg.id}</span> {pkg.title}
                 </div>

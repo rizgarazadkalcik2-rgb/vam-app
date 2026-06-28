@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
     priceTry: Number(body.priceTry) || 0,
     capacity: Number(body.capacity) || 0,
     description: body.description || "",
+    imageUrl: body.imageUrl || undefined,
   });
 
   return NextResponse.json({ package: created }, { status: 201 });

@@ -18,6 +18,7 @@ const emptyForm = {
   capacity: 0,
   description: "",
   partnerId: "",
+  imageUrl: "",
 };
 
 export default function AdminPanel({
@@ -34,6 +35,7 @@ export default function AdminPanel({
   const [editingId, setEditingId] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
   async function refresh() {
@@ -83,9 +85,35 @@ export default function AdminPanel({
       capacity: pkg.capacity,
       description: pkg.description || "",
       partnerId: pkg.partner_id,
+      imageUrl: pkg.image_url || "",
     });
     setShowForm(true);
     setError("");
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    setUploading(false);
+
+    if (!res.ok) {
+      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
+      return;
+    }
+
+    setForm((f) => ({ ...f, imageUrl: data.url }));
   }
 
   function cancelForm() {
@@ -118,6 +146,7 @@ export default function AdminPanel({
       capacity: form.capacity,
       description: form.description,
       status: "active",
+      imageUrl: form.imageUrl,
     };
 
     if (editingId) {
@@ -284,6 +313,45 @@ export default function AdminPanel({
               style={{ ...inputStyle, width: "100%", marginBottom: 12, resize: "vertical" }}
             />
 
+            <div style={{ marginBottom: 12 }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: 11.5,
+                  color: "#6f6558",
+                  marginBottom: 6,
+                }}
+              >
+                Paket Görseli
+              </label>
+              {form.imageUrl && (
+                <img
+                  src={form.imageUrl}
+                  alt="Önizleme"
+                  style={{
+                    width: "100%",
+                    maxHeight: 160,
+                    objectFit: "cover",
+                    borderRadius: 4,
+                    marginBottom: 8,
+                    display: "block",
+                  }}
+                />
+              )}
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleImageUpload}
+                disabled={uploading}
+                style={{ fontSize: 12.5 }}
+              />
+              {uploading && (
+                <div style={{ fontSize: 12, color: "#835d3e", marginTop: 4 }}>
+                  Yükleniyor...
+                </div>
+              )}
+            </div>
+
             {error && (
               <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 12 }}>{error}</div>
             )}
@@ -349,7 +417,20 @@ export default function AdminPanel({
                     opacity: pkg.status === "active" ? 1 : 0.55,
                   }}
                 >
-                  <div>
+                  {pkg.image_url && (
+                    <img
+                      src={pkg.image_url}
+                      alt={pkg.title}
+                      style={{
+                        width: 56,
+                        height: 56,
+                        objectFit: "cover",
+                        borderRadius: 4,
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                  <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 13.5 }}>
                       <span style={{ color: "#a27450", fontWeight: 400 }}>#{pkg.id}</span> {pkg.title}{" "}
                       <span
