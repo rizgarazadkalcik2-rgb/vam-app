@@ -29,6 +29,8 @@ export async function PATCH(
       capacity: Number(body.capacity) || 0,
       description: body.description || "",
       status: body.status || "active",
+      newPartnerId: body.newPartnerId,
+      newPartnerName: body.newPartnerName,
     }
   );
 

@@ -63,19 +63,32 @@ export async function updatePackage(
     capacity: number;
     description: string;
     status: string;
+    newPartnerId?: string;
+    newPartnerName?: string;
   }
 ): Promise<VamPackage | null> {
   await ensureSchema();
   // partner sadece kendi paketini düzenleyebilir; admin hepsini düzenleyebilir
+  // admin ayrıca paketin sahibini (acentesini) de değiştirebilir
   const { rows } = isAdmin
-    ? await sql<VamPackage>`
-        UPDATE packages
-        SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
-            price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-            status = ${data.status}, updated_at = now()
-        WHERE id = ${id}
-        RETURNING *;
-      `
+    ? data.newPartnerId && data.newPartnerName
+      ? await sql<VamPackage>`
+          UPDATE packages
+          SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
+              price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
+              status = ${data.status}, partner_id = ${data.newPartnerId}, partner_name = ${data.newPartnerName},
+              updated_at = now()
+          WHERE id = ${id}
+          RETURNING *;
+        `
+      : await sql<VamPackage>`
+          UPDATE packages
+          SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
+              price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
+              status = ${data.status}, updated_at = now()
+          WHERE id = ${id}
+          RETURNING *;
+        `
     : await sql<VamPackage>`
         UPDATE packages
         SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},

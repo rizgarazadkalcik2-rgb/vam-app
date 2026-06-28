@@ -30,9 +30,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Admin, istediği acente adına paket ekleyebilir (body'den partnerId/partnerName gelir).
+  // Partner (acente) ise her zaman kendi adına ekler, body'deki değerler göz ardı edilir.
+  const partnerId =
+    session.role === "admin" && body.partnerId ? body.partnerId : session.userId;
+  const partnerName =
+    session.role === "admin" && body.partnerName ? body.partnerName : session.displayName;
+
   const created = await createPackage({
-    partnerId: session.userId,
-    partnerName: session.displayName,
+    partnerId,
+    partnerName,
     title: body.title,
     destination: body.destination,
     nights: Number(body.nights) || 1,

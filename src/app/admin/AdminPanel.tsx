@@ -5,14 +5,36 @@ import type { VamPackage } from "@/lib/packages";
 import type { SessionPayload } from "@/lib/session";
 import AdminNav from "./AdminNav";
 
+interface Partner {
+  id: string;
+  display_name: string;
+}
+
+const emptyForm = {
+  title: "",
+  destination: "",
+  nights: 1,
+  priceTry: 0,
+  capacity: 0,
+  description: "",
+  partnerId: "",
+};
+
 export default function AdminPanel({
   session,
   initialPackages,
+  partners,
 }: {
   session: SessionPayload;
   initialPackages: VamPackage[];
+  partners: Partner[];
 }) {
   const [packages, setPackages] = useState(initialPackages);
+  const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   async function refresh() {
     const res = await fetch("/api/packages");
@@ -44,6 +66,86 @@ export default function AdminPanel({
     if (res.ok) await refresh();
   }
 
+  function startCreate() {
+    setEditingId(null);
+    setForm({ ...emptyForm, partnerId: partners[0]?.id || "" });
+    setShowForm(true);
+    setError("");
+  }
+
+  function startEdit(pkg: VamPackage) {
+    setEditingId(pkg.id);
+    setForm({
+      title: pkg.title,
+      destination: pkg.destination,
+      nights: pkg.nights,
+      priceTry: Number(pkg.price_try),
+      capacity: pkg.capacity,
+      description: pkg.description || "",
+      partnerId: pkg.partner_id,
+    });
+    setShowForm(true);
+    setError("");
+  }
+
+  function cancelForm() {
+    setShowForm(false);
+    setEditingId(null);
+    setForm(emptyForm);
+    setError("");
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    setError("");
+
+    const selectedPartner = partners.find((p) => p.id === form.partnerId);
+    if (!selectedPartner) {
+      setError("Lütfen bir acente seçin.");
+      setSubmitting(false);
+      return;
+    }
+
+    const url = editingId ? `/api/packages/${editingId}` : "/api/packages";
+    const method = editingId ? "PATCH" : "POST";
+
+    const payload: Record<string, unknown> = {
+      title: form.title,
+      destination: form.destination,
+      nights: form.nights,
+      priceTry: form.priceTry,
+      capacity: form.capacity,
+      description: form.description,
+      status: "active",
+    };
+
+    if (editingId) {
+      payload.newPartnerId = selectedPartner.id;
+      payload.newPartnerName = selectedPartner.display_name;
+    } else {
+      payload.partnerId = selectedPartner.id;
+      payload.partnerName = selectedPartner.display_name;
+    }
+
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || "Bir hata oluştu.");
+      setSubmitting(false);
+      return;
+    }
+
+    cancelForm();
+    setSubmitting(false);
+    await refresh();
+  }
+
   const partnerGroups = packages.reduce<Record<string, VamPackage[]>>((acc, p) => {
     (acc[p.partner_name] ||= []).push(p);
     return acc;
@@ -59,13 +161,167 @@ export default function AdminPanel({
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
             gap: 12,
-            marginBottom: 28,
+            marginBottom: 20,
           }}
         >
           <StatCard label="Toplam Paket" value={packages.length} />
           <StatCard label="Aktif Paket" value={packages.filter((p) => p.status === "active").length} />
           <StatCard label="Acente Sayısı" value={Object.keys(partnerGroups).length} />
         </div>
+
+        {!showForm && (
+          <button
+            onClick={startCreate}
+            disabled={partners.length === 0}
+            style={{
+              padding: "10px 20px",
+              background: partners.length === 0 ? "#ccc" : "#c4522a",
+              color: "#fff",
+              border: "none",
+              borderRadius: 4,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: partners.length === 0 ? "not-allowed" : "pointer",
+              marginBottom: 20,
+            }}
+          >
+            + Yeni Paket Ekle
+          </button>
+        )}
+
+        {partners.length === 0 && !showForm && (
+          <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 20 }}>
+            Paket eklemeden önce en az bir aktif acente olmalı. Önce{" "}
+            <a href="/admin/acenteler" style={{ color: "#a64022", textDecoration: "underline" }}>
+              Acenteler
+            </a>{" "}
+            sayfasından bir acente ekleyin.
+          </div>
+        )}
+
+        {showForm && (
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              padding: 24,
+              marginBottom: 28,
+              boxShadow: "0 1px 3px rgba(28,20,16,0.08)",
+            }}
+          >
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>
+              {editingId ? "Paketi Düzenle" : "Yeni Paket Ekle"}
+            </div>
+
+            <label style={{ display: "block", marginBottom: 12 }}>
+              <span style={{ display: "block", fontSize: 11.5, color: "#6f6558", marginBottom: 5 }}>
+                Acente
+              </span>
+              <select
+                value={form.partnerId}
+                onChange={(e) => setForm({ ...form, partnerId: e.target.value })}
+                required
+                style={{ ...inputStyle, width: "100%" }}
+              >
+                <option value="" disabled>
+                  Acente seçin
+                </option>
+                {partners.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.display_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+              <input
+                placeholder="Paket başlığı"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                required
+                style={inputStyle}
+              />
+              <input
+                placeholder="Destinasyon"
+                value={form.destination}
+                onChange={(e) => setForm({ ...form, destination: e.target.value })}
+                required
+                style={inputStyle}
+              />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
+              <input
+                type="number"
+                placeholder="Gece sayısı"
+                value={form.nights}
+                onChange={(e) => setForm({ ...form, nights: Number(e.target.value) })}
+                style={inputStyle}
+              />
+              <input
+                type="number"
+                placeholder="Fiyat (TRY)"
+                value={form.priceTry}
+                onChange={(e) => setForm({ ...form, priceTry: Number(e.target.value) })}
+                style={inputStyle}
+              />
+              <input
+                type="number"
+                placeholder="Kontenjan"
+                value={form.capacity}
+                onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
+                style={inputStyle}
+              />
+            </div>
+
+            <textarea
+              placeholder="Açıklama"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              rows={3}
+              style={{ ...inputStyle, width: "100%", marginBottom: 12, resize: "vertical" }}
+            />
+
+            {error && (
+              <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 12 }}>{error}</div>
+            )}
+
+            <div style={{ display: "flex", gap: 10 }}>
+              <button
+                type="submit"
+                disabled={submitting}
+                style={{
+                  padding: "9px 20px",
+                  background: "#c4522a",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 4,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {submitting ? "Kaydediliyor..." : editingId ? "Güncelle" : "Ekle"}
+              </button>
+              <button
+                type="button"
+                onClick={cancelForm}
+                style={{
+                  padding: "9px 20px",
+                  background: "transparent",
+                  border: "1px solid #ccc",
+                  borderRadius: 4,
+                  fontSize: 13,
+                  cursor: "pointer",
+                }}
+              >
+                Vazgeç
+              </button>
+            </div>
+          </form>
+        )}
 
         {Object.entries(partnerGroups).length === 0 && (
           <div style={{ color: "#8c8275", fontSize: 13 }}>Henüz hiç paket eklenmedi.</div>
@@ -87,6 +343,8 @@ export default function AdminPanel({
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: 10,
                     boxShadow: "0 1px 3px rgba(28,20,16,0.06)",
                     opacity: pkg.status === "active" ? 1 : 0.55,
                   }}
@@ -111,6 +369,20 @@ export default function AdminPanel({
                     </div>
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={() => startEdit(pkg)}
+                      style={{
+                        padding: "6px 12px",
+                        background: "transparent",
+                        border: "1px solid #2f5fa0",
+                        color: "#2f5fa0",
+                        borderRadius: 4,
+                        fontSize: 11.5,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Düzenle
+                    </button>
                     <button
                       onClick={() => toggleStatus(pkg)}
                       style={{
@@ -168,3 +440,11 @@ function StatCard({ label, value }: { label: string; value: number }) {
     </div>
   );
 }
+
+const inputStyle: React.CSSProperties = {
+  padding: "9px 12px",
+  border: "1px solid #e5d6bc",
+  borderRadius: 4,
+  fontSize: 13.5,
+  outline: "none",
+};
