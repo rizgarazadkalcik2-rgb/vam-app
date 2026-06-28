@@ -58,16 +58,12 @@ export default function GirisPage() {
       >
         <div
           style={{
-            fontFamily: "Georgia, serif",
-            fontSize: 24,
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            color: "#fff",
-            textAlign: "center",
+            display: "flex",
+            justifyContent: "center",
             marginBottom: 8,
           }}
         >
-          VAM
+          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" style={{ height: 56, display: "block" }} />
         </div>
         <div
           style={{

@@ -24,15 +24,12 @@ export default function LegalLayout({
         <Link
           href="/platform"
           style={{
-            fontFamily: "Georgia, serif",
-            fontSize: 22,
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            color: "#fff",
+            display: "flex",
+            alignItems: "center",
             textDecoration: "none",
           }}
         >
-          VAM
+          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" style={{ height: 40, display: "block" }} />
         </Link>
         <Link
           href="/platform"
