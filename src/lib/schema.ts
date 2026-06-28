@@ -33,6 +33,27 @@ export async function ensureSchema() {
     );
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS reservations (
+      id SERIAL PRIMARY KEY,
+      package_id INTEGER NOT NULL REFERENCES packages(id) ON DELETE CASCADE,
+      partner_id TEXT NOT NULL,
+      partner_name TEXT NOT NULL,
+      package_title TEXT NOT NULL,
+      customer_name TEXT NOT NULL,
+      customer_email TEXT NOT NULL,
+      customer_phone TEXT,
+      travel_date DATE,
+      guest_count INTEGER NOT NULL DEFAULT 1,
+      notes TEXT,
+      total_price NUMERIC NOT NULL,
+      payment_status TEXT NOT NULL DEFAULT 'pending',
+      reservation_status TEXT NOT NULL DEFAULT 'new',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
   // İlk kurulumda mevcut sabit kodlu kullanıcıları (rizgar, acente1) veritabanına aktar.
   // Sadece tablo boşsa çalışır, tekrar tekrar eklemez.
   const { rows } = await sql`SELECT COUNT(*) as count FROM users;`;

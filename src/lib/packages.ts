@@ -32,6 +32,14 @@ export async function listPackagesByPartner(partnerId: string): Promise<VamPacka
   return rows;
 }
 
+export async function getPackageById(id: number): Promise<VamPackage | null> {
+  await ensureSchema();
+  const { rows } = await sql<VamPackage>`
+    SELECT * FROM packages WHERE id = ${id} LIMIT 1;
+  `;
+  return rows[0] || null;
+}
+
 export async function createPackage(data: {
   partnerId: string;
   partnerName: string;

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { VamPackage } from "@/lib/packages";
+import type { VamReservation } from "@/lib/reservations";
 import type { SessionPayload } from "@/lib/session";
 
 const emptyForm = {
@@ -17,9 +18,11 @@ const emptyForm = {
 export default function PartnerPanel({
   session,
   initialPackages,
+  initialReservations,
 }: {
   session: SessionPayload;
   initialPackages: VamPackage[];
+  initialReservations: VamReservation[];
 }) {
   const router = useRouter();
   const [packages, setPackages] = useState(initialPackages);
@@ -329,6 +332,78 @@ export default function PartnerPanel({
                 >
                   Sil
                 </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, marginTop: 32 }}>
+          Gelen Rezervasyonlar ({initialReservations.length})
+        </div>
+
+        <div style={{ display: "grid", gap: 10 }}>
+          {initialReservations.length === 0 && (
+            <div style={{ color: "#8c8275", fontSize: 13 }}>Henüz rezervasyon yok.</div>
+          )}
+          {initialReservations.map((r) => (
+            <div
+              key={r.id}
+              style={{
+                background: "#fff",
+                borderRadius: 6,
+                padding: 16,
+                boxShadow: "0 1px 3px rgba(28,20,16,0.06)",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
+                <div style={{ fontWeight: 600, fontSize: 13.5 }}>{r.package_title}</div>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <span
+                    style={{
+                      fontSize: 10.5,
+                      fontWeight: 700,
+                      padding: "3px 8px",
+                      borderRadius: 4,
+                      border:
+                        r.reservation_status === "confirmed"
+                          ? "1px solid #2a7a50"
+                          : r.reservation_status === "cancelled"
+                          ? "1px solid #a64022"
+                          : "1px solid #2f5fa0",
+                      color:
+                        r.reservation_status === "confirmed"
+                          ? "#2a7a50"
+                          : r.reservation_status === "cancelled"
+                          ? "#a64022"
+                          : "#2f5fa0",
+                    }}
+                  >
+                    {r.reservation_status === "confirmed"
+                      ? "Onaylandı"
+                      : r.reservation_status === "cancelled"
+                      ? "İptal Edildi"
+                      : "Yeni"}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 10.5,
+                      fontWeight: 700,
+                      padding: "3px 8px",
+                      borderRadius: 4,
+                      border: r.payment_status === "paid" ? "1px solid #2a7a50" : "1px solid #835d3e",
+                      color: r.payment_status === "paid" ? "#2a7a50" : "#835d3e",
+                    }}
+                  >
+                    {r.payment_status === "paid" ? "Ödendi" : "Ödeme Bekliyor"}
+                  </span>
+                </div>
+              </div>
+              <div style={{ fontSize: 12.5, color: "#6f6558", lineHeight: 1.7 }}>
+                {r.customer_name} · {r.customer_email}
+                {r.customer_phone ? ` · ${r.customer_phone}` : ""}
+                <br />
+                {r.travel_date ? new Date(r.travel_date).toLocaleDateString("tr-TR") : "Tarih belirtilmedi"} ·{" "}
+                {r.guest_count} kişi · ₺{Number(r.total_price).toLocaleString("tr-TR")}
               </div>
             </div>
           ))}
