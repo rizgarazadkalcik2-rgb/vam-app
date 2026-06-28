@@ -297,10 +297,15 @@ export default function PartnerPanel({
               }}
             >
               <div>
-                <div style={{ fontWeight: 600, fontSize: 14 }}>{pkg.title}</div>
+                <div style={{ fontWeight: 600, fontSize: 14 }}>
+                  <span style={{ color: "#a27450", fontWeight: 400, fontSize: 12 }}>#{pkg.id}</span> {pkg.title}
+                </div>
                 <div style={{ fontSize: 12.5, color: "#6f6558", marginTop: 2 }}>
                   {pkg.destination} · {pkg.nights} gece · ₺{Number(pkg.price_try).toLocaleString("tr-TR")} ·{" "}
                   Kontenjan: {pkg.capacity}
+                </div>
+                <div style={{ fontSize: 11, color: "#2f5fa0", marginTop: 4 }}>
+                  Rezervasyon linki: /rezervasyon/{pkg.id}
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
