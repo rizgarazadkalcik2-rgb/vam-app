@@ -29,7 +29,7 @@ export default function LegalLayout({
             textDecoration: "none",
           }}
         >
-          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" style={{ height: 40, display: "block" }} />
+          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" style={{ height: 56, display: "block" }} />
         </Link>
         <Link
           href="/platform"
