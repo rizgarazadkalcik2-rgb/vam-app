@@ -11,6 +11,8 @@ export interface VamUser {
   role: Role;
   display_name: string;
   status: string;
+  failed_attempts: number;
+  locked_until: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -95,4 +97,41 @@ export async function usernameExists(username: string): Promise<boolean> {
     SELECT 1 FROM users WHERE LOWER(username) = LOWER(${username}) LIMIT 1;
   `;
   return rows.length > 0;
+}
+
+// --- Kaba kuvvet (brute-force) koruması ---
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCKOUT_MINUTES = 15;
+
+export async function recordFailedLogin(id: string): Promise<void> {
+  await ensureSchema();
+  const { rows } = await sql<{ failed_attempts: number }>`
+    UPDATE users SET failed_attempts = failed_attempts + 1, updated_at = now()
+    WHERE id = ${id}
+    RETURNING failed_attempts;
+  `;
+  const attempts = rows[0]?.failed_attempts ?? 0;
+  if (attempts >= MAX_FAILED_ATTEMPTS) {
+    await sql`
+      UPDATE users SET locked_until = now() + (${LOCKOUT_MINUTES} * interval '1 minute')
+      WHERE id = ${id};
+    `;
+  }
+}
+
+export async function resetFailedLogins(id: string): Promise<void> {
+  await ensureSchema();
+  await sql`
+    UPDATE users SET failed_attempts = 0, locked_until = NULL, updated_at = now()
+    WHERE id = ${id};
+  `;
+}
+
+export function isLocked(user: VamUser): boolean {
+  return !!user.locked_until && new Date(user.locked_until).getTime() > Date.now();
+}
+
+export function lockRemainingSeconds(user: VamUser): number {
+  if (!user.locked_until) return 0;
+  return Math.max(0, Math.ceil((new Date(user.locked_until).getTime() - Date.now()) / 1000));
 }

@@ -37,6 +37,10 @@ export async function ensureSchema() {
     );
   `;
 
+  // Brute-force / kaba kuvvet girişimlerine karşı kilitleme alanları
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_attempts INTEGER NOT NULL DEFAULT 0;`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until TIMESTAMPTZ;`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS reservations (
       id SERIAL PRIMARY KEY,
