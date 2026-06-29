@@ -15,6 +15,8 @@ export default function VamFooter() {
           <a href="/destinations">Destinasyonlar</a>
           <a href="/bundles">Paketler</a>
           <a href="/experiences">Deneyimler</a>
+          <a href="#">Rehberler</a>
+          <a href="#">Değerlendirmeler</a>
         </div>
         <div>
           <h5>Şirket</h5>

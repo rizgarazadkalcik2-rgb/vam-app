@@ -13,7 +13,7 @@ export default async function BundlesPage() {
       <VamNavbar />
 
       <div className="vc-pagehead">
-        <div className="vc-eyebrow">— Bundle Paketleri</div>
+        <div className="vc-eyebrow">— Paket Koleksiyonu</div>
         <h1 className="vc-h1">Her Şey Dahil Rotalar</h1>
         <p className="vc-lede">
           Yerel operatörlerle revenue-share modeliyle hazırlanan, konaklama ve rehberlik dahil

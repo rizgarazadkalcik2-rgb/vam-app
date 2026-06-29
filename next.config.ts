@@ -30,6 +30,22 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      {
+        // Bu sayfalar (statik bundler mimarisi) deploy sonrası CDN'de eski
+        // halleriyle takılı kalabiliyordu — "no-cache, must-revalidate" her
+        // istekte orijin sunucuyla doğrulama yapılmasını zorunlu kılar,
+        // böylece bir önceki deploy'un bozuk sürümü asla takılı kalmaz.
+        source: "/platform",
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+      },
+      {
+        source: "/experiences",
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+      },
+      {
+        source: "/about",
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+      },
     ];
   },
   async rewrites() {
