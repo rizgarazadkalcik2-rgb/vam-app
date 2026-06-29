@@ -1,59 +1,78 @@
-# VAM Platform — Güvenlik Düzeltmeleri
+# VAM Platform — Destinasyonlar & Bundle'lar Admin Panelinden Yönetilebilir Hale Getirildi
 
 ## Kurulum
 1. Bu zip'i indir, çıkar.
-2. İçindeki `src/` klasörünü ve `next.config.ts` dosyasını repo klasörünün
-   üzerine kopyala (**Birleştir** — mevcut dosyaların üzerine yazılacak).
+2. İçindeki `src/`, `public/` klasörlerini ve `next.config.ts` dosyasını repo
+   klasörünün üzerine **birleştir** (mevcut dosyaların üzerine yazılacak,
+   yeni dosyalar eklenecek).
 3. GitHub Desktop'ta commit + push yap.
 4. Vercel otomatik deploy edecek.
 
-İlk deploy sonrası veritabanı şeması otomatik güncellenir (yeni `failed_attempts`
-ve `locked_until` kolonları `users` tablosuna eklenir) — elle bir şey yapmana
-gerek yok.
+İlk istek geldiğinde veritabanı şeması otomatik güncellenir: `destinations`
+ve `bundles` tabloları oluşturulur ve **mevcut 15 destinasyon + 3 bundle
+içeriğiyle otomatik doldurulur** (tablo boşsa bir kerelik). Elle bir şey
+yapmana gerek yok — sitenin görünümü deploy sonrası aynı kalacak, sadece
+artık arka planda admin panelinden yönetilebilir.
 
 ---
 
-## Yapılan Düzeltmeler
+## Ne Değişti — Mimari
 
-### 1. Hesap Bazlı Kilitleme (Brute-Force Koruması)
-Bir kullanıcı adı için **5 başarısız giriş denemesinden sonra** o hesap
-**15 dakika** kilitleniyor. Doğru şifre girilse bile bu süre boyunca giriş
-engellenir. Başarılı bir girişte sayaç sıfırlanır.
+Önceden `/destinations` ve `/bundles` tamamen statik HTML dosyalarıydı;
+içerik kodun içine gömülüydü, değiştirmek için her seferinde benimle kod
+düzenlemesi + yeni deploy gerekiyordu.
 
-### 2. IP Bazlı Hız Sınırlama
-Aynı IP adresinden **5 dakikada en fazla 10 giriş denemesi** yapılabiliyor —
-bu, farklı kullanıcı adlarıyla otomatik deneme yapan saldırılara karşı ek bir
-katman. (Not: Bu sınırlama sunucu belleğinde tutuluyor; Vercel'in sunucusuz
-yapısı nedeniyle %100 garantili değil ama hızlı/otomatik saldırıları önemli
-ölçüde yavaşlatır. İleride kalıcı bir çözüm için Vercel KV/Upstash Redis
-eklenmesi önerilir.)
+Şimdi:
+- **Gerçek Next.js sayfaları** (`/destinations`, `/destinations/[slug]`,
+  `/bundles`, `/bundles/[slug]`) — Postgres'ten canlı veri okuyor
+- **Admin panelinde 2 yeni sekme**: "Destinasyonlar" ve "Bundle'lar"
+- Admin panelinden ekleme/düzenleme/silme/pasifleştirme yaptığında, **anında**
+  hem ilgili sayfada hem de ana sayfadaki "Her Şey Dahil Rotalar" kartlarında
+  yansıyor — kod değişikliği veya yeni deploy gerekmiyor.
 
-### 3. Güvenlik HTTP Header'ları (next.config.ts)
-Tüm sayfalara şu header'lar eklendi:
-- `X-Frame-Options: DENY` — sitenin başka bir sitede iframe içinde
-  gösterilmesini (clickjacking) engeller
-- `X-Content-Type-Options: nosniff` — tarayıcının dosya tipini "tahmin
-  etmesini" engeller
-- `Strict-Transport-Security` — tarayıcıyı her zaman HTTPS kullanmaya zorlar
-- `Referrer-Policy` — başka sitelere geçişte URL bilgisinin sızmasını azaltır
-- `Permissions-Policy` — kamera/mikrofon/konum gibi izinleri varsayılan
-  olarak kapatır
-- `Content-Security-Policy` — sitenin sadece kendi kaynaklarından script/stil
-  yükleyebilmesini sağlar (not: statik sayfalardaki tarayıcı-içi JSX
-  dönüşümü nedeniyle `unsafe-inline`/`unsafe-eval` zorunlu olarak açık
-  bırakıldı — bu olmadan site çalışmaz)
+## Admin Panelinde Neler Var
 
-## Değiştirilen Dosyalar
-- `next.config.ts` — güvenlik header'ları eklendi
-- `src/lib/schema.ts` — `users` tablosuna kilitleme kolonları eklendi
-- `src/lib/users.ts` — kilitleme/deneme sayacı fonksiyonları eklendi
-- `src/lib/rateLimit.ts` — **yeni dosya**, IP bazlı hız sınırlayıcı
-- `src/app/api/auth/login/route.ts` — kilitleme ve hız sınırlama mantığı eklendi
+### "Destinasyonlar" sekmesi
+Her destinasyon için: isim, bölge, dönem bilgisi, UNESCO rozeti, etiketler,
+görsel URL, puan/değerlendirme, tarihçe paragrafları, öne çıkan özellikler,
+ziyaret bilgileri (konum, en yakın şehir, süre, en iyi zaman) ve ilgili
+destinasyonlar — hepsi formdan düzenlenebiliyor. "Pasifleştir" ile bir
+destinasyonu siteden geçici olarak gizleyebilirsin (silmeden).
+
+### "Bundle'lar" sekmesi
+Her paket için: başlık, görsel, açıklama, gece sayısı, güzergahtaki
+destinasyonlar, fiyat (+ eski fiyat ile indirim gösterimi), pakete dahil
+olanlar, rozet (Çok Satan / Yeni vb.) ve durum.
+
+## Görsel Ekleme Hakkında Not
+Form'daki "Görsel URL" alanına şu an için bir Vercel Blob linki veya
+`/images/destinations/dosya-adi.jpg` gibi bir yol yazman gerekiyor — admin
+panelinden doğrudan dosya yükleme henüz bu ekrana bağlanmadı (paket
+yönetiminde olduğu gibi). İstersen bunu da bir sonraki adımda ekleyebiliriz.
+
+## Eski Statik Dosyalar Hakkında
+`public/static-pages/destinations/` ve `public/static-pages/bundles/`
+altındaki eski dosyalar artık **kullanılmıyor** (next.config.ts'teki ilgili
+yönlendirmeler kaldırıldı). Onları repodan silmen gerekmiyor — zararsız,
+sadece yer kaplıyorlar. İstersen ileride temizlik için kaldırabilirsin.
+
+## Değiştirilen / Eklenen Dosyalar
+**Yeni:**
+- `src/lib/seedData.ts`, `src/lib/destinations.ts`, `src/lib/bundles.ts`
+- `src/app/api/destinations/**`, `src/app/api/bundles/**`
+- `src/app/destinations/**`, `src/app/bundles/**` (gerçek sayfalar)
+- `src/app/components/VamNavbar.tsx`, `VamFooter.tsx`, `src/app/vam-content.css`
+- `src/app/admin/destinasyonlar/**`, `src/app/admin/bundles/**`
+
+**Güncellenen:**
+- `src/lib/schema.ts` — yeni tablolar + seed mantığı
+- `src/app/layout.tsx` — marka fontları eklendi
+- `src/app/admin/AdminNav.tsx` — 2 yeni sekme
+- `next.config.ts` — eski statik rewrite'lar kaldırıldı
+- `public/static-pages/platform/index.html` — ana sayfadaki bundle kartları
+  artık `/api/bundles/public`'ten canlı veri çekiyor
 
 ## Test Edildi
-- `npx tsc --noEmit` ile tip kontrolü hatasız geçti.
-
-## Henüz Yapılmayanlar (İleride Değerlendirilebilir)
-- Kalıcı/dağıtık hız sınırlama (Upstash Redis / Vercel KV)
-- Admin paneli için iki faktörlü doğrulama (2FA)
-- Otomatik güvenlik açığı taraması (Dependabot / `npm audit` periyodik kontrol)
+- `npx tsc --noEmit` → hatasız
+- `npx next build` → başarılı, tüm yeni route'lar doğru şekilde dinamik
+  (server-rendered on demand) olarak derlendi

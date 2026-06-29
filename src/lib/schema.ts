@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
+import { SEED_DESTINATIONS, SEED_BUNDLES } from "./seedData";
 
 // Bu fonksiyon ilk kurulumda bir kez çalıştırılır (tablo yoksa oluşturur).
 export async function ensureSchema() {
@@ -75,6 +76,91 @@ export async function ensureSchema() {
         ('u_partner_1', 'acente1', ${partnerHash}, 'partner', 'Test Acente 1', 'active')
       ON CONFLICT (username) DO NOTHING;
     `;
+  }
+
+  // --- Destinasyonlar ---
+  await sql`
+    CREATE TABLE IF NOT EXISTS destinations (
+      id SERIAL PRIMARY KEY,
+      slug TEXT UNIQUE NOT NULL,
+      name TEXT NOT NULL,
+      region TEXT NOT NULL,
+      era TEXT,
+      era_display TEXT,
+      era_caption TEXT,
+      unesco BOOLEAN NOT NULL DEFAULT false,
+      tags JSONB NOT NULL DEFAULT '[]',
+      image_url TEXT,
+      rating NUMERIC,
+      reviews INTEGER,
+      history JSONB NOT NULL DEFAULT '[]',
+      features JSONB NOT NULL DEFAULT '[]',
+      visit_location TEXT,
+      visit_nearest_city TEXT,
+      visit_duration TEXT,
+      visit_best_time TEXT,
+      related JSONB NOT NULL DEFAULT '[]',
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
+  const { rows: destCount } = await sql`SELECT COUNT(*) as count FROM destinations;`;
+  if (Number(destCount[0].count) === 0) {
+    for (const d of SEED_DESTINATIONS) {
+      await sql`
+        INSERT INTO destinations (
+          slug, name, region, era, era_display, era_caption, unesco, tags, image_url,
+          rating, reviews, history, features, visit_location, visit_nearest_city,
+          visit_duration, visit_best_time, related
+        ) VALUES (
+          ${d.slug}, ${d.name}, ${d.region}, ${d.era}, ${d.eraDisplay}, ${d.eraCaption},
+          ${d.unesco}, ${JSON.stringify(d.tags)}::jsonb, ${d.imageUrl},
+          ${d.rating}, ${d.reviews}, ${JSON.stringify(d.history)}::jsonb,
+          ${JSON.stringify(d.features)}::jsonb, ${d.visitLocation}, ${d.visitNearestCity},
+          ${d.visitDuration}, ${d.visitBestTime}, ${JSON.stringify(d.related)}::jsonb
+        )
+        ON CONFLICT (slug) DO NOTHING;
+      `;
+    }
+  }
+
+  // --- Bundle Paketleri ---
+  await sql`
+    CREATE TABLE IF NOT EXISTS bundles (
+      id SERIAL PRIMARY KEY,
+      slug TEXT UNIQUE NOT NULL,
+      title TEXT NOT NULL,
+      image_url TEXT,
+      description TEXT NOT NULL,
+      nights INTEGER NOT NULL DEFAULT 1,
+      destinations JSONB NOT NULL DEFAULT '[]',
+      price NUMERIC NOT NULL,
+      original_price NUMERIC,
+      includes JSONB NOT NULL DEFAULT '[]',
+      badge TEXT,
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
+  const { rows: bundleCount } = await sql`SELECT COUNT(*) as count FROM bundles;`;
+  if (Number(bundleCount[0].count) === 0) {
+    for (const b of SEED_BUNDLES) {
+      await sql`
+        INSERT INTO bundles (
+          slug, title, image_url, description, nights, destinations, price,
+          original_price, includes, badge
+        ) VALUES (
+          ${b.slug}, ${b.title}, ${b.imageUrl}, ${b.description}, ${b.nights},
+          ${JSON.stringify(b.destinations)}::jsonb, ${b.price}, ${b.originalPrice},
+          ${JSON.stringify(b.includes)}::jsonb, ${b.badge}
+        )
+        ON CONFLICT (slug) DO NOTHING;
+      `;
+    }
   }
 }
 
