@@ -21,7 +21,7 @@ export default function MesafeliSatisSozlesmesiPage() {
         <br />
         Vergi Dairesi / VKN: <span className="placeholder">[bilgi]</span>
         <br />
-        E-posta: <span className="placeholder">[e-posta adresi]</span>
+        E-posta: <a href="mailto:info@visitvam.com">info@visitvam.com</a>
         <br />
         Telefon: <span className="placeholder">[telefon numarası]</span>
       </p>

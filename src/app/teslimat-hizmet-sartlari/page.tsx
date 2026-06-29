@@ -84,7 +84,7 @@ export default function TeslimatHizmetSartlariPage() {
       <h2>8. İletişim</h2>
       <p>
         Hizmet süreciyle ilgili sorularınız için:{" "}
-        <span className="placeholder">[e-posta adresi]</span> ·{" "}
+        <a href="mailto:info@visitvam.com">info@visitvam.com</a> ·{" "}
         <span className="placeholder">[telefon numarası]</span>
       </p>
     </LegalLayout>

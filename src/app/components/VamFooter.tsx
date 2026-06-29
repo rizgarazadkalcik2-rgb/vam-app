@@ -21,6 +21,7 @@ export default function VamFooter() {
         <div>
           <h5>Şirket</h5>
           <a href="/about">Hakkımızda</a>
+          <a href="mailto:info@visitvam.com">İletişim</a>
         </div>
         <div>
           <h5>Destek</h5>

@@ -40,7 +40,7 @@ export default function IptalIadePolitikasiPage() {
       <p>İptal talebinizi aşağıdaki yollardan birini kullanarak iletebilirsiniz:</p>
       <ul>
         <li>
-          E-posta: <span className="placeholder">[e-posta adresi]</span>
+          E-posta: <a href="mailto:info@visitvam.com">info@visitvam.com</a>
         </li>
         <li>
           Telefon: <span className="placeholder">[telefon numarası]</span>

@@ -20,7 +20,7 @@ export default function GizlilikPolitikasiPage() {
         işliyoruz.
       </p>
       <p>
-        İletişim: <span className="placeholder">[e-posta adresi]</span> ·{" "}
+        İletişim: <a href="mailto:info@visitvam.com">info@visitvam.com</a> ·{" "}
         <span className="placeholder">[telefon numarası]</span>
       </p>
 
