@@ -3,6 +3,12 @@ import { sql } from "@vercel/postgres";
 import { ensureSchema } from "@/lib/schema";
 import type { VamPackage } from "@/lib/packages";
 
+// Bu route, veritabanından her istekte taze veri okumalı — aksi halde
+// Next.js dinamik fonksiyon kullanılmadığını görüp yanıtı build zamanında
+// statik olarak önbelleğe alabilir ve admin panelinden eklenen yeni
+// paketler siteye hiç yansımaz.
+export const dynamic = "force-dynamic";
+
 // Herkese açık endpoint — sadece aktif paketleri, hassas olmayan alanlarla döndürür.
 // Müşteri tarafındaki statik sayfalar (Ana Sayfa, Destinations vb.) bu API'yi kullanır.
 export async function GET() {
