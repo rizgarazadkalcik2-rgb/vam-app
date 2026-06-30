@@ -1,57 +1,48 @@
-# VAM Platform — 3 Düzeltme: Hero Görsel, Favicon, Admin İçerik Görünmeme Sorunu
+# VAM Platform — Gerçek Çalışan Arama Barı
 
 ## Kurulum
 1. Zip'i indir, çıkar.
-2. `src/` ve `public/`'i repo köküne **birleştir** (üzerine yazsın).
+2. `src/` ve `public/`'i repo köküne **birleştir**.
 3. GitHub Desktop'ta commit + push.
 4. Vercel otomatik deploy edecek.
 
-## Düzeltmeler
+## Ne Değişti
 
-### 1. Ana sayfadaki destinasyon filtre çipleri artık hero görselini de değiştiriyor
-Daha önce sadece aşağıdaki "Öne Çıkan Deneyimler" filtresini etkiliyordu;
-şimdi bir destinasyon çipine (Göbeklitepe, Van Kalesi, Mardin vb.) tıklayınca
-üstteki büyük hero arka plan görseli de o destinasyona ait fotoğrafa
-değişiyor — fotoğraf şeridindeki (alt galeri) davranışla tutarlı hale
-getirildi.
+### Ana Sayfa — Arama Barı Artık Gerçek Çalışıyor
 
-### 2. Favicon artık VAM'ın kendi logosu
-Önceden tarayıcı sekmesinde Vercel'in varsayılan siyah daire/üçgen ikonu
-görünüyordu (proje hiç özel favicon ayarlamamıştı). Artık `public/logo/`
-altındaki gerçek VAM logosundan (güneş motifi + VAM yazısı, koyu zemin
-üzerinde) üretilmiş, 16×16/32×32/48×48 boyutlarını içeren çok-boyutlu bir
-`favicon.ico` kullanılıyor.
+Önceden tamamen dekoratifti. Şimdi:
 
-### 3. (Kritik) Admin panelinden eklenen içerik ana sayfada/sitede görünmüyordu
-**Kök sebep:** `/api/packages/public`, `/api/bundles/public`,
-`/api/destinations/public` endpoint'lerinin hiçbiri "dinamik" olarak
-işaretlenmemişti. Bu üç route içinde oturum/cookie kontrolü gibi
-Next.js'in otomatik olarak "bu sayfa her istekte değişebilir" anlayacağı
-bir şey olmadığı için, **Next.js bu API'lerin yanıtını build (deploy) anında
-statik olarak dondurup önbelleğe alıyordu.** Sonuç: admin panelinden yeni
-bir paket/bundle/destinasyon eklesen veya bir şeyi pasifleştirsen bile,
-veritabanı güncelleniyor ama public sayfalar yeni deploy yapılana kadar
-**hep eski/deploy-anı verisini** gösteriyordu.
+**Destinasyon alanı:**
+- Tıklayınca açılır dropdown çıkıyor
+- Liste `/api/destinations/public`'ten canlı çekiliyor
+  (admin panelinden yeni destinasyon eklenince otomatik listede görünür)
 
-**Çözüm:** Her üç route'a `export const dynamic = "force-dynamic";` eklendi
-— bu, Next.js'e "bu endpoint'i asla önbelleğe alma, her istekte
-veritabanından taze oku" talimatı veriyor. `npx next build` çıktısında bu
-üç route artık `ƒ` (dinamik/server-rendered on demand) olarak işaretleniyor
-— önceden bu işaret eksikti.
+**Tarih alanı:**
+- Tıklayınca ay seçici çıkıyor
+- Temmuz-Ekim arası hızlı seçim butonları + genel takvim
 
-Admin panelindeki listeleme route'ları (`/api/destinations`,
-`/api/bundles`, `/api/packages` — GET) zaten oturum kontrolü (cookie
-okuma) yaptığı için bu sorunu hiç yaşamıyordu, sadece **herkese açık**
-(`/public`) endpoint'ler etkilenmişti.
+**Kişi Sayısı:**
+- +/− butonlarıyla 1-20 arası seçim
+- 20+ kişi için iletişim notu
+
+**Deneyim:**
+- Arkeoloji, Tarih, Doğa, Kültür, Gastronomi arasından seçim
+
+**KEŞFET butonu:**
+- Seçimleri query string olarak `/bundles` sayfasına taşıyor
+  örn: `/bundles?dest=Mardin&exp=Kültür&guests=4&date=2026-08`
+
+### `/bundles` Sayfası — Filtreleme Paneli Eklendi
+
+Ana sayfadan gelen parametreler otomatik uygulanıyor.
+Sayfada ek filtre şeridi var: destinasyon ve deneyim bazlı anlık filtreleme.
+Sonuç bulunamazsa "Tüm Paketleri Göster" butonu çıkıyor.
 
 ## Test Edildi
 - `npx tsc --noEmit` → hatasız
-- `npx next build` → başarılı; `/api/packages/public`, `/api/bundles/public`,
-  `/api/destinations/public` artık `ƒ` (dinamik) olarak listeleniyor
+- `npx next build` → başarılı
 
 ## Değiştirilen Dosyalar
-- `src/app/favicon.ico` (yeni VAM logosu)
-- `src/app/api/packages/public/route.ts`
-- `src/app/api/bundles/public/route.ts`
-- `src/app/api/destinations/public/route.ts`
 - `public/static-pages/platform/index.html`
+- `src/app/bundles/page.tsx`
+- `src/app/bundles/BundlesClient.tsx` (yeni)
