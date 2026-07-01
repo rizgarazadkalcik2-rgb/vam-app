@@ -4,15 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { VamPackage } from "@/lib/packages";
 
-export default function ReservationForm({
-  pkg,
-  remainingSpots,
-}: {
-  pkg: VamPackage;
-  remainingSpots: number | null;
-}) {
-  const soldOut = remainingSpots !== null && remainingSpots <= 0;
-
+export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -24,7 +16,6 @@ export default function ReservationForm({
   const [success, setSuccess] = useState(false);
 
   const totalPrice = Number(pkg.price_try) * guestCount;
-  const maxGuests = remainingSpots !== null ? remainingSpots : undefined;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -126,56 +117,11 @@ export default function ReservationForm({
           <div style={{ fontFamily: "Georgia, serif", fontSize: 24, fontWeight: 700, marginBottom: 6 }}>
             {pkg.title}
           </div>
-          <div style={{ fontSize: 13, color: "#6f6558", marginBottom: 10 }}>
+          <div style={{ fontSize: 13, color: "#6f6558" }}>
             {pkg.destination} · {pkg.nights} gece · {pkg.partner_name}
           </div>
-
-          {remainingSpots !== null && (
-            <div
-              style={{
-                display: "inline-block",
-                fontSize: 11.5,
-                fontWeight: 700,
-                padding: "4px 10px",
-                borderRadius: 999,
-                marginBottom: 12,
-                color: soldOut ? "#a64022" : remainingSpots <= 5 ? "#a64022" : "#2a7a50",
-                background: soldOut ? "#fbe9e4" : remainingSpots <= 5 ? "#fbe9e4" : "#e8f3ec",
-              }}
-            >
-              {soldOut
-                ? "Kontenjan doldu"
-                : remainingSpots <= 5
-                ? `Son ${remainingSpots} kişilik yer`
-                : `${remainingSpots} kişilik yer müsait`}
-            </div>
-          )}
-
-          {pkg.description && (
-            <p style={{ fontSize: 13.5, color: "#433d33", lineHeight: 1.7, marginTop: 4 }}>
-              {pkg.description}
-            </p>
-          )}
         </div>
 
-        {soldOut ? (
-          <div
-            style={{
-              background: "#fbe9e4",
-              color: "#a64022",
-              borderRadius: 6,
-              padding: 16,
-              fontSize: 13.5,
-              textAlign: "center",
-            }}
-          >
-            Bu paket için kontenjan dolmuştur. Sorularınız için{" "}
-            <a href="mailto:info@visitvam.com" style={{ color: "#a64022", fontWeight: 700 }}>
-              bize ulaşabilirsiniz
-            </a>
-            .
-          </div>
-        ) : (
         <form onSubmit={handleSubmit}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
             <label style={labelWrap}>
@@ -225,19 +171,10 @@ export default function ReservationForm({
             <input
               type="number"
               min={1}
-              max={maxGuests}
               value={guestCount}
-              onChange={(e) => {
-                const val = Math.max(1, Number(e.target.value));
-                setGuestCount(maxGuests ? Math.min(val, maxGuests) : val);
-              }}
+              onChange={(e) => setGuestCount(Math.max(1, Number(e.target.value)))}
               style={inputStyle}
             />
-            {remainingSpots !== null && (
-              <span style={{ fontSize: 11, color: "#a27450", marginTop: 4, display: "block" }}>
-                En fazla {remainingSpots} kişi için rezervasyon yapılabilir.
-              </span>
-            )}
           </label>
 
           <label style={{ ...labelWrap, marginBottom: 20 }}>
@@ -294,7 +231,6 @@ export default function ReservationForm({
             {submitting ? "Gönderiliyor..." : "Rezervasyon Talebi Gönder"}
           </button>
         </form>
-        )}
       </div>
     </div>
   );
