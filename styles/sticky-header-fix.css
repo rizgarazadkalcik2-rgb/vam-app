@@ -1,0 +1,47 @@
+/* STICKY HEADER İÇERİK ÜST BİNMESİ — DÜZELTME
+   ---------------------------------------------
+   Sorun: Sabit (sticky/fixed) header, altındaki section başlıklarının
+   üzerine biniyor (örn. "Her Şeye Dahil Rotalar" başlığı header'ın
+   arkasında kalıp kesiliyor).
+
+   Nereye eklenecek: globals.css (veya ana stil dosyanız neyse).
+
+   1) Önce header'ınızın gerçek yüksekliğini öğrenin. Tarayıcı
+      DevTools > header elementini seçip "height" değerine bakın.
+      Masaüstünde genelde 72-96px arası olur. Aşağıda 88px varsayıldı,
+      kendi ölçtüğünüz değerle değiştirin.
+*/
+
+:root {
+  --header-height: 88px;
+}
+
+/* 2) Sticky/fixed header'ın hemen altındaki TÜM section'lara
+      (özellikle id ile anchor-link edilen veya sayfa içi
+      scroll-hedefi olan bölümlere) bunu ekleyin: */
+section,
+main > div > section,
+[data-scroll-section] {
+  scroll-margin-top: var(--header-height);
+}
+
+/* 3) Eğer header'ınız "position: sticky" değil de "position: fixed"
+      ise, içerik header'ın ARKASINDA başlıyor demektir — bu durumda
+      <body> veya ilk wrapper'a üstten boşluk vermeniz gerekir: */
+body {
+  padding-top: var(--header-height); /* sadece header position:fixed ise açın */
+}
+
+/* 4) "Her Şeye Dahil Rotalar" gibi header'a en yakın section için
+      spesifik bir düzeltme gerekiyorsa (genel kural yetmezse),
+      o section'ın class'ına özel olarak fazladan boşluk verin: */
+.bundles-section-heading,
+.her-seye-dahil-rotalar {
+  padding-top: calc(var(--header-height) + 24px);
+  scroll-margin-top: var(--header-height);
+}
+
+/* NOT: class isimlerini kendi kod tabanınızdaki gerçek class/component
+   isimleriyle değiştirmeniz gerekiyor — buradakiler örnek isimlerdir.
+   Chrome DevTools'ta ilgili başlığa sağ tık > İncele diyerek gerçek
+   class adını görebilirsiniz. */

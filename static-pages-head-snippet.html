@@ -1,0 +1,64 @@
+<!--
+META / OPEN GRAPH / CANONICAL — statik bundler sayfaları için
+(public/static-pages/platform/index.html, .../experiences/index.html,
+ .../about/index.html)
+
+Bu üç sayfa Next.js'in metadata sistemini KULLANMIYOR çünkü JSX'i
+tarayıcıda çalışma zamanında derleyen özel bir sistemle sunuluyorlar.
+Bu yüzden meta etiketleri JSX/bundler template'inin İÇİNE değil,
+doğrudan o index.html dosyasının <head> bölümüne, düz HTML olarak
+eklenmesi gerekiyor.
+
+Aşağıdaki bloğu, her üç index.html dosyasında </head> etiketinden
+hemen önceye yapıştırın ve <!-- DOLDUR --> yazan yerleri sayfaya göre
+güncelleyin (title/description/url/görsel farklı olmalı, aksi halde
+üç sayfa da Google'da birbirinin aynı görünür).
+-->
+
+<!-- ===== /platform (Ana Sayfa) için ===== -->
+<title>VAM — Visit Anatolia and Mesopotamia | On Bin Yıllık Topraklarda Yeni Çağın Turizmi</title>
+<meta name="description" content="Göbeklitepe'den Çatalhöyük'e — 12.000 yıllık kültürel mirasın içinden küratörlü deneyimler ve uzman rehberli bundle paketleri." />
+<link rel="canonical" href="https://visitvam.com/platform" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="VAM — Visit Anatolia and Mesopotamia" />
+<meta property="og:title" content="VAM — Visit Anatolia and Mesopotamia" />
+<meta property="og:description" content="Göbeklitepe'den Çatalhöyük'e — 12.000 yıllık kültürel mirasın içinden küratörlü deneyimler." />
+<meta property="og:url" content="https://visitvam.com/platform" />
+<meta property="og:image" content="https://visitvam.com/og/platform-og.jpg" />
+<meta property="og:locale" content="tr_TR" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="VAM — Visit Anatolia and Mesopotamia" />
+<meta name="twitter:description" content="Göbeklitepe'den Çatalhöyük'e — 12.000 yıllık kültürel mirasın içinden küratörlü deneyimler." />
+<meta name="twitter:image" content="https://visitvam.com/og/platform-og.jpg" />
+
+
+<!-- ===== /experiences için (aynı bloğu experiences/index.html'e yapıştırıp DOLDUR yerlerini değiştirin) ===== -->
+<!--
+<title>Deneyimler | VAM — Visit Anatolia and Mesopotamia</title>
+<meta name="description" content="Bir günde bir medeniyete dokunun. Uzman rehberler eşliğinde, küratörlü tek tek deneyimler." />
+<link rel="canonical" href="https://visitvam.com/experiences" />
+<meta property="og:title" content="Deneyimler | VAM" />
+<meta property="og:description" content="Bir günde bir medeniyete dokunun. Uzman rehberler eşliğinde küratörlü deneyimler." />
+<meta property="og:url" content="https://visitvam.com/experiences" />
+<meta property="og:image" content="https://visitvam.com/og/experiences-og.jpg" />
+-->
+
+
+<!-- ===== /about için (aynı bloğu about/index.html'e yapıştırıp DOLDUR yerlerini değiştirin) ===== -->
+<!--
+<title>Hakkımızda | VAM — Visit Anatolia and Mesopotamia</title>
+<meta name="description" content="Doğu Anadolu ve Mezopotamya'nın 12.000 yıllık mirasını dijital bir platforma taşıyoruz. Her rezervasyon yerel ekonomiye doğrudan katkı sağlar." />
+<link rel="canonical" href="https://visitvam.com/about" />
+<meta property="og:title" content="Hakkımızda | VAM" />
+<meta property="og:description" content="12.000 yıllık mirası dijital bir platforma taşıyoruz." />
+<meta property="og:url" content="https://visitvam.com/about" />
+<meta property="og:image" content="https://visitvam.com/og/about-og.jpg" />
+-->
+
+<!--
+NOT: ideal olan uzun vadede bu 3 sayfayı da gerçek Next.js page.tsx'e
+taşımak (zaten "Bilinen Açık Konular" listenizde bu vardı: "Babel
+in-browser — platform/experiences/about sayfaları hâlâ tarayıcıda JSX
+derliyor"). O geçiş yapılırsa bu HTML bloğuna gerek kalmaz, doğrudan
+metadata-templates.ts'teki generateMetadata yöntemi kullanılabilir.
+-->
