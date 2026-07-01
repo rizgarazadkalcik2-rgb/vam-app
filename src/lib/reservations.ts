@@ -3,7 +3,8 @@ import { ensureSchema } from "./schema";
 
 export interface VamReservation {
   id: number;
-  package_id: number;
+  package_id: number | null;
+  bundle_id: number | null;
   partner_id: string;
   partner_name: string;
   package_title: string;
@@ -21,7 +22,8 @@ export interface VamReservation {
 }
 
 export async function createReservation(data: {
-  packageId: number;
+  packageId?: number | null;
+  bundleId?: number | null;
   partnerId: string;
   partnerName: string;
   packageTitle: string;
@@ -36,13 +38,13 @@ export async function createReservation(data: {
   await ensureSchema();
   const { rows } = await sql<VamReservation>`
     INSERT INTO reservations (
-      package_id, partner_id, partner_name, package_title,
+      package_id, bundle_id, partner_id, partner_name, package_title,
       customer_name, customer_email, customer_phone,
       travel_date, guest_count, notes, total_price,
       payment_status, reservation_status
     )
     VALUES (
-      ${data.packageId}, ${data.partnerId}, ${data.partnerName}, ${data.packageTitle},
+      ${data.packageId ?? null}, ${data.bundleId ?? null}, ${data.partnerId}, ${data.partnerName}, ${data.packageTitle},
       ${data.customerName}, ${data.customerEmail}, ${data.customerPhone},
       ${data.travelDate}, ${data.guestCount}, ${data.notes}, ${data.totalPrice},
       'pending', 'new'

@@ -17,7 +17,6 @@ export default async function BundleDetailPage({
 
   const others = (await listActiveBundles()).filter((x) => x.slug !== b.slug).slice(0, 3);
 
-  const subject = encodeURIComponent(`Rezervasyon Talebi – ${b.title}`);
   const questionSubject = encodeURIComponent(`Soru – ${b.title}`);
 
   return (
@@ -102,7 +101,7 @@ export default async function BundleDetailPage({
             <a
               className="vc-btn-cta"
               style={{ display: "block", textAlign: "center", marginTop: 18 }}
-              href={`mailto:info@visitvam.com?subject=${subject}`}
+              href={`/rezervasyon/bundle/${b.id}`}
             >
               Şimdi Rezervasyon Yap
             </a>
@@ -120,8 +119,8 @@ export default async function BundleDetailPage({
               Sorusu Olanlar İçin →
             </a>
             <p className="vc-note">
-              Bu rota için rezervasyon talebi şu an e-posta üzerinden alınmaktadır. Çevrimiçi
-              anlık rezervasyon yakında eklenecek.
+              Rezervasyon talebiniz anında sistemimize düşer, ekibimiz ödeme adımı için sizinle
+              e-posta üzerinden iletişime geçer.
             </p>
           </div>
 

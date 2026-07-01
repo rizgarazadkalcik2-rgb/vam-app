@@ -45,7 +45,7 @@ export async function ensureSchema() {
   await sql`
     CREATE TABLE IF NOT EXISTS reservations (
       id SERIAL PRIMARY KEY,
-      package_id INTEGER NOT NULL REFERENCES packages(id) ON DELETE CASCADE,
+      package_id INTEGER REFERENCES packages(id) ON DELETE CASCADE,
       partner_id TEXT NOT NULL,
       partner_name TEXT NOT NULL,
       package_title TEXT NOT NULL,
@@ -62,6 +62,9 @@ export async function ensureSchema() {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `;
+
+  // Eski tablolarda package_id NOT NULL olabilir — bundle rezervasyonları için gevşetiyoruz.
+  await sql`ALTER TABLE reservations ALTER COLUMN package_id DROP NOT NULL;`;
 
   // İlk kurulumda mevcut sabit kodlu kullanıcıları (rizgar, acente1) veritabanına aktar.
   // Sadece tablo boşsa çalışır, tekrar tekrar eklemez.
@@ -162,5 +165,25 @@ export async function ensureSchema() {
       `;
     }
   }
+
+  // Bundle (çoklu destinasyon rotası) rezervasyonlarını desteklemek için yeni sütun.
+  // bundles tablosu oluşturulduktan SONRA çalışmalı (FK referansı için).
+  await sql`ALTER TABLE reservations ADD COLUMN IF NOT EXISTS bundle_id INTEGER REFERENCES bundles(id) ON DELETE CASCADE;`;
+  // Bir rezervasyonun ya paket ya da bundle'a ait olmasını garanti altına alan kontrol.
+  await sql`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'reservations_package_or_bundle_chk'
+      ) THEN
+        ALTER TABLE reservations
+          ADD CONSTRAINT reservations_package_or_bundle_chk
+          CHECK (
+            (package_id IS NOT NULL AND bundle_id IS NULL) OR
+            (package_id IS NULL AND bundle_id IS NOT NULL)
+          );
+      END IF;
+    END $$;
+  `;
 }
 
