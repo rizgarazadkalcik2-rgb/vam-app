@@ -105,3 +105,14 @@ export async function getReservationById(id: number): Promise<VamReservation | n
   `;
   return rows[0] || null;
 }
+
+// İptal edilmemiş rezervasyonlardaki toplam kişi sayısını döner (kalan kontenjan hesaplamak için).
+export async function getReservedGuestCountForPackage(packageId: number): Promise<number> {
+  await ensureSchema();
+  const { rows } = await sql<{ total: string | null }>`
+    SELECT COALESCE(SUM(guest_count), 0) as total
+    FROM reservations
+    WHERE package_id = ${packageId} AND reservation_status != 'cancelled';
+  `;
+  return Number(rows[0]?.total || 0);
+}
