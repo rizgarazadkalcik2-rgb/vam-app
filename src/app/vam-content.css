@@ -145,3 +145,37 @@
 .vc-footer-inner a:hover { color: #fff; }
 .vc-footer-logo { font-family: var(--font-label); font-size: 20px; color: #fff; margin-bottom: 10px; }
 .vc-footer-bottom { max-width: 1100px; margin: 32px auto 0; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; font-size: 12px; color: var(--ink-400); }
+
+/* ── Match Weekends (Amedspor Experience) ─────────────────────────── */
+.vc-mw-hero { position: relative; height: 420px; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: radial-gradient(120% 140% at 15% 0%, #2a231a 0%, var(--ink-950) 55%), linear-gradient(180deg, var(--ink-950) 0%, #050403 100%); }
+.vc-mw-hero-glow { position: absolute; inset: 0; background: radial-gradient(60% 50% at 80% 15%, rgba(232,188,68,0.16) 0%, rgba(232,188,68,0) 70%); }
+.vc-mw-hero-letter { position: absolute; right: 4%; top: 8%; font-family: var(--font-display); font-size: 260px; font-weight: 700; line-height: 1; color: rgba(196,82,42,0.16); letter-spacing: -0.02em; }
+.vc-mw-hero-content { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 0 24px 40px; width: 100%; }
+
+.vc-mw-intro { max-width: 760px; margin: 0 auto; padding: 40px 24px 8px; text-align: center; }
+.vc-mw-intro p { font-family: var(--font-display); font-size: 19px; line-height: 1.75; color: var(--text-secondary); }
+
+.vc-service-grid { max-width: 1100px; margin: 0 auto; padding: 32px 24px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+@media (max-width: 900px) { .vc-service-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .vc-service-grid { grid-template-columns: 1fr; } }
+
+.vc-service-card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 26px 22px; transition: box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease; }
+.vc-service-card:hover { box-shadow: 0 10px 28px rgba(28,20,16,0.12); transform: translateY(-2px); border-color: var(--border-default); }
+.vc-service-icon { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border-default); display: flex; align-items: center; justify-content: center; color: var(--color-primary); margin-bottom: 18px; }
+.vc-service-icon svg { width: 22px; height: 22px; }
+.vc-service-title { font-size: 15.5px; font-weight: 700; margin-bottom: 8px; }
+.vc-service-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+.vc-mw-band { background: var(--ink-950); color: #fff; margin-top: 44px; }
+.vc-mw-band-inner { max-width: 1100px; margin: 0 auto; padding: 56px 24px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 44px; align-items: center; }
+@media (max-width: 860px) { .vc-mw-band-inner { grid-template-columns: 1fr; } }
+.vc-mw-band-eyebrow { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-300); margin-bottom: 14px; }
+.vc-mw-band-title { font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+.vc-mw-band-p { font-size: 14px; color: var(--ink-300); line-height: 1.75; margin-bottom: 0; }
+.vc-mw-band-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 26px; }
+.vc-mw-band-card .vc-checklist li { color: var(--ink-300); }
+.vc-mw-band-card .vc-checklist li::before { color: var(--gold-300); }
+
+.vc-mw-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.vc-btn-cta-ghost { border: 1px solid rgba(255,255,255,0.35); color: #fff; font-weight: 600; font-size: 13px; padding: 10px 21px; border-radius: 6px; display: inline-block; }
+.vc-btn-cta-ghost:hover { border-color: #fff; }
