@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import {
-  createReservation,
-  listAllReservations,
-  listReservationsByPartner,
-  getReservedGuestCountForPackage,
-} from "@/lib/reservations";
+import { createReservation, listAllReservations, listReservationsByPartner } from "@/lib/reservations";
 import { getPackageById } from "@/lib/packages";
 import { getBundleById } from "@/lib/bundles";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
@@ -96,22 +91,6 @@ export async function POST(req: NextRequest) {
         { error: "Bu paket şu anda rezervasyona açık değil." },
         { status: 400 }
       );
-    }
-
-    if (pkg.capacity > 0) {
-      const reserved = await getReservedGuestCountForPackage(pkg.id);
-      const remaining = pkg.capacity - reserved;
-      if (guestCount > remaining) {
-        return NextResponse.json(
-          {
-            error:
-              remaining <= 0
-                ? "Bu paket için kontenjan dolmuştur."
-                : `Bu paket için sadece ${remaining} kişilik yer kaldı.`,
-          },
-          { status: 400 }
-        );
-      }
     }
 
     const totalPrice = Number(pkg.price_try) * guestCount;

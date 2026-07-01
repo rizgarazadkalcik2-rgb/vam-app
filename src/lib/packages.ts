@@ -1,0 +1,125 @@
+import { sql } from "@vercel/postgres";
+import { ensureSchema } from "./schema";
+
+export interface VamPackage {
+  id: number;
+  partner_id: string;
+  partner_name: string;
+  title: string;
+  destination: string;
+  nights: number;
+  price_try: number;
+  capacity: number;
+  description: string | null;
+  image_url: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function listAllPackages(): Promise<VamPackage[]> {
+  await ensureSchema();
+  const { rows } = await sql<VamPackage>`
+    SELECT * FROM packages ORDER BY created_at DESC;
+  `;
+  return rows;
+}
+
+export async function listPackagesByPartner(partnerId: string): Promise<VamPackage[]> {
+  await ensureSchema();
+  const { rows } = await sql<VamPackage>`
+    SELECT * FROM packages WHERE partner_id = ${partnerId} ORDER BY created_at DESC;
+  `;
+  return rows;
+}
+
+export async function getPackageById(id: number): Promise<VamPackage | null> {
+  await ensureSchema();
+  const { rows } = await sql<VamPackage>`
+    SELECT * FROM packages WHERE id = ${id} LIMIT 1;
+  `;
+  return rows[0] || null;
+}
+
+export async function createPackage(data: {
+  partnerId: string;
+  partnerName: string;
+  title: string;
+  destination: string;
+  nights: number;
+  priceTry: number;
+  capacity: number;
+  description: string;
+  imageUrl?: string;
+}): Promise<VamPackage> {
+  await ensureSchema();
+  const { rows } = await sql<VamPackage>`
+    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description, image_url)
+    VALUES (${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description}, ${data.imageUrl || null})
+    RETURNING *;
+  `;
+  return rows[0];
+}
+
+export async function updatePackage(
+  id: number,
+  partnerId: string,
+  isAdmin: boolean,
+  data: {
+    title: string;
+    destination: string;
+    nights: number;
+    priceTry: number;
+    capacity: number;
+    description: string;
+    status: string;
+    imageUrl?: string;
+    newPartnerId?: string;
+    newPartnerName?: string;
+  }
+): Promise<VamPackage | null> {
+  await ensureSchema();
+  // partner sadece kendi paketini düzenleyebilir; admin hepsini düzenleyebilir
+  // admin ayrıca paketin sahibini (acentesini) de değiştirebilir
+  const { rows } = isAdmin
+    ? data.newPartnerId && data.newPartnerName
+      ? await sql<VamPackage>`
+          UPDATE packages
+          SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
+              price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
+              status = ${data.status}, image_url = ${data.imageUrl || null},
+              partner_id = ${data.newPartnerId}, partner_name = ${data.newPartnerName},
+              updated_at = now()
+          WHERE id = ${id}
+          RETURNING *;
+        `
+      : await sql<VamPackage>`
+          UPDATE packages
+          SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
+              price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
+              status = ${data.status}, image_url = ${data.imageUrl || null}, updated_at = now()
+          WHERE id = ${id}
+          RETURNING *;
+        `
+    : await sql<VamPackage>`
+        UPDATE packages
+        SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
+            price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
+            status = ${data.status}, image_url = ${data.imageUrl || null}, updated_at = now()
+        WHERE id = ${id} AND partner_id = ${partnerId}
+        RETURNING *;
+      `;
+  return rows[0] || null;
+}
+
+export async function deletePackage(
+  id: number,
+  partnerId: string,
+  isAdmin: boolean
+): Promise<boolean> {
+  await ensureSchema();
+  const { rowCount } = isAdmin
+    ? await sql`DELETE FROM packages WHERE id = ${id};`
+    : await sql`DELETE FROM packages WHERE id = ${id} AND partner_id = ${partnerId};`;
+  return (rowCount ?? 0) > 0;
+}
