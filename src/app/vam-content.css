@@ -53,6 +53,22 @@
 .vc-btn-cta { background: var(--color-primary); color: #fff; font-weight: 600; font-size: 13px; padding: 11px 22px; border-radius: 6px; display: inline-block; }
 .vc-btn-cta:hover { background: var(--color-primary-hover); }
 
+.vc-nav-toggle { display: none; width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
+.vc-nav-toggle span { display: block; width: 22px; height: 2px; background: #fff; transition: transform 150ms ease, opacity 150ms ease; }
+.vc-nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.vc-nav-toggle.open span:nth-child(2) { opacity: 0; }
+.vc-nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.vc-nav-mobile-panel { display: none; flex-direction: column; gap: 4px; width: 100%; padding-top: 14px; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); }
+.vc-nav-mobile-panel a, .vc-nav-mobile-panel .vc-btn-cta { padding: 12px 4px; font-size: 15px; }
+.vc-nav-mobile-panel .vc-btn-cta { text-align: center; margin-top: 6px; }
+
+@media (max-width: 760px) {
+  .vc-navbar { padding: 16px 20px; }
+  .vc-nav-links, .vc-navbar > .vc-btn-cta { display: none; }
+  .vc-nav-toggle { display: flex; }
+  .vc-nav-mobile-panel.open { display: flex; }
+}
+
 .vc-breadcrumb { max-width: 1100px; margin: 0 auto; padding: 20px 24px 0; font-size: 12px; color: var(--text-muted); }
 .vc-breadcrumb a:hover { color: var(--color-primary); }
 
