@@ -5,6 +5,7 @@ import type { VamPackage } from "@/lib/packages";
 import type { VamReservation } from "@/lib/reservations";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "@/app/admin/AdminShell";
+import type { MatchEvent } from "@/lib/matchEvents";
 
 const emptyForm = {
   title: "",
@@ -16,14 +17,24 @@ const emptyForm = {
   imageUrl: "",
 };
 
+const TEAM_NAMES: Record<string, string> = {
+  amedspor: "Amedspor",
+  vanspor: "Vanspor FK",
+  batman: "Batman Petrol Spor",
+  mardin1969: "Mardin 1969 Spor",
+  igdir: "Iğdır FK",
+};
+
 export default function PartnerPanel({
   session,
   initialPackages,
   initialReservations,
+  upcomingMatches = [],
 }: {
   session: SessionPayload;
   initialPackages: VamPackage[];
   initialReservations: VamReservation[];
+  upcomingMatches?: MatchEvent[];
 }) {
   const [packages, setPackages] = useState(initialPackages);
   const [form, setForm] = useState(emptyForm);
@@ -157,6 +168,36 @@ export default function PartnerPanel({
         </button>
       }
     >
+      {upcomingMatches.length > 0 && (
+        <div
+          style={{
+            background: "linear-gradient(135deg, #1b1712, #241c13)",
+            color: "#efe8da",
+            borderRadius: 10,
+            padding: "18px 22px",
+            marginBottom: 24,
+          }}
+        >
+          <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "#e8bc44", marginBottom: 8 }}>
+            Yaklaşan Maç Haftaları
+          </div>
+          <div style={{ fontSize: 12.5, color: "rgba(239,232,218,0.7)", marginBottom: 12 }}>
+            Bu tarihlere özel tur veya paket oluşturabilirsiniz — Match Weekends sayfasında fikstür yayında.
+          </div>
+          <div style={{ display: "grid", gap: 6 }}>
+            {upcomingMatches.slice(0, 6).map((m) => (
+              <div key={m.id} style={{ fontSize: 13, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <span style={{ color: "#e8bc44", fontWeight: 700, minWidth: 92 }}>
+                  {new Date(m.event_date as string).toLocaleDateString("tr-TR", { day: "numeric", month: "short", year: "numeric" })}
+                </span>
+                <span style={{ fontWeight: 600 }}>{TEAM_NAMES[m.team] || m.team} — {m.title}</span>
+                {m.competition && <span style={{ color: "rgba(239,232,218,0.55)" }}>{m.competition}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
 
         <form
           onSubmit={handleSubmit}

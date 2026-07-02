@@ -4,6 +4,7 @@ import {
   updateUserPassword,
   updateUserStatus,
   updateUserDisplayName,
+  updateUserProfile,
   deleteUser,
   findUserById,
 } from "@/lib/users";
@@ -52,6 +53,19 @@ export async function PATCH(
 
   if (body.displayName) {
     await updateUserDisplayName(id, body.displayName);
+  }
+
+  // Firma bilgileri (herhangi biri gönderildiyse dördünü birlikte güncelle)
+  if (
+    "companyEmail" in body || "companyPhone" in body ||
+    "companyAddress" in body || "companyServices" in body
+  ) {
+    await updateUserProfile(id, {
+      companyEmail: body.companyEmail?.trim?.() || null,
+      companyPhone: body.companyPhone?.trim?.() || null,
+      companyAddress: body.companyAddress?.trim?.() || null,
+      companyServices: body.companyServices?.trim?.() || null,
+    });
   }
 
   const updated = await findUserById(id);

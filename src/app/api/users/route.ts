@@ -47,7 +47,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const user = await createUser({ username, password, role, displayName });
+  const companyEmail = body?.companyEmail?.trim() || null;
+  const companyPhone = body?.companyPhone?.trim() || null;
+  const companyAddress = body?.companyAddress?.trim() || null;
+  const companyServices = body?.companyServices?.trim() || null;
+
+  const user = await createUser({
+    username, password, role, displayName,
+    companyEmail, companyPhone, companyAddress, companyServices,
+  });
   const { password_hash, ...safeUser } = user;
   return NextResponse.json({ user: safeUser }, { status: 201 });
 }

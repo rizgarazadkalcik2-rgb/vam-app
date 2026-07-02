@@ -42,6 +42,31 @@ export async function ensureSchema() {
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_attempts INTEGER NOT NULL DEFAULT 0;`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until TIMESTAMPTZ;`;
 
+  // Acente firma bilgileri (adres, iletişim, verilen hizmetler)
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_email TEXT;`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_phone TEXT;`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_address TEXT;`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_services TEXT;`;
+
+  // Match Weekends içerikleri: fikstür maçları ve haber/kutlama kartları
+  await sql`
+    CREATE TABLE IF NOT EXISTS match_events (
+      id SERIAL PRIMARY KEY,
+      team TEXT NOT NULL,
+      kind TEXT NOT NULL DEFAULT 'match',
+      title TEXT NOT NULL,
+      event_date DATE,
+      event_time TEXT,
+      competition TEXT,
+      venue TEXT,
+      image_url TEXT,
+      body TEXT,
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
   await sql`
     CREATE TABLE IF NOT EXISTS reservations (
       id SERIAL PRIMARY KEY,

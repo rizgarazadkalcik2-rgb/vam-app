@@ -11,6 +11,10 @@ export interface VamUser {
   role: Role;
   display_name: string;
   status: string;
+  company_email: string | null;
+  company_phone: string | null;
+  company_address: string | null;
+  company_services: string | null;
   failed_attempts: number;
   locked_until: string | null;
   created_at: string;
@@ -48,13 +52,24 @@ export async function createUser(data: {
   password: string;
   role: Role;
   displayName: string;
+  companyEmail?: string | null;
+  companyPhone?: string | null;
+  companyAddress?: string | null;
+  companyServices?: string | null;
 }): Promise<VamUser> {
   await ensureSchema();
   const id = `u_${data.role}_${Date.now()}`;
   const passwordHash = await bcrypt.hash(data.password, 10);
   const { rows } = await sql<VamUser>`
-    INSERT INTO users (id, username, password_hash, role, display_name, status)
-    VALUES (${id}, ${data.username}, ${passwordHash}, ${data.role}, ${data.displayName}, 'active')
+    INSERT INTO users (
+      id, username, password_hash, role, display_name, status,
+      company_email, company_phone, company_address, company_services
+    )
+    VALUES (
+      ${id}, ${data.username}, ${passwordHash}, ${data.role}, ${data.displayName}, 'active',
+      ${data.companyEmail ?? null}, ${data.companyPhone ?? null},
+      ${data.companyAddress ?? null}, ${data.companyServices ?? null}
+    )
     RETURNING *;
   `;
   return rows[0];
@@ -81,6 +96,28 @@ export async function updateUserDisplayName(id: string, displayName: string): Pr
   await ensureSchema();
   const { rowCount } = await sql`
     UPDATE users SET display_name = ${displayName}, updated_at = now() WHERE id = ${id};
+  `;
+  return (rowCount ?? 0) > 0;
+}
+
+export async function updateUserProfile(
+  id: string,
+  data: {
+    companyEmail?: string | null;
+    companyPhone?: string | null;
+    companyAddress?: string | null;
+    companyServices?: string | null;
+  }
+): Promise<boolean> {
+  await ensureSchema();
+  const { rowCount } = await sql`
+    UPDATE users SET
+      company_email = ${data.companyEmail ?? null},
+      company_phone = ${data.companyPhone ?? null},
+      company_address = ${data.companyAddress ?? null},
+      company_services = ${data.companyServices ?? null},
+      updated_at = now()
+    WHERE id = ${id};
   `;
   return (rowCount ?? 0) > 0;
 }

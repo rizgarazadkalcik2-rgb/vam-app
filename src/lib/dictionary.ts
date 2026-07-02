@@ -182,6 +182,16 @@ export const DICT = {
   nf_destinations: { TR: "Destinasyonlar", DE: "Destinationen" },
   nf_bundles: { TR: "Paketler", DE: "Pakete" },
 
+  // Match Weekends — dinamik içerik
+  mw_fixtures_title: { TR: "Maç Fikstürü", DE: "Spielplan" },
+  mw_fixtures_sub: {
+    TR: "Yaklaşan maç haftaları — güzergahınızı bu tarihlere göre kuruyoruz.",
+    DE: "Kommende Spielwochen — wir bauen Ihre Route um diese Termine.",
+  },
+  mw_news_title: { TR: "Haberler & Kutlamalar", DE: "News & Feiern" },
+  mw_venue_home: { TR: "İç saha", DE: "Heimspiel" },
+  mw_venue_away: { TR: "Deplasman", DE: "Auswärts" },
+
   // Site-wide meta
   meta_site_desc: {
     TR: "Doğu Anadolu ve Mezopotamya'nın kadim toprakları için kültürel turizm platformu — küratörlü destinasyonlar, bündel paketler ve maç haftası deneyimleri.",

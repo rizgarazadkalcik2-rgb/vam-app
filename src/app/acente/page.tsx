@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { listPackagesByPartner } from "@/lib/packages";
 import { listReservationsByPartner } from "@/lib/reservations";
+import { listUpcomingMatches } from "@/lib/matchEvents";
 import PartnerPanel from "./PartnerPanel";
 
 export default async function AcentePage() {
@@ -13,6 +14,14 @@ export default async function AcentePage() {
 
   const packages = await listPackagesByPartner(session.userId);
   const reservations = await listReservationsByPartner(session.userId);
+  const upcomingMatches = await listUpcomingMatches();
 
-  return <PartnerPanel session={session} initialPackages={packages} initialReservations={reservations} />;
+  return (
+    <PartnerPanel
+      session={session}
+      initialPackages={packages}
+      initialReservations={reservations}
+      upcomingMatches={upcomingMatches}
+    />
+  );
 }

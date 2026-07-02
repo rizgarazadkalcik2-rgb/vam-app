@@ -214,3 +214,47 @@
 .vc-mw-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
 .vc-btn-cta-ghost { border: 1px solid rgba(255,255,255,0.35); color: #fff; font-weight: 600; font-size: 13px; padding: 10px 21px; border-radius: 6px; display: inline-block; }
 .vc-btn-cta-ghost:hover { border-color: #fff; }
+
+/* ---------- Match Weekends: dinamik hero fotoğrafı ---------- */
+.vc-mw-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vc-mw-hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,12,10,0.92) 0%, rgba(13,12,10,0.38) 55%, rgba(13,12,10,0.12) 100%); }
+
+/* ---------- Match Weekends: fikstür ---------- */
+.vc-mw-fixtures { max-width: 860px; margin: 0 auto; padding: 36px 24px 4px; }
+.vc-mw-fixtures-sub { font-size: 13.5px; color: var(--text-muted); margin: 6px 0 18px; }
+.vc-mw-fixture-list { display: grid; gap: 10px; }
+.vc-mw-fixture {
+  display: flex; gap: 18px; align-items: flex-start;
+  background: #fff; border: 1px solid #ece4d2; border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 3px rgba(28,20,16,0.05);
+}
+.vc-mw-fixture-date {
+  flex-shrink: 0; min-width: 150px;
+  font-family: var(--font-label); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.04em; color: var(--color-primary);
+  padding-top: 2px;
+}
+.vc-mw-fixture-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.vc-mw-fixture-teams { font-size: 15px; font-weight: 700; color: var(--ink-900, #241e16); }
+.vc-mw-fixture-meta { font-size: 12.5px; color: var(--text-muted); }
+.vc-mw-fixture-note { font-size: 12.5px; color: var(--text-secondary); font-style: italic; }
+@media (max-width: 620px) {
+  .vc-mw-fixture { flex-direction: column; gap: 6px; }
+  .vc-mw-fixture-date { min-width: 0; }
+}
+
+/* ---------- Match Weekends: haberler & kutlamalar ---------- */
+.vc-mw-news { max-width: 1100px; margin: 0 auto; padding: 36px 24px 8px; }
+.vc-mw-news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 16px; }
+.vc-mw-news-card {
+  background: #fff; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(28,20,16,0.08);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+.vc-mw-news-card:hover { box-shadow: 0 10px 28px rgba(28,20,16,0.14); transform: translateY(-2px); }
+.vc-mw-news-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+.vc-mw-news-body { padding: 14px 16px 16px; }
+.vc-mw-news-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.vc-mw-news-date { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.06em; color: var(--color-primary); margin-bottom: 6px; }
+.vc-mw-news-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }

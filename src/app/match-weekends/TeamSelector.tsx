@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { t, type Lang } from "@/lib/dictionary";
+import type { MatchEvent } from "@/lib/matchEvents";
 
 export type Team = {
   slug: string;
@@ -182,9 +183,40 @@ export const TEAMS: Team[] = [
   },
 ];
 
-export default function TeamSelector({ lang, children }: { lang: Lang; children?: React.ReactNode }) {
+export default function TeamSelector({
+  lang,
+  events = [],
+  children,
+}: {
+  lang: Lang;
+  events?: MatchEvent[];
+  children?: React.ReactNode;
+}) {
   const [active, setActive] = useState(0);
   const team = TEAMS[active];
+
+  const locale = lang === "DE" ? "de-DE" : "tr-TR";
+  const today = new Date().toISOString().slice(0, 10);
+  const teamEvents = events.filter((e) => e.team === team.slug);
+  const fixtures = teamEvents.filter(
+    (e) => e.kind === "match" && e.event_date && e.event_date.slice(0, 10) >= today
+  );
+  const news = teamEvents.filter((e) => e.kind === "news");
+  const heroImage = news.find((e) => e.image_url)?.image_url || null;
+
+  function fmtDate(d: string) {
+    return new Date(d).toLocaleDateString(locale, {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+  function venueLabel(v: string | null) {
+    if (v === "İç saha") return t("mw_venue_home", lang);
+    if (v === "Deplasman") return t("mw_venue_away", lang);
+    return v;
+  }
   const subjectHero = encodeURIComponent(`Match Weekends – ${team.name} – Deneyim Talebi`);
   const subjectItinerary = encodeURIComponent(`Match Weekends – ${team.name} – Kişisel Güzergah Talebi`);
 
@@ -203,8 +235,18 @@ export default function TeamSelector({ lang, children }: { lang: Lang; children?
       </div>
 
       <div className="vc-mw-hero">
-        <div className="vc-mw-hero-glow" />
-        <span className="vc-mw-hero-letter">{team.letter}</span>
+        {heroImage ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="vc-mw-hero-img" src={heroImage} alt={team.name} />
+            <div className="vc-mw-hero-shade" />
+          </>
+        ) : (
+          <>
+            <div className="vc-mw-hero-glow" />
+            <span className="vc-mw-hero-letter">{team.letter}</span>
+          </>
+        )}
         <div className="vc-mw-hero-content">
           <div className="vc-badges">
             <span className="vc-badge vc-badge-gold">Match Weekends</span>
@@ -222,6 +264,50 @@ export default function TeamSelector({ lang, children }: { lang: Lang; children?
       <div className="vc-mw-intro">
         <p>{team.intro[lang]}</p>
       </div>
+
+      {fixtures.length > 0 && (
+        <div className="vc-mw-fixtures">
+          <div className="vc-section-label">{t("mw_fixtures_title", lang)}</div>
+          <p className="vc-mw-fixtures-sub">{t("mw_fixtures_sub", lang)}</p>
+          <div className="vc-mw-fixture-list">
+            {fixtures.map((f) => (
+              <div className="vc-mw-fixture" key={f.id}>
+                <div className="vc-mw-fixture-date">{fmtDate(f.event_date as string)}</div>
+                <div className="vc-mw-fixture-main">
+                  <span className="vc-mw-fixture-teams">
+                    {team.name} — {f.title}
+                  </span>
+                  <span className="vc-mw-fixture-meta">
+                    {[f.event_time, f.competition, venueLabel(f.venue)].filter(Boolean).join(" · ")}
+                  </span>
+                  {f.body && <span className="vc-mw-fixture-note">{f.body}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {news.length > 0 && (
+        <div className="vc-mw-news">
+          <div className="vc-section-label">{t("mw_news_title", lang)}</div>
+          <div className="vc-mw-news-grid">
+            {news.map((n) => (
+              <div className="vc-mw-news-card" key={n.id}>
+                {n.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={n.image_url} alt={n.title} />
+                )}
+                <div className="vc-mw-news-body">
+                  <div className="vc-mw-news-title">{n.title}</div>
+                  {n.event_date && <div className="vc-mw-news-date">{fmtDate(n.event_date)}</div>}
+                  {n.body && <p className="vc-mw-news-text">{n.body}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {children}
 

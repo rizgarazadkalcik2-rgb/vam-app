@@ -5,7 +5,16 @@ import type { SafeUser } from "@/lib/users";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
 
-const emptyForm = { username: "", password: "", displayName: "", role: "partner" as "partner" | "admin" };
+const emptyForm = {
+  username: "",
+  password: "",
+  displayName: "",
+  role: "partner" as "partner" | "admin",
+  companyEmail: "",
+  companyPhone: "",
+  companyAddress: "",
+  companyServices: "",
+};
 
 export default function AcentelerPanel({
   session,
@@ -19,6 +28,15 @@ export default function AcentelerPanel({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [resetTarget, setResetTarget] = useState<SafeUser | null>(null);
+  const [profileTarget, setProfileTarget] = useState<SafeUser | null>(null);
+  const [profileForm, setProfileForm] = useState({
+    displayName: "",
+    companyEmail: "",
+    companyPhone: "",
+    companyAddress: "",
+    companyServices: "",
+  });
+  const [profileError, setProfileError] = useState("");
   const [resetPassword, setResetPassword] = useState("");
   const [resetError, setResetError] = useState("");
 
@@ -74,6 +92,37 @@ export default function AcentelerPanel({
       await refresh();
     } else {
       alert(data.error || "Bir hata oluştu.");
+    }
+  }
+
+  function startProfileEdit(user: SafeUser) {
+    setProfileTarget(user);
+    setProfileForm({
+      displayName: user.display_name,
+      companyEmail: user.company_email || "",
+      companyPhone: user.company_phone || "",
+      companyAddress: user.company_address || "",
+      companyServices: user.company_services || "",
+    });
+    setProfileError("");
+  }
+
+  async function handleProfileSave(e: React.FormEvent) {
+    e.preventDefault();
+    if (!profileTarget) return;
+    setProfileError("");
+
+    const res = await fetch(`/api/users/${profileTarget.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(profileForm),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setProfileTarget(null);
+      await refresh();
+    } else {
+      setProfileError(data.error || "Bir hata oluştu.");
     }
   }
 
@@ -160,6 +209,46 @@ export default function AcentelerPanel({
             </select>
           </div>
 
+          <div style={{ fontSize: 12, fontWeight: 700, color: "#8a7d68", margin: "16px 0 10px", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            Firma Bilgileri (opsiyonel)
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <input
+              type="email"
+              placeholder="Firma e-postası"
+              value={form.companyEmail}
+              onChange={(e) => setForm({ ...form, companyEmail: e.target.value })}
+              style={inputStyle}
+            />
+            <input
+              type="tel"
+              placeholder="Firma telefonu"
+              value={form.companyPhone}
+              onChange={(e) => setForm({ ...form, companyPhone: e.target.value })}
+              style={inputStyle}
+            />
+          </div>
+
+          <div style={{ marginBottom: 12 }}>
+            <input
+              placeholder="Adres (örn. Sur Mah. Gazi Cad. No:12, Diyarbakır)"
+              value={form.companyAddress}
+              onChange={(e) => setForm({ ...form, companyAddress: e.target.value })}
+              style={{ ...inputStyle, width: "100%" }}
+            />
+          </div>
+
+          <div style={{ marginBottom: 12 }}>
+            <textarea
+              placeholder="Verdiği hizmetler (örn. konaklama, transfer, rehberli tur, bilet danışmanlığı)"
+              value={form.companyServices}
+              onChange={(e) => setForm({ ...form, companyServices: e.target.value })}
+              rows={2}
+              style={{ ...inputStyle, width: "100%", resize: "vertical" }}
+            />
+          </div>
+
           {error && (
             <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 12 }}>{error}</div>
           )}
@@ -228,8 +317,34 @@ export default function AcentelerPanel({
                 <div style={{ fontSize: 12, color: "#6f6558", marginTop: 2 }}>
                   Kullanıcı adı: {user.username}
                 </div>
+                {(user.company_email || user.company_phone || user.company_address) && (
+                  <div style={{ fontSize: 12, color: "#6f6558", marginTop: 4, lineHeight: 1.6 }}>
+                    {user.company_email && <>✉ {user.company_email}&nbsp;&nbsp;</>}
+                    {user.company_phone && <>☎ {user.company_phone}&nbsp;&nbsp;</>}
+                    {user.company_address && <>⊙ {user.company_address}</>}
+                  </div>
+                )}
+                {user.company_services && (
+                  <div style={{ fontSize: 12, color: "#8a7d68", marginTop: 3, fontStyle: "italic" }}>
+                    Hizmetler: {user.company_services}
+                  </div>
+                )}
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button
+                  onClick={() => startProfileEdit(user)}
+                  style={{
+                    padding: "6px 14px",
+                    background: "transparent",
+                    border: "1px solid #6b8e5a",
+                    color: "#4f7040",
+                    borderRadius: 4,
+                    fontSize: 12,
+                    cursor: "pointer",
+                  }}
+                >
+                  Bilgileri Düzenle
+                </button>
                 <button
                   onClick={() => setResetTarget(user)}
                   style={{
@@ -356,6 +471,91 @@ export default function AcentelerPanel({
                     fontSize: 13,
                     cursor: "pointer",
                   }}
+                >
+                  Vazgeç
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {profileTarget && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(13,9,6,0.55)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 20,
+              zIndex: 100,
+            }}
+          >
+            <form
+              onSubmit={handleProfileSave}
+              style={{
+                background: "#fff",
+                borderRadius: 10,
+                padding: 26,
+                width: "100%",
+                maxWidth: 440,
+              }}
+            >
+              <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
+                Firma Bilgileri — {profileTarget.display_name}
+              </div>
+              <div style={{ fontSize: 12, color: "#8a7d68", marginBottom: 16 }}>
+                Bu bilgiler yalnızca yönetici panelinde görünür.
+              </div>
+
+              <div style={{ display: "grid", gap: 10 }}>
+                <input
+                  placeholder="Görünen ad / firma adı"
+                  value={profileForm.displayName}
+                  onChange={(e) => setProfileForm({ ...profileForm, displayName: e.target.value })}
+                  required
+                  style={inputStyle}
+                />
+                <input
+                  type="email"
+                  placeholder="Firma e-postası"
+                  value={profileForm.companyEmail}
+                  onChange={(e) => setProfileForm({ ...profileForm, companyEmail: e.target.value })}
+                  style={inputStyle}
+                />
+                <input
+                  type="tel"
+                  placeholder="Firma telefonu"
+                  value={profileForm.companyPhone}
+                  onChange={(e) => setProfileForm({ ...profileForm, companyPhone: e.target.value })}
+                  style={inputStyle}
+                />
+                <input
+                  placeholder="Adres"
+                  value={profileForm.companyAddress}
+                  onChange={(e) => setProfileForm({ ...profileForm, companyAddress: e.target.value })}
+                  style={inputStyle}
+                />
+                <textarea
+                  placeholder="Verdiği hizmetler"
+                  value={profileForm.companyServices}
+                  onChange={(e) => setProfileForm({ ...profileForm, companyServices: e.target.value })}
+                  rows={3}
+                  style={{ ...inputStyle, resize: "vertical" }}
+                />
+              </div>
+
+              {profileError && (
+                <div style={{ color: "#a64022", fontSize: 12.5, marginTop: 12 }}>{profileError}</div>
+              )}
+
+              <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
+                <button type="submit" className="adm-btn adm-btn-primary">Kaydet</button>
+                <button
+                  type="button"
+                  onClick={() => setProfileTarget(null)}
+                  className="adm-btn adm-btn-ghost"
                 >
                   Vazgeç
                 </button>
