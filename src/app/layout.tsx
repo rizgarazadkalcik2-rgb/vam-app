@@ -2,12 +2,31 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getLang } from "@/lib/i18n";
+import { t } from "@/lib/dictionary";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "VAM — Visit Anatolia and Mesopotamia",
-  description: "Doğu Anadolu ve Mezopotamya'nın kadim toprakları için kültürel turizm platformu",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLang();
+  const description = t("meta_site_desc", lang);
+
+  return {
+    metadataBase: new URL("https://visitvam.com"),
+    title: {
+      default: "VAM — Visit Anatolia and Mesopotamia",
+      template: "%s | VAM",
+    },
+    description,
+    openGraph: {
+      siteName: "VAM — Visit Anatolia and Mesopotamia",
+      type: "website",
+      locale: lang === "DE" ? "de_DE" : "tr_TR",
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
+  };
+}
 
 export default async function RootLayout({
   children,

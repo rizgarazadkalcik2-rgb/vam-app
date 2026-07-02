@@ -8,6 +8,15 @@ import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata() {
+  const lang = await getLang();
+  return {
+    title: t("meta_dest_title", lang),
+    description: t("dest_lede", lang),
+    alternates: { canonical: "/destinations" },
+  };
+}
+
 export default async function DestinationsPage() {
   const [destinations, lang] = await Promise.all([listActiveDestinations(), getLang()]);
 

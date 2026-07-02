@@ -145,6 +145,55 @@ export const DICT = {
   mw_included_4: { TR: "Hevsel Bahçeleri ve Dicle kıyısı turu", DE: "Tour durch die Hevsel-Gärten und am Tigrisufer" },
   mw_included_5: { TR: "Yerel gastronomi durakları", DE: "Lokale gastronomische Stationen" },
   mw_included_6: { TR: "Maç dışı gün için serbest zaman kurgusu", DE: "Freizeitgestaltung für spielfreie Tage" },
+
+  // Reservation form
+  rez_eyebrow: { TR: "Rezervasyon", DE: "Buchung" },
+  rez_night: { TR: "gece", DE: "Nächte" },
+  rez_name: { TR: "Ad Soyad", DE: "Vor- und Nachname" },
+  rez_email: { TR: "E-posta", DE: "E-Mail" },
+  rez_phone: { TR: "Telefon", DE: "Telefon" },
+  rez_travel_date: { TR: "Seyahat Tarihi", DE: "Reisedatum" },
+  rez_guests: { TR: "Kişi Sayısı", DE: "Anzahl der Personen" },
+  rez_notes: { TR: "Notunuz (opsiyonel)", DE: "Ihre Anmerkung (optional)" },
+  rez_total: { TR: "Toplam Tutar", DE: "Gesamtbetrag" },
+  rez_no_payment: {
+    TR: "Bu adımda ödeme alınmamaktadır. Talebiniz kaydedildikten sonra ödeme bağlantısı e-posta adresinize gönderilecektir.",
+    DE: "In diesem Schritt erfolgt keine Zahlung. Nachdem Ihre Anfrage gespeichert wurde, erhalten Sie den Zahlungslink per E-Mail.",
+  },
+  rez_submit: { TR: "Rezervasyon Talebi Gönder", DE: "Buchungsanfrage senden" },
+  rez_submitting: { TR: "Gönderiliyor...", DE: "Wird gesendet..." },
+  rez_error_generic: { TR: "Bir hata oluştu.", DE: "Es ist ein Fehler aufgetreten." },
+  rez_success_title: { TR: "Talebiniz alındı", DE: "Ihre Anfrage ist eingegangen" },
+  rez_success_body_1: { TR: "paketi için rezervasyon talebiniz kaydedildi.", DE: "— Ihre Buchungsanfrage für dieses Paket wurde gespeichert." },
+  rez_success_body_2: {
+    TR: "Ödeme adımı için ekibimiz sizinle e-posta üzerinden iletişime geçecek.",
+    DE: "Für den Zahlungsschritt wird sich unser Team per E-Mail bei Ihnen melden.",
+  },
+  rez_back_home: { TR: "Ana Sayfaya Dön", DE: "Zur Startseite" },
+
+  // 404 page
+  nf_eyebrow: { TR: "404 — Sayfa Bulunamadı", DE: "404 — Seite nicht gefunden" },
+  nf_title: { TR: "Aradığınız sayfa bu coğrafyada yok", DE: "Diese Seite gibt es in dieser Landschaft nicht" },
+  nf_body: {
+    TR: "Bağlantı değişmiş veya sayfa kaldırılmış olabilir. Aşağıdaki duraklardan yolculuğunuza devam edebilirsiniz.",
+    DE: "Der Link wurde möglicherweise geändert oder die Seite entfernt. Über die folgenden Stationen können Sie Ihre Reise fortsetzen.",
+  },
+  nf_home: { TR: "Ana Sayfa", DE: "Startseite" },
+  nf_destinations: { TR: "Destinasyonlar", DE: "Destinationen" },
+  nf_bundles: { TR: "Paketler", DE: "Pakete" },
+
+  // Site-wide meta
+  meta_site_desc: {
+    TR: "Doğu Anadolu ve Mezopotamya'nın kadim toprakları için kültürel turizm platformu — küratörlü destinasyonlar, bündel paketler ve maç haftası deneyimleri.",
+    DE: "Kulturtourismus-Plattform für die uralten Landschaften Ostanatoliens und Mesopotamiens — kuratierte Destinationen, Bündel-Pakete und Match-Wochenenden.",
+  },
+  meta_dest_title: { TR: "Destinasyonlar", DE: "Destinationen" },
+  meta_bundles_title: { TR: "Bündel Paketler", DE: "Bündel-Pakete" },
+  meta_mw_title: { TR: "Match Weekends — Bölge Takımlarıyla Kültürel Bir Yolculuk", DE: "Match Weekends — Eine kulturelle Reise mit den Teams der Region" },
+  meta_mw_desc: {
+    TR: "Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor ve Iğdır FK maç haftaları — Passolig danışmanlığından kişiselleştirilmiş şehir güzergahına, küratörlü bir deneyim.",
+    DE: "Spielwochen von Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor und Iğdır FK — von der Passolig-Beratung bis zur persönlichen Stadtroute, ein kuratiertes Erlebnis.",
+  },
 } satisfies Record<string, Entry>;
 
 export type DictKey = keyof typeof DICT;

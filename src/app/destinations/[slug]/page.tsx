@@ -8,6 +8,31 @@ import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const [d, lang] = await Promise.all([getDestinationBySlug(slug), getLang()]);
+  if (!d || d.status !== "active") return {};
+
+  const description =
+    (d.history && d.history[0] ? d.history[0].slice(0, 155) : "") ||
+    `${d.name} — ${d.region}. ${t("meta_site_desc", lang)}`.slice(0, 155);
+
+  return {
+    title: `${d.name} — ${d.region}`,
+    description,
+    alternates: { canonical: `/destinations/${d.slug}` },
+    openGraph: {
+      title: `${d.name} — ${d.region} | VAM`,
+      description,
+      ...(d.image_url ? { images: [{ url: d.image_url }] } : {}),
+    },
+  };
+}
+
 export default async function DestinationDetailPage({
   params,
 }: {

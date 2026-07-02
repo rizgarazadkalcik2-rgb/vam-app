@@ -5,11 +5,14 @@ import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
-export const metadata = {
-  title: "Match Weekends — Bölge Takımlarıyla Kültürel Bir Yolculuk | VAM",
-  description:
-    "Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor ve Iğdır FK maç haftaları — Passolig danışmanlığından kişiselleştirilmiş şehir güzergahına, küratörlü bir deneyim.",
-};
+export async function generateMetadata() {
+  const lang = await getLang();
+  return {
+    title: t("meta_mw_title", lang),
+    description: t("meta_mw_desc", lang),
+    alternates: { canonical: "/match-weekends" },
+  };
+}
 
 const ICON_STROKE = { fill: "none", stroke: "currentColor", strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 

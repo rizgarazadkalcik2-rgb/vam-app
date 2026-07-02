@@ -8,6 +8,29 @@ import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const b = await getBundleBySlug(slug);
+  if (!b || b.status !== "active") return {};
+
+  const description = (b.description || "").slice(0, 155);
+
+  return {
+    title: b.title,
+    description,
+    alternates: { canonical: `/bundles/${b.slug}` },
+    openGraph: {
+      title: `${b.title} | VAM`,
+      description,
+      ...(b.image_url ? { images: [{ url: b.image_url }] } : {}),
+    },
+  };
+}
+
 export default async function BundleDetailPage({
   params,
 }: {

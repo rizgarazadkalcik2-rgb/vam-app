@@ -2,9 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { VamPackage } from "@/lib/packages";
+import type { Lang } from "@/lib/dictionary";
+import { t } from "@/lib/dictionary";
 
-export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
+/** Normalized shape so the same form serves both packages and bundles. */
+export type ReservationItem = {
+  kind: "package" | "bundle";
+  id: number;
+  title: string;
+  imageUrl: string | null;
+  subtitle: string;
+  unitPrice: number;
+};
+
+export default function ReservationForm({ item, lang }: { item: ReservationItem; lang: Lang }) {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -15,7 +26,8 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const totalPrice = Number(pkg.price_try) * guestCount;
+  const locale = lang === "DE" ? "de-DE" : "tr-TR";
+  const totalPrice = item.unitPrice * guestCount;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,7 +38,8 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        packageId: pkg.id,
+        packageId: item.kind === "package" ? item.id : undefined,
+        bundleId: item.kind === "bundle" ? item.id : undefined,
         customerName,
         customerEmail,
         customerPhone,
@@ -40,7 +53,7 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
     setSubmitting(false);
 
     if (!res.ok) {
-      setError(data.error || "Bir hata oluştu.");
+      setError(data.error || t("rez_error_generic", lang));
       return;
     }
 
@@ -54,11 +67,11 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
           <div style={{ textAlign: "center", padding: "20px 0" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
             <div style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700, marginBottom: 12 }}>
-              Talebiniz alındı
+              {t("rez_success_title", lang)}
             </div>
             <p style={{ fontSize: 14, color: "#6f6558", lineHeight: 1.7, marginBottom: 24 }}>
-              <strong>{pkg.title}</strong> paketi için rezervasyon talebiniz kaydedildi.
-              Ödeme adımı için ekibimiz sizinle e-posta üzerinden iletişime geçecek.
+              <strong>{item.title}</strong> {t("rez_success_body_1", lang)}{" "}
+              {t("rez_success_body_2", lang)}
             </p>
             <Link
               href="/platform"
@@ -73,7 +86,7 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
                 textDecoration: "none",
               }}
             >
-              Ana Sayfaya Dön
+              {t("rez_back_home", lang)}
             </Link>
           </div>
         </div>
@@ -84,7 +97,7 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
   return (
     <div style={pageStyle}>
       <div style={cardStyle}>
-        {pkg.image_url && (
+        {item.imageUrl && (
           <div
             style={{
               width: "100%",
@@ -98,9 +111,10 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
               overflow: "hidden",
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={pkg.image_url}
-              alt={pkg.title}
+              src={item.imageUrl}
+              alt={item.title}
               style={{
                 maxWidth: "100%",
                 maxHeight: "100%",
@@ -112,34 +126,34 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
         )}
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, letterSpacing: "0.15em", color: "#c4522a", textTransform: "uppercase", marginBottom: 8 }}>
-            Rezervasyon
+            {t("rez_eyebrow", lang)}
           </div>
           <div style={{ fontFamily: "Georgia, serif", fontSize: 24, fontWeight: 700, marginBottom: 6 }}>
-            {pkg.title}
+            {item.title}
           </div>
-          <div style={{ fontSize: 13, color: "#6f6558" }}>
-            {pkg.destination} · {pkg.nights} gece · {pkg.partner_name}
-          </div>
+          <div style={{ fontSize: 13, color: "#6f6558" }}>{item.subtitle}</div>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
             <label style={labelWrap}>
-              <span style={labelText}>Ad Soyad</span>
+              <span style={labelText}>{t("rez_name", lang)}</span>
               <input
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 required
+                autoComplete="name"
                 style={inputStyle}
               />
             </label>
             <label style={labelWrap}>
-              <span style={labelText}>E-posta</span>
+              <span style={labelText}>{t("rez_email", lang)}</span>
               <input
                 type="email"
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
                 required
+                autoComplete="email"
                 style={inputStyle}
               />
             </label>
@@ -147,16 +161,17 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
             <label style={labelWrap}>
-              <span style={labelText}>Telefon</span>
+              <span style={labelText}>{t("rez_phone", lang)}</span>
               <input
                 type="tel"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
+                autoComplete="tel"
                 style={inputStyle}
               />
             </label>
             <label style={labelWrap}>
-              <span style={labelText}>Seyahat Tarihi</span>
+              <span style={labelText}>{t("rez_travel_date", lang)}</span>
               <input
                 type="date"
                 value={travelDate}
@@ -167,7 +182,7 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
           </div>
 
           <label style={{ ...labelWrap, marginBottom: 12 }}>
-            <span style={labelText}>Kişi Sayısı</span>
+            <span style={labelText}>{t("rez_guests", lang)}</span>
             <input
               type="number"
               min={1}
@@ -178,7 +193,7 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
           </label>
 
           <label style={{ ...labelWrap, marginBottom: 20 }}>
-            <span style={labelText}>Notunuz (opsiyonel)</span>
+            <span style={labelText}>{t("rez_notes", lang)}</span>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -198,15 +213,14 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
               alignItems: "center",
             }}
           >
-            <span style={{ fontSize: 13, color: "#6f6558" }}>Toplam Tutar</span>
+            <span style={{ fontSize: 13, color: "#6f6558" }}>{t("rez_total", lang)}</span>
             <span style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700, color: "#c4522a" }}>
-              ₺{totalPrice.toLocaleString("tr-TR")}
+              ₺{totalPrice.toLocaleString(locale)}
             </span>
           </div>
 
           <div style={{ fontSize: 11.5, color: "#a27450", marginBottom: 16, lineHeight: 1.6 }}>
-            Bu adımda ödeme alınmamaktadır. Talebiniz kaydedildikten sonra ödeme bağlantısı
-            e-posta adresinize gönderilecektir.
+            {t("rez_no_payment", lang)}
           </div>
 
           {error && (
@@ -228,7 +242,7 @@ export default function ReservationForm({ pkg }: { pkg: VamPackage }) {
               cursor: submitting ? "default" : "pointer",
             }}
           >
-            {submitting ? "Gönderiliyor..." : "Rezervasyon Talebi Gönder"}
+            {submitting ? t("rez_submitting", lang) : t("rez_submit", lang)}
           </button>
         </form>
       </div>

@@ -3,9 +3,19 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import BundlesClient from "./BundlesClient";
 import { getLang } from "@/lib/i18n";
+import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  const lang = await getLang();
+  return {
+    title: t("meta_bundles_title", lang),
+    description: t("meta_site_desc", lang),
+    alternates: { canonical: "/bundles" },
+  };
+}
 
 export default async function BundlesPage({
   searchParams,
