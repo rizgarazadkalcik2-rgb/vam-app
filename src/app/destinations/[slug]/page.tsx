@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getDestinationBySlug, listActiveDestinations } from "@/lib/destinations";
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
+import { getLang } from "@/lib/i18n";
+import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +14,7 @@ export default async function DestinationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const d = await getDestinationBySlug(slug);
+  const [d, lang] = await Promise.all([getDestinationBySlug(slug), getLang()]);
   if (!d || d.status !== "active") notFound();
 
   const allDests = await listActiveDestinations();
@@ -24,10 +26,10 @@ export default async function DestinationDetailPage({
 
   return (
     <div className="vc-root">
-      <VamNavbar />
+      <VamNavbar lang={lang} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">Ana Sayfa</a> › <a href="/destinations">Destinasyonlar</a> › {d.name}
+        <a href="/platform">{t("breadcrumb_home", lang)}</a> › <a href="/destinations">{t("all_destinations", lang)}</a> › {d.name}
       </div>
 
       <div className="vc-hero">
@@ -42,9 +44,9 @@ export default async function DestinationDetailPage({
         <div className="vc-hero-overlay" />
         <div className="vc-hero-content">
           <div className="vc-badges">
-            {(d.tags || []).map((t) => (
-              <span key={t} className="vc-badge vc-badge-dark">
-                {t}
+            {(d.tags || []).map((tag) => (
+              <span key={tag} className="vc-badge vc-badge-dark">
+                {tag}
               </span>
             ))}
             {d.unesco && <span className="vc-badge vc-badge-gold">UNESCO</span>}
@@ -54,7 +56,7 @@ export default async function DestinationDetailPage({
             <span>⊙ {d.region}</span>
             <span className="vc-dot" />
             <span style={{ color: "var(--gold-300)" }}>
-              ★ {d.era_display || d.era} · {d.era_caption || "Dönem"}
+              ★ {d.era_display || d.era} · {d.era_caption || t("dest_era_caption_fallback", lang)}
             </span>
           </div>
         </div>
@@ -63,7 +65,7 @@ export default async function DestinationDetailPage({
       <div className="vc-layout">
         <main>
           <a className="vc-back" href="/destinations">
-            ← Tüm Destinasyonlar
+            {t("dest_back", lang)}
           </a>
           {history[0] && <p className="vc-lead">{history[0]}</p>}
           {history.slice(1).map((p, i) => (
@@ -74,7 +76,7 @@ export default async function DestinationDetailPage({
 
           {features.length > 0 && (
             <div className="vc-features">
-              <div className="vc-section-label">Öne Çıkan Özellikler</div>
+              <div className="vc-section-label">{t("dest_features_title", lang)}</div>
               {features.map((f, i) => (
                 <div key={i} className="vc-feature">
                   <h4>{f.title}</h4>
@@ -90,41 +92,41 @@ export default async function DestinationDetailPage({
             {d.rating && (
               <div className="vc-rating-row">
                 <span className="vc-stars">★ {d.rating}</span>
-                <span style={{ color: "var(--text-muted)" }}>({d.reviews || 0} değerlendirme)</span>
+                <span style={{ color: "var(--text-muted)" }}>({d.reviews || 0} {t("dest_reviews_suffix", lang)})</span>
               </div>
             )}
             {d.visit_location && (
               <div className="vc-info-row">
-                <span>Konum</span>
+                <span>{t("dest_location", lang)}</span>
                 <span>{d.visit_location}</span>
               </div>
             )}
             {d.visit_nearest_city && (
               <div className="vc-info-row">
-                <span>En Yakın Şehir</span>
+                <span>{t("dest_nearest_city", lang)}</span>
                 <span>{d.visit_nearest_city}</span>
               </div>
             )}
             {d.visit_duration && (
               <div className="vc-info-row">
-                <span>Önerilen Süre</span>
+                <span>{t("dest_duration", lang)}</span>
                 <span>{d.visit_duration}</span>
               </div>
             )}
             {d.visit_best_time && (
               <div className="vc-info-row">
-                <span>En İyi Zaman</span>
+                <span>{t("dest_best_time", lang)}</span>
                 <span>{d.visit_best_time}</span>
               </div>
             )}
             <a className="vc-btn-cta" style={{ display: "block", textAlign: "center", marginTop: 18 }} href="/bundles">
-              İlgili Paketleri Gör
+              {t("dest_related_bundles_btn", lang)}
             </a>
           </div>
 
           {related.length > 0 && (
             <div className="vc-sidebar-card">
-              <div className="vc-section-label">İlgili Destinasyonlar</div>
+              <div className="vc-section-label">{t("dest_related_title", lang)}</div>
               {related.map((r) => (
                 <a key={r.slug} className="vc-related-card" href={`/destinations/${r.slug}`}>
                   {r.image_url ? (
@@ -144,7 +146,7 @@ export default async function DestinationDetailPage({
         </aside>
       </div>
 
-      <VamFooter />
+      <VamFooter lang={lang} />
     </div>
   );
 }

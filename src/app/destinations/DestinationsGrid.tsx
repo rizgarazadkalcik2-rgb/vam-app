@@ -2,10 +2,17 @@
 
 import { useMemo, useState } from "react";
 import type { VamDestination } from "@/lib/destinations";
+import { chip, t, type Lang } from "@/lib/dictionary";
 
 const FILTERS = ["Tümü", "Arkeoloji", "Tarih", "Doğa", "Kültür", "Mimari"];
 
-export default function DestinationsGrid({ destinations }: { destinations: VamDestination[] }) {
+export default function DestinationsGrid({
+  destinations,
+  lang = "TR",
+}: {
+  destinations: VamDestination[];
+  lang?: Lang;
+}) {
   const [activeFilter, setActiveFilter] = useState("Tümü");
 
   const filtered = useMemo(() => {
@@ -23,16 +30,16 @@ export default function DestinationsGrid({ destinations }: { destinations: VamDe
             onClick={() => setActiveFilter(f)}
             style={{ cursor: "pointer" }}
           >
-            {f}
+            {chip(f, lang)}
           </button>
         ))}
         <span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-muted)" }}>
-          {filtered.length} destinasyon
+          {filtered.length} {t("destination_singular", lang)}
         </span>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="vc-empty">Bu kategoride henüz destinasyon eklenmedi.</div>
+        <div className="vc-empty">{t("dest_empty", lang)}</div>
       ) : (
         <div className="vc-grid">
           {filtered.map((d, i) => (
@@ -48,7 +55,7 @@ export default function DestinationsGrid({ destinations }: { destinations: VamDe
                 {d.unesco && <span className="vc-card-tag vc-card-tag-gold" style={{ left: "auto", right: 10 }}>UNESCO</span>}
               </div>
               <div className="vc-card-body">
-                <div className="vc-card-eyebrow">{(d.tags || [])[0] || "Destinasyon"}</div>
+                <div className="vc-card-eyebrow">{(d.tags || [])[0] || t("dest_card_eyebrow_fallback", lang)}</div>
                 <div className="vc-card-title">{d.name}</div>
                 <div className="vc-card-desc">
                   {(d.history && d.history[0]) ? d.history[0].slice(0, 110) + "…" : ""}

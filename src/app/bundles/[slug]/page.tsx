@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getBundleBySlug, listActiveBundles } from "@/lib/bundles";
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
+import { getLang } from "@/lib/i18n";
+import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +14,7 @@ export default async function BundleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const b = await getBundleBySlug(slug);
+  const [b, lang] = await Promise.all([getBundleBySlug(slug), getLang()]);
   if (!b || b.status !== "active") notFound();
 
   const others = (await listActiveBundles()).filter((x) => x.slug !== b.slug).slice(0, 3);
@@ -21,10 +23,10 @@ export default async function BundleDetailPage({
 
   return (
     <div className="vc-root">
-      <VamNavbar />
+      <VamNavbar lang={lang} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">Ana Sayfa</a> › <a href="/bundles">Paketler</a> › {b.title}
+        <a href="/platform">{t("breadcrumb_home", lang)}</a> › <a href="/bundles">{t("all_bundles", lang)}</a> › {b.title}
       </div>
 
       <div className="vc-hero">
@@ -39,7 +41,7 @@ export default async function BundleDetailPage({
         <div className="vc-hero-overlay" />
         <div className="vc-hero-content">
           <div className="vc-badges">
-            <span className="vc-badge vc-badge-dark">{b.nights} Gece</span>
+            <span className="vc-badge vc-badge-dark">{b.nights} {t("bundle_night", lang)}</span>
             {b.badge && <span className="vc-badge vc-badge-gold">{b.badge}</span>}
           </div>
           <h1 className="vc-hero-title">{b.title}</h1>
@@ -52,12 +54,12 @@ export default async function BundleDetailPage({
       <div className="vc-layout">
         <main>
           <a className="vc-back" href="/bundles">
-            ← Tüm Paketler
+            {t("bundle_back", lang)}
           </a>
           <p className="vc-lead">{b.description}</p>
 
           <div className="vc-features">
-            <div className="vc-section-label">Güzergah</div>
+            <div className="vc-section-label">{t("bundle_route_title", lang)}</div>
             <div className="vc-card-tags" style={{ marginBottom: 20 }}>
               {(b.destinations || []).map((dn) => (
                 <span key={dn} className="vc-card-pill">
@@ -66,7 +68,7 @@ export default async function BundleDetailPage({
               ))}
             </div>
 
-            <div className="vc-section-label">Pakete Dahil</div>
+            <div className="vc-section-label">{t("bundle_includes_title", lang)}</div>
             <ul className="vc-checklist">
               {(b.includes || []).map((inc) => (
                 <li key={inc}>{inc}</li>
@@ -86,16 +88,16 @@ export default async function BundleDetailPage({
                   ₺{Number(b.original_price).toLocaleString("tr-TR")}
                 </span>
               )}
-              <div style={{ fontSize: 12, color: "var(--text-muted)" }}>kişi başı</div>
+              <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</div>
             </div>
 
             <div className="vc-info-row">
-              <span>Süre</span>
-              <span>{b.nights} gece / {b.nights + 1} gün</span>
+              <span>{t("bundle_duration_label", lang)}</span>
+              <span>{b.nights} {t("bundle_night_day", lang)} / {b.nights + 1} {t("bundle_day", lang)}</span>
             </div>
             <div className="vc-info-row">
-              <span>Destinasyon</span>
-              <span>{(b.destinations || []).length} nokta</span>
+              <span>{t("bundle_destination_label", lang)}</span>
+              <span>{(b.destinations || []).length} {t("bundle_point_suffix", lang)}</span>
             </div>
 
             <a
@@ -103,7 +105,7 @@ export default async function BundleDetailPage({
               style={{ display: "block", textAlign: "center", marginTop: 18 }}
               href={`/rezervasyon/bundle/${b.id}`}
             >
-              Şimdi Rezervasyon Yap
+              {t("bundle_book_now", lang)}
             </a>
             <a
               href={`mailto:info@visitvam.com?subject=${questionSubject}`}
@@ -116,17 +118,16 @@ export default async function BundleDetailPage({
                 padding: "10px 0",
               }}
             >
-              Sorusu Olanlar İçin →
+              {t("bundle_question_cta", lang)}
             </a>
             <p className="vc-note">
-              Rezervasyon talebiniz anında sistemimize düşer, ekibimiz ödeme adımı için sizinle
-              e-posta üzerinden iletişime geçer.
+              {t("bundle_book_note", lang)}
             </p>
           </div>
 
           {others.length > 0 && (
             <div className="vc-sidebar-card">
-              <div className="vc-section-label">Diğer Rotalar</div>
+              <div className="vc-section-label">{t("bundle_other_routes", lang)}</div>
               {others.map((o) => (
                 <a key={o.slug} className="vc-related-card" href={`/bundles/${o.slug}`}>
                   {o.image_url ? (
@@ -138,7 +139,7 @@ export default async function BundleDetailPage({
                   <div>
                     <div className="vc-related-name">{o.title}</div>
                     <div className="vc-related-region">
-                      ₺{Number(o.price).toLocaleString("tr-TR")} · {o.nights} gece
+                      ₺{Number(o.price).toLocaleString("tr-TR")} · {o.nights} {t("bundle_night", lang)}
                     </div>
                   </div>
                 </a>
@@ -148,7 +149,7 @@ export default async function BundleDetailPage({
         </aside>
       </div>
 
-      <VamFooter />
+      <VamFooter lang={lang} />
     </div>
   );
 }

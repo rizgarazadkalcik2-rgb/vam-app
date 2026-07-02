@@ -1,5 +1,7 @@
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
+import { getLang } from "@/lib/i18n";
+import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
 export const metadata = {
@@ -51,43 +53,25 @@ function IconRoute() {
   );
 }
 
-const SERVICES = [
-  {
-    icon: <IconPass />,
-    title: "Passolig Destek & Rehberlik",
-    desc:
-      "Avrupa'dan gelen taraftarlar için Passolig kaydı ve bürokratik sürecin baştan sona yönetimi — sahaya inmeden önce hiçbir engel kalmasın.",
-  },
-  {
-    icon: <IconTicket />,
-    title: "Resmi Bilet Danışmanlığı",
-    desc:
-      "Bilet temin sürecinde teknik asistanlık; doğru kategori, doğru maç, doğru zamanlama için resmi kanallar üzerinden yönlendirme.",
-  },
-  {
-    icon: <IconStadium />,
-    title: "Maç Günü Concierge",
-    desc:
-      "Tribün seçimi, stada ulaşım ve yerel taraftar kültürüyle tanışma — maç günü tek başına değil, bir yerelin yanında yaşanır.",
-  },
-  {
-    icon: <IconRoute />,
-    title: "Kişiselleştirilmiş Seyahat Planı",
-    desc:
-      "Konaklama, gastronomi ve maç dışı şehir turları — Sur'un daracık sokakları, Hevsel Bahçeleri, Dicle kıyısı — sizin ritminize göre kurgulanır.",
-  },
-];
+export default async function MatchWeekendsPage() {
+  const lang = await getLang();
 
-export default function MatchWeekendsPage() {
+  const SERVICES = [
+    { icon: <IconPass />, title: t("mw_service1_title", lang), desc: t("mw_service1_desc", lang) },
+    { icon: <IconTicket />, title: t("mw_service2_title", lang), desc: t("mw_service2_desc", lang) },
+    { icon: <IconStadium />, title: t("mw_service3_title", lang), desc: t("mw_service3_desc", lang) },
+    { icon: <IconRoute />, title: t("mw_service4_title", lang), desc: t("mw_service4_desc", lang) },
+  ];
+
   const subjectHero = encodeURIComponent("Match Weekends – Deneyim Talebi");
   const subjectItinerary = encodeURIComponent("Match Weekends – Kişisel Güzergah Talebi");
 
   return (
     <div className="vc-root">
-      <VamNavbar />
+      <VamNavbar lang={lang} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">Ana Sayfa</a> › Match Weekends
+        <a href="/platform">{t("breadcrumb_home", lang)}</a> › {t("mw_breadcrumb", lang)}
       </div>
 
       <div className="vc-mw-hero">
@@ -96,23 +80,19 @@ export default function MatchWeekendsPage() {
         <div className="vc-mw-hero-content">
           <div className="vc-badges">
             <span className="vc-badge vc-badge-gold">Match Weekends</span>
-            <span className="vc-badge vc-badge-dark">Amedspor Experience</span>
+            <span className="vc-badge vc-badge-dark">{t("mw_badge_experience", lang)}</span>
           </div>
-          <h1 className="vc-hero-title">Amed&apos;in Yaşayan Tarihine ve Modern Kimliğine Bir Yolculuk</h1>
+          <h1 className="vc-hero-title">{t("mw_hero_title", lang)}</h1>
           <div className="vc-hero-meta">
-            <span>⊙ Diyarbakır</span>
+            <span>⊙ {t("mw_hero_location", lang)}</span>
             <span className="vc-dot" />
-            <span>Maç günü deneyimi</span>
+            <span>{t("mw_hero_tag", lang)}</span>
           </div>
         </div>
       </div>
 
       <div className="vc-mw-intro">
-        <p>
-          Bu bir maç bileti satmıyor. Sur&apos;un beş bin yıllık taşları arasında yankılanan bir
-          tezahüratı, tribünde omuz omuza duran bir şehri ve doksan dakikaya sığmayan bir kimliği
-          sunuyoruz — Amedspor forması, buradaki en genç anıt.
-        </p>
+        <p>{t("mw_intro", lang)}</p>
       </div>
 
       <div className="vc-service-grid">
@@ -130,49 +110,45 @@ export default function MatchWeekendsPage() {
           className="vc-btn-cta"
           href={`mailto:info@visitvam.com?subject=${subjectHero}`}
         >
-          Deneyimi Tasarla
+          {t("mw_cta_design", lang)}
         </a>
       </div>
 
       <div className="vc-mw-band">
         <div className="vc-mw-band-inner">
           <div>
-            <div className="vc-mw-band-eyebrow">— Kişisel Güzergah Tasarımı</div>
-            <h2 className="vc-mw-band-title">Maç Haftası, Şehrin Tamamı Olsun</h2>
-            <p className="vc-mw-band-p">
-              Stat sadece bir durak. Güzergahınızı; Sur içindeki taş evler, Hevsel Bahçeleri&apos;nde
-              bir akşamüstü, Dicle kıyısında bir sofra ve yerel esnafla kurulan sahici bir sohbet
-              üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.
-            </p>
+            <div className="vc-mw-band-eyebrow">{t("mw_band_eyebrow", lang)}</div>
+            <h2 className="vc-mw-band-title">{t("mw_band_title", lang)}</h2>
+            <p className="vc-mw-band-p">{t("mw_band_desc", lang)}</p>
             <div className="vc-mw-cta-row">
               <a
                 className="vc-btn-cta"
                 href={`mailto:info@visitvam.com?subject=${subjectItinerary}`}
               >
-                Maç Haftanı Planla
+                {t("mw_plan_week", lang)}
               </a>
               <a className="vc-btn-cta-ghost" href="/bundles">
-                Rotalara Göz At
+                {t("mw_view_routes", lang)}
               </a>
             </div>
           </div>
           <div className="vc-mw-band-card">
             <div className="vc-section-label" style={{ color: "var(--gold-300)" }}>
-              Güzergaha Dahil Olabilecekler
+              {t("mw_included_title", lang)}
             </div>
             <ul className="vc-checklist">
-              <li>Passolig kaydı ve bilet süreci takibi</li>
-              <li>Tribün seçimi ve stada ulaşım planı</li>
-              <li>Sur içi konaklama önerileri</li>
-              <li>Hevsel Bahçeleri ve Dicle kıyısı turu</li>
-              <li>Yerel gastronomi durakları</li>
-              <li>Maç dışı gün için serbest zaman kurgusu</li>
+              <li>{t("mw_included_1", lang)}</li>
+              <li>{t("mw_included_2", lang)}</li>
+              <li>{t("mw_included_3", lang)}</li>
+              <li>{t("mw_included_4", lang)}</li>
+              <li>{t("mw_included_5", lang)}</li>
+              <li>{t("mw_included_6", lang)}</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <VamFooter />
+      <VamFooter lang={lang} />
     </div>
   );
 }

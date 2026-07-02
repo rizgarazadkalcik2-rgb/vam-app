@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { VamBundle } from "@/lib/bundles";
+import { chip, t, type Lang } from "@/lib/dictionary";
 
 const EXP_TYPES = ["Tümü", "Arkeoloji", "Tarih", "Doğa", "Kültür", "Gastronomi"];
 
@@ -37,12 +38,14 @@ export default function BundlesClient({
   initialExp,
   initialGuests,
   initialDate,
+  lang = "TR",
 }: {
   bundles: VamBundle[];
   initialDest: string;
   initialExp: string;
   initialGuests: number;
   initialDate: string;
+  lang?: Lang;
 }) {
   const [filterDest, setFilterDest] = useState(initialDest || "Tümü");
   const [filterExp, setFilterExp]   = useState(initialExp  || "Tümü");
@@ -64,19 +67,18 @@ export default function BundlesClient({
   return (
     <>
       <div className="vc-pagehead">
-        <div className="vc-eyebrow">— Paket Koleksiyonu</div>
-        <h1 className="vc-h1">Her Şey Dahil Rotalar</h1>
+        <div className="vc-eyebrow">{t("bundle_eyebrow", lang)}</div>
+        <h1 className="vc-h1">{t("bundle_h1", lang)}</h1>
         <p className="vc-lede">
-          Yerel operatörlerle revenue-share modeliyle hazırlanan, konaklama ve rehberlik dahil
-          küratörlü paketler.
+          {t("bundle_lede", lang)}
           {initialGuests > 0 && (
             <span style={{ marginLeft: 6, color: "var(--color-primary)", fontWeight: 600 }}>
-              · {initialGuests} kişi
+              · {initialGuests} {t("bundle_guests_suffix", lang)}
             </span>
           )}
           {initialDate && (
             <span style={{ marginLeft: 6, color: "var(--color-primary)", fontWeight: 600 }}>
-              · {new Date(initialDate + "-01").toLocaleDateString("tr-TR", { month: "long", year: "numeric" })}
+              · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : "tr-TR", { month: "long", year: "numeric" })}
             </span>
           )}
         </p>
@@ -88,44 +90,44 @@ export default function BundlesClient({
         display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center",
       }}>
         <span style={{ fontSize: 12, color: "var(--text-muted)", fontFamily: "var(--font-label)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-          Destinasyon:
+          {t("bundle_label_destination", lang)}
         </span>
         {destOptions.map(d => (
           <button key={d}
             className={`vc-chip${filterDest === d ? " active" : ""}`}
             onClick={() => setFilterDest(d)}
             style={{ cursor: "pointer" }}>
-            {d}
+            {chip(d, lang)}
           </button>
         ))}
         <span style={{ width: 1, height: 24, background: "var(--border-subtle)", margin: "0 4px" }} />
         <span style={{ fontSize: 12, color: "var(--text-muted)", fontFamily: "var(--font-label)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-          Deneyim:
+          {t("bundle_label_experience", lang)}
         </span>
         {EXP_TYPES.map(e => (
           <button key={e}
             className={`vc-chip${filterExp === e ? " active" : ""}`}
             onClick={() => setFilterExp(e)}
             style={{ cursor: "pointer" }}>
-            {e}
+            {chip(e, lang)}
           </button>
         ))}
         {hasFilters && (
           <button
             onClick={() => { setFilterDest("Tümü"); setFilterExp("Tümü"); }}
             style={{ fontSize: 12, color: "var(--color-primary)", background: "none", border: "none", cursor: "pointer", padding: "0 4px" }}>
-            ✕ Filtreleri temizle
+            {t("clear_filters", lang)}
           </button>
         )}
         <span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-muted)" }}>
-          {filtered.length} paket
+          {filtered.length} {t("bundle_singular", lang)}
         </span>
       </div>
 
       {filtered.length === 0 ? (
         <div className="vc-empty">
           <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
-          <div>Bu kriterlere uygun paket bulunamadı.</div>
+          <div>{t("bundle_empty", lang)}</div>
           <button
             onClick={() => { setFilterDest("Tümü"); setFilterExp("Tümü"); }}
             style={{
@@ -133,7 +135,7 @@ export default function BundlesClient({
               color: "#fff", border: "none", borderRadius: 6, fontSize: 13,
               cursor: "pointer", fontWeight: 600,
             }}>
-            Tüm Paketleri Göster
+            {t("bundle_show_all", lang)}
           </button>
         </div>
       ) : (
@@ -147,7 +149,7 @@ export default function BundlesClient({
                 ) : (
                   <span className="vc-card-letter">{b.title[0]}</span>
                 )}
-                <span className="vc-card-tag">{b.nights} Gece</span>
+                <span className="vc-card-tag">{b.nights} {t("bundle_night", lang)}</span>
                 {b.badge && (
                   <span className="vc-card-tag vc-card-tag-gold" style={{ left: "auto", right: 10 }}>
                     {b.badge}
@@ -155,7 +157,7 @@ export default function BundlesClient({
                 )}
               </div>
               <div className="vc-card-body">
-                <div className="vc-card-eyebrow">Rota Paketi</div>
+                <div className="vc-card-eyebrow">{t("bundle_card_eyebrow", lang)}</div>
                 <div className="vc-card-title">{b.title}</div>
                 <div className="vc-card-desc">{b.description}</div>
                 <div className="vc-card-tags">
@@ -170,7 +172,7 @@ export default function BundlesClient({
                       ₺{Number(b.original_price).toLocaleString("tr-TR")}
                     </span>
                   )}
-                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>kişi başı</span>
+                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</span>
                 </div>
               </div>
             </a>
