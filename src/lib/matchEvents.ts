@@ -32,13 +32,28 @@ export interface MatchEventInput {
   status?: string;
 }
 
+/** Postgres DATE kolonları JS Date nesnesi olarak döner; her yerde
+ *  güvenli kullanım için "YYYY-MM-DD" metnine normalize ediyoruz. */
+function normalizeRow(row: MatchEvent): MatchEvent {
+  const d = row.event_date as unknown;
+  return {
+    ...row,
+    event_date:
+      d == null
+        ? null
+        : d instanceof Date
+          ? d.toISOString().slice(0, 10)
+          : String(d).slice(0, 10),
+  };
+}
+
 export async function listAllMatchEvents(): Promise<MatchEvent[]> {
   await ensureSchema();
   const { rows } = await sql<MatchEvent>`
     SELECT * FROM match_events
     ORDER BY (event_date IS NULL), event_date ASC, created_at DESC;
   `;
-  return rows;
+  return rows.map(normalizeRow);
 }
 
 export async function listActiveMatchEvents(): Promise<MatchEvent[]> {
@@ -48,7 +63,7 @@ export async function listActiveMatchEvents(): Promise<MatchEvent[]> {
     WHERE status = 'active'
     ORDER BY (event_date IS NULL), event_date ASC, created_at DESC;
   `;
-  return rows;
+  return rows.map(normalizeRow);
 }
 
 /** Bugünden itibaren tarihi olan aktif maçlar (acente paneli ve fikstür için). */
@@ -60,7 +75,7 @@ export async function listUpcomingMatches(): Promise<MatchEvent[]> {
       AND event_date IS NOT NULL AND event_date >= CURRENT_DATE
     ORDER BY event_date ASC;
   `;
-  return rows;
+  return rows.map(normalizeRow);
 }
 
 export async function createMatchEvent(data: MatchEventInput): Promise<MatchEvent> {
@@ -77,7 +92,7 @@ export async function createMatchEvent(data: MatchEventInput): Promise<MatchEven
     )
     RETURNING *;
   `;
-  return rows[0];
+  return normalizeRow(rows[0]);
 }
 
 export async function updateMatchEvent(id: number, data: MatchEventInput): Promise<MatchEvent | null> {
@@ -98,7 +113,7 @@ export async function updateMatchEvent(id: number, data: MatchEventInput): Promi
     WHERE id = ${id}
     RETURNING *;
   `;
-  return rows[0] || null;
+  return rows[0] ? normalizeRow(rows[0]) : null;
 }
 
 export async function deleteMatchEvent(id: number): Promise<boolean> {

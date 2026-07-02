@@ -199,7 +199,7 @@ export default function TeamSelector({
   const today = new Date().toISOString().slice(0, 10);
   const teamEvents = events.filter((e) => e.team === team.slug);
   const fixtures = teamEvents.filter(
-    (e) => e.kind === "match" && e.event_date && e.event_date.slice(0, 10) >= today
+    (e) => e.kind === "match" && e.event_date && String(e.event_date).slice(0, 10) >= today
   );
   const news = teamEvents.filter((e) => e.kind === "news");
   const heroImage = news.find((e) => e.image_url)?.image_url || null;
