@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getLang } from "@/lib/i18n";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,13 +9,15 @@ export const metadata: Metadata = {
   description: "Doğu Anadolu ve Mezopotamya'nın kadim toprakları için kültürel turizm platformu",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await getLang();
+
   return (
-    <html lang="tr" className="h-full antialiased">
+    <html lang={lang === "DE" ? "de" : "tr"} className="h-full antialiased">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
