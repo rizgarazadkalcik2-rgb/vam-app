@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { VamBundle } from "@/lib/bundles";
 import type { SessionPayload } from "@/lib/session";
-import AdminNav from "../AdminNav";
+import AdminShell from "../AdminShell";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -162,9 +162,12 @@ export default function BundlesPanel({
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 980, margin: "0 auto" }}>
-        <AdminNav displayName={session.displayName} />
+    <AdminShell
+      title="Bundle Rotalar"
+      subtitle="Çok şehirli rota paketlerini yönetin"
+      displayName={session.displayName}
+      role="admin"
+    >
 
         <div
           style={{
@@ -411,8 +414,7 @@ export default function BundlesPanel({
             </div>
           ))}
         </div>
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 

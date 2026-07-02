@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { SafeUser } from "@/lib/users";
 import type { SessionPayload } from "@/lib/session";
-import AdminNav from "../AdminNav";
+import AdminShell from "../AdminShell";
 
 const emptyForm = { username: "", password: "", displayName: "", role: "partner" as "partner" | "admin" };
 
@@ -102,9 +102,12 @@ export default function AcentelerPanel({
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 920, margin: "0 auto" }}>
-        <AdminNav displayName={session.displayName} />
+    <AdminShell
+      title="Acenteler"
+      subtitle="Partner acente hesaplarını yönetin"
+      displayName={session.displayName}
+      role="admin"
+    >
 
         <form
           onSubmit={handleSubmit}
@@ -360,8 +363,7 @@ export default function AcentelerPanel({
             </form>
           </div>
         )}
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 

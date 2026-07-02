@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { VamDestination } from "@/lib/destinations";
 import type { SessionPayload } from "@/lib/session";
-import AdminNav from "../AdminNav";
+import AdminShell from "../AdminShell";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -194,9 +194,12 @@ export default function DestinationsPanel({
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 980, margin: "0 auto" }}>
-        <AdminNav displayName={session.displayName} />
+    <AdminShell
+      title="Destinasyonlar"
+      subtitle="Sitede görünen destinasyon kartlarını ve detaylarını yönetin"
+      displayName={session.displayName}
+      role="admin"
+    >
 
         <div
           style={{
@@ -517,8 +520,7 @@ export default function DestinationsPanel({
             </div>
           ))}
         </div>
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 

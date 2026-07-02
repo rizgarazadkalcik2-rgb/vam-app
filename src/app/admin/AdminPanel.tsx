@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { VamPackage } from "@/lib/packages";
 import type { SessionPayload } from "@/lib/session";
-import AdminNav from "./AdminNav";
+import AdminShell from "./AdminShell";
 
 interface Partner {
   id: string;
@@ -181,9 +181,12 @@ export default function AdminPanel({
   }, {});
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 920, margin: "0 auto" }}>
-        <AdminNav displayName={session.displayName} />
+    <AdminShell
+      title="Paketler"
+      subtitle="Acente paketlerini oluşturun, düzenleyin ve yayına alın"
+      displayName={session.displayName}
+      role="admin"
+    >
 
         <div
           style={{
@@ -501,8 +504,7 @@ export default function AdminPanel({
             </div>
           </div>
         ))}
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 

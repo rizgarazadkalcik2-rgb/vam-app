@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { VamReservation } from "@/lib/reservations";
 import type { SessionPayload } from "@/lib/session";
-import AdminNav from "../AdminNav";
+import AdminShell from "../AdminShell";
 
 const RESERVATION_STATUS_LABELS: Record<string, { label: string; color: string }> = {
   new: { label: "Yeni", color: "#2f5fa0" },
@@ -55,9 +55,12 @@ export default function ReservationsPanel({
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 960, margin: "0 auto" }}>
-        <AdminNav displayName={session.displayName} />
+    <AdminShell
+      title="Rezervasyonlar"
+      subtitle="Gelen rezervasyon taleplerini takip edin ve durumlarını güncelleyin"
+      displayName={session.displayName}
+      role="admin"
+    >
 
         <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
           <FilterChip label={`Tümü (${counts.all})`} active={filter === "all"} onClick={() => setFilter("all")} />
@@ -200,8 +203,7 @@ export default function ReservationsPanel({
             );
           })}
         </div>
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 

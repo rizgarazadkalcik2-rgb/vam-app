@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { VamPackage } from "@/lib/packages";
 import type { VamReservation } from "@/lib/reservations";
 import type { SessionPayload } from "@/lib/session";
+import AdminShell from "@/app/admin/AdminShell";
 
 const emptyForm = {
   title: "",
@@ -25,7 +25,6 @@ export default function PartnerPanel({
   initialPackages: VamPackage[];
   initialReservations: VamReservation[];
 }) {
-  const router = useRouter();
   const [packages, setPackages] = useState(initialPackages);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -69,11 +68,6 @@ export default function PartnerPanel({
     if (res.ok) setPackages(data.packages);
   }
 
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/giris");
-    router.refresh();
-  }
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -152,53 +146,17 @@ export default function PartnerPanel({
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 880, margin: "0 auto" }}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 28,
-          }}
-        >
-          <div>
-            <div style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700 }}>
-              Acente Paneli
-            </div>
-            <div style={{ fontSize: 13, color: "#6f6558" }}>{session.displayName}</div>
-          </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            <button
-              onClick={() => setShowPasswordModal(true)}
-              style={{
-                padding: "8px 16px",
-                background: "transparent",
-                border: "1px solid #835d3e",
-                color: "#835d3e",
-                borderRadius: 4,
-                fontSize: 12.5,
-                cursor: "pointer",
-              }}
-            >
-              Şifremi Değiştir
-            </button>
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: "8px 16px",
-                background: "transparent",
-                border: "1px solid #c4522a",
-                color: "#c4522a",
-                borderRadius: 4,
-                fontSize: 12.5,
-                cursor: "pointer",
-              }}
-            >
-              Çıkış Yap
-            </button>
-          </div>
-        </header>
+    <AdminShell
+      title="Acente Paneli"
+      subtitle="Paketleriniz ve gelen rezervasyonlarınız"
+      displayName={session.displayName}
+      role="partner"
+      actions={
+        <button className="adm-btn adm-btn-ghost" onClick={() => setShowPasswordModal(true)}>
+          Şifremi Değiştir
+        </button>
+      }
+    >
 
         <form
           onSubmit={handleSubmit}
@@ -610,8 +568,7 @@ export default function PartnerPanel({
             </form>
           </div>
         )}
-      </div>
-    </div>
+    </AdminShell>
   );
 }
 

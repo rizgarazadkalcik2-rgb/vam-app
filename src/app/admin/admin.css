@@ -1,0 +1,221 @@
+/* ============================================================
+   VAM Yönetim Paneli — tasarım sistemi
+   Koyu kenar çubuğu + açık içerik alanı; marka renkleri:
+   turuncu #c4522a, altın #e8bc44, mürekkep #171310
+   ============================================================ */
+
+.adm-root {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f1ea;
+  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  color: #2b251d;
+}
+
+/* ---------- Kenar çubuğu ---------- */
+.adm-sidebar {
+  width: 236px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #1b1712 0%, #14110d 100%);
+  color: #efe8da;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.adm-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 20px 18px;
+  border-bottom: 1px solid rgba(232, 188, 68, 0.12);
+}
+.adm-brand img { height: 34px; display: block; }
+.adm-brand-text { line-height: 1.15; }
+.adm-brand-name {
+  font-family: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #e8bc44;
+}
+.adm-brand-sub {
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: rgba(239, 232, 218, 0.45);
+  text-transform: uppercase;
+}
+
+.adm-nav { padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; flex: 1; overflow-y: auto; }
+.adm-nav-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(239, 232, 218, 0.35);
+  padding: 10px 10px 6px;
+}
+.adm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(239, 232, 218, 0.72);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 130ms ease, color 130ms ease;
+}
+.adm-nav-item svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.8; }
+.adm-nav-item:hover { background: rgba(232, 188, 68, 0.07); color: #f6efe0; }
+.adm-nav-item.active {
+  background: rgba(196, 82, 42, 0.18);
+  border-left-color: #c4522a;
+  color: #ffffff;
+}
+.adm-nav-item.active svg { opacity: 1; color: #e8bc44; }
+
+.adm-side-footer { padding: 14px 16px 18px; border-top: 1px solid rgba(232, 188, 68, 0.12); }
+.adm-user { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.adm-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #c4522a, #8f3a1c);
+  color: #fff; font-weight: 700; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.adm-user-name { font-size: 12.5px; font-weight: 600; color: #f2ebdc; line-height: 1.2; }
+.adm-user-role { font-size: 10.5px; color: rgba(239, 232, 218, 0.45); }
+.adm-logout {
+  width: 100%;
+  padding: 8px 0;
+  background: transparent;
+  border: 1px solid rgba(196, 82, 42, 0.55);
+  color: #e8926f;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 130ms ease, color 130ms ease;
+}
+.adm-logout:hover { background: #c4522a; color: #fff; }
+
+/* ---------- Ana alan ---------- */
+.adm-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.adm-topbar {
+  background: #fffdf9;
+  border-bottom: 1px solid #e9e2d2;
+  padding: 16px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.adm-page-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #241e16;
+  line-height: 1.1;
+}
+.adm-page-sub { font-size: 12px; color: #8a7d68; margin-top: 2px; }
+.adm-topbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.adm-view-site {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #7a6a52;
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid #e0d6c2;
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 130ms ease, color 130ms ease;
+}
+.adm-view-site:hover { border-color: #c4522a; color: #c4522a; }
+
+.adm-content {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 26px 30px 70px;
+}
+
+/* ---------- İçerikteki mevcut öğelere cila (inline stilleri nazikçe modernize eder) ---------- */
+.adm-content button {
+  font-family: inherit;
+  border-radius: 8px !important;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, color 120ms ease;
+}
+.adm-content button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(28, 20, 16, 0.10);
+}
+.adm-content button:active:not(:disabled) { transform: translateY(0); }
+.adm-content input,
+.adm-content select,
+.adm-content textarea {
+  font-family: inherit;
+  border-radius: 8px !important;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  background: #fffdf9;
+}
+.adm-content input:focus,
+.adm-content select:focus,
+.adm-content textarea:focus {
+  border-color: #c4522a !important;
+  box-shadow: 0 0 0 3px rgba(196, 82, 42, 0.13);
+  outline: none;
+}
+
+/* ---------- Yeniden kullanılabilir bileşen sınıfları ---------- */
+.adm-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12.5px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+.adm-btn-primary { background: #c4522a; color: #fff; }
+.adm-btn-primary:hover { background: #ad4622; }
+.adm-btn-ghost { background: #fff; border-color: #e0d6c2; color: #6b5c46; }
+.adm-btn-ghost:hover { border-color: #c4522a; color: #c4522a; }
+
+/* ---------- Mobil ---------- */
+@media (max-width: 900px) {
+  .adm-root { flex-direction: column; }
+  .adm-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    flex-direction: column;
+  }
+  .adm-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px 10px;
+    gap: 4px;
+  }
+  .adm-nav::-webkit-scrollbar { display: none; }
+  .adm-nav-label { display: none; }
+  .adm-nav-item { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; padding: 8px 12px; }
+  .adm-nav-item.active { border-left-color: transparent; border-bottom-color: #c4522a; }
+  .adm-side-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; gap: 10px;
+  }
+  .adm-user { margin-bottom: 0; }
+  .adm-logout { width: auto; padding: 7px 14px; }
+  .adm-topbar { padding: 14px 18px; }
+  .adm-content { padding: 20px 16px 60px; }
+}
