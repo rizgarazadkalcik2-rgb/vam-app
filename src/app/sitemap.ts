@@ -1,15 +1,14 @@
 import type { MetadataRoute } from 'next'
-import { neon } from '@neondatabase/serverless'
+import { sql } from '@vercel/postgres'
 
 const BASE_URL = 'https://visitvam.com'
 
-// Sitemap her istekte calisma aninda uretilir (build'de DATABASE_URL erisilemiyor)
+// Sitemap her istekte calisma aninda uretilir — admin'den eklenen icerik aninda gorunur
 export const dynamic = 'force-dynamic'
 
 async function getDestinationSlugs(): Promise<string[]> {
   try {
-    const sql = neon(process.env.DATABASE_URL!)
-    const rows = await sql`SELECT slug FROM destinations`
+    const { rows } = await sql`SELECT slug FROM destinations WHERE status = 'active'`
     console.log(`sitemap: ${rows.length} destination slug bulundu`)
     return rows.map((r: any) => r.slug)
   } catch (e) {
@@ -20,8 +19,7 @@ async function getDestinationSlugs(): Promise<string[]> {
 
 async function getBundleSlugs(): Promise<string[]> {
   try {
-    const sql = neon(process.env.DATABASE_URL!)
-    const rows = await sql`SELECT slug FROM bundles`
+    const { rows } = await sql`SELECT slug FROM bundles WHERE status = 'active'`
     console.log(`sitemap: ${rows.length} bundle slug bulundu`)
     return rows.map((r: any) => r.slug)
   } catch (e) {
