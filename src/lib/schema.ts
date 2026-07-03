@@ -241,5 +241,48 @@ export async function ensureSchema() {
       `;
     }
   }
-}
 
+  // --- Site içeriği: Sayfa bölümlerinin sırası ve göster/gizle durumu ---
+  await sql`
+    CREATE TABLE IF NOT EXISTS page_sections (
+      page TEXT NOT NULL,
+      section_key TEXT NOT NULL,
+      enabled BOOLEAN NOT NULL DEFAULT true,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      PRIMARY KEY (page, section_key)
+    );
+  `;
+
+  const { rows: sectionsCount } = await sql`SELECT COUNT(*) as count FROM page_sections WHERE page = 'platform';`;
+  if (Number(sectionsCount[0].count) === 0) {
+    const seedSections = ["stats", "dest_strip", "experiences", "bundles", "why_vam", "cta", "lang_strip"];
+    for (let i = 0; i < seedSections.length; i++) {
+      await sql`
+        INSERT INTO page_sections (page, section_key, enabled, sort_order)
+        VALUES ('platform', ${seedSections[i]}, true, ${i});
+      `;
+    }
+  }
+
+  // --- Site içeriği: Haftalık duyuru / özel etkinlik şeridi (tekil kayıt) ---
+  await sql`
+    CREATE TABLE IF NOT EXISTS announcement (
+      id INTEGER PRIMARY KEY DEFAULT 1,
+      active BOOLEAN NOT NULL DEFAULT false,
+      body_tr TEXT NOT NULL DEFAULT '',
+      body_de TEXT NOT NULL DEFAULT '',
+      link_url TEXT,
+      link_label_tr TEXT,
+      link_label_de TEXT,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      CONSTRAINT announcement_singleton CHECK (id = 1)
+    );
+  `;
+
+  const { rows: annCount } = await sql`SELECT COUNT(*) as count FROM announcement;`;
+  if (Number(annCount[0].count) === 0) {
+    await sql`INSERT INTO announcement (id, active, body_tr, body_de) VALUES (1, false, '', '');`;
+  }
+
+}
