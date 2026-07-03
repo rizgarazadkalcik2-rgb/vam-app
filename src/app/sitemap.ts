@@ -3,6 +3,9 @@ import { neon } from '@neondatabase/serverless'
 
 const BASE_URL = 'https://visitvam.com'
 
+// Sitemap'i calisma aninda uret (build'de DATABASE_URL yok) — saatte bir tazelenir
+export const revalidate = 3600
+
 async function getDestinationSlugs(): Promise<string[]> {
   try {
     const sql = neon(process.env.DATABASE_URL!)
