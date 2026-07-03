@@ -210,5 +210,36 @@ export async function ensureSchema() {
       END IF;
     END $$;
   `;
+
+  // --- Site içeriği: Ana sayfa istatistik şeridi (yönetim panelinden düzenlenir) ---
+  await sql`
+    CREATE TABLE IF NOT EXISTS platform_stats (
+      id SERIAL PRIMARY KEY,
+      num TEXT NOT NULL,
+      label_tr TEXT NOT NULL,
+      label_de TEXT NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
+  const { rows: statsCount } = await sql`SELECT COUNT(*) as count FROM platform_stats;`;
+  if (Number(statsCount[0].count) === 0) {
+    const seedStats = [
+      { num: "12.000", labelTr: "Yıllık Tarih", labelDe: "Jahre Geschichte" },
+      { num: "6", labelTr: "Dil Desteği", labelDe: "Sprachen" },
+      { num: "48+", labelTr: "Destinasyon", labelDe: "Destinationen" },
+      { num: "120+", labelTr: "Yerel Rehber", labelDe: "Lokale Guides" },
+      { num: "4.8★", labelTr: "Ortalama Puan", labelDe: "Durchschnittsbewertung" },
+    ];
+    for (let i = 0; i < seedStats.length; i++) {
+      const s = seedStats[i];
+      await sql`
+        INSERT INTO platform_stats (num, label_tr, label_de, sort_order)
+        VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${i});
+      `;
+    }
+  }
 }
 

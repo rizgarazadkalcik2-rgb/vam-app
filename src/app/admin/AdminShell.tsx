@@ -28,11 +28,15 @@ const IconHome = () => (
 const IconBall = () => (
   <svg viewBox="0 0 24 24" {...S}><circle cx="12" cy="12" r="9" /><path d="M12 3v3.2M12 12l-4.7 3.4M12 12l4.7 3.4M12 6.2 7.6 9.4l1.7 5.3h5.4l1.7-5.3L12 6.2ZM3.3 10l4.3-.6M20.7 10l-4.3-.6M6.4 19.2l2.9-4.5M17.6 19.2l-2.9-4.5" /></svg>
 );
+const IconLayout = () => (
+  <svg viewBox="0 0 24 24" {...S}><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9.5h18M8.5 9.5V20" /></svg>
+);
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Paketler", icon: <IconBox /> },
   { href: "/admin/destinasyonlar", label: "Destinasyonlar", icon: <IconPin /> },
   { href: "/admin/bundles", label: "Bundle Rotalar", icon: <IconRoute /> },
+  { href: "/admin/site-icerigi", label: "Site İçeriği", icon: <IconLayout /> },
   { href: "/admin/rezervasyonlar", label: "Rezervasyonlar", icon: <IconCalendar /> },
   { href: "/admin/match-weekends", label: "Match Weekends", icon: <IconBall /> },
   { href: "/admin/acenteler", label: "Acenteler", icon: <IconUsers /> },
