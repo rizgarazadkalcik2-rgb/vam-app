@@ -4,6 +4,7 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
+import { formatPrice } from "@/lib/currency";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -104,11 +105,11 @@ export default async function BundleDetailPage({
           <div className="vc-sidebar-card" id="booking-card">
             <div style={{ marginBottom: 16 }}>
               <span className="vc-price" style={{ fontSize: 28 }}>
-                ₺{Number(b.price).toLocaleString("tr-TR")}
+                {formatPrice(Number(b.price), lang)}
               </span>
               {b.original_price && (
                 <span className="vc-price-old" style={{ marginLeft: 8 }}>
-                  ₺{Number(b.original_price).toLocaleString("tr-TR")}
+                  {formatPrice(Number(b.original_price), lang)}
                 </span>
               )}
               <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</div>
@@ -162,7 +163,7 @@ export default async function BundleDetailPage({
                   <div>
                     <div className="vc-related-name">{o.title}</div>
                     <div className="vc-related-region">
-                      ₺{Number(o.price).toLocaleString("tr-TR")} · {o.nights} {t("bundle_night", lang)}
+                      {formatPrice(Number(o.price), lang)} · {o.nights} {t("bundle_night", lang)}
                     </div>
                   </div>
                 </a>

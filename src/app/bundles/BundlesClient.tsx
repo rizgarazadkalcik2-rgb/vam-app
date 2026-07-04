@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import type { VamBundle } from "@/lib/bundles";
 import { chip, t, type Lang } from "@/lib/dictionary";
+import { formatPrice } from "@/lib/currency";
 
 const EXP_TYPES = ["Tümü", "Arkeoloji", "Tarih", "Doğa", "Kültür", "Gastronomi"];
 
@@ -166,10 +167,10 @@ export default function BundlesClient({
                   ))}
                 </div>
                 <div className="vc-card-price-row">
-                  <span className="vc-price">₺{Number(b.price).toLocaleString("tr-TR")}</span>
+                  <span className="vc-price">{formatPrice(Number(b.price), lang)}</span>
                   {b.original_price && (
                     <span className="vc-price-old">
-                      ₺{Number(b.original_price).toLocaleString("tr-TR")}
+                      {formatPrice(Number(b.original_price), lang)}
                     </span>
                   )}
                   <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</span>

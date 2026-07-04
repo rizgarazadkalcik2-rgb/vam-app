@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Lang } from "@/lib/dictionary";
 import { t } from "@/lib/dictionary";
+import { formatPrice } from "@/lib/currency";
 
 /** Normalized shape so the same form serves both packages and bundles. */
 export type ReservationItem = {
@@ -26,7 +27,6 @@ export default function ReservationForm({ item, lang }: { item: ReservationItem;
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const locale = lang === "DE" ? "de-DE" : "tr-TR";
   const totalPrice = item.unitPrice * guestCount;
 
   async function handleSubmit(e: React.FormEvent) {
@@ -215,7 +215,7 @@ export default function ReservationForm({ item, lang }: { item: ReservationItem;
           >
             <span style={{ fontSize: 13, color: "#6f6558" }}>{t("rez_total", lang)}</span>
             <span style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700, color: "#c4522a" }}>
-              ₺{totalPrice.toLocaleString(locale)}
+              {formatPrice(totalPrice, lang)}
             </span>
           </div>
 
