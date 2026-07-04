@@ -229,6 +229,10 @@
   padding: 14px 18px;
   box-shadow: 0 1px 3px rgba(28,20,16,0.05);
 }
+.vc-mw-fixture-thumb {
+  flex-shrink: 0; width: 64px; height: 64px; border-radius: 8px;
+  object-fit: cover;
+}
 .vc-mw-fixture-date {
   flex-shrink: 0; min-width: 150px;
   font-family: var(--font-label); font-size: 12px; font-weight: 700;
