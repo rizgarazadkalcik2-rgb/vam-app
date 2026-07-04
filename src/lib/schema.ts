@@ -2,8 +2,22 @@ import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
 import { SEED_DESTINATIONS, SEED_BUNDLES } from "./seedData";
 
-// Bu fonksiyon ilk kurulumda bir kez çalıştırılır (tablo yoksa oluşturur).
-export async function ensureSchema() {
+// Şema kurulumu süreç ömründe yalnızca BİR KEZ çalışır (memoize edilmiş).
+// Önceden her API çağrısı ~10+ DDL sorgusunu tekrarlıyordu — artık ilk
+// çağrı kurulumu yapar, sonraki tüm çağrılar aynı sonucu anında paylaşır.
+let schemaReady: Promise<void> | null = null;
+
+export function ensureSchema(): Promise<void> {
+  if (!schemaReady) {
+    schemaReady = initSchema().catch((e) => {
+      schemaReady = null; // hata durumunda bir sonraki istekte yeniden dene
+      throw e;
+    });
+  }
+  return schemaReady;
+}
+
+async function initSchema() {
   await sql`
     CREATE TABLE IF NOT EXISTS packages (
       id SERIAL PRIMARY KEY,
