@@ -2,7 +2,7 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import TeamSelector from "./TeamSelector";
 import { getLang } from "@/lib/i18n";
-import { getCurrency } from "@/lib/currency";
+import { getCurrency } from "@/lib/getCurrency";
 import { listActiveMatchEvents } from "@/lib/matchEvents";
 import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";

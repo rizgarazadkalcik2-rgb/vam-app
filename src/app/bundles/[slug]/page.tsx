@@ -4,7 +4,8 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
-import { formatPrice, getCurrency } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
+import { getCurrency } from "@/lib/getCurrency";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
