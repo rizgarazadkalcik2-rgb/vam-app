@@ -272,6 +272,10 @@ export default function TeamSelector({
           <div className="vc-mw-fixture-list">
             {fixtures.map((f) => (
               <div className="vc-mw-fixture" key={f.id}>
+                {f.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="vc-mw-fixture-thumb" src={f.image_url} alt="" />
+                )}
                 <div className="vc-mw-fixture-date">{fmtDate(f.event_date as string)}</div>
                 <div className="vc-mw-fixture-main">
                   <span className="vc-mw-fixture-teams">
