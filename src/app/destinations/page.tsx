@@ -3,6 +3,7 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import DestinationsGrid from "./DestinationsGrid";
 import { getLang } from "@/lib/i18n";
+import { getCurrency } from "@/lib/currency";
 import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
@@ -18,11 +19,11 @@ export async function generateMetadata() {
 }
 
 export default async function DestinationsPage() {
-  const [destinations, lang] = await Promise.all([listActiveDestinations(), getLang()]);
+  const [destinations, lang, currency] = await Promise.all([listActiveDestinations(), getLang(), getCurrency()]);
 
   return (
     <div className="vc-root">
-      <VamNavbar lang={lang} />
+      <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-pagehead">
         <div className="vc-eyebrow">{t("dest_eyebrow", lang)}</div>

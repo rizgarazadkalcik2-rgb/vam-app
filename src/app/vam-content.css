@@ -58,6 +58,8 @@
 .vc-lang-switcher-btn { background: none; border: none; padding: 0; cursor: pointer; color: var(--ink-400); font: inherit; }
 .vc-lang-switcher-btn:hover { color: #fff; }
 .vc-lang-switcher-btn.active { color: var(--gold-300); font-weight: 700; }
+.vc-switcher-group { display: flex; align-items: center; gap: 14px; }
+.vc-switcher-group > .vc-lang-switcher:not(:last-child) { padding-right: 14px; border-right: 1px solid rgba(255,255,255,0.15); }
 
 .vc-nav-toggle { display: none; width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
 .vc-nav-toggle span { display: block; width: 22px; height: 2px; background: #fff; transition: transform 150ms ease, opacity 150ms ease; }
@@ -68,10 +70,11 @@
 .vc-nav-mobile-panel a, .vc-nav-mobile-panel .vc-btn-cta { padding: 12px 4px; font-size: 15px; }
 .vc-nav-mobile-panel .vc-btn-cta { text-align: center; margin-top: 6px; }
 .vc-nav-mobile-panel .vc-lang-switcher { padding: 12px 4px; font-size: 14px; }
+.vc-nav-mobile-panel .vc-switcher-group { padding: 12px 4px; gap: 20px; }
 
 @media (max-width: 760px) {
   .vc-navbar { padding: 16px 20px; }
-  .vc-nav-links, .vc-navbar > .vc-btn-cta, .vc-navbar > .vc-lang-switcher { display: none; }
+  .vc-nav-links, .vc-navbar > .vc-btn-cta, .vc-navbar > .vc-switcher-group { display: none; }
   .vc-nav-toggle { display: flex; }
   .vc-nav-mobile-panel.open { display: flex; }
 }

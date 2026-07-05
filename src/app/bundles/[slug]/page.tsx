@@ -4,7 +4,7 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
-import { formatPrice } from "@/lib/currency";
+import { formatPrice, getCurrency } from "@/lib/currency";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +38,7 @@ export default async function BundleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [b, lang] = await Promise.all([getBundleBySlug(slug), getLang()]);
+  const [b, lang, currency] = await Promise.all([getBundleBySlug(slug), getLang(), getCurrency()]);
   if (!b || b.status !== "active") notFound();
 
   const others = (await listActiveBundles()).filter((x) => x.slug !== b.slug).slice(0, 3);
@@ -47,7 +47,7 @@ export default async function BundleDetailPage({
 
   return (
     <div className="vc-root">
-      <VamNavbar lang={lang} />
+      <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
         <a href="/platform">{t("breadcrumb_home", lang)}</a> › <a href="/bundles">{t("all_bundles", lang)}</a> › {b.title}
@@ -105,11 +105,11 @@ export default async function BundleDetailPage({
           <div className="vc-sidebar-card" id="booking-card">
             <div style={{ marginBottom: 16 }}>
               <span className="vc-price" style={{ fontSize: 28 }}>
-                {formatPrice(Number(b.price), lang)}
+                {formatPrice(Number(b.price), currency)}
               </span>
               {b.original_price && (
                 <span className="vc-price-old" style={{ marginLeft: 8 }}>
-                  {formatPrice(Number(b.original_price), lang)}
+                  {formatPrice(Number(b.original_price), currency)}
                 </span>
               )}
               <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</div>
@@ -163,7 +163,7 @@ export default async function BundleDetailPage({
                   <div>
                     <div className="vc-related-name">{o.title}</div>
                     <div className="vc-related-region">
-                      {formatPrice(Number(o.price), lang)} · {o.nights} {t("bundle_night", lang)}
+                      {formatPrice(Number(o.price), currency)} · {o.nights} {t("bundle_night", lang)}
                     </div>
                   </div>
                 </a>

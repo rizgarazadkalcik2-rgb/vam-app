@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { defaultCurrencyForLang } from "@/lib/currency";
+import type { Lang } from "@/lib/dictionary";
 
 // Countries where German should be offered by default.
 const GERMAN_SPEAKING_COUNTRIES = new Set(["DE", "AT", "CH", "LI"]);
 
-const COOKIE_NAME = "vam_lang";
+const LANG_COOKIE = "vam_lang";
+const CURRENCY_COOKIE = "vam_currency";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
 function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" {
@@ -38,18 +41,30 @@ function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" {
 }
 
 export function middleware(request: NextRequest) {
+  const response = NextResponse.next();
+
   // Respect an existing choice (manual selection or previous detection) — never override it.
-  if (request.cookies.get(COOKIE_NAME)) {
-    return NextResponse.next();
+  const existingLang = request.cookies.get(LANG_COOKIE)?.value as Lang | undefined;
+  const lang: Lang = existingLang ?? detectLang(request);
+  if (!existingLang) {
+    response.cookies.set(LANG_COOKIE, lang, {
+      path: "/",
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: "lax",
+    });
   }
 
-  const lang = detectLang(request);
-  const response = NextResponse.next();
-  response.cookies.set(COOKIE_NAME, lang, {
-    path: "/",
-    maxAge: COOKIE_MAX_AGE,
-    sameSite: "lax",
-  });
+  // Currency is independent of language — it only gets a language-based
+  // default on a visitor's very first request. Once set, only the
+  // currency switcher itself changes it (see CurrencySwitcher.tsx).
+  if (!request.cookies.get(CURRENCY_COOKIE)) {
+    response.cookies.set(CURRENCY_COOKIE, defaultCurrencyForLang(lang), {
+      path: "/",
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: "lax",
+    });
+  }
+
   return response;
 }
 

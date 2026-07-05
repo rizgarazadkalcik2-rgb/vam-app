@@ -1,4 +1,7 @@
+import { cookies } from "next/headers";
 import type { Lang } from "./dictionary";
+
+export type Currency = "TRY" | "EUR" | "USD";
 
 /** Fixed TRY-per-1-EUR rate. VAM absorbs FX risk so the customer never sees a moving price. Update manually when the rate drifts meaningfully. */
 const TRY_PER_EUR = 55;
@@ -12,14 +15,27 @@ const TRY_PER_USD = 48;
 /** Round to the nearest 5 USD so prices read clean. */
 const USD_ROUND_STEP = 5;
 
-/** Formats a TRY amount for display: TR sessions see TRY, DE/KU sessions see a fixed-rate EUR conversion, EN sessions see a fixed-rate USD conversion.
- *  KU is routed to EUR as an interim default (large European Kurdish diaspora) until an independent currency selector ships. */
-export function formatPrice(amountTry: number, lang: Lang): string {
-  if (lang === "DE" || lang === "KU") {
+/** First-visit default only — after that, the visitor's own vam_currency cookie choice always wins (see middleware.ts). */
+export function defaultCurrencyForLang(lang: Lang): Currency {
+  if (lang === "DE" || lang === "KU") return "EUR";
+  if (lang === "EN") return "USD";
+  return "TRY";
+}
+
+/** Reads the vam_currency cookie (set by middleware or the currency switcher) on the server. Independent of vam_lang. */
+export async function getCurrency(): Promise<Currency> {
+  const store = await cookies();
+  const v = store.get("vam_currency")?.value;
+  return v === "EUR" ? "EUR" : v === "USD" ? "USD" : "TRY";
+}
+
+/** Formats a TRY amount for display in the chosen currency — independent of interface language. */
+export function formatPrice(amountTry: number, currency: Currency): string {
+  if (currency === "EUR") {
     const eur = Math.round(amountTry / TRY_PER_EUR / EUR_ROUND_STEP) * EUR_ROUND_STEP;
     return `${eur.toLocaleString("de-DE")} €`;
   }
-  if (lang === "EN") {
+  if (currency === "USD") {
     const usd = Math.round(amountTry / TRY_PER_USD / USD_ROUND_STEP) * USD_ROUND_STEP;
     return `$${usd.toLocaleString("en-US")}`;
   }
