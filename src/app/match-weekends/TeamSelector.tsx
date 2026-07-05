@@ -7,28 +7,30 @@ import type { MatchEvent } from "@/lib/matchEvents";
 export type Team = {
   slug: string;
   name: string;
-  city: { TR: string; DE: string };
+  city: { TR: string; DE: string; EN: string };
   letter: string;
-  badge: { TR: string; DE: string };
-  heroTitle: { TR: string; DE: string };
-  intro: { TR: string; DE: string };
-  included: { TR: string[]; DE: string[] };
+  badge: { TR: string; DE: string; EN: string };
+  heroTitle: { TR: string; DE: string; EN: string };
+  intro: { TR: string; DE: string; EN: string };
+  included: { TR: string[]; DE: string[]; EN: string[] };
 };
 
 export const TEAMS: Team[] = [
   {
     slug: "amedspor",
     name: "Amedspor",
-    city: { TR: "Diyarbakır", DE: "Diyarbakır" },
+    city: { TR: "Diyarbakır", DE: "Diyarbakır", EN: "Diyarbakır" },
     letter: "A",
-    badge: { TR: "Amedspor Experience", DE: "Amedspor Experience" },
+    badge: { TR: "Amedspor Experience", DE: "Amedspor Experience", EN: "Amedspor Experience" },
     heroTitle: {
       TR: "Amed'in Yaşayan Tarihine ve Modern Kimliğine Bir Yolculuk",
       DE: "Eine Reise in Amed's lebendige Geschichte und moderne Identität",
+      EN: "A Journey Into Amed's Living History and Modern Identity",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Sur'un beş bin yıllık taşları arasında yankılanan bir tezahüratı, tribünde omuz omuza duran bir şehri ve doksan dakikaya sığmayan bir kimliği sunuyoruz — Amedspor forması, buradaki en genç anıt.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der zwischen fünftausend Jahre alten Mauern von Sur widerhallt, eine Stadt, die Schulter an Schulter auf der Tribüne steht, und eine Identität, die in neunzig Minuten keinen Platz findet — das Amedspor-Trikot ist hier das jüngste Denkmal.",
+      EN: "This isn't a football ticket. We offer a chant that echoes among the five-thousand-year-old stones of Sur, a city standing shoulder to shoulder in the stands, and an identity that ninety minutes can't hold — the Amedspor jersey is the youngest monument here.",
     },
     included: {
       TR: [
@@ -47,21 +49,31 @@ export const TEAMS: Team[] = [
         "Lokale gastronomische Stationen",
         "Freizeitgestaltung für spielfreie Tage",
       ],
+      EN: [
+        "Passolig registration and ticket process tracking",
+        "Stand selection and stadium transfer plan",
+        "Accommodation recommendations within Sur",
+        "Tour of the Hevsel Gardens and the Tigris riverside",
+        "Local gastronomy stops",
+        "Free time planning for non-match days",
+      ],
     },
   },
   {
     slug: "vanspor",
     name: "Vanspor FK",
-    city: { TR: "Van", DE: "Van" },
+    city: { TR: "Van", DE: "Van", EN: "Van" },
     letter: "V",
-    badge: { TR: "Vanspor Experience", DE: "Vanspor Experience" },
+    badge: { TR: "Vanspor Experience", DE: "Vanspor Experience", EN: "Vanspor Experience" },
     heroTitle: {
       TR: "Van'ın Gölü Kadar Derin Bir Kimliğe Yolculuk",
       DE: "Eine Reise in eine Identität, so tief wie der Vansee",
+      EN: "A Journey Into an Identity as Deep as Lake Van",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Van Gölü'nün maviliğinde yansıyan bir tezahüratı, Urartu kalesinin gölgesinde nefes alan bir şehri sunuyoruz — Vanspor forması, bu gölün en genç dalgası.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der sich im Blau des Vansees spiegelt, eine Stadt, die im Schatten der Urartu-Festung atmet — das Vanspor-Trikot ist die jüngste Welle dieses Sees.",
+      EN: "This isn't a football ticket. We offer a chant reflected in the blue of Lake Van, a city breathing in the shadow of the Urartian fortress — the Vanspor jersey is this lake's youngest wave.",
     },
     included: {
       TR: [
@@ -80,21 +92,31 @@ export const TEAMS: Team[] = [
         "Van-Frühstück und lokale Spezialitäten",
         "Freizeitgestaltung für spielfreie Tage",
       ],
+      EN: [
+        "Passolig registration and ticket process tracking",
+        "Stand selection and stadium transfer plan",
+        "Tour of Van Castle and the traces of the Urartians",
+        "Boat tour to Akdamar Island",
+        "Van breakfast and local delicacy stops",
+        "Free time planning for non-match days",
+      ],
     },
   },
   {
     slug: "batman",
     name: "Batman Petrol Spor",
-    city: { TR: "Batman", DE: "Batman" },
+    city: { TR: "Batman", DE: "Batman", EN: "Batman" },
     letter: "B",
-    badge: { TR: "Batman Petrol Spor Experience", DE: "Batman Petrol Spor Experience" },
+    badge: { TR: "Batman Petrol Spor Experience", DE: "Batman Petrol Spor Experience", EN: "Batman Petrol Spor Experience" },
     heroTitle: {
       TR: "Dicle'nin Kıyısında Yaşayan Bir Direnişe Yolculuk",
       DE: "Eine Reise zu einem lebendigen Widerstand am Ufer des Tigris",
+      EN: "A Journey to a Living Resistance on the Banks of the Tigris",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Hasankeyf'in kayalıklarında yankılanan bir tezahüratı, Dicle'nin akışına direnen bir şehri sunuyoruz — Batman Petrol Spor forması, bu direnişin en genç rengi.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der in den Felsen von Hasankeyf widerhallt, eine Stadt, die der Strömung des Tigris standhält — das Trikot von Batman Petrol Spor ist die jüngste Farbe dieses Widerstands.",
+      EN: "This isn't a football ticket. We offer a chant that echoes among the cliffs of Hasankeyf, a city standing firm against the current of the Tigris — the Batman Petrol Spor jersey is the youngest color of this resistance.",
     },
     included: {
       TR: [
@@ -113,21 +135,31 @@ export const TEAMS: Team[] = [
         "Lokale gastronomische Stationen",
         "Freizeitgestaltung für spielfreie Tage",
       ],
+      EN: [
+        "Passolig registration and ticket process tracking",
+        "Stand selection and stadium transfer plan",
+        "Tour of Hasankeyf and the Tigris Valley",
+        "Visit to the rock-cut settlements and cave dwellings",
+        "Local gastronomy stops",
+        "Free time planning for non-match days",
+      ],
     },
   },
   {
     slug: "mardin1969",
     name: "Mardin 1969 Spor",
-    city: { TR: "Mardin", DE: "Mardin" },
+    city: { TR: "Mardin", DE: "Mardin", EN: "Mardin" },
     letter: "M",
-    badge: { TR: "Mardin 1969 Experience", DE: "Mardin 1969 Experience" },
+    badge: { TR: "Mardin 1969 Experience", DE: "Mardin 1969 Experience", EN: "Mardin 1969 Experience" },
     heroTitle: {
       TR: "Taş Şehrin Sabrına ve Zarafetine Yolculuk",
       DE: "Eine Reise zur Geduld und Eleganz der Steinstadt",
+      EN: "A Journey Into the Patience and Elegance of the Stone City",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Mardin'in altın taşlarında yankılanan bir tezahüratı, ovaya bakan bir şehrin sabrını sunuyoruz — Mardin 1969 forması, bu taşların en genç işçiliği.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der in den goldenen Steinen Mardins widerhallt, die Geduld einer Stadt mit Blick auf die Ebene — das Trikot von Mardin 1969 ist die jüngste Handwerkskunst dieser Steine.",
+      EN: "This isn't a football ticket. We offer a chant that echoes among Mardin's golden stones, the patience of a city looking out over the plain — the Mardin 1969 jersey is the youngest craftsmanship of these stones.",
     },
     included: {
       TR: [
@@ -146,21 +178,31 @@ export const TEAMS: Team[] = [
         "Mardiner Küche und lokale Spezialitäten",
         "Freizeitgestaltung für spielfreie Tage",
       ],
+      EN: [
+        "Passolig registration and ticket process tracking",
+        "Stand selection and stadium transfer plan",
+        "Tour of Mardin's old town and stone architecture",
+        "Visit to Deyrulzafaran Monastery",
+        "Mardin cuisine and local delicacy stops",
+        "Free time planning for non-match days",
+      ],
     },
   },
   {
     slug: "igdir",
     name: "Iğdır FK",
-    city: { TR: "Iğdır", DE: "Iğdır" },
+    city: { TR: "Iğdır", DE: "Iğdır", EN: "Iğdır" },
     letter: "I",
-    badge: { TR: "Iğdır FK Experience", DE: "Iğdır FK Experience" },
+    badge: { TR: "Iğdır FK Experience", DE: "Iğdır FK Experience", EN: "Iğdır FK Experience" },
     heroTitle: {
       TR: "Ağrı'nın Gölgesinde Büyüyen Bir Ovaya Yolculuk",
       DE: "Eine Reise in eine Ebene, die im Schatten des Ararat wächst",
+      EN: "A Journey Into a Plain Growing in the Shadow of Ararat",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Ağrı Dağı'nın eteklerinde yankılanan bir tezahüratı, bereketli ovanın gururunu sunuyoruz — Iğdır FK forması, bu dağın en genç yansıması.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der an den Hängen des Ararat widerhallt, den Stolz der fruchtbaren Ebene — das Trikot von Iğdır FK ist das jüngste Spiegelbild dieses Berges.",
+      EN: "This isn't a football ticket. We offer a chant that echoes at the foot of Mount Ararat, the pride of a fertile plain — the Iğdır FK jersey is this mountain's youngest reflection.",
     },
     included: {
       TR: [
@@ -179,6 +221,14 @@ export const TEAMS: Team[] = [
         "Lokale gastronomische Stationen",
         "Freizeitgestaltung für spielfreie Tage",
       ],
+      EN: [
+        "Passolig registration and ticket process tracking",
+        "Stand selection and stadium transfer plan",
+        "Tour of Mount Ararat's viewpoints",
+        "Excursion into the Iğdır plain and local agricultural culture",
+        "Local gastronomy stops",
+        "Free time planning for non-match days",
+      ],
     },
   },
 ];
@@ -195,7 +245,7 @@ export default function TeamSelector({
   const [active, setActive] = useState(0);
   const team = TEAMS[active];
 
-  const locale = lang === "DE" ? "de-DE" : "tr-TR";
+  const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : "tr-TR";
   const today = new Date().toISOString().slice(0, 10);
   const teamEvents = events.filter((e) => e.team === team.slug);
   const fixtures = teamEvents.filter(

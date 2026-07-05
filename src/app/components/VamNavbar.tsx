@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { t, type Lang } from "@/lib/dictionary";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function VamNavbar({ lang = "TR" }: { lang?: Lang }) {
   const [open, setOpen] = useState(false);
@@ -33,6 +34,7 @@ export default function VamNavbar({ lang = "TR" }: { lang?: Lang }) {
       </button>
 
       <div className="vc-nav-links">{links}</div>
+      <LanguageSwitcher lang={lang} />
       <a className="vc-btn-cta" href="/bundles">
         {t("nav_cta", lang)}
       </a>
@@ -42,6 +44,7 @@ export default function VamNavbar({ lang = "TR" }: { lang?: Lang }) {
         <a className="vc-btn-cta" href="/bundles">
           {t("nav_cta", lang)}
         </a>
+        <LanguageSwitcher lang={lang} />
       </div>
     </nav>
   );
