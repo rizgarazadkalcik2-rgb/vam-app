@@ -7,7 +7,7 @@ const GERMAN_SPEAKING_COUNTRIES = new Set(["DE", "AT", "CH", "LI"]);
 const COOKIE_NAME = "vam_lang";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
-function detectLang(request: NextRequest): "DE" | "EN" | "TR" {
+function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" {
   // 1) Vercel edge geo header — where the visitor is connecting from.
   const country = request.headers.get("x-vercel-ip-country");
   if (country && GERMAN_SPEAKING_COUNTRIES.has(country)) {
@@ -26,8 +26,14 @@ function detectLang(request: NextRequest): "DE" | "EN" | "TR" {
   if (primary.startsWith("tr")) {
     return "TR";
   }
+  // Kurdish has no single majority country, so it's detected from browser
+  // language only — "ku" covers Kurmanji; regional Sorani tags aren't
+  // handled here yet.
+  if (primary.startsWith("ku")) {
+    return "KU";
+  }
 
-  // 3) Everyone else (no TR/DE signal from geo or browser) defaults to English.
+  // 3) Everyone else (no TR/DE/KU signal from geo or browser) defaults to English.
   return "EN";
 }
 
