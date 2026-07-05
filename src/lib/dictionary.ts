@@ -52,11 +52,13 @@ export const DICT = {
     TR: "Anadolu ve Mezopotamya'nın Kadim Durakları",
     DE: "Uralte Stätten Anatoliens und Mesopotamiens",
     EN: "Ancient Stations of Anatolia and Mesopotamia",
+    KU: "Xalên Kevnar ên Anatolya û Mezopotamyayê",
   },
   dest_lede: {
     TR: "Göbeklitepe'nin taşlarından Ani'nin kiliselerine — on beş binyıllık bir coğrafyada, küratörlü duraklar.",
     DE: "Von den Steinen Göbeklitepes bis zu den Kirchen von Ani — kuratierte Stationen in einer fünfzehntausendjährigen Landschaft.",
     EN: "From the stones of Göbeklitepe to the churches of Ani — curated stops across a fifteen-thousand-year-old landscape.",
+    KU: "Ji kevirên Gobeklîtepeyê heta dêrên Aniyê — di erdnîgariyek pazdeh hezar salî de, xalên hilbijartî.",
   },
   dest_empty: {
     TR: "Bu kategoride henüz destinasyon eklenmedi.",
@@ -85,6 +87,7 @@ export const DICT = {
     TR: "Yerel operatörlerle revenue-share modeliyle hazırlanan, konaklama ve rehberlik dahil küratörlü paketler.",
     DE: "Kuratierte Pakete mit Unterkunft und Führung, entwickelt mit lokalen Partnern im Revenue-Share-Modell.",
     EN: "Curated packages including accommodation and guiding, developed with local partners on a revenue-share model.",
+    KU: "Bi operatorên herêmî re, di modela parvekirina dahatê de amade kirî, pakêtên hilbijartî ku cîwar û rêberî tê de ne.",
   },
   bundle_guests_suffix: { TR: "kişi", DE: "Personen", EN: "people", KU: "kes" },
   bundle_label_destination: { TR: "Destinasyon:", DE: "Destination:", EN: "Destination:", KU: "Cîh:" },
@@ -110,6 +113,7 @@ export const DICT = {
     TR: "Rezervasyon talebiniz anında sistemimize düşer, ekibimiz ödeme adımı için sizinle e-posta üzerinden iletişime geçer.",
     DE: "Ihre Buchungsanfrage geht sofort bei uns ein — unser Team meldet sich per E-Mail für den Zahlungsschritt.",
     EN: "Your booking request reaches us instantly — our team will get in touch by email for the payment step.",
+    KU: "Daxwaza we ya rezervasyonê tavilê digihîje pergala me — tîma me ji bo gava dayîna pere bi e-peyamê bi we re têkilî datîne.",
   },
   bundle_other_routes: { TR: "Diğer Rotalar", DE: "Weitere Routen", EN: "Other Routes", KU: "Rêyên Din" },
 
@@ -120,6 +124,7 @@ export const DICT = {
     TR: "Amed'in Yaşayan Tarihine ve Modern Kimliğine Bir Yolculuk",
     DE: "Eine Reise in Amed's lebendige Geschichte und moderne Identität",
     EN: "A Journey Into Amed's Living History and Modern Identity",
+    KU: "Rêwîtiyek li Dîroka Zindî û Nasnameya Nûjen a Amedê",
   },
   mw_hero_location: { TR: "Diyarbakır", DE: "Diyarbakır", EN: "Diyarbakır", KU: "Amed" },
   mw_hero_tag: { TR: "Maç günü deneyimi", DE: "Spieltag-Erlebnis", EN: "Match day experience", KU: "Ezmûna roja maçê" },
@@ -127,6 +132,7 @@ export const DICT = {
     TR: "Bu bir maç bileti satmıyor. Sur'un beş bin yıllık taşları arasında yankılanan bir tezahüratı, tribünde omuz omuza duran bir şehri ve doksan dakikaya sığmayan bir kimliği sunuyoruz — Amedspor forması, buradaki en genç anıt.",
     DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der zwischen fünftausend Jahre alten Mauern von Sur widerhallt, eine Stadt, die Schulter an Schulter auf der Tribüne steht, und eine Identität, die in neunzig Minuten keinen Platz findet — das Amedspor-Trikot ist hier das jüngste Denkmal.",
     EN: "This isn't a football ticket. We offer a chant that echoes among the five-thousand-year-old stones of Sur, a city standing shoulder to shoulder in the stands, and an identity that ninety minutes can't hold — the Amedspor jersey is the youngest monument here.",
+    KU: "Ev ne bîleta maçekê ye. Em dengek pêşkêş dikin ku di navbera kevirên Sûrê yên pênc hezar salî de vedigere, bajarekî ku li tribînê milûmil radiweste, û nasnameyek ku di neh deqeyan de nayê wesandin — fanîleya Amedspor li vir bîrdariya herî ciwan e.",
   },
   mw_service1_title: { TR: "Passolig Destek & Rehberlik", DE: "Passolig-Unterstützung & Beratung", EN: "Passolig Support & Guidance", KU: "Piştgirî û Rêberiya Passolig" },
   mw_service1_desc: {
@@ -158,11 +164,12 @@ export const DICT = {
   },
   mw_cta_design: { TR: "Deneyimi Tasarla", DE: "Erlebnis gestalten", EN: "Design the Experience", KU: "Ezmûnê Xwe Amade Bike" },
   mw_band_eyebrow: { TR: "— Kişisel Güzergah Tasarımı", DE: "— Persönliche Routenplanung", EN: "— Personal Route Design", KU: "— Amadekirina Rêya Taybet" },
-  mw_band_title: { TR: "Maç Haftası, Şehrin Tamamı Olsun", DE: "Die Spielwoche als Tor zur ganzen Stadt", EN: "Let Match Week Become the Whole City" },
+  mw_band_title: { TR: "Maç Haftası, Şehrin Tamamı Olsun", DE: "Die Spielwoche als Tor zur ganzen Stadt", EN: "Let Match Week Become the Whole City", KU: "Bila Hefteya Maçê Bibe Tevahiya Bajêr" },
   mw_band_desc: {
     TR: "Stat sadece bir durak. Güzergahınızı; Sur içindeki taş evler, Hevsel Bahçeleri'nde bir akşamüstü, Dicle kıyısında bir sofra ve yerel esnafla kurulan sahici bir sohbet üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.",
     DE: "Das Stadion ist nur eine Station. Wir gestalten Ihre Route um die Steinhäuser in Sur, einen Nachmittag in den Hevsel-Gärten, eine Tafel am Tigrisufer und ein echtes Gespräch mit lokalen Händlern. Der Spieltag wird zum Anlass, die Stadt kennenzulernen.",
     EN: "The stadium is only one stop. We build your route around the stone houses of Sur, an afternoon in the Hevsel Gardens, a table by the Tigris, and a real conversation with local shopkeepers. Match day becomes the reason to get to know the city.",
+    KU: "Staldiyûm tenê xalek e. Em rêya we li dora xaniyên kevir ên hundirê Sûrê, danekê êvarî li Baxçeyên Hevselê, sifrekê li kêleka Dîcleyê û sohbeteke rastîn a bi esnafên herêmî re ava dikin. Roja maçê dibe sedemek ji bo naskirina bajêr.",
   },
   mw_plan_week: { TR: "Maç Haftanı Planla", DE: "Deine Spielwoche planen", EN: "Plan Your Match Week", KU: "Hefteya Maçê Plan Bike" },
   mw_view_routes: { TR: "Rotalara Göz At", DE: "Routen ansehen", EN: "View Routes", KU: "Rêyan Bibîne" },
@@ -243,6 +250,7 @@ export const DICT = {
     TR: "Doğu Anadolu ve Mezopotamya'nın kadim toprakları için kültürel turizm platformu — küratörlü destinasyonlar, bündel paketler ve maç haftası deneyimleri.",
     DE: "Kulturtourismus-Plattform für die uralten Landschaften Ostanatoliens und Mesopotamiens — kuratierte Destinationen, Bündel-Pakete und Match-Wochenenden.",
     EN: "A cultural tourism platform for the ancient lands of Eastern Anatolia and Mesopotamia — curated destinations, bundled packages, and match weekend experiences.",
+    KU: "Ji bo axên kevnar ên Anatolya Rojhilat û Mezopotamyayê platforma geriyana çandî — cihên hilbijartî, pakêtên girêdayî û ezmûnên hefteya maçan.",
   },
   meta_dest_title: { TR: "Destinasyonlar", DE: "Destinationen", EN: "Destinations", KU: "Cihên Gerê" },
   meta_bundles_title: { TR: "Bündel Paketler", DE: "Bündel-Pakete", EN: "Bundle Packages", KU: "Pakêt" },
@@ -250,11 +258,13 @@ export const DICT = {
     TR: "Match Weekends — Bölge Takımlarıyla Kültürel Bir Yolculuk",
     DE: "Match Weekends — Eine kulturelle Reise mit den Teams der Region",
     EN: "Match Weekends — A Cultural Journey with the Region's Teams",
+    KU: "Match Weekends — Rêwîtiyek Çandî bi Tîmên Herêmê re",
   },
   meta_mw_desc: {
     TR: "Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor ve Iğdır FK maç haftaları — Passolig danışmanlığından kişiselleştirilmiş şehir güzergahına, küratörlü bir deneyim.",
     DE: "Spielwochen von Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor und Iğdır FK — von der Passolig-Beratung bis zur persönlichen Stadtroute, ein kuratiertes Erlebnis.",
     EN: "Match weeks with Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor, and Iğdır FK — a curated experience from Passolig consulting to a personalized city route.",
+    KU: "Hefteyên maçan ên Amedspor, Vanspor FK, Batman Petrol Spor, Mardin 1969 Spor û Îgdir FK — ji şêwirmendiya Passolig heta rêya bajêr a taybet, ezmûnek hilbijartî.",
   },
 } satisfies Record<string, Entry>;
 
