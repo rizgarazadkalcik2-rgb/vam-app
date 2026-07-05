@@ -3,6 +3,7 @@ import { getDestinationBySlug, listActiveDestinations } from "@/lib/destinations
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
+import { getCurrency } from "@/lib/currency";
 import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
@@ -39,7 +40,7 @@ export default async function DestinationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [d, lang] = await Promise.all([getDestinationBySlug(slug), getLang()]);
+  const [d, lang, currency] = await Promise.all([getDestinationBySlug(slug), getLang(), getCurrency()]);
   if (!d || d.status !== "active") notFound();
 
   const allDests = await listActiveDestinations();
@@ -51,7 +52,7 @@ export default async function DestinationDetailPage({
 
   return (
     <div className="vc-root">
-      <VamNavbar lang={lang} />
+      <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
         <a href="/platform">{t("breadcrumb_home", lang)}</a> › <a href="/destinations">{t("all_destinations", lang)}</a> › {d.name}

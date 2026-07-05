@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import type { VamBundle } from "@/lib/bundles";
 import { chip, t, type Lang } from "@/lib/dictionary";
-import { formatPrice } from "@/lib/currency";
+import { formatPrice, type Currency } from "@/lib/currency";
 
 const EXP_TYPES = ["Tümü", "Arkeoloji", "Tarih", "Doğa", "Kültür", "Gastronomi"];
 
@@ -40,6 +40,7 @@ export default function BundlesClient({
   initialGuests,
   initialDate,
   lang = "TR",
+  currency = "TRY",
 }: {
   bundles: VamBundle[];
   initialDest: string;
@@ -47,6 +48,7 @@ export default function BundlesClient({
   initialGuests: number;
   initialDate: string;
   lang?: Lang;
+  currency?: Currency;
 }) {
   const [filterDest, setFilterDest] = useState(initialDest || "Tümü");
   const [filterExp, setFilterExp]   = useState(initialExp  || "Tümü");
@@ -79,7 +81,7 @@ export default function BundlesClient({
           )}
           {initialDate && (
             <span style={{ marginLeft: 6, color: "var(--color-primary)", fontWeight: 600 }}>
-              · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : "tr-TR", { month: "long", year: "numeric" })}
+              · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : "tr-TR", { month: "long", year: "numeric" })}
             </span>
           )}
         </p>
@@ -167,10 +169,10 @@ export default function BundlesClient({
                   ))}
                 </div>
                 <div className="vc-card-price-row">
-                  <span className="vc-price">{formatPrice(Number(b.price), lang)}</span>
+                  <span className="vc-price">{formatPrice(Number(b.price), currency)}</span>
                   {b.original_price && (
                     <span className="vc-price-old">
-                      {formatPrice(Number(b.original_price), lang)}
+                      {formatPrice(Number(b.original_price), currency)}
                     </span>
                   )}
                   <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</span>

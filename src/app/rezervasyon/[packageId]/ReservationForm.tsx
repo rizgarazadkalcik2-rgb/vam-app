@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Lang } from "@/lib/dictionary";
 import { t } from "@/lib/dictionary";
-import { formatPrice } from "@/lib/currency";
+import { formatPrice, type Currency } from "@/lib/currency";
 
 /** Normalized shape so the same form serves both packages and bundles. */
 export type ReservationItem = {
@@ -16,7 +16,7 @@ export type ReservationItem = {
   unitPrice: number;
 };
 
-export default function ReservationForm({ item, lang }: { item: ReservationItem; lang: Lang }) {
+export default function ReservationForm({ item, lang, currency }: { item: ReservationItem; lang: Lang; currency: Currency }) {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -215,7 +215,7 @@ export default function ReservationForm({ item, lang }: { item: ReservationItem;
           >
             <span style={{ fontSize: 13, color: "#6f6558" }}>{t("rez_total", lang)}</span>
             <span style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700, color: "#c4522a" }}>
-              {formatPrice(totalPrice, lang)}
+              {formatPrice(totalPrice, currency)}
             </span>
           </div>
 

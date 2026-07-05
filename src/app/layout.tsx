@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       siteName: "VAM — Visit Anatolia and Mesopotamia",
       type: "website",
-      locale: lang === "DE" ? "de_DE" : lang === "EN" ? "en_US" : "tr_TR",
+      locale: lang === "DE" ? "de_DE" : lang === "EN" ? "en_US" : lang === "KU" ? "ku_TR" : "tr_TR",
       description,
     },
     twitter: {
@@ -36,7 +36,7 @@ export default async function RootLayout({
   const lang = await getLang();
 
   return (
-    <html lang={lang === "DE" ? "de" : lang === "EN" ? "en" : "tr"} className="h-full antialiased">
+    <html lang={lang === "DE" ? "de" : lang === "EN" ? "en" : lang === "KU" ? "ku" : "tr"} className="h-full antialiased">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

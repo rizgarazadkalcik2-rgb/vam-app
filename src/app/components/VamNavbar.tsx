@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { t, type Lang } from "@/lib/dictionary";
+import type { Currency } from "@/lib/currency";
 import LanguageSwitcher from "./LanguageSwitcher";
+import CurrencySwitcher from "./CurrencySwitcher";
 
-export default function VamNavbar({ lang = "TR" }: { lang?: Lang }) {
+export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: Lang; currency?: Currency }) {
   const [open, setOpen] = useState(false);
 
   const links = (
@@ -34,7 +36,10 @@ export default function VamNavbar({ lang = "TR" }: { lang?: Lang }) {
       </button>
 
       <div className="vc-nav-links">{links}</div>
-      <LanguageSwitcher lang={lang} />
+      <div className="vc-switcher-group">
+        <LanguageSwitcher lang={lang} />
+        <CurrencySwitcher currency={currency} />
+      </div>
       <a className="vc-btn-cta" href="/bundles">
         {t("nav_cta", lang)}
       </a>
@@ -44,7 +49,10 @@ export default function VamNavbar({ lang = "TR" }: { lang?: Lang }) {
         <a className="vc-btn-cta" href="/bundles">
           {t("nav_cta", lang)}
         </a>
-        <LanguageSwitcher lang={lang} />
+        <div className="vc-switcher-group">
+          <LanguageSwitcher lang={lang} />
+          <CurrencySwitcher currency={currency} />
+        </div>
       </div>
     </nav>
   );

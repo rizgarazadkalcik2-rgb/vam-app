@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBundleById } from "@/lib/bundles";
 import { getLang } from "@/lib/i18n";
+import { getCurrency } from "@/lib/currency";
 import { t } from "@/lib/dictionary";
 import ReservationForm from "../../[packageId]/ReservationForm";
 
@@ -15,7 +16,7 @@ export default async function BundleRezervasyonPage({
   params: Promise<{ bundleId: string }>;
 }) {
   const { bundleId } = await params;
-  const [bundle, lang] = await Promise.all([getBundleById(Number(bundleId)), getLang()]);
+  const [bundle, lang, currency] = await Promise.all([getBundleById(Number(bundleId)), getLang(), getCurrency()]);
 
   if (!bundle || bundle.status !== "active") {
     notFound();
@@ -24,6 +25,7 @@ export default async function BundleRezervasyonPage({
   return (
     <ReservationForm
       lang={lang}
+      currency={currency}
       item={{
         kind: "bundle",
         id: bundle.id,

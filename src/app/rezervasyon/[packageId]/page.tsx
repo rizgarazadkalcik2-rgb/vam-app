@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getPackageById } from "@/lib/packages";
 import { getLang } from "@/lib/i18n";
+import { getCurrency } from "@/lib/currency";
 import { t } from "@/lib/dictionary";
 import ReservationForm from "./ReservationForm";
 
@@ -15,7 +16,7 @@ export default async function RezervasyonPage({
   params: Promise<{ packageId: string }>;
 }) {
   const { packageId } = await params;
-  const [pkg, lang] = await Promise.all([getPackageById(Number(packageId)), getLang()]);
+  const [pkg, lang, currency] = await Promise.all([getPackageById(Number(packageId)), getLang(), getCurrency()]);
 
   if (!pkg || pkg.status !== "active") {
     notFound();
@@ -24,6 +25,7 @@ export default async function RezervasyonPage({
   return (
     <ReservationForm
       lang={lang}
+      currency={currency}
       item={{
         kind: "package",
         id: pkg.id,

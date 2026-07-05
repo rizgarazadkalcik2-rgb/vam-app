@@ -7,19 +7,19 @@ import type { MatchEvent } from "@/lib/matchEvents";
 export type Team = {
   slug: string;
   name: string;
-  city: { TR: string; DE: string; EN: string };
+  city: { TR: string; DE: string; EN: string; KU?: string };
   letter: string;
-  badge: { TR: string; DE: string; EN: string };
-  heroTitle: { TR: string; DE: string; EN: string };
-  intro: { TR: string; DE: string; EN: string };
-  included: { TR: string[]; DE: string[]; EN: string[] };
+  badge: { TR: string; DE: string; EN: string; KU?: string };
+  heroTitle: { TR: string; DE: string; EN: string; KU?: string };
+  intro: { TR: string; DE: string; EN: string; KU?: string };
+  included: { TR: string[]; DE: string[]; EN: string[]; KU?: string[] };
 };
 
 export const TEAMS: Team[] = [
   {
     slug: "amedspor",
     name: "Amedspor",
-    city: { TR: "Diyarbakır", DE: "Diyarbakır", EN: "Diyarbakır" },
+    city: { TR: "Diyarbakır", DE: "Diyarbakır", EN: "Diyarbakır", KU: "Amed" },
     letter: "A",
     badge: { TR: "Amedspor Experience", DE: "Amedspor Experience", EN: "Amedspor Experience" },
     heroTitle: {
@@ -62,7 +62,7 @@ export const TEAMS: Team[] = [
   {
     slug: "vanspor",
     name: "Vanspor FK",
-    city: { TR: "Van", DE: "Van", EN: "Van" },
+    city: { TR: "Van", DE: "Van", EN: "Van", KU: "Wan" },
     letter: "V",
     badge: { TR: "Vanspor Experience", DE: "Vanspor Experience", EN: "Vanspor Experience" },
     heroTitle: {
@@ -105,7 +105,7 @@ export const TEAMS: Team[] = [
   {
     slug: "batman",
     name: "Batman Petrol Spor",
-    city: { TR: "Batman", DE: "Batman", EN: "Batman" },
+    city: { TR: "Batman", DE: "Batman", EN: "Batman", KU: "Elih" },
     letter: "B",
     badge: { TR: "Batman Petrol Spor Experience", DE: "Batman Petrol Spor Experience", EN: "Batman Petrol Spor Experience" },
     heroTitle: {
@@ -148,7 +148,7 @@ export const TEAMS: Team[] = [
   {
     slug: "mardin1969",
     name: "Mardin 1969 Spor",
-    city: { TR: "Mardin", DE: "Mardin", EN: "Mardin" },
+    city: { TR: "Mardin", DE: "Mardin", EN: "Mardin", KU: "Mêrdîn" },
     letter: "M",
     badge: { TR: "Mardin 1969 Experience", DE: "Mardin 1969 Experience", EN: "Mardin 1969 Experience" },
     heroTitle: {
@@ -191,7 +191,7 @@ export const TEAMS: Team[] = [
   {
     slug: "igdir",
     name: "Iğdır FK",
-    city: { TR: "Iğdır", DE: "Iğdır", EN: "Iğdır" },
+    city: { TR: "Iğdır", DE: "Iğdır", EN: "Iğdır", KU: "Îgdir" },
     letter: "I",
     badge: { TR: "Iğdır FK Experience", DE: "Iğdır FK Experience", EN: "Iğdır FK Experience" },
     heroTitle: {
@@ -245,7 +245,7 @@ export default function TeamSelector({
   const [active, setActive] = useState(0);
   const team = TEAMS[active];
 
-  const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : "tr-TR";
+  const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : "tr-TR";
   const today = new Date().toISOString().slice(0, 10);
   const teamEvents = events.filter((e) => e.team === team.slug);
   const fixtures = teamEvents.filter(
@@ -300,11 +300,11 @@ export default function TeamSelector({
         <div className="vc-mw-hero-content">
           <div className="vc-badges">
             <span className="vc-badge vc-badge-gold">Match Weekends</span>
-            <span className="vc-badge vc-badge-dark">{team.badge[lang]}</span>
+            <span className="vc-badge vc-badge-dark">{team.badge[lang] ?? team.badge.TR}</span>
           </div>
-          <h1 className="vc-hero-title">{team.heroTitle[lang]}</h1>
+          <h1 className="vc-hero-title">{team.heroTitle[lang] ?? team.heroTitle.TR}</h1>
           <div className="vc-hero-meta">
-            <span>⊙ {team.city[lang]}</span>
+            <span>⊙ {team.city[lang] ?? team.city.TR}</span>
             <span className="vc-dot" />
             <span>{t("mw_hero_tag", lang)}</span>
           </div>
@@ -312,7 +312,7 @@ export default function TeamSelector({
       </div>
 
       <div className="vc-mw-intro">
-        <p>{team.intro[lang]}</p>
+        <p>{team.intro[lang] ?? team.intro.TR}</p>
       </div>
 
       {fixtures.length > 0 && (
@@ -391,7 +391,7 @@ export default function TeamSelector({
               {t("mw_included_title", lang)}
             </div>
             <ul className="vc-checklist">
-              {team.included[lang].map((item) => (
+              {(team.included[lang] ?? team.included.TR).map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>

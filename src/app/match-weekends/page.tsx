@@ -2,6 +2,7 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import TeamSelector from "./TeamSelector";
 import { getLang } from "@/lib/i18n";
+import { getCurrency } from "@/lib/currency";
 import { listActiveMatchEvents } from "@/lib/matchEvents";
 import { t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
@@ -61,7 +62,7 @@ function IconRoute() {
 export const dynamic = "force-dynamic";
 
 export default async function MatchWeekendsPage() {
-  const [lang, events] = await Promise.all([getLang(), listActiveMatchEvents()]);
+  const [lang, currency, events] = await Promise.all([getLang(), getCurrency(), listActiveMatchEvents()]);
 
   const SERVICES = [
     { icon: <IconPass />, title: t("mw_service1_title", lang), desc: t("mw_service1_desc", lang) },
@@ -72,7 +73,7 @@ export default async function MatchWeekendsPage() {
 
   return (
     <div className="vc-root">
-      <VamNavbar lang={lang} />
+      <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
         <a href="/platform">{t("breadcrumb_home", lang)}</a> › {t("mw_breadcrumb", lang)}

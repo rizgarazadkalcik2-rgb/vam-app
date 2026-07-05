@@ -13,7 +13,7 @@ export default function NotFound() {
   const [lang, setLang] = useState<Lang>("TR");
 
   useEffect(() => {
-    const m = document.cookie.match(/(?:^|;\s*)vam_lang=(DE|EN|TR)/);
+    const m = document.cookie.match(/(?:^|;\s*)vam_lang=(DE|EN|KU|TR)/);
     if (m) setLang(m[1] as Lang);
   }, []);
 
