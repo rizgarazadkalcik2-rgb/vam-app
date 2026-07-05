@@ -26,11 +26,13 @@ export const TEAMS: Team[] = [
       TR: "Amed'in Yaşayan Tarihine ve Modern Kimliğine Bir Yolculuk",
       DE: "Eine Reise in Amed's lebendige Geschichte und moderne Identität",
       EN: "A Journey Into Amed's Living History and Modern Identity",
+      KU: "Rêwîtiyek li Dîroka Zindî û Nasnameya Nûjen a Amedê",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Sur'un beş bin yıllık taşları arasında yankılanan bir tezahüratı, tribünde omuz omuza duran bir şehri ve doksan dakikaya sığmayan bir kimliği sunuyoruz — Amedspor forması, buradaki en genç anıt.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der zwischen fünftausend Jahre alten Mauern von Sur widerhallt, eine Stadt, die Schulter an Schulter auf der Tribüne steht, und eine Identität, die in neunzig Minuten keinen Platz findet — das Amedspor-Trikot ist hier das jüngste Denkmal.",
       EN: "This isn't a football ticket. We offer a chant that echoes among the five-thousand-year-old stones of Sur, a city standing shoulder to shoulder in the stands, and an identity that ninety minutes can't hold — the Amedspor jersey is the youngest monument here.",
+      KU: "Ev ne bîleta maçekê ye. Em dengek pêşkêş dikin ku di navbera kevirên Sûrê yên pênc hezar salî de vedigere, bajarekî ku li tribînê milûmil radiweste, û nasnameyek ku di neh deqeyan de nayê wesandin — fanîleya Amedspor li vir bîrdariya herî ciwan e.",
     },
     included: {
       TR: [
@@ -57,6 +59,14 @@ export const TEAMS: Team[] = [
         "Local gastronomy stops",
         "Free time planning for non-match days",
       ],
+      KU: [
+        "Tomarkirina Passolig û şopandina pêvajoya bîletê",
+        "Hilbijartina tribînê û plana gihîştina staldiyûmê",
+        "Pêşniyarên cîwar li Sûrê",
+        "Gera Baxçeyên Hevselê û kêleka Dîcleyê",
+        "Xalên xwarinên herêmî",
+        "Plana dema vala ji bo rojên bêyî maçê",
+      ],
     },
   },
   {
@@ -69,11 +79,13 @@ export const TEAMS: Team[] = [
       TR: "Van'ın Gölü Kadar Derin Bir Kimliğe Yolculuk",
       DE: "Eine Reise in eine Identität, so tief wie der Vansee",
       EN: "A Journey Into an Identity as Deep as Lake Van",
+      KU: "Rêwîtiyek li Nasnameyek Kûr wek Gola Wanê",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Van Gölü'nün maviliğinde yansıyan bir tezahüratı, Urartu kalesinin gölgesinde nefes alan bir şehri sunuyoruz — Vanspor forması, bu gölün en genç dalgası.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der sich im Blau des Vansees spiegelt, eine Stadt, die im Schatten der Urartu-Festung atmet — das Vanspor-Trikot ist die jüngste Welle dieses Sees.",
       EN: "This isn't a football ticket. We offer a chant reflected in the blue of Lake Van, a city breathing in the shadow of the Urartian fortress — the Vanspor jersey is this lake's youngest wave.",
+      KU: "Ev ne bîleta maçekê ye. Em dengek pêşkêş dikin ku di şînahiya Gola Wanê de tê xuyakirin, bajarekî ku di siya kela Ûrartûyan de nefes digire — fanîleya Vanspor pêla herî ciwan a vê golê ye.",
     },
     included: {
       TR: [
@@ -100,6 +112,14 @@ export const TEAMS: Team[] = [
         "Van breakfast and local delicacy stops",
         "Free time planning for non-match days",
       ],
+      KU: [
+        "Tomarkirina Passolig û şopandina pêvajoya bîletê",
+        "Hilbijartina tribînê û plana gihîştina staldiyûmê",
+        "Gera Kela Wanê û şopên Ûrartûyan",
+        "Gera keştiyê ya Girava Akdamarê",
+        "Taştêya Wanê û xalên tama herêmî",
+        "Plana dema vala ji bo rojên bêyî maçê",
+      ],
     },
   },
   {
@@ -112,11 +132,13 @@ export const TEAMS: Team[] = [
       TR: "Dicle'nin Kıyısında Yaşayan Bir Direnişe Yolculuk",
       DE: "Eine Reise zu einem lebendigen Widerstand am Ufer des Tigris",
       EN: "A Journey to a Living Resistance on the Banks of the Tigris",
+      KU: "Rêwîtiyek li Berxwedaneke Zindî li Kêleka Dîcleyê",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Hasankeyf'in kayalıklarında yankılanan bir tezahüratı, Dicle'nin akışına direnen bir şehri sunuyoruz — Batman Petrol Spor forması, bu direnişin en genç rengi.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der in den Felsen von Hasankeyf widerhallt, eine Stadt, die der Strömung des Tigris standhält — das Trikot von Batman Petrol Spor ist die jüngste Farbe dieses Widerstands.",
       EN: "This isn't a football ticket. We offer a chant that echoes among the cliffs of Hasankeyf, a city standing firm against the current of the Tigris — the Batman Petrol Spor jersey is the youngest color of this resistance.",
+      KU: "Ev ne bîleta maçekê ye. Em dengek pêşkêş dikin ku di zinarên Heskîfê de vedigere, bajarekî ku li hember herikîna Dîcleyê radiweste — fanîleya Batman Petrol Spor rengê herî ciwan ê vê berxwedanê ye.",
     },
     included: {
       TR: [
@@ -143,6 +165,14 @@ export const TEAMS: Team[] = [
         "Local gastronomy stops",
         "Free time planning for non-match days",
       ],
+      KU: [
+        "Tomarkirina Passolig û şopandina pêvajoya bîletê",
+        "Hilbijartina tribînê û plana gihîştina staldiyûmê",
+        "Gera Heskîf û Geliyê Dîcleyê",
+        "Gera niştecihên zinarî û xaniyên şikeftê",
+        "Xalên xwarinên herêmî",
+        "Plana dema vala ji bo rojên bêyî maçê",
+      ],
     },
   },
   {
@@ -155,11 +185,13 @@ export const TEAMS: Team[] = [
       TR: "Taş Şehrin Sabrına ve Zarafetine Yolculuk",
       DE: "Eine Reise zur Geduld und Eleganz der Steinstadt",
       EN: "A Journey Into the Patience and Elegance of the Stone City",
+      KU: "Rêwîtiyek li Sebir û Delaliya Bajarê Kevir",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Mardin'in altın taşlarında yankılanan bir tezahüratı, ovaya bakan bir şehrin sabrını sunuyoruz — Mardin 1969 forması, bu taşların en genç işçiliği.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der in den goldenen Steinen Mardins widerhallt, die Geduld einer Stadt mit Blick auf die Ebene — das Trikot von Mardin 1969 ist die jüngste Handwerkskunst dieser Steine.",
       EN: "This isn't a football ticket. We offer a chant that echoes among Mardin's golden stones, the patience of a city looking out over the plain — the Mardin 1969 jersey is the youngest craftsmanship of these stones.",
+      KU: "Ev ne bîleta maçekê ye. Em dengek pêşkêş dikin ku di kevirên zêrîn ên Mêrdînê de vedigere, sebra bajarekî ku li deştê dinêre — fanîleya Mardin 1969 destkariya herî ciwan a van keviran e.",
     },
     included: {
       TR: [
@@ -186,6 +218,14 @@ export const TEAMS: Team[] = [
         "Mardin cuisine and local delicacy stops",
         "Free time planning for non-match days",
       ],
+      KU: [
+        "Tomarkirina Passolig û şopandina pêvajoya bîletê",
+        "Hilbijartina tribînê û plana gihîştina staldiyûmê",
+        "Gera bajarê kevn ê Mêrdînê û mîmariya kevir",
+        "Serdana Dêra Deyrulzefaranê",
+        "Xwarina Mêrdînê û xalên tama herêmî",
+        "Plana dema vala ji bo rojên bêyî maçê",
+      ],
     },
   },
   {
@@ -198,11 +238,13 @@ export const TEAMS: Team[] = [
       TR: "Ağrı'nın Gölgesinde Büyüyen Bir Ovaya Yolculuk",
       DE: "Eine Reise in eine Ebene, die im Schatten des Ararat wächst",
       EN: "A Journey Into a Plain Growing in the Shadow of Ararat",
+      KU: "Rêwîtiyek li Deştek Mezinbûyî di Siya Agiriyê de",
     },
     intro: {
       TR: "Bu bir maç bileti satmıyor. Ağrı Dağı'nın eteklerinde yankılanan bir tezahüratı, bereketli ovanın gururunu sunuyoruz — Iğdır FK forması, bu dağın en genç yansıması.",
       DE: "Hier verkaufen wir kein Fußballticket. Wir bieten einen Gesang, der an den Hängen des Ararat widerhallt, den Stolz der fruchtbaren Ebene — das Trikot von Iğdır FK ist das jüngste Spiegelbild dieses Berges.",
       EN: "This isn't a football ticket. We offer a chant that echoes at the foot of Mount Ararat, the pride of a fertile plain — the Iğdır FK jersey is this mountain's youngest reflection.",
+      KU: "Ev ne bîleta maçekê ye. Em dengek pêşkêş dikin ku li binê Çiyayê Agiriyê vedigere, serbilindiya deştek bereketdar — fanîleya Îgdir FK weyneya herî ciwan a vî çiyayî ye.",
     },
     included: {
       TR: [
@@ -228,6 +270,14 @@ export const TEAMS: Team[] = [
         "Excursion into the Iğdır plain and local agricultural culture",
         "Local gastronomy stops",
         "Free time planning for non-match days",
+      ],
+      KU: [
+        "Tomarkirina Passolig û şopandina pêvajoya bîletê",
+        "Hilbijartina tribînê û plana gihîştina staldiyûmê",
+        "Gera xalên dîmenê yên Çiyayê Agiriyê",
+        "Gera deşta Îgdirê û çanda çandiniyê ya herêmî",
+        "Xalên xwarinên herêmî",
+        "Plana dema vala ji bo rojên bêyî maçê",
       ],
     },
   },
