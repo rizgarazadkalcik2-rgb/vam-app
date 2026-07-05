@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBundleById } from "@/lib/bundles";
 import { getLang } from "@/lib/i18n";
-import { getCurrency } from "@/lib/currency";
+import { getCurrency } from "@/lib/getCurrency";
 import { t } from "@/lib/dictionary";
 import ReservationForm from "../../[packageId]/ReservationForm";
 

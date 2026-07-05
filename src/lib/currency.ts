@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import type { Lang } from "./dictionary";
 
 export type Currency = "TRY" | "EUR" | "USD";
@@ -20,13 +19,6 @@ export function defaultCurrencyForLang(lang: Lang): Currency {
   if (lang === "DE" || lang === "KU") return "EUR";
   if (lang === "EN") return "USD";
   return "TRY";
-}
-
-/** Reads the vam_currency cookie (set by middleware or the currency switcher) on the server. Independent of vam_lang. */
-export async function getCurrency(): Promise<Currency> {
-  const store = await cookies();
-  const v = store.get("vam_currency")?.value;
-  return v === "EUR" ? "EUR" : v === "USD" ? "USD" : "TRY";
 }
 
 /** Formats a TRY amount for display in the chosen currency — independent of interface language. */
