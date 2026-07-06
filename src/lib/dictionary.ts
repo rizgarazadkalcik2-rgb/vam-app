@@ -27,6 +27,7 @@ export const DICT = {
   footer_terms_sale: { TR: "Mesafeli Satış Sözleşmesi", DE: "Fernabsatzvertrag", EN: "Distance Sales Agreement", KU: "Peymana Firotana ji Dûr" },
   footer_cancel_policy: { TR: "İptal Politikası", DE: "Stornierungsrichtlinie", EN: "Cancellation Policy", KU: "Siyaseta Betalkirinê" },
   footer_privacy: { TR: "Gizlilik", DE: "Datenschutz", EN: "Privacy", KU: "Nihênî" },
+  footer_impressum: { TR: "Yasal Bilgiler", DE: "Impressum", EN: "Legal Notice", KU: "Agahiyên Fermî" },
   footer_service_terms: { TR: "Hizmet Şartları", DE: "Nutzungsbedingungen", EN: "Terms of Service", KU: "Mercên Karûbarê" },
   footer_partner_login: { TR: "Acente / Yönetici Girişi", DE: "Partner-/Admin-Login", EN: "Partner / Admin Login", KU: "Ketina Partner / Rêvebir" },
 

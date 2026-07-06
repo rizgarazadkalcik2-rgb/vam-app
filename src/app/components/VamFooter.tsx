@@ -31,6 +31,7 @@ export default function VamFooter({ lang = "TR" }: { lang?: Lang }) {
           <a href="/mesafeli-satis-sozlesmesi">{t("footer_terms_sale", lang)}</a>
           <a href="/iptal-iade-politikasi">{t("footer_cancel_policy", lang)}</a>
           <a href="/gizlilik-politikasi">{t("footer_privacy", lang)}</a>
+          <a href="/impressum">{t("footer_impressum", lang)}</a>
           <a href="/teslimat-hizmet-sartlari">{t("footer_service_terms", lang)}</a>
           <a href="/giris">{t("footer_partner_login", lang)}</a>
         </div>
