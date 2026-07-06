@@ -1,8 +1,14 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
+const JWT_SECRET_ENV = process.env.JWT_SECRET;
+if (!JWT_SECRET_ENV && process.env.NODE_ENV === "production") {
+  console.error(
+    "[GUVENLIK] JWT_SECRET ortam degiskeni tanimli degil — varsayilan (guvensiz) secret kullaniliyor! Vercel proje ayarlarindan JWT_SECRET eklenmeli."
+  );
+}
 const SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "vam-dev-secret-change-in-production-please"
+  JWT_SECRET_ENV || "vam-dev-secret-change-in-production-please"
 );
 const COOKIE_NAME = "vam_session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 7; // 7 gün
