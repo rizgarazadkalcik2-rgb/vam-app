@@ -13,17 +13,20 @@ export default function MesafeliSatisSozlesmesiPage() {
       <h2>1. Taraflar</h2>
       <h3>Satıcı</h3>
       <p>
-        Unvan: <span className="placeholder">Narin Kalçık</span> (şahıs
-        işletmesi)
+        Unvan: Narin Kalçık (şahıs işletmesi)
         <br />
-        Adres: Tuşba/Van, Türkiye —{" "}
-        <span className="placeholder">[açık adres]</span>
+        Adres: Akköprü Mahallesi, Orta Sokak No: 68, Tuşba/Van, Türkiye
         <br />
-        Vergi Dairesi / VKN: <span className="placeholder">[bilgi]</span>
+        Vergi Dairesi / VKN: Van Vergi Dairesi Müdürlüğü / 4910418681
         <br />
         E-posta: <a href="mailto:info@visitvam.com">info@visitvam.com</a>
         <br />
-        Telefon: <span className="placeholder">[telefon numarası]</span>
+        Telefon: <a href="tel:+905436837978">+90 543 683 7978</a>
+      </p>
+      <p style={{ fontSize: 13.5 }}>
+        Ayrıntılı işletme ve iletişim bilgileri için{" "}
+        <a href="/impressum">Yasal Bilgiler (Impressum)</a> sayfamıza
+        bakabilirsiniz.
       </p>
 
       <h3>Alıcı</h3>
