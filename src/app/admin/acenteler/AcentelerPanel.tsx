@@ -131,8 +131,8 @@ export default function AcentelerPanel({
     if (!resetTarget) return;
     setResetError("");
 
-    if (resetPassword.length < 6) {
-      setResetError("Şifre en az 6 karakter olmalı.");
+    if (resetPassword.length < 12) {
+      setResetError("Şifre en az 12 karakter olmalı.");
       return;
     }
 
@@ -192,11 +192,11 @@ export default function AcentelerPanel({
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
             <input
               type="password"
-              placeholder="Şifre (en az 6 karakter)"
+              placeholder="Şifre (en az 12 karakter)"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
-              minLength={6}
+              minLength={12}
               style={inputStyle}
             />
             <select
@@ -429,7 +429,7 @@ export default function AcentelerPanel({
               </div>
               <input
                 type="password"
-                placeholder="Yeni şifre (en az 6 karakter)"
+                placeholder="Yeni şifre (en az 12 karakter)"
                 value={resetPassword}
                 onChange={(e) => setResetPassword(e.target.value)}
                 autoFocus

@@ -40,6 +40,9 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
 
   const packageId = body?.packageId ? Number(body.packageId) : null;
   const bundleId = body?.bundleId ? Number(body.bundleId) : null;

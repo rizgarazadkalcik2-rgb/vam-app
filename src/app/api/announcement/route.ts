@@ -16,6 +16,9 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   if (body?.active && !body?.bodyTr?.trim()) {
     return NextResponse.json(
       { error: "Duyuru aktifken en az Türkçe metin gerekli." },

@@ -18,6 +18,9 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   const slug = body?.slug?.trim();
   const name = body?.name?.trim();
   const region = body?.region?.trim();

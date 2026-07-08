@@ -11,6 +11,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { id } = await params;
   const bundleId = Number(id);
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
 
   const slug = body?.slug?.trim();
   const title = body?.title?.trim();

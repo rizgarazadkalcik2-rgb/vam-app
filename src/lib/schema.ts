@@ -10,6 +10,7 @@ let schemaReady: Promise<void> | null = null;
 export function ensureSchema(): Promise<void> {
   if (!schemaReady) {
     schemaReady = initSchema().catch((e) => {
+      console.error("[schema] init başarısız:", e);
       schemaReady = null; // hata durumunda bir sonraki istekte yeniden dene
       throw e;
     });
