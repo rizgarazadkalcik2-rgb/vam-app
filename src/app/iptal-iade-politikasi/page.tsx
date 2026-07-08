@@ -109,6 +109,15 @@ function tt(key: TKey, lang: Lang): string {
   return T[key][lang] ?? T[key].TR;
 }
 
+export async function generateMetadata() {
+  const lang = await getLang();
+  return {
+    title: tt("title", lang),
+    description: tt("intro", lang),
+    alternates: { canonical: "/iptal-iade-politikasi" },
+  };
+}
+
 export default async function IptalIadePolitikasiPage() {
   const lang = await getLang();
 
