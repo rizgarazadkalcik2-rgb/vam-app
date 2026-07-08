@@ -1,6 +1,15 @@
 import { sql } from "@vercel/postgres";
 import { ensureSchema } from "./schema";
 
+export interface BundleTranslation {
+  title?: string;
+  description?: string;
+  includes?: string[];
+  badge?: string;
+}
+
+export type BundleTranslations = Partial<Record<"DE" | "EN" | "KU", BundleTranslation>>;
+
 export interface VamBundle {
   id: number;
   slug: string;
@@ -14,6 +23,7 @@ export interface VamBundle {
   includes: string[];
   badge: string | null;
   status: string;
+  translations: BundleTranslations;
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +40,19 @@ export interface BundleInput {
   includes?: string[];
   badge?: string | null;
   status?: string;
+  translations?: BundleTranslations;
+}
+
+/** DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki t() ile aynı fallback mantığı. */
+export function localizeBundle(b: VamBundle, lang: "TR" | "DE" | "EN" | "KU") {
+  const tr = lang === "TR" ? undefined : b.translations?.[lang];
+  return {
+    ...b,
+    title: tr?.title || b.title,
+    description: tr?.description || b.description,
+    includes: tr?.includes && tr.includes.length > 0 ? tr.includes : b.includes,
+    badge: tr?.badge || b.badge,
+  };
 }
 
 export async function listAllBundles(): Promise<VamBundle[]> {
@@ -77,12 +100,12 @@ export async function createBundle(data: BundleInput): Promise<VamBundle> {
   const { rows } = await sql<VamBundle>`
     INSERT INTO bundles (
       slug, title, image_url, description, nights, destinations, price,
-      original_price, includes, badge, status
+      original_price, includes, badge, status, translations
     ) VALUES (
       ${data.slug}, ${data.title}, ${data.imageUrl || null}, ${data.description},
       ${data.nights}, ${JSON.stringify(data.destinations || [])}::jsonb, ${data.price},
       ${data.originalPrice ?? null}, ${JSON.stringify(data.includes || [])}::jsonb,
-      ${data.badge || null}, ${data.status || "active"}
+      ${data.badge || null}, ${data.status || "active"}, ${JSON.stringify(data.translations || {})}::jsonb
     )
     RETURNING *;
   `;
@@ -98,7 +121,8 @@ export async function updateBundle(id: number, data: BundleInput): Promise<VamBu
       destinations = ${JSON.stringify(data.destinations || [])}::jsonb, price = ${data.price},
       original_price = ${data.originalPrice ?? null},
       includes = ${JSON.stringify(data.includes || [])}::jsonb, badge = ${data.badge || null},
-      status = ${data.status || "active"}, updated_at = now()
+      status = ${data.status || "active"}, translations = ${JSON.stringify(data.translations || {})}::jsonb,
+      updated_at = now()
     WHERE id = ${id}
     RETURNING *;
   `;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { VamBundle } from "@/lib/bundles";
+import type { VamBundle, BundleTranslations } from "@/lib/bundles";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
 
@@ -23,6 +23,13 @@ const labelStyle: React.CSSProperties = {
   display: "block",
 };
 
+const TABS = ["TR", "DE", "EN", "KU"] as const;
+type Tab = (typeof TABS)[number];
+
+function emptyTranslationForm() {
+  return { title: "", description: "", includesCsv: "", badge: "" };
+}
+
 function emptyForm() {
   return {
     slug: "",
@@ -36,12 +43,18 @@ function emptyForm() {
     includesCsv: "",
     badge: "",
     status: "active" as "active" | "inactive",
+    translations: {
+      DE: emptyTranslationForm(),
+      EN: emptyTranslationForm(),
+      KU: emptyTranslationForm(),
+    },
   };
 }
 
 type FormState = ReturnType<typeof emptyForm>;
 
 function bundleToForm(b: VamBundle): FormState {
+  const trans = b.translations || {};
   return {
     slug: b.slug,
     title: b.title,
@@ -54,7 +67,42 @@ function bundleToForm(b: VamBundle): FormState {
     includesCsv: (b.includes || []).join(", "),
     badge: b.badge || "",
     status: b.status === "active" ? "active" : "inactive",
+    translations: {
+      DE: {
+        title: trans.DE?.title || "",
+        description: trans.DE?.description || "",
+        includesCsv: (trans.DE?.includes || []).join(", "),
+        badge: trans.DE?.badge || "",
+      },
+      EN: {
+        title: trans.EN?.title || "",
+        description: trans.EN?.description || "",
+        includesCsv: (trans.EN?.includes || []).join(", "),
+        badge: trans.EN?.badge || "",
+      },
+      KU: {
+        title: trans.KU?.title || "",
+        description: trans.KU?.description || "",
+        includesCsv: (trans.KU?.includes || []).join(", "),
+        badge: trans.KU?.badge || "",
+      },
+    },
   };
+}
+
+function buildTranslations(f: FormState): BundleTranslations {
+  const out: BundleTranslations = {};
+  for (const lang of ["DE", "EN", "KU"] as const) {
+    const t = f.translations[lang];
+    const includes = t.includesCsv.split(",").map((s) => s.trim()).filter(Boolean);
+    const entry: Record<string, unknown> = {};
+    if (t.title.trim()) entry.title = t.title.trim();
+    if (t.description.trim()) entry.description = t.description.trim();
+    if (includes.length > 0) entry.includes = includes;
+    if (t.badge.trim()) entry.badge = t.badge.trim();
+    if (Object.keys(entry).length > 0) out[lang] = entry;
+  }
+  return out;
 }
 
 function formToPayload(f: FormState) {
@@ -70,6 +118,7 @@ function formToPayload(f: FormState) {
     includes: f.includesCsv.split(",").map((s) => s.trim()).filter(Boolean),
     badge: f.badge.trim() || null,
     status: f.status,
+    translations: buildTranslations(f),
   };
 }
 
@@ -86,6 +135,7 @@ export default function BundlesPanel({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>("TR");
 
   async function refresh() {
     const res = await fetch("/api/bundles");
@@ -97,6 +147,7 @@ export default function BundlesPanel({
     setForm(emptyForm());
     setEditingId(null);
     setShowForm(true);
+    setActiveTab("TR");
     setError("");
   }
 
@@ -104,6 +155,7 @@ export default function BundlesPanel({
     setForm(bundleToForm(b));
     setEditingId(b.id);
     setShowForm(true);
+    setActiveTab("TR");
     setError("");
   }
 
@@ -212,119 +264,217 @@ export default function BundlesPanel({
               {editingId ? "Bundle'ı Düzenle" : "Yeni Bundle Ekle"}
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
-              <div>
-                <label style={labelStyle}>Slug (URL — küçük harf, tire ile)</label>
-                <input
-                  required
-                  value={form.slug}
-                  onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                  placeholder="orn-kapadokya-turu"
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Başlık</label>
-                <input
-                  required
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Görsel URL</label>
-                <input
-                  value={form.imageUrl}
-                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                  placeholder="/images/destinations/... veya boş bırak"
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Rozet (opsiyonel)</label>
-                <input
-                  value={form.badge}
-                  onChange={(e) => setForm({ ...form, badge: e.target.value })}
-                  placeholder="örn. Çok Satan, Yeni"
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Gece Sayısı</label>
-                <input
-                  required
-                  type="number"
-                  min={1}
-                  value={form.nights}
-                  onChange={(e) => setForm({ ...form, nights: e.target.value })}
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Fiyat (₺, kişi başı)</label>
-                <input
-                  required
-                  type="number"
-                  min={0}
-                  value={form.price}
-                  onChange={(e) => setForm({ ...form, price: e.target.value })}
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Eski Fiyat (opsiyonel, indirim göstermek için)</label>
-                <input
-                  type="number"
-                  min={0}
-                  value={form.originalPrice}
-                  onChange={(e) => setForm({ ...form, originalPrice: e.target.value })}
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Durum</label>
-                <select
-                  value={form.status}
-                  onChange={(e) => setForm({ ...form, status: e.target.value as "active" | "inactive" })}
-                  style={inputStyle}
+            <div style={{ display: "flex", gap: 6, marginBottom: 16, borderBottom: "1px solid #e5d6bc" }}>
+              {TABS.map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    padding: "7px 16px",
+                    background: activeTab === tab ? "#c4522a" : "transparent",
+                    color: activeTab === tab ? "#fff" : "#6f6558",
+                    border: "none",
+                    borderRadius: "4px 4px 0 0",
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
                 >
-                  <option value="active">Aktif (sitede görünür)</option>
-                  <option value="inactive">Pasif (gizli)</option>
-                </select>
-              </div>
+                  {tab}
+                  {tab !== "TR" && (form.translations[tab].title || form.translations[tab].description) ? " ✓" : ""}
+                </button>
+              ))}
             </div>
 
-            <div style={{ marginBottom: 12 }}>
-              <label style={labelStyle}>Açıklama</label>
-              <textarea
-                required
-                value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                rows={2}
-                style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
-              />
-            </div>
+            {activeTab === "TR" ? (
+              <>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+                  <div>
+                    <label style={labelStyle}>Slug (URL — küçük harf, tire ile)</label>
+                    <input
+                      required
+                      value={form.slug}
+                      onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                      placeholder="orn-kapadokya-turu"
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Başlık (TR)</label>
+                    <input
+                      required
+                      value={form.title}
+                      onChange={(e) => setForm({ ...form, title: e.target.value })}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Görsel URL</label>
+                    <input
+                      value={form.imageUrl}
+                      onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                      placeholder="/images/destinations/... veya boş bırak"
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Rozet (TR, opsiyonel)</label>
+                    <input
+                      value={form.badge}
+                      onChange={(e) => setForm({ ...form, badge: e.target.value })}
+                      placeholder="örn. Çok Satan, Yeni"
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Gece Sayısı</label>
+                    <input
+                      required
+                      type="number"
+                      min={1}
+                      value={form.nights}
+                      onChange={(e) => setForm({ ...form, nights: e.target.value })}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Fiyat (₺, kişi başı)</label>
+                    <input
+                      required
+                      type="number"
+                      min={0}
+                      value={form.price}
+                      onChange={(e) => setForm({ ...form, price: e.target.value })}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Eski Fiyat (opsiyonel, indirim göstermek için)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={form.originalPrice}
+                      onChange={(e) => setForm({ ...form, originalPrice: e.target.value })}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Durum</label>
+                    <select
+                      value={form.status}
+                      onChange={(e) => setForm({ ...form, status: e.target.value as "active" | "inactive" })}
+                      style={inputStyle}
+                    >
+                      <option value="active">Aktif (sitede görünür)</option>
+                      <option value="inactive">Pasif (gizli)</option>
+                    </select>
+                  </div>
+                </div>
 
-            <div style={{ marginBottom: 12 }}>
-              <label style={labelStyle}>Güzergahtaki Destinasyonlar (virgülle ayrılmış)</label>
-              <input
-                value={form.destinationsCsv}
-                onChange={(e) => setForm({ ...form, destinationsCsv: e.target.value })}
-                placeholder="Göbeklitepe, Harran, Mardin"
-                style={inputStyle}
-              />
-            </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>Açıklama (TR)</label>
+                  <textarea
+                    required
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    rows={2}
+                    style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
+                  />
+                </div>
 
-            <div style={{ marginBottom: 14 }}>
-              <label style={labelStyle}>Pakete Dahil Olanlar (virgülle ayrılmış)</label>
-              <input
-                value={form.includesCsv}
-                onChange={(e) => setForm({ ...form, includesCsv: e.target.value })}
-                placeholder="4★ Otel, Transfer, Rehber, Kahvaltı"
-                style={inputStyle}
-              />
-            </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>Güzergahtaki Destinasyonlar (virgülle ayrılmış)</label>
+                  <input
+                    value={form.destinationsCsv}
+                    onChange={(e) => setForm({ ...form, destinationsCsv: e.target.value })}
+                    placeholder="Göbeklitepe, Harran, Mardin"
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 14 }}>
+                  <label style={labelStyle}>Pakete Dahil Olanlar (TR, virgülle ayrılmış)</label>
+                  <input
+                    value={form.includesCsv}
+                    onChange={(e) => setForm({ ...form, includesCsv: e.target.value })}
+                    placeholder="4★ Otel, Transfer, Rehber, Kahvaltı"
+                    style={inputStyle}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
+                  Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer.
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>Başlık ({activeTab})</label>
+                  <input
+                    value={form.translations[activeTab].title}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], title: e.target.value },
+                        },
+                      })
+                    }
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>Açıklama ({activeTab})</label>
+                  <textarea
+                    value={form.translations[activeTab].description}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], description: e.target.value },
+                        },
+                      })
+                    }
+                    rows={2}
+                    style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
+                  />
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>Pakete Dahil Olanlar ({activeTab}, virgülle ayrılmış)</label>
+                  <input
+                    value={form.translations[activeTab].includesCsv}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], includesCsv: e.target.value },
+                        },
+                      })
+                    }
+                    style={inputStyle}
+                  />
+                </div>
+                <div style={{ marginBottom: 14 }}>
+                  <label style={labelStyle}>Rozet ({activeTab})</label>
+                  <input
+                    value={form.translations[activeTab].badge}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], badge: e.target.value },
+                        },
+                      })
+                    }
+                    style={inputStyle}
+                  />
+                </div>
+              </>
+            )}
 
             {error && <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 12 }}>{error}</div>}
 

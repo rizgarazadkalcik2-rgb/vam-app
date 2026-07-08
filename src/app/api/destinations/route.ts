@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
     visitBestTime: body.visitBestTime || null,
     related: Array.isArray(body.related) ? body.related : [],
     status: body.status || "active",
+    translations: body.translations && typeof body.translations === "object" ? body.translations : {},
   });
 
   return NextResponse.json({ destination }, { status: 201 });

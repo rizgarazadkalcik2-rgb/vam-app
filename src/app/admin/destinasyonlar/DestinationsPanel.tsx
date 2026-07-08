@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { VamDestination } from "@/lib/destinations";
+import type { VamDestination, DestinationTranslations } from "@/lib/destinations";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
 
@@ -22,6 +22,13 @@ const labelStyle: React.CSSProperties = {
   marginBottom: 4,
   display: "block",
 };
+
+const TABS = ["TR", "DE", "EN", "KU"] as const;
+type Tab = (typeof TABS)[number];
+
+function emptyTranslationForm() {
+  return { name: "", region: "", eraDisplay: "", eraCaption: "" };
+}
 
 function emptyForm() {
   return {
@@ -44,12 +51,18 @@ function emptyForm() {
     visitBestTime: "",
     relatedCsv: "",
     status: "active" as "active" | "inactive",
+    translations: {
+      DE: emptyTranslationForm(),
+      EN: emptyTranslationForm(),
+      KU: emptyTranslationForm(),
+    },
   };
 }
 
 type FormState = ReturnType<typeof emptyForm>;
 
 function destinationToForm(d: VamDestination): FormState {
+  const trans = d.translations || {};
   return {
     slug: d.slug,
     name: d.name,
@@ -70,7 +83,41 @@ function destinationToForm(d: VamDestination): FormState {
     visitBestTime: d.visit_best_time || "",
     relatedCsv: (d.related || []).join(", "),
     status: d.status === "active" ? "active" : "inactive",
+    translations: {
+      DE: {
+        name: trans.DE?.name || "",
+        region: trans.DE?.region || "",
+        eraDisplay: trans.DE?.eraDisplay || "",
+        eraCaption: trans.DE?.eraCaption || "",
+      },
+      EN: {
+        name: trans.EN?.name || "",
+        region: trans.EN?.region || "",
+        eraDisplay: trans.EN?.eraDisplay || "",
+        eraCaption: trans.EN?.eraCaption || "",
+      },
+      KU: {
+        name: trans.KU?.name || "",
+        region: trans.KU?.region || "",
+        eraDisplay: trans.KU?.eraDisplay || "",
+        eraCaption: trans.KU?.eraCaption || "",
+      },
+    },
   };
+}
+
+function buildTranslations(f: FormState): DestinationTranslations {
+  const out: DestinationTranslations = {};
+  for (const lang of ["DE", "EN", "KU"] as const) {
+    const t = f.translations[lang];
+    const entry: Record<string, string> = {};
+    if (t.name.trim()) entry.name = t.name.trim();
+    if (t.region.trim()) entry.region = t.region.trim();
+    if (t.eraDisplay.trim()) entry.eraDisplay = t.eraDisplay.trim();
+    if (t.eraCaption.trim()) entry.eraCaption = t.eraCaption.trim();
+    if (Object.keys(entry).length > 0) out[lang] = entry;
+  }
+  return out;
 }
 
 function formToPayload(f: FormState) {
@@ -102,6 +149,7 @@ function formToPayload(f: FormState) {
     visitBestTime: f.visitBestTime.trim() || null,
     related: f.relatedCsv.split(",").map((s) => s.trim()).filter(Boolean),
     status: f.status,
+    translations: buildTranslations(f),
   };
 }
 
@@ -118,6 +166,7 @@ export default function DestinationsPanel({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>("TR");
 
   async function refresh() {
     const res = await fetch("/api/destinations");
@@ -129,6 +178,7 @@ export default function DestinationsPanel({
     setForm(emptyForm());
     setEditingId(null);
     setShowForm(true);
+    setActiveTab("TR");
     setError("");
   }
 
@@ -136,6 +186,7 @@ export default function DestinationsPanel({
     setForm(destinationToForm(d));
     setEditingId(d.id);
     setShowForm(true);
+    setActiveTab("TR");
     setError("");
   }
 
@@ -246,6 +297,106 @@ export default function DestinationsPanel({
               {editingId ? "Destinasyonu Düzenle" : "Yeni Destinasyon Ekle"}
             </div>
 
+            <div style={{ display: "flex", gap: 6, marginBottom: 16, borderBottom: "1px solid #e5d6bc" }}>
+              {TABS.map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    padding: "7px 16px",
+                    background: activeTab === tab ? "#c4522a" : "transparent",
+                    color: activeTab === tab ? "#fff" : "#6f6558",
+                    border: "none",
+                    borderRadius: "4px 4px 0 0",
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  {tab}
+                  {tab !== "TR" && (form.translations[tab].name || form.translations[tab].region) ? " ✓" : ""}
+                </button>
+              ))}
+            </div>
+
+            {activeTab !== "TR" && (
+              <>
+                <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
+                  Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer. Tarihçe ve öne çıkan özellikler
+                  şimdilik yalnızca Türkçe olarak yönetiliyor.
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                  <div>
+                    <label style={labelStyle}>İsim ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].name}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], name: e.target.value },
+                          },
+                        })
+                      }
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Bölge ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].region}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], region: e.target.value },
+                          },
+                        })
+                      }
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Dönem Görünümü ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].eraDisplay}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], eraDisplay: e.target.value },
+                          },
+                        })
+                      }
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Dönem Açıklaması ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].eraCaption}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], eraCaption: e.target.value },
+                          },
+                        })
+                      }
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {activeTab === "TR" && (
+            <>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
               <div>
                 <label style={labelStyle}>Slug (URL — küçük harf, tire ile)</label>
@@ -432,6 +583,8 @@ export default function DestinationsPanel({
                 <option value="inactive">Pasif (gizli)</option>
               </select>
             </div>
+            </>
+            )}
 
             {error && <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 12 }}>{error}</div>}
 

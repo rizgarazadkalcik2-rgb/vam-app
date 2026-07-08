@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getBundleBySlug, listActiveBundles } from "@/lib/bundles";
+import { getBundleBySlug, listActiveBundles, localizeBundle } from "@/lib/bundles";
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
@@ -16,8 +16,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const b = await getBundleBySlug(slug);
-  if (!b || b.status !== "active") return {};
+  const [raw, lang] = await Promise.all([getBundleBySlug(slug), getLang()]);
+  if (!raw || raw.status !== "active") return {};
+  const b = localizeBundle(raw, lang);
 
   const description = (b.description || "").slice(0, 155);
 
@@ -39,10 +40,11 @@ export default async function BundleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [b, lang, currency] = await Promise.all([getBundleBySlug(slug), getLang(), getCurrency()]);
-  if (!b || b.status !== "active") notFound();
+  const [rawBundle, lang, currency] = await Promise.all([getBundleBySlug(slug), getLang(), getCurrency()]);
+  if (!rawBundle || rawBundle.status !== "active") notFound();
+  const b = localizeBundle(rawBundle, lang);
 
-  const others = (await listActiveBundles()).filter((x) => x.slug !== b.slug).slice(0, 3);
+  const others = (await listActiveBundles()).filter((x) => x.slug !== b.slug).slice(0, 3).map((x) => localizeBundle(x, lang));
 
   const questionSubject = encodeURIComponent(`Soru – ${b.title}`);
 

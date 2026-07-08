@@ -51,6 +51,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     includes: Array.isArray(body.includes) ? body.includes : [],
     badge: body.badge || null,
     status: body.status || "active",
+    translations: body.translations && typeof body.translations === "object" ? body.translations : {},
   });
 
   if (!bundle) {

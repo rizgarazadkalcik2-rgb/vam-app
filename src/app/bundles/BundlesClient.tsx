@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { VamBundle } from "@/lib/bundles";
+import { localizeBundle, type VamBundle } from "@/lib/bundles";
 import { chip, t, type Lang } from "@/lib/dictionary";
 import { formatPrice, type Currency } from "@/lib/currency";
 
@@ -143,43 +143,46 @@ export default function BundlesClient({
         </div>
       ) : (
         <div className="vc-grid">
-          {filtered.map((b) => (
-            <a key={b.id} className="vc-card" href={`/bundles/${b.slug}`}>
-              <div className="vc-card-media">
-                {b.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={b.image_url} alt={b.title} />
-                ) : (
-                  <span className="vc-card-letter">{b.title[0]}</span>
-                )}
-                <span className="vc-card-tag">{b.nights} {t("bundle_night", lang)}</span>
-                {b.badge && (
-                  <span className="vc-card-tag vc-card-tag-gold" style={{ left: "auto", right: 10 }}>
-                    {b.badge}
-                  </span>
-                )}
-              </div>
-              <div className="vc-card-body">
-                <div className="vc-card-eyebrow">{t("bundle_card_eyebrow", lang)}</div>
-                <div className="vc-card-title">{b.title}</div>
-                <div className="vc-card-desc">{b.description}</div>
-                <div className="vc-card-tags">
-                  {(b.destinations || []).map((dn) => (
-                    <span key={dn} className="vc-card-pill">{dn}</span>
-                  ))}
-                </div>
-                <div className="vc-card-price-row">
-                  <span className="vc-price">{formatPrice(Number(b.price), currency)}</span>
-                  {b.original_price && (
-                    <span className="vc-price-old">
-                      {formatPrice(Number(b.original_price), currency)}
+          {filtered.map((raw) => {
+            const b = localizeBundle(raw, lang);
+            return (
+              <a key={b.id} className="vc-card" href={`/bundles/${b.slug}`}>
+                <div className="vc-card-media">
+                  {b.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={b.image_url} alt={b.title} />
+                  ) : (
+                    <span className="vc-card-letter">{b.title[0]}</span>
+                  )}
+                  <span className="vc-card-tag">{b.nights} {t("bundle_night", lang)}</span>
+                  {b.badge && (
+                    <span className="vc-card-tag vc-card-tag-gold" style={{ left: "auto", right: 10 }}>
+                      {b.badge}
                     </span>
                   )}
-                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</span>
                 </div>
-              </div>
-            </a>
-          ))}
+                <div className="vc-card-body">
+                  <div className="vc-card-eyebrow">{t("bundle_card_eyebrow", lang)}</div>
+                  <div className="vc-card-title">{b.title}</div>
+                  <div className="vc-card-desc">{b.description}</div>
+                  <div className="vc-card-tags">
+                    {(b.destinations || []).map((dn) => (
+                      <span key={dn} className="vc-card-pill">{dn}</span>
+                    ))}
+                  </div>
+                  <div className="vc-card-price-row">
+                    <span className="vc-price">{formatPrice(Number(b.price), currency)}</span>
+                    {b.original_price && (
+                      <span className="vc-price-old">
+                        {formatPrice(Number(b.original_price), currency)}
+                      </span>
+                    )}
+                    <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</span>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
         </div>
       )}
     </>
