@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
     includes: Array.isArray(body.includes) ? body.includes : [],
     badge: body.badge || null,
     status: body.status || "active",
+    translations: body.translations && typeof body.translations === "object" ? body.translations : {},
   });
 
   return NextResponse.json({ bundle }, { status: 201 });

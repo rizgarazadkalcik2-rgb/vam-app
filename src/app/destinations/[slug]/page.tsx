@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import { getDestinationBySlug, listActiveDestinations } from "@/lib/destinations";
+import { getDestinationBySlug, listActiveDestinations, localizeDestination } from "@/lib/destinations";
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
 import { getCurrency } from "@/lib/getCurrency";
-import { t } from "@/lib/dictionary";
+import { chip, t } from "@/lib/dictionary";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -15,8 +15,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [d, lang] = await Promise.all([getDestinationBySlug(slug), getLang()]);
-  if (!d || d.status !== "active") return {};
+  const [raw, lang] = await Promise.all([getDestinationBySlug(slug), getLang()]);
+  if (!raw || raw.status !== "active") return {};
+  const d = localizeDestination(raw, lang);
 
   const description =
     (d.history && d.history[0] ? d.history[0].slice(0, 155) : "") ||
@@ -40,12 +41,16 @@ export default async function DestinationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [d, lang, currency] = await Promise.all([getDestinationBySlug(slug), getLang(), getCurrency()]);
-  if (!d || d.status !== "active") notFound();
+  const [rawDest, lang, currency] = await Promise.all([getDestinationBySlug(slug), getLang(), getCurrency()]);
+  if (!rawDest || rawDest.status !== "active") notFound();
+  const d = localizeDestination(rawDest, lang);
 
   const allDests = await listActiveDestinations();
   const bySlug = new Map(allDests.map((x) => [x.slug, x]));
-  const related = (d.related || []).map((s) => bySlug.get(s)).filter(Boolean) as typeof allDests;
+  const related = (d.related || [])
+    .map((s) => bySlug.get(s))
+    .filter(Boolean)
+    .map((x) => localizeDestination(x!, lang));
 
   const history = d.history || [];
   const features = d.features || [];
@@ -72,7 +77,7 @@ export default async function DestinationDetailPage({
           <div className="vc-badges">
             {(d.tags || []).map((tag) => (
               <span key={tag} className="vc-badge vc-badge-dark">
-                {tag}
+                {chip(tag, lang)}
               </span>
             ))}
             {d.unesco && <span className="vc-badge vc-badge-gold">UNESCO</span>}

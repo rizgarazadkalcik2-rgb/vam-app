@@ -23,6 +23,7 @@ export interface SeedDestination {
   visitDuration: string | null;
   visitBestTime: string | null;
   related: string[];
+  translations?: Partial<Record<"DE" | "EN" | "KU", { name?: string; region?: string; eraDisplay?: string; eraCaption?: string }>>;
 }
 
 export interface SeedBundle {
@@ -36,6 +37,7 @@ export interface SeedBundle {
   originalPrice: number | null;
   includes: string[];
   badge: string | null;
+  translations?: Partial<Record<"DE" | "EN" | "KU", { title?: string; description?: string; includes?: string[]; badge?: string }>>;
 }
 
 export const SEED_DESTINATIONS: SeedDestination[] = [
@@ -46,6 +48,23 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "M.Ö. ~9600",
     "eraDisplay": "M.Ö. 9600",
     "eraCaption": "Tahmini Tarih",
+    "translations": {
+      "DE": {
+        "region": "Şanlıurfa",
+        "eraDisplay": "9600 v. Chr.",
+        "eraCaption": "Geschätztes Datum"
+      },
+      "EN": {
+        "region": "Şanlıurfa",
+        "eraDisplay": "9600 BCE",
+        "eraCaption": "Estimated Date"
+      },
+      "KU": {
+        "region": "Riha",
+        "eraDisplay": "9600 BZ",
+        "eraCaption": "Dîroka Texmînî"
+      }
+    },
     "unesco": true,
     "tags": [
       "Arkeoloji"
@@ -93,6 +112,20 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "M.Ö. ~7400",
     "eraDisplay": "M.Ö. 7400",
     "eraCaption": "Tahmini Tarih",
+    "translations": {
+      "DE": {
+        "eraDisplay": "7400 v. Chr.",
+        "eraCaption": "Geschätztes Datum"
+      },
+      "EN": {
+        "eraDisplay": "7400 BCE",
+        "eraCaption": "Estimated Date"
+      },
+      "KU": {
+        "eraDisplay": "7400 BZ",
+        "eraCaption": "Dîroka Texmînî"
+      }
+    },
     "unesco": true,
     "tags": [
       "Arkeoloji"
@@ -138,6 +171,22 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Neolitik – Antik",
     "eraDisplay": "M.Ö. 6. yy",
     "eraCaption": "Erken Yerleşim",
+    "translations": {
+      "DE": {
+        "region": "Şanlıurfa",
+        "eraDisplay": "6. Jh. v. Chr.",
+        "eraCaption": "Frühe Besiedlung"
+      },
+      "EN": {
+        "eraDisplay": "6th century BCE",
+        "eraCaption": "Early Settlement"
+      },
+      "KU": {
+        "region": "Riha",
+        "eraDisplay": "Sedsala 6. BZ",
+        "eraCaption": "Niştecihbûna Destpêkê"
+      }
+    },
     "unesco": false,
     "tags": [
       "Tarih"
@@ -183,6 +232,24 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Roma – Ortaçağ",
     "eraDisplay": "M.Ö. 4. binyıl",
     "eraCaption": "Kesintisiz Yerleşim",
+    "translations": {
+      "DE": {
+        "name": "Mauern von Diyarbakır",
+        "eraDisplay": "4. Jahrtausend v. Chr.",
+        "eraCaption": "Ununterbrochene Besiedlung"
+      },
+      "EN": {
+        "name": "Diyarbakır City Walls",
+        "eraDisplay": "4th millennium BCE",
+        "eraCaption": "Continuous Settlement"
+      },
+      "KU": {
+        "name": "Sûrên Amedê",
+        "region": "Amed",
+        "eraDisplay": "Hezareya 4. BZ",
+        "eraCaption": "Niştecihbûna Bêrawestan"
+      }
+    },
     "unesco": true,
     "tags": [
       "Mimari"
@@ -229,6 +296,22 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "M.Ö. 4. yy – Ortaçağ",
     "eraDisplay": "M.S. 4. yy",
     "eraCaption": "İlk Kayıt",
+    "translations": {
+      "DE": {
+        "eraDisplay": "4. Jh. n. Chr.",
+        "eraCaption": "Erste Erwähnung"
+      },
+      "EN": {
+        "eraDisplay": "4th century CE",
+        "eraCaption": "First Record"
+      },
+      "KU": {
+        "name": "Mêrdîn",
+        "region": "Mêrdîn",
+        "eraDisplay": "Sedsala 4. PZ",
+        "eraCaption": "Tomara Yekem"
+      }
+    },
     "unesco": false,
     "tags": [
       "Mimari",
@@ -276,6 +359,24 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "M.Ö. 62",
     "eraDisplay": "M.Ö. 62",
     "eraCaption": "Anıtın İnşası",
+    "translations": {
+      "DE": {
+        "name": "Berg Nemrut",
+        "eraDisplay": "62 v. Chr.",
+        "eraCaption": "Bau des Monuments"
+      },
+      "EN": {
+        "name": "Mount Nemrut",
+        "eraDisplay": "62 BCE",
+        "eraCaption": "Construction of the Monument"
+      },
+      "KU": {
+        "name": "Çiyayê Nemrûd",
+        "region": "Semsûr",
+        "eraDisplay": "62 BZ",
+        "eraCaption": "Avakirina Bîrdankê"
+      }
+    },
     "unesco": true,
     "tags": [
       "Arkeoloji"
@@ -322,6 +423,24 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Urartu, M.Ö. 9. yy",
     "eraDisplay": "M.Ö. 9. yy",
     "eraCaption": "Urartu Dönemi",
+    "translations": {
+      "DE": {
+        "name": "Festung Van",
+        "eraDisplay": "9. Jh. v. Chr.",
+        "eraCaption": "Urartäische Epoche"
+      },
+      "EN": {
+        "name": "Van Castle",
+        "eraDisplay": "9th century BCE",
+        "eraCaption": "Urartian Period"
+      },
+      "KU": {
+        "name": "Kela Wanê",
+        "region": "Wan",
+        "eraDisplay": "Sedsala 9. BZ",
+        "eraCaption": "Serdema Ûrartûyan"
+      }
+    },
     "unesco": false,
     "tags": [
       "Tarih"
@@ -368,6 +487,22 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "10.000+ yıl",
     "eraDisplay": "M.Ö. 10.000",
     "eraCaption": "İlk İnsan İzleri",
+    "translations": {
+      "DE": {
+        "eraDisplay": "10.000 v. Chr.",
+        "eraCaption": "Früheste Spuren"
+      },
+      "EN": {
+        "eraDisplay": "10,000 BCE",
+        "eraCaption": "Earliest Traces"
+      },
+      "KU": {
+        "name": "Heskîf",
+        "region": "Elih",
+        "eraDisplay": "10.000 BZ",
+        "eraCaption": "Şopên Yekem"
+      }
+    },
     "unesco": false,
     "tags": [
       "Tarih"
@@ -414,6 +549,24 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Roma, M.S. 5. yy",
     "eraDisplay": "M.S. 505",
     "eraCaption": "Kuruluş",
+    "translations": {
+      "DE": {
+        "name": "Antike Stadt Dara",
+        "eraDisplay": "505 n. Chr.",
+        "eraCaption": "Gründung"
+      },
+      "EN": {
+        "name": "Ancient City of Dara",
+        "eraDisplay": "505 CE",
+        "eraCaption": "Founding"
+      },
+      "KU": {
+        "name": "Bajarê Kevnar ê Dara",
+        "region": "Mêrdîn",
+        "eraDisplay": "505 PZ",
+        "eraCaption": "Damezrandin"
+      }
+    },
     "unesco": false,
     "tags": [
       "Arkeoloji"
@@ -460,6 +613,22 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Geç Antik – Ortaçağ",
     "eraDisplay": "M.Ö. 9. yy",
     "eraCaption": "Asur Kaydı",
+    "translations": {
+      "DE": {
+        "eraDisplay": "9. Jh. v. Chr.",
+        "eraCaption": "Assyrische Aufzeichnung"
+      },
+      "EN": {
+        "eraDisplay": "9th century BCE",
+        "eraCaption": "Assyrian Record"
+      },
+      "KU": {
+        "name": "Midyad",
+        "region": "Mêrdîn",
+        "eraDisplay": "Sedsala 9. BZ",
+        "eraCaption": "Tomara Asûrî"
+      }
+    },
     "unesco": false,
     "tags": [
       "Kültür",
@@ -507,6 +676,24 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Ortaçağ, 10.–11. yy",
     "eraDisplay": "10.–11. yy",
     "eraCaption": "Altın Çağ",
+    "translations": {
+      "DE": {
+        "name": "Ruinen von Ani",
+        "eraDisplay": "10.-11. Jh.",
+        "eraCaption": "Goldenes Zeitalter"
+      },
+      "EN": {
+        "name": "Ruins of Ani",
+        "eraDisplay": "10th-11th century",
+        "eraCaption": "Golden Age"
+      },
+      "KU": {
+        "name": "Kavilên Aniyê",
+        "region": "Qers",
+        "eraDisplay": "Sedsala 10-11.",
+        "eraCaption": "Serdema Zêrîn"
+      }
+    },
     "unesco": true,
     "tags": [
       "Mimari",
@@ -553,6 +740,19 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Ortaçağ – 19. yy",
     "eraDisplay": "1152",
     "eraCaption": "Kale İnşası",
+    "translations": {
+      "DE": {
+        "eraDisplay": "1152",
+        "eraCaption": "Bau der Festung"
+      },
+      "EN": {
+        "eraCaption": "Fortress Construction"
+      },
+      "KU": {
+        "region": "Qers",
+        "eraCaption": "Avakirina Kelê"
+      }
+    },
     "unesco": false,
     "tags": [
       "Kültür",
@@ -599,6 +799,22 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Jeolojik – Mitolojik",
     "eraDisplay": "5.137 m",
     "eraCaption": "Zirve Yüksekliği",
+    "translations": {
+      "DE": {
+        "name": "Berg Ararat",
+        "region": "Ağrı",
+        "eraCaption": "Gipfelhöhe"
+      },
+      "EN": {
+        "name": "Mount Ararat",
+        "eraCaption": "Summit Elevation"
+      },
+      "KU": {
+        "name": "Çiyayê Agirî",
+        "region": "Agirî",
+        "eraCaption": "Bilindahiya Lotikê"
+      }
+    },
     "unesco": false,
     "tags": [
       "Doğa"
@@ -645,6 +861,24 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Jeolojik",
     "eraDisplay": "Volkanik",
     "eraCaption": "Jeolojik Köken",
+    "translations": {
+      "DE": {
+        "name": "Tatvan & Nemrut-Kratersee",
+        "region": "Bitlis",
+        "eraDisplay": "Vulkanisch",
+        "eraCaption": "Geologischer Ursprung"
+      },
+      "EN": {
+        "name": "Tatvan & Nemrut Crater Lake",
+        "eraDisplay": "Volcanic",
+        "eraCaption": "Geological Origin"
+      },
+      "KU": {
+        "region": "Bidlîs",
+        "eraDisplay": "Volkanîk",
+        "eraCaption": "Eslê Jeolojîk"
+      }
+    },
     "unesco": false,
     "tags": [
       "Doğa"
@@ -691,6 +925,22 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "era": "Tarih öncesi – Ortaçağ",
     "eraDisplay": "20.000 yıl",
     "eraCaption": "Buzul Yaşı",
+    "translations": {
+      "DE": {
+        "eraDisplay": "20.000 Jahre",
+        "eraCaption": "Eiszeitalter"
+      },
+      "EN": {
+        "eraDisplay": "20,000 years",
+        "eraCaption": "Ice Age"
+      },
+      "KU": {
+        "name": "Colemêrg",
+        "region": "Colemêrg",
+        "eraDisplay": "20.000 sal",
+        "eraCaption": "Serdema Qeşayê"
+      }
+    },
     "unesco": false,
     "tags": [
       "Doğa",
@@ -754,7 +1004,42 @@ export const SEED_BUNDLES: SeedBundle[] = [
       "Rehber",
       "Kahvaltı"
     ],
-    "badge": "Çok Satan"
+    "badge": "Çok Satan",
+    "translations": {
+      "DE": {
+        "title": "Ostanatolische Erbe-Route",
+        "description": "Göbeklitepe, Harran, Mardin, Dara und die Festung Van. Fünf antike Städte, eine kuratierte Route.",
+        "includes": [
+          "4★ Hotel",
+          "Transfer",
+          "Reiseleiter",
+          "Frühstück"
+        ],
+        "badge": "Bestseller"
+      },
+      "EN": {
+        "title": "Eastern Anatolia Heritage Route",
+        "description": "Göbeklitepe, Harran, Mardin, Dara, and Van Castle. Five ancient cities, one curated route.",
+        "includes": [
+          "4★ Hotel",
+          "Transfer",
+          "Guide",
+          "Breakfast"
+        ],
+        "badge": "Best Seller"
+      },
+      "KU": {
+        "title": "Rêça Mîrata Anatolya Rojhilat",
+        "description": "Girê Mirazan, Harran, Mêrdîn, Dara û Kela Wanê. Pênc bajarên kevnar, rêçek serpereştkirî.",
+        "includes": [
+          "Otêl 4★",
+          "Veguhastin",
+          "Rêber",
+          "Taştê"
+        ],
+        "badge": "Herî Firotî"
+      }
+    }
   },
   {
     "slug": "mezopotamya-derin-dalis",
@@ -774,7 +1059,36 @@ export const SEED_BUNDLES: SeedBundle[] = [
       "Transfer",
       "Rehber"
     ],
-    "badge": null
+    "badge": null,
+    "translations": {
+      "DE": {
+        "title": "Mesopotamien Tiefentauchgang",
+        "description": "Von den Stadtmauern Diyarbakırs bis Hasankeyf, auf den Spuren antiker Zivilisationen entlang des Tigris.",
+        "includes": [
+          "Boutique-Hotel",
+          "Transfer",
+          "Reiseleiter"
+        ]
+      },
+      "EN": {
+        "title": "Mesopotamia Deep Dive",
+        "description": "From the walls of Diyarbakır to Hasankeyf, tracing ancient civilizations along the Tigris.",
+        "includes": [
+          "Boutique Hotel",
+          "Transfer",
+          "Guide"
+        ]
+      },
+      "KU": {
+        "title": "Kûrbûna Mezopotamyayê",
+        "description": "Ji sûrên Amedê heta Heskîfê, li ser şopa şaristaniyên kevnar li kêleka Dîcleyê.",
+        "includes": [
+          "Otêla Botîk",
+          "Veguhastin",
+          "Rêber"
+        ]
+      }
+    }
   },
   {
     "slug": "nemrut-kommagene-kralligi",
@@ -794,6 +1108,38 @@ export const SEED_BUNDLES: SeedBundle[] = [
       "Transfer",
       "Rehber"
     ],
-    "badge": "Yeni"
+    "badge": "Yeni",
+    "translations": {
+      "DE": {
+        "title": "Nemrut & Königreich Kommagene",
+        "description": "Die riesigen Steinköpfe auf dem Gipfel und die geheimnisvollen Kommagene-Tempel.",
+        "includes": [
+          "3★ Hotel",
+          "Transfer",
+          "Reiseleiter"
+        ],
+        "badge": "Neu"
+      },
+      "EN": {
+        "title": "Nemrut & the Kingdom of Commagene",
+        "description": "The giant stone heads atop the mountain and the mysterious Commagene temples.",
+        "includes": [
+          "3★ Hotel",
+          "Transfer",
+          "Guide"
+        ],
+        "badge": "New"
+      },
+      "KU": {
+        "title": "Nemrût & Padîşahiya Kommagene",
+        "description": "Serên kevir ên mezin li lotikê çiya û perestgehên nepenî yên Kommagene.",
+        "includes": [
+          "Otêl 3★",
+          "Veguhastin",
+          "Rêber"
+        ],
+        "badge": "Nû"
+      }
+    }
   }
 ];

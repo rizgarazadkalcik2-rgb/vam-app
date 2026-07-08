@@ -148,6 +148,11 @@ async function initSchema() {
     );
   `;
 
+  // Kart/başlık seviyesi çok dilli içerik (name/region/era_display/era_caption).
+  // Yapı: {"DE": {"name": "...", "region": "...", "eraDisplay": "...", "eraCaption": "..."}, "EN": {...}, "KU": {...}}
+  // Eksik dil/alan TR taban değerine düşer (dictionary.ts'teki t() fallback deseniyle aynı mantık).
+  await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS translations JSONB NOT NULL DEFAULT '{}';`;
+
   const { rows: destCount } = await sql`SELECT COUNT(*) as count FROM destinations;`;
   if (Number(destCount[0].count) === 0) {
     for (const d of SEED_DESTINATIONS) {
@@ -155,15 +160,26 @@ async function initSchema() {
         INSERT INTO destinations (
           slug, name, region, era, era_display, era_caption, unesco, tags, image_url,
           rating, reviews, history, features, visit_location, visit_nearest_city,
-          visit_duration, visit_best_time, related
+          visit_duration, visit_best_time, related, translations
         ) VALUES (
           ${d.slug}, ${d.name}, ${d.region}, ${d.era}, ${d.eraDisplay}, ${d.eraCaption},
           ${d.unesco}, ${JSON.stringify(d.tags)}::jsonb, ${d.imageUrl},
           ${d.rating}, ${d.reviews}, ${JSON.stringify(d.history)}::jsonb,
           ${JSON.stringify(d.features)}::jsonb, ${d.visitLocation}, ${d.visitNearestCity},
-          ${d.visitDuration}, ${d.visitBestTime}, ${JSON.stringify(d.related)}::jsonb
+          ${d.visitDuration}, ${d.visitBestTime}, ${JSON.stringify(d.related)}::jsonb,
+          ${JSON.stringify(d.translations || {})}::jsonb
         )
         ON CONFLICT (slug) DO NOTHING;
+      `;
+    }
+  }
+
+  // Tek seferlik geriye dönük dolgu (bkz. bundles'taki aynı desen için not).
+  for (const d of SEED_DESTINATIONS) {
+    if (d.translations && Object.keys(d.translations).length > 0) {
+      await sql`
+        UPDATE destinations SET translations = ${JSON.stringify(d.translations)}::jsonb
+        WHERE slug = ${d.slug} AND translations = '{}'::jsonb;
       `;
     }
   }
@@ -188,19 +204,36 @@ async function initSchema() {
     );
   `;
 
+  // Kart/başlık seviyesi çok dilli içerik (title/description/includes/badge).
+  // Yapı: {"DE": {"title": "...", "description": "...", "includes": [...], "badge": "..."}, "EN": {...}, "KU": {...}}
+  await sql`ALTER TABLE bundles ADD COLUMN IF NOT EXISTS translations JSONB NOT NULL DEFAULT '{}';`;
+
   const { rows: bundleCount } = await sql`SELECT COUNT(*) as count FROM bundles;`;
   if (Number(bundleCount[0].count) === 0) {
     for (const b of SEED_BUNDLES) {
       await sql`
         INSERT INTO bundles (
           slug, title, image_url, description, nights, destinations, price,
-          original_price, includes, badge
+          original_price, includes, badge, translations
         ) VALUES (
           ${b.slug}, ${b.title}, ${b.imageUrl}, ${b.description}, ${b.nights},
           ${JSON.stringify(b.destinations)}::jsonb, ${b.price}, ${b.originalPrice},
-          ${JSON.stringify(b.includes)}::jsonb, ${b.badge}
+          ${JSON.stringify(b.includes)}::jsonb, ${b.badge}, ${JSON.stringify(b.translations || {})}::jsonb
         )
         ON CONFLICT (slug) DO NOTHING;
+      `;
+    }
+  }
+
+  // Tek seferlik geriye dönük dolgu: tablo daha önce (translations sütunu eklenmeden
+  // önce) kurulmuş olabilir — bu durumda seed INSERT'i hiç çalışmaz. Sadece hâlâ
+  // boş ('{}') olan satırları doldurur, admin panelinden elle girilmiş bir çeviri
+  // varsa asla üzerine yazmaz.
+  for (const b of SEED_BUNDLES) {
+    if (b.translations && Object.keys(b.translations).length > 0) {
+      await sql`
+        UPDATE bundles SET translations = ${JSON.stringify(b.translations)}::jsonb
+        WHERE slug = ${b.slug} AND translations = '{}'::jsonb;
       `;
     }
   }
