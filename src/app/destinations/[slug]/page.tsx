@@ -55,8 +55,34 @@ export default async function DestinationDetailPage({
   const history = d.history || [];
   const features = d.features || [];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: t("breadcrumb_home", lang), item: "https://visitvam.com/platform" },
+          { "@type": "ListItem", position: 2, name: t("all_destinations", lang), item: "https://visitvam.com/destinations" },
+          { "@type": "ListItem", position: 3, name: d.name, item: `https://visitvam.com/destinations/${d.slug}` },
+        ],
+      },
+      {
+        "@type": "TouristAttraction",
+        name: d.name,
+        description: history[0] || d.name,
+        ...(d.image_url ? { image: d.image_url } : {}),
+        address: { "@type": "PostalAddress", addressRegion: d.region, addressCountry: "TR" },
+        ...(d.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: d.rating, reviewCount: d.reviews || 1 } } : {}),
+      },
+    ],
+  };
+
   return (
     <div className="vc-root">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">

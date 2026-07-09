@@ -48,8 +48,40 @@ export default async function BundleDetailPage({
 
   const questionSubject = encodeURIComponent(`Soru – ${b.title}`);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: t("breadcrumb_home", lang), item: "https://visitvam.com/platform" },
+          { "@type": "ListItem", position: 2, name: t("all_bundles", lang), item: "https://visitvam.com/bundles" },
+          { "@type": "ListItem", position: 3, name: b.title, item: `https://visitvam.com/bundles/${b.slug}` },
+        ],
+      },
+      {
+        "@type": "TouristTrip",
+        name: b.title,
+        description: b.description,
+        ...(b.image_url ? { image: b.image_url } : {}),
+        touristType: "Cultural tourism",
+        offers: {
+          "@type": "Offer",
+          price: Number(b.price),
+          priceCurrency: currency,
+          url: `https://visitvam.com/bundles/${b.slug}`,
+          availability: "https://schema.org/InStock",
+        },
+      },
+    ],
+  };
+
   return (
     <div className="vc-root">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">

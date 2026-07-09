@@ -35,6 +35,27 @@ export default async function RootLayout({
 }>) {
   const lang = await getLang();
 
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "VAM — Visit Anatolia and Mesopotamia",
+    url: "https://visitvam.com",
+    logo: "https://visitvam.com/logo/vam-logo-512.png",
+    description: t("meta_site_desc", lang),
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Akköprü Mahallesi, Orta Sokak No: 68",
+      addressLocality: "Tuşba/Van",
+      addressCountry: "TR",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      email: "info@visitvam.com",
+      telephone: "+90-543-683-7978",
+    },
+  };
+
   return (
     <html lang={lang === "DE" ? "de" : lang === "EN" ? "en" : lang === "KU" ? "ku" : "tr"} className="h-full antialiased">
       <head>
@@ -43,6 +64,10 @@ export default async function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&family=Cinzel:wght@500;600&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col">
