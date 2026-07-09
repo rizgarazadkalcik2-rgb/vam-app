@@ -185,6 +185,30 @@ async function initSchema() {
     }
   }
 
+  // İkinci tek seferlik geriye dönük dolgu: history/features (tarihçe ve öne
+  // çıkan özellikler) alanları translations şemasına SONRADAN eklendi — yukarıdaki
+  // dolgu artık translations dolu olduğu için bir daha tetiklenmiyor. Burada her
+  // dil için sadece "history" alt-anahtarı eksikse jsonb_set ile doldurulur; admin
+  // panelinden elle girilmiş bir çeviri varsa (alt-anahtar zaten var demektir) asla
+  // ezilmez.
+  for (const d of SEED_DESTINATIONS) {
+    for (const lang of ["DE", "EN", "KU", "CKB"] as const) {
+      const t = d.translations?.[lang];
+      if (t?.history?.length || t?.features?.length) {
+        const historyPath = `{${lang},history}`;
+        const featuresPath = `{${lang},features}`;
+        await sql`
+          UPDATE destinations
+          SET translations = jsonb_set(
+            jsonb_set(translations, ${historyPath}::text[], ${JSON.stringify(t.history || [])}::jsonb, true),
+            ${featuresPath}::text[], ${JSON.stringify(t.features || [])}::jsonb, true
+          )
+          WHERE slug = ${d.slug} AND translations #> ${historyPath}::text[] IS NULL;
+        `;
+      }
+    }
+  }
+
   // --- Bundle Paketleri ---
   await sql`
     CREATE TABLE IF NOT EXISTS bundles (
