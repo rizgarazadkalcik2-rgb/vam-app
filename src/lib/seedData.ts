@@ -64,17 +64,63 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "region": "Şanlıurfa",
         "eraDisplay": "9600 v. Chr.",
-        "eraCaption": "Geschätztes Datum"
+        "eraCaption": "Geschätztes Datum",
+        "history": [
+          "Göbeklitepe ist eine archäologische Stätte auf einem Hügel etwa 15 Kilometer nordöstlich von Şanlıurfa, nahe dem Dorf Örencik. Die Bauwerke werden auf 9600-7300 v. Chr. datiert, also etwa 11.000-12.000 Jahre vor unserer Zeit — was den Ort zum ältesten bekannten monumentalen Tempelkomplex macht.",
+          "Die Stätte wurde erstmals 1963 bei einer gemeinsamen Oberflächenuntersuchung der Universitäten Istanbul und Chicago entdeckt, ihre wahre Bedeutung zeigte sich jedoch erst durch die 1995 vom deutschen Archäologen Klaus Schmidt begonnenen Ausgrabungen. Schmidts Funde kehrten die bis dahin akzeptierte Reihenfolge \"erst Landwirtschaft, dann Tempel\" um: Hier wurden monumentale Bauwerke gefunden, die von Jäger- und Sammlergesellschaften errichtet wurden, bevor Landwirtschaft und sesshaftes Leben begannen.",
+          "Göbeklitepe wurde 2018 in die UNESCO-Welterbeliste aufgenommen. Bislang wurden sechs monumentale Bauwerke freigelegt, doch geomagnetische Untersuchungen deuten darauf hin, dass es insgesamt fast zwanzig sein könnten."
+        ],
+        "features": [
+          { "title": "T-förmige Pfeiler", "body": "Im Zentrum der bis zu 30 Meter großen kreisförmigen/ovalen Bauten stehen Kalksteinsäulen von bis zu 5 Metern Höhe. Archäologen zufolge stellen diese Säulen stilisierte menschliche Figuren dar." },
+          { "title": "Tierreliefs", "body": "Auf den Säulen sind Tierfiguren wie Schlangen, Skorpione, Füchse und Wildschweine im Relief dargestellt." },
+          { "title": "Bau vor der Landwirtschaft", "body": "Die Erbauer betrieben noch keine Landwirtschaft — ein Beleg dafür, dass organisierte Gemeinschaftsarbeit schon vor der Landwirtschaft möglich war." },
+          { "title": "Absichtliche Verfüllung", "body": "Die Bauwerke wurden zu einem bestimmten Zeitpunkt absichtlich mit Erde und Schutt verfüllt; der Grund dafür ist bis heute umstritten." }
+        ]
       },
       "EN": {
         "region": "Şanlıurfa",
         "eraDisplay": "9600 BCE",
-        "eraCaption": "Estimated Date"
+        "eraCaption": "Estimated Date",
+        "history": [
+          "Göbeklitepe is an archaeological site atop a hill about 15 kilometers northeast of Şanlıurfa, near the village of Örencik. The structures are believed to date to 9600-7300 BCE — roughly 11,000 to 12,000 years ago — making it the oldest known monumental temple complex.",
+          "The site was first noticed in 1963 during a joint survey by Istanbul and Chicago universities, but its true significance emerged only with the excavations begun in 1995 by German archaeologist Klaus Schmidt. Schmidt's findings reversed the long-accepted order of \"farming first, then temples\": monumental structures were found here that were built by hunter-gatherer communities before farming and settled life began.",
+          "Göbeklitepe was inscribed on the UNESCO World Heritage List in 2018. Six monumental structures have been uncovered so far, though geomagnetic surveys suggest the total could be close to twenty."
+        ],
+        "features": [
+          { "title": "T-shaped pillars", "body": "At the center of circular/oval structures up to 30 meters in diameter stand limestone pillars nearly 5 meters tall. Archaeologists believe these pillars represent stylized human figures." },
+          { "title": "Animal reliefs", "body": "Animal figures such as snakes, scorpions, foxes, and wild boars are carved in relief on the pillars." },
+          { "title": "Built before farming", "body": "The builders were not yet practicing agriculture — evidence that organized collective work was possible before farming began." },
+          { "title": "Deliberate burial", "body": "At some point the structures were deliberately buried under earth and rubble; the reason remains debated." }
+        ]
       },
       "KU": {
         "region": "Riha",
         "eraDisplay": "9600 BZ",
-        "eraCaption": "Dîroka Texmînî"
+        "eraCaption": "Dîroka Texmînî",
+        "history": [
+          "Gobeklîtepe, li bakurrojhilatê Rihayê, nêzî 15 kîlometreyan, li nêzî gundê Örencikê, li ser girekî cihekî arkeolojîk e. Tê texmînkirin ku avahî di navbera 9600-7300 BZ de, ango nêzî 11-12 hezar sal berê, hatine avakirin — ev jî wê dike komplekseke perestgehê ya herî kevn a naskirî.",
+          "Cih cara yekem di sala 1963an de, di lêkolîna rûerdê ya hevbeş a zanîngehên Stenbol û Chicagoyê de hate dîtin, lê girîngiya wê ya rastîn bi kolanên ku arkeologê alman Klaus Schmidt di sala 1995an de dest pê kirin diyar bû. Dîtinên Schmidt rêza \"pêşî çandinî, paşê perestgeh\" ya heta wê demê pejirandî berevajî kir: li vir, berî ku çandinî û jiyana bicihbûyî dest pê bike, avahiyên mezin ên ku ji hêla civakên nêçîrvan-berhevkar ve hatine avakirin hatin dîtin.",
+          "Gobeklîtepe di sala 2018an de ket Lîsteya Mîrateya Cîhanê ya UNESCOyê. Heta niha şeş avahiyên mezin derketine ronahiyê, lê lêkolînên jeomanyetîk destnîşan dikin ku hejmara giştî dikare nêzî bîstî be."
+        ],
+        "features": [
+          { "title": "Stûnên bi şeklê T", "body": "Di navenda avahiyên gilover/oval ên bi qonaxa 30 metreyan de, stûnên kevirê şilûtê yên nêzî 5 metreyan bilind cih digirin. Li gorî arkeologan, van stûnan wêneyên mirovî yên stîlîzekirî temsîl dikin." },
+          { "title": "Kelûşên heywanan", "body": "Li ser stûnan, wêneyên heywanan ên wek mar, dûpişk, rovî û berazê kovî bi teknîka kelûşê hatine xêzkirin." },
+          { "title": "Avakirina berî çandiniyê", "body": "Avakerên vê avahiyê hêj bi çandiniyê re nebûn; ev nîşan dide ku xebata civakî ya organîzekirî berî çandiniyê jî pêkan bû." },
+          { "title": "Veşartina bi mebest", "body": "Avahî di xalek de bi mebest bi ax û bermayiyan hatine veşartin; sedema vê hîn jî nakok e." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "گۆبەکلیتەپە، لە باکووری ڕۆژهەڵاتی شانلیئۆرفا، نزیکەی ١٥ کیلۆمەتر لە گوندی ئۆرەنجیکەوە، شوێنێکی شوێنەوارییە کە لەسەر گردێک بنیاتنراوە. پێدەچێت ئەم بیناکان لە نێوان ساڵانی ٩٦٠٠-٧٣٠٠ی پێش زایین، واتە نزیکەی ١١-١٢ هەزار ساڵ لەمەوپێش دروستکرابن — ئەمەش وای لێدەکات بە هەرە کۆنترین کۆمپلێکسی پەرستگای دیارییکراوی ناسراو.",
+          "ئەم شوێنە بۆ یەکەم جار لە ساڵی ١٩٦٣دا لە توێژینەوەیەکی هاوبەشی ڕووکاری زانکۆکانی ئیستەنبوڵ و شیکاگۆدا دۆزرایەوە، بەڵام گرنگیی ڕاستەقینەی تەنها بە هەڵکۆڵینەکانی کە لە ساڵی ١٩٩٥دا لەلایەن ئارکیۆلۆژیستی ئەڵمانی کلاوس شمیدتەوە دەستی پێکرد، دەرکەوت. دۆزینەوەکانی شمیدت ئەو ڕیزبەندییەی کە هەتا ئەو کاتە پەسەندبوو \"یەکەم چاندن، پاشان پەرستگا\" بەرەوپێچ کردەوە: لێرەدا، پێش دەستپێکردنی چاندن و ژیانی نیشتەجێبوون، بیناکانی گەورە کە لەلایەن کۆمەڵگای ڕاوچی-کۆکەرەوە دروستکرابوون دۆزرانەوە.",
+          "گۆبەکلیتەپە لە ساڵی ٢٠١٨دا خرایە لیستی میراتی جیهانی یۆنیسکۆ. هەتا ئێستا شەش بینای گەورە دۆزراونەتەوە، بەڵام لێکۆڵینەوە جیۆمەگنێتییەکان ئاماژە بەوە دەکەن کە کۆی گشتی لەوانەیە نزیکەی بیست بێت."
+        ],
+        "features": [
+          { "title": "کۆڵەکە T شێوەکان", "body": "لە ناوەڕاستی بیناکانی خڕ/بێضاوی کە تیرەیان دەگاتە ٣٠ مەتر، کۆڵەکەی بەردی چیمەنتۆ کە بەرزییان نزیکەی ٥ مەتر دەبێت هەیە. بەپێی ئارکیۆلۆژیستەکان، ئەم کۆڵەکانە وێنەی مرۆڤی شێوەگۆڕدراو نیشان دەدەن." },
+          { "title": "نەخشی ئاژەڵ", "body": "لەسەر کۆڵەکەکان، وێنەی ئاژەڵ وەک مار، دووپشک، ڕێوی و بەرازی کێوی بە تەکنیکی نەخشکردن دروستکراون." },
+          { "title": "بنیادنان پێش چاندن", "body": "ئەوانەی ئەم بینایان بنیاد ناوە هێشتا خەریکی چاندن نەبوون؛ ئەمە پیشان دەدات کارکردنی کۆمەڵایەتیی ڕێکخراو پێش چاندن گونجاو بووە." },
+          { "title": "شاردنەوەی ئەنقەست", "body": "بیناکان لە خاڵێکدا بە ئەنقەست بە خاک و بەرماوە شاردراونەتەوە؛ هۆکاری ئەمە هێشتا مشتومڕی لەسەرە." }
+        ]
       }
     },
     "unesco": true,
@@ -127,15 +173,57 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "translations": {
       "DE": {
         "eraDisplay": "7400 v. Chr.",
-        "eraCaption": "Geschätztes Datum"
+        "eraCaption": "Geschätztes Datum",
+        "history": [
+          "Çatalhöyük ist eine neolithische Siedlung im Landkreis Çumra in Konya, auf dem südanatolischen Plateau, bestehend aus zwei Hügeln (Ost und West). Der Osthügel birgt 18 Siedlungsschichten aus der Zeit von 7400-6200 v. Chr.; der Westhügel gehört zur chalkolithischen Periode zwischen 6200-5200 v. Chr.",
+          "Die Siedlung wurde 1958 erstmals vom britischen Archäologen James Mellaart und seinem Team entdeckt; Ausgrabungen zwischen 1961 und 1965 legten die Überreste von mehr als 160 Häusern frei. Çatalhöyük wurde 2012 in die UNESCO-Welterbeliste aufgenommen, da es einen seltenen Beleg für den Übergang vom Dorf zum städtischen Leben in einer über 2.000 Jahre andauernden Siedlung an demselben Ort liefert."
+        ],
+        "features": [
+          { "title": "Straßenlose Stadtanlage", "body": "Die Häuser wurden aneinandergrenzend (Rücken an Rücken) gebaut; Ein- und Ausgang erfolgten nicht über Straßen, sondern über Öffnungen in den Dächern." },
+          { "title": "Wandmalereien und Reliefs", "body": "Unter den Funden befinden sich Jagdszenen, Stierkopf-Reliefs (Bukranien) und geometrische Muster." },
+          { "title": "Bestattungen im Hausinneren", "body": "Die Toten wurden unter den Plattformen im Hausinneren bestattet; neue Häuser wurden auf den alten errichtet, wodurch sich ein 18-schichtiger Hügel bildete." },
+          { "title": "Egalitäre Siedlung", "body": "Die Bauten weisen keine architektonischen Unterschiede auf, die auf eine Hierarchie hindeuten — ein Hinweis auf die relativ egalitäre Struktur der damaligen Gesellschaft." }
+        ]
       },
       "EN": {
         "eraDisplay": "7400 BCE",
-        "eraCaption": "Estimated Date"
+        "eraCaption": "Estimated Date",
+        "history": [
+          "Çatalhöyük is a Neolithic settlement in the Çumra district of Konya, on the South Anatolian Plateau, made up of two mounds (East and West). The East Mound contains 18 settlement layers dating from 7400-6200 BCE; the West Mound belongs to the Chalcolithic period between 6200-5200 BCE.",
+          "The settlement was first discovered in 1958 by British archaeologist James Mellaart and his team; excavations between 1961 and 1965 uncovered the remains of more than 160 houses. Çatalhöyük was inscribed on the UNESCO World Heritage List in 2012 for offering rare evidence of the transition from village to urban life in a settlement that persisted in the same place for over 2,000 years."
+        ],
+        "features": [
+          { "title": "Streetless town plan", "body": "Houses were built adjoining one another (back to back); entry and exit were through openings in the roofs rather than streets." },
+          { "title": "Wall paintings and reliefs", "body": "Hunting scenes, bull-head reliefs (bucrania), and geometric patterns are among the finds." },
+          { "title": "Burials within houses", "body": "The dead were buried beneath platforms inside houses; new houses were built atop old ones, forming an 18-layer mound." },
+          { "title": "Egalitarian settlement", "body": "The structures show no architectural distinction pointing to hierarchy, suggesting the relatively egalitarian structure of the society of the time." }
+        ]
       },
       "KU": {
         "eraDisplay": "7400 BZ",
-        "eraCaption": "Dîroka Texmînî"
+        "eraCaption": "Dîroka Texmînî",
+        "history": [
+          "Çatalhöyük, li navçeya Çumra ya Konyayê, li ser Platoya Anatolyaya Başûr, niştecihbûneke Neolîtîk e ku ji du hoyükan (Rojhilat û Rojava) pêk tê. Hoyükê Rojhilat 18 qatên niştecihbûnê yên di navbera 7400-6200 BZ de vedihewîne; Hoyükê Rojava jî ya serdema Kalkolîtîk a di navbera 6200-5200 BZ de ye.",
+          "Niştecihbûn cara yekem di sala 1958an de ji hêla arkeologê brîtanî James Mellaart û tîmê wî ve hate dîtin; kolanên di navbera 1961-1965an de bermahiyên zêdetirî 160 xaniyan derxistin ronahiyê. Çatalhöyük di sala 2012an de ket Lîsteya Mîrateya Cîhanê ya UNESCOyê, çimkî di heman cihî de bêtirî 2.000 salan berdewam bûyî niştecihbûnekê, delîlek kêm a derbasbûna ji gund berbi jiyana bajarî pêşkêş dike."
+        ],
+        "features": [
+          { "title": "Plana bajêr a bêkolan", "body": "Xanî li ser hev (pişt bi pişt) hatine avakirin; têketin-derketin ne ji kolanan, lê ji vekirinên li banan pêk dihat." },
+          { "title": "Wêneyên dîwêr û kelûş", "body": "Sehneyên nêçîrê, kelûşên serê ga (bukranyum) û şêweyên geometrîk di nav berhemên dîtî de ne." },
+          { "title": "Veşartina di nav xaniyan de", "body": "Miriyan li binê platformên di nav xaniyan de hatine veşartin; xaniyên nû li ser yên kevn hatine avakirin, kombûyeke 18 qatî pêk anî." },
+          { "title": "Niştecihbûna wekhev", "body": "Di avahiyan de ferqeke mîmarî ya ku îşaretê bide hiyerarşiyê tune; ev jî nîşan dide ku civaka wê serdemê bi awayekî têkildar wekhev bû." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "چاتالهۆیۆک، لە ناوچەی چۆمرای کۆنیا، لەسەر پلاتۆی ئەناتۆلیای باشوور، شوێنی نیشتەجێبوونێکی نیۆلیتیکە کە لە دوو گردی (ڕۆژهەڵات و ڕۆژئاوا) پێکهاتووە. گردی ڕۆژهەڵات ١٨ چینی نیشتەجێبوونی نێوان ساڵانی ٧٤٠٠-٦٢٠٠ی پێش زایین لەخۆدەگرێت؛ گردی ڕۆژئاواش سەر بە سەردەمی کالکۆلیتیکە لە نێوان ساڵانی ٦٢٠٠-٥٢٠٠ی پێش زایین.",
+          "ئەم شوێنە بۆ یەکەم جار لە ساڵی ١٩٥٨دا لەلایەن ئارکیۆلۆژیستی بەریتانی جەیمس مێلائارت و تیمەکەیەوە دۆزرایەوە؛ هەڵکۆڵینەکانی نێوان ساڵانی ١٩٦١-١٩٦٥ بەرماوەی زیاتر لە ١٦٠ ماڵیان دەرخست. چاتالهۆیۆک لە ساڵی ٢٠١٢دا خرایە لیستی میراتی جیهانی یۆنیسکۆ، چونکە بەڵگەیەکی دەگمەنی گواستنەوە لە گوند بۆ ژیانی شارستانی لە شوێنێکی یەکسان کە زیاتر لە ٢٠٠٠ ساڵ بەردەوام بووە پێشکەش دەکات."
+        ],
+        "features": [
+          { "title": "پلانی شاری بێ شەقام", "body": "خانووەکان پێکەوە بەستراونەتەوە (پشت بە پشت)؛ چوونەژوورەوە و دەرچوون لە ڕێگەی شەقامەوە نەبوو، بەڵکو لە ڕێگەی کونی سەربانەکانەوە بوو." },
+          { "title": "وێنەی دیوار و نەخش", "body": "دیمەنی ڕاوکردن، نەخشی سەری گا (بوکرانیۆم) و نەخشی جیۆمەتری لەنێو دۆزراوەکاندان." },
+          { "title": "شاردنەوە لەناو خانووەکان", "body": "مردووەکان لەژێر سەکۆکانی ناو خانووەکان شاردراونەتەوە؛ خانووی نوێ لەسەر ئەوانی کۆن دروستکراوە، کۆمەڵێکی ١٨ چینی پێکهێناوە." },
+          { "title": "نیشتەجێبوونی یەکسان", "body": "لە بیناکاندا هیچ جیاوازیی تەلارسازی کە ئاماژە بە پلەبەندی بکات نییە؛ ئەمە ئاماژەیە بۆ پێکهاتەی نسبەتەن یەکسانی کۆمەڵگای ئەو سەردەمە." }
+        ]
       }
     },
     "unesco": true,
@@ -187,16 +275,58 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "region": "Şanlıurfa",
         "eraDisplay": "6. Jh. v. Chr.",
-        "eraCaption": "Frühe Besiedlung"
+        "eraCaption": "Frühe Besiedlung",
+        "history": [
+          "Harran ist ein Landkreis südlich von Şanlıurfa, nahe der syrischen Grenze. Sein Name, der im Sumerischen und Akkadischen \"Karawanen-/Reiseweg\" bedeutet, lag in der Antike am Kreuzungspunkt der Handelswege zwischen Anatolien, Syrien und Mesopotamien. Seit den Sumerern, Assyrern, Babyloniern und Hethitern besiedelt, wurde Harran 744 kurzzeitig Hauptstadt des Umayyaden-Kalifats.",
+          "Im Mittelalter war die Stadt ein bedeutendes Wissenschaftszentrum — der Name der Harran-Universität hält dieses Erbe lebendig. Heute ist sie vor allem für ihre kegelförmigen Kuppelhäuser bekannt, die bis ins 6. Jahrhundert v. Chr. zurückreichen und eine der ältesten Haustraditionen der Welt bewahren."
+        ],
+        "features": [
+          { "title": "Kegelförmige Kuppelhäuser", "body": "Jede Kuppel steht für einen Raum; die Anzahl der Kuppeln zeigte den Wohlstand der Familie an. Da es keine Fenster oder Glas gab, blieben die Kuppelspitzen offen, um Licht und Rauch entweichen zu lassen." },
+          { "title": "Festung von Harran", "body": "Das Verteidigungsbauwerk der Stadt trägt Spuren von Reparaturen aus verschiedenen Epochen." },
+          { "title": "Ruinen der Ulu-Moschee", "body": "Eine der ältesten Moscheen Anatoliens, erbaut im 8. Jahrhundert unter den Umayyaden." },
+          { "title": "Antike Universitätsruinen", "body": "Reste der einst bedeutenden Lehr- und Übersetzungsstätte, die im Mittelalter griechisches und persisches Wissen bewahrte." }
+        ]
       },
       "EN": {
         "eraDisplay": "6th century BCE",
-        "eraCaption": "Early Settlement"
+        "eraCaption": "Early Settlement",
+        "history": [
+          "Harran is a district south of Şanlıurfa, close to the Syrian border. Its name, meaning \"caravan/travel route\" in Sumerian and Akkadian, sat at the crossroads of Anatolian-Syrian-Mesopotamian trade routes in antiquity. Settled since the time of the Sumerians, Assyrians, Babylonians, and Hittites, Harran briefly became the capital of the Umayyad Caliphate in 744.",
+          "The city was an important center of learning in the Middle Ages; the name of Harran University keeps this legacy alive. Today it is best known for its beehive-domed houses, a tradition dating back to the 6th century BCE and one of the oldest conical-dome house traditions in the world."
+        ],
+        "features": [
+          { "title": "Beehive-domed houses", "body": "Each dome represents a room; the number of domes indicated a family's wealth. With no windows or glass, the domes' tops were left open to let light and smoke escape." },
+          { "title": "Harran Castle", "body": "The city's defensive structure bears traces of repairs from different periods." },
+          { "title": "Ruins of the Great Mosque", "body": "One of the oldest mosques in Anatolia, built in the 8th century under the Umayyads." },
+          { "title": "Ancient university ruins", "body": "Remains of what was once an important center of teaching and translation, preserving Greek and Persian knowledge in the Middle Ages." }
+        ]
       },
       "KU": {
         "region": "Riha",
         "eraDisplay": "Sedsala 6. BZ",
-        "eraCaption": "Niştecihbûna Destpêkê"
+        "eraCaption": "Niştecihbûna Destpêkê",
+        "history": [
+          "Herran, navçeyek li başûrê Rihayê ye, nêzî sînorê Sûriyeyê. Bi navê xwe yê ku bi Sumerî û Akadî tê wateya \"riya kerwan/rêwîtiyê\", di serdema kevn de li xala hevbeşiya rêyên bazirganiyê yên Anatolya-Sûriye-Mezopotamyayê bû. Herran ku ji serdema Sumeran, Asûrî, Babîlî û Hîtîtiyan ve niştecihbûyî bû, di sala 744an de ji bo demeke kurt bû paytexta Dewleta Emewiyan.",
+          "Bajêr di serdema navîn de navendeke zanistî ya girîng bû; navê Zanîngeha Herranê jî vê mîratê zindî digire. Îro herî zêde bi xaniyên xwe yên kombeta konîk tê naskirin ku heta sedsala 6. BZ dirêj dibin û yek ji kevntirîn kevneşopiyên xaniyên konîk ên cîhanê diparêzin."
+        ],
+        "features": [
+          { "title": "Xaniyên kombeta konîk", "body": "Her kombet ji bo odeyekê ye; hejmara kombetan rewşa aborî ya malbatê nîşan dida. Ji ber ku pace û camê tunebû, serê kombetan vekirî hatine hiştin da ku ronahî û dûmanê derkeve." },
+          { "title": "Kela Herranê", "body": "Avahiya parastina bajêr, şopên tamîrkirinê yên ji serdemên cuda hildigire." },
+          { "title": "Kavilên Mizgefta Mezin", "body": "Yek ji mizgeftên herî kevn ên Anatolyayê, di sedsala 8. de di bin Emewiyan de hatiye avakirin." },
+          { "title": "Kavilên zanîngeha kevnar", "body": "Bermahiyên navendeke fêrkirin û wergerandinê ya girîng, ku di serdema navîn de zanîna Yewnanî û Farisî parastiye." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "حەڕان، ناوچەیەکە لە باشووری شانلیئۆرفا، لە نزیک سنووری سووریا. ناوی کە بە زمانی سومەری و ئەکەدی مانای \"ڕێگای کاروان/گەشت\" دەگەیەنێت، لە سەردەمی کۆندا لە خاچەڕێی ڕێگا بازرگانییەکانی ئەناتۆلیا-سووریا-مێزۆپۆتامیا بوو. حەڕان کە لە سەردەمی سومەری، ئاشووری، بابلی و حیتییەکانەوە نیشتەجێبوو، لە ساڵی ٧٤٤دا بۆ ماوەیەکی کورت بووە پایتەختی خەلافەتی ئومەوی.",
+          "شارەکە لە سەردەمی ناوەڕاستدا ناوەندێکی زانستیی گرنگ بوو؛ ناوی زانکۆی حەڕانیش ئەم میراتە زیندوو ڕادەگرێت. ئەمڕۆ زۆرترین بە خانووە گومبەز-کۆنییەکانی دەناسرێتەوە کە دەگاتە سەدەی شەشەمی پێش زایین و یەکێکە لە کۆنترین نەریتی خانووی گومبەزی کۆنی جیهان."
+        ],
+        "features": [
+          { "title": "خانووی گومبەز-کۆنی", "body": "هەر گومبەزێک نوێنەرایەتی ژوورێک دەکات؛ ژمارەی گومبەزەکان بارودۆخی داراییی خێزانی نیشان دەدا. لەبەر نەبوونی پەنجەرە و شووشە، سەروی گومبەزەکان کراوە هێڵدراوە بۆ دەرچوونی ڕووناکی و دووکەڵ." },
+          { "title": "قەڵای حەڕان", "body": "بینای پاراستنی شارەکە شوێنی چاککردنەوەی سەردەمە جیاوازەکان هەڵدەگرێت." },
+          { "title": "کاولی مزگەوتی گەورە", "body": "یەکێک لە کۆنترین مزگەوتەکانی ئەناتۆلیا، لە سەدەی ٨ لەژێر ئومەوییەکاندا بنیادنراوە." },
+          { "title": "کاولی زانکۆیە کۆنەکە", "body": "بەرماوەی ئەوەی کە جارێکیان ناوەندێکی گرنگی فێرکردن و وەرگێڕان بوو، زانیاری یۆنانی و فارسی لە سەردەمی ناوەڕاستدا پاراستبوو." }
+        ]
       }
     },
     "unesco": false,
@@ -248,18 +378,60 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "name": "Mauern von Diyarbakır",
         "eraDisplay": "4. Jahrtausend v. Chr.",
-        "eraCaption": "Ununterbrochene Besiedlung"
+        "eraCaption": "Ununterbrochene Besiedlung",
+        "history": [
+          "Der historische Kern von Diyarbakır, der Amida-Hügel in der Zitadelle, zeigt, dass die Stadt seit dem 6. Jahrtausend v. Chr. ununterbrochen besiedelt ist. Die ältesten bekannten Verteidigungsbauten wurden im 4. Jahrtausend v. Chr. von den Hurritern errichtet; die Grundlagen der heutigen Stadtmauern wurden unter dem römischen Kaiser Konstantius II. (4. Jahrhundert) gelegt.",
+          "In den folgenden Jahrhunderten durchlief die Stadt römische, sassanidische, byzantinische, umayyadische, abbasidische, marwanidische, seldschukische, artukidische, akkoyunlu, safawidische und osmanische Herrschaft — jede hinterließ ihre Spuren an den Mauern und in der Stadt. Die Festung von Diyarbakır und die Hevsel-Gärten wurden 2015 als \"Kulturlandschaft\" in die UNESCO-Welterbeliste aufgenommen."
+        ],
+        "features": [
+          { "title": "5.800 Meter Stadtmauer", "body": "Nach der Chinesischen Mauer gilt sie als eine der längsten erhaltenen Stadtmauern der Welt; sie trägt 82 Türme und Inschriften aus 63 verschiedenen Epochen." },
+          { "title": "Hevsel-Gärten", "body": "Rund 700 Hektar landwirtschaftliche und naturbelassene Fläche zwischen Tigris und Stadtmauer; Heimat von mehr als 180 Vogelarten." },
+          { "title": "Zehnbogenbrücke", "body": "Die historische Brücke über den Tigris ist mit dem Wasser- und Verkehrssystem der Stadt verbunden." },
+          { "title": "Mehrschichtige Architektur", "body": "Innerhalb derselben Stadtmauer stehen Bauten aus römischer, artukidischer, akkoyunlu und osmanischer Zeit nebeneinander." }
+        ]
       },
       "EN": {
         "name": "Diyarbakır City Walls",
         "eraDisplay": "4th millennium BCE",
-        "eraCaption": "Continuous Settlement"
+        "eraCaption": "Continuous Settlement",
+        "history": [
+          "The historic core of Diyarbakır, the Amida Mound within the citadel, shows that the city has been continuously settled since the 6th millennium BCE. The earliest known defensive structures were built by the Hurrians in the 4th millennium BCE; the foundations of today's walls were laid under Roman Emperor Constantius II in the 4th century.",
+          "In the following centuries the city passed through Roman, Sassanid, Byzantine, Umayyad, Abbasid, Marwanid, Seljuk, Artuqid, Aq Qoyunlu, Safavid, and Ottoman rule — each leaving its mark on the walls and the city. Diyarbakır Fortress and the Hevsel Gardens were inscribed on the UNESCO World Heritage List in 2015 as a \"cultural landscape.\""
+        ],
+        "features": [
+          { "title": "5,800-meter city walls", "body": "Regarded as one of the longest surviving city walls in the world after the Great Wall of China; they bear 82 towers and inscriptions from 63 different periods." },
+          { "title": "Hevsel Gardens", "body": "About 700 hectares of agricultural and natural land between the Tigris and the walls; home to more than 180 bird species." },
+          { "title": "Ten-Eyed Bridge", "body": "The historic bridge over the Tigris is linked to the city's water and transport systems." },
+          { "title": "Multi-layered architecture", "body": "Roman, Artuqid, Aq Qoyunlu, and Ottoman-era structures stand side by side within the same walls." }
+        ]
       },
       "KU": {
         "name": "Sûrên Amedê",
         "region": "Amed",
         "eraDisplay": "Hezareya 4. BZ",
-        "eraCaption": "Niştecihbûna Bêrawestan"
+        "eraCaption": "Niştecihbûna Bêrawestan",
+        "history": [
+          "Bingeha dîrokî ya Amedê, Girê Amîda yê di kelehê de, nîşan dide ku bajêr ji hezareya 6. BZ ve bêrawestan niştecih bûye. Avahiyên parastinê yên herî kevn ên naskirî ji hêla Hurriyan ve di hezareya 4. BZ de hatine avakirin; bingehên sûrên îro ku em dibînin di serdema Împeratorê Romayê II. Konstantînûs de (sedsala 4.) hatin danîn.",
+          "Di sedsalên pêş de bajêr bi rêzê di bin serweriya Romayê, Sasaniyan, Bîzansê, Emewiyan, Abasiyan, Merwaniyan, Selçûqiyan, Artûqiyan, Akqoyûnliyan, Safewiyan û Osmaniyan re derbas bû — her yek şopa xwe li ser sûran û bajêr hişt. Kela Amedê û Baxên Hevselê di sala 2015an de wek \"herêma peyzajê ya çandî\" ket Lîsteya Mîrateya Cîhanê ya UNESCOyê."
+        ],
+        "features": [
+          { "title": "Xeta sûran a 5.800 metre", "body": "Piştî Sûra Çînê wek yek ji sûrên herî dirêj ên li ser lingan mayî yên cîhanê tê zanîn; li ser wê 82 kulle û nivîsên ji 63 serdemên cuda hene." },
+          { "title": "Baxên Hevselê", "body": "Navbera Çemê Dîcle û sûr, qadeke çandiniyê/xwezayî ya ~700 hektaran; xaniyê zêdetirî 180 celebên çûkan e." },
+          { "title": "Pira Deh Çavan", "body": "Pira dîrokî ya li ser Dîcleyê, bi pergala avê û veguhastinê ya bajêr ve girêdayî ye." },
+          { "title": "Mîmariya pirqat", "body": "Di heman sûr de avahiyên serdema Romayê, Artûqî, Akqoyûnlî û Osmanî li kêleka hev radiwestin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "بنەمای مێژووی ئامەد، گردی ئامیدا لەناو قەڵادا، پیشان دەدات کە شارەکە لە هەزارەی شەشەمی پێش زایینەوە بەردەوام نیشتەجێ بووە. کۆنترین بیناکانی پاراستنی ناسراو لەلایەن هوریەکانەوە لە هەزارەی چوارەمی پێش زایین دروستکراون؛ بنەمای شوورەکانی ئێستا لە سەردەمی کۆنستانتیۆسی دووەمی ئیمپراتۆری ڕۆما (سەدەی چوار) دانرا.",
+          "لە سەدەکانی دواتردا شارەکە بە زنجیرەیی لەژێر دەسەڵاتی ڕۆما، ساسانی، بیزەنتی، ئومەوی، عەباسی، مەروانی، سەلجووقی، ئارتووقی، ئاق قویونلوو، سەفەوی و عوسمانیدا تێپەڕی — هەریەکەیان شوێنپێی خۆیان لەسەر شوورەکان و شارەکە بەجێهێشت. قەڵای ئامەد و باخچەکانی حەڤسەل لە ساڵی ٢٠١٥دا وەک \"دیمەنی کەلتووری\" خرایە لیستی میراتی جیهانی یۆنیسکۆ."
+        ],
+        "features": [
+          { "title": "شوورەی ٥٨٠٠ مەتری", "body": "دوای شووری چین وەک یەکێک لە درێژترین شوورە مانگاکانی جیهان ناسراوە؛ ٨٢ قوللە و نووسینی سەردەمی جیاواز (٦٣ سەردەم) لەسەری هەیە." },
+          { "title": "باخچەکانی حەڤسەل", "body": "نزیکەی ٧٠٠ هەکتار زەوی کشتوکاڵی و سروشتی لەنێوان ڕووباری دیجلە و شوورەکە؛ ماڵی زیاتر لە ١٨٠ جۆری باڵندە." },
+          { "title": "پردی دە چاوی", "body": "پردە مێژووییەکەی سەر ڕووباری دیجلە، بە سیستەمی ئاو و گواستنەوەی شارەکەوە بەستراوەتەوە." },
+          { "title": "تەلارسازیی فرەچین", "body": "لەناو یەک شوورەدا بیناکانی سەردەمی ڕۆما، ئارتووقی، ئاق قویونلوو و عوسمانی لەتەنیشت یەکترەوە ڕاوەستاون." }
+        ]
       }
     },
     "unesco": true,
@@ -311,17 +483,59 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "translations": {
       "DE": {
         "eraDisplay": "4. Jh. n. Chr.",
-        "eraCaption": "Erste Erwähnung"
+        "eraCaption": "Erste Erwähnung",
+        "history": [
+          "Mardin liegt an den Südhängen der Mardin-Midyat-Schwelle, auf einem strategischen Bergrücken mit Blick auf die mesopotamische Ebene. Obwohl die Stadt erstmals im 4. Jahrhundert erwähnt wird, wurden im südlichen Teil des Hügels auch prähistorische Spuren gefunden. Über die Geschichte hinweg war die Stadt ein Zentrum, in dem verschiedene Religionen und Völker (Muslime, syrisch-orthodoxe Christen, Armenier, Juden) zusammenlebten.",
+          "Eines der prächtigsten Bauwerke der Stadt, die Zinciriye-Medrese (Sultan-Isa-Medrese), wurde 1385 vom artukidischen Herrscher Necmeddin İsa fertiggestellt. Das 5 km von Mardin entfernte Kloster Deyrulzafaran wurde im 4. Jahrhundert gegründet und diente zwischen 1293 und 1932 als Patriarchatssitz der syrisch-orthodoxen Kirche."
+        ],
+        "features": [
+          { "title": "Zinciriye-Medrese", "body": "Eines der Meisterwerke artukidischer Architektur; mit Innenhof, Moschee, Mausoleum und gerillten Kuppeln blickt sie auf die Ebene von Mardin." },
+          { "title": "Kloster Deyrulzafaran", "body": "Historisches Zentrum der syrisch-orthodoxen Kirche; enthält einen besonderen Bereich, in dem die Gräber von 52 Patriarchen erhalten sind." },
+          { "title": "Steinhaus-Architektur", "body": "Aus gelbem Kalkstein erbaute traditionelle Mardiner Häuser mit Bogenfenstern, geführt auf der vorläufigen UNESCO-Welterbeliste." },
+          { "title": "Telkari-Silberfiligran", "body": "Die von syrischen Meistern entwickelte feine Silberdraht-Kunst wird bis heute in den Basaren gefertigt." }
+        ]
       },
       "EN": {
         "eraDisplay": "4th century CE",
-        "eraCaption": "First Record"
+        "eraCaption": "First Record",
+        "history": [
+          "Mardin sits on the southern slopes of the Mardin-Midyat threshold, on a strategic ridge overlooking the Mesopotamian plain. Although first mentioned by name in the 4th century, prehistoric traces have also been found on the southern part of the hill. Throughout history the city was a center where different religions and peoples (Muslim, Syriac Christian, Armenian, Jewish) lived side by side.",
+          "One of the city's most magnificent buildings, the Zinciriye (Sultan Isa) Madrasa, was completed in 1385 by the Artuqid ruler Necmeddin İsa. The Deyrulzafaran Monastery, 5 km from Mardin, was founded in the 4th century and served as the patriarchal seat of the Syriac Orthodox Church between 1293 and 1932."
+        ],
+        "features": [
+          { "title": "Zinciriye Madrasa", "body": "One of the finest examples of Artuqid architecture; with its courtyard, mosque, mausoleum, and fluted domes, it overlooks the Mardin plain." },
+          { "title": "Deyrulzafaran Monastery", "body": "The historic seat of the Syriac Orthodox Church; it contains a special section preserving the tombs of 52 patriarchs." },
+          { "title": "Stone mansion architecture", "body": "Traditional Mardin houses built of yellow limestone with arched windows, listed on UNESCO's tentative heritage list." },
+          { "title": "Telkari silver filigree", "body": "A fine silver-wire craft developed by Syriac artisans, still produced in the bazaars today." }
+        ]
       },
       "KU": {
         "name": "Mêrdîn",
         "region": "Mêrdîn",
         "eraDisplay": "Sedsala 4. PZ",
-        "eraCaption": "Tomara Yekem"
+        "eraCaption": "Tomara Yekem",
+        "history": [
+          "Mêrdîn, li kêleka başûr a eşîkê Mêrdîn-Midyadê, li ser pişteke stratejîk a li dûrminda deşta Mezopotamyayê ye. Her çend navê wê cara yekem di sedsala 4. de tê behskirin jî, li beşê başûr ê girê de şopên berî dîrokê jî hatine dîtin. Bajêr di dirêjahiya dîrokê de bû navendek ku ol û gelên cuda (misilman, mesîhiyên Suryanî, ermenî, cihû) li gel hev jiyan.",
+          "Medresa Zinciriyê (Sultan Îsa), yek ji avahiyên herî bedew ên bajêr, di sala 1385an de ji hêla begê Artûqî Necmeddîn Îsa ve hate temam kirin. Dêra Deyrulzeferanê ya 5 km ji Mêrdînê dûr, di sedsala 4. de hate damezrandin û di navbera 1293-1932an de bû navenda patrîkxaneya Dêra Suryanî ya Kevin."
+        ],
+        "features": [
+          { "title": "Medresa Zinciriyê", "body": "Yek ji mînakên herî bilind ên mîmariya Artûqî; bi hewş, mizgeft, tirbe û kombetên xêzkirî li ber deşta Mêrdînê radiweste." },
+          { "title": "Dêra Deyrulzeferanê", "body": "Navenda dîrokî ya Dêra Suryanî ya Kevin; beşeke taybet a ku 52 gorên patrîkan tê de hatine parastin dihewîne." },
+          { "title": "Mîmariya konaxên kevir", "body": "Xaniyên kevneşopî yên Mêrdînê yên ji kevirê şilûtê yê zer hatine avakirin, bi pace kevirî; di lîsteya mîrateya demkî ya UNESCOyê de cih digirin." },
+          { "title": "Zîvkariya telkarî", "body": "Hunera zîvkariya têlên zirav ku ji hêla hunermendên Suryanî ve hatiye pêşxistin, îro jî hê di bazaran de tê çêkirin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "مێردین، لەسەر لاژووری باشووری بازنەی مێردین-میدیاد، لەسەر پشتێکی ستراتیژی کە تەماشای دەشتی مێزۆپۆتامیا دەکات، بنیاتنراوە. هەرچەندە ناوی بۆ یەکەم جار لە سەدەی چوارەمدا باسکراوە، بەڵام لە بەشی باشووری گردەکەشدا شوێنپێی پێش مێژوویش دۆزراوەتەوە. شارەکە بە درێژایی مێژوو بووە ناوەندێک کە ئایین و گەلانی جیاواز (موسڵمان، مەسیحیی سریانی، ئەرمەنی، جولەکە) پێکەوە تێیدا ژیاون.",
+          "مەدرەسەی زنجیریە (سوڵتان عیسا)، یەکێک لە شکۆدارترین بیناکانی شار، لە ساڵی ١٣٨٥دا لەلایەن میری ئارتووقی نەجمەدین عیساوە تەواوکرا. دێری دەیرولزەعفەران کە ٥ کیلۆمەتر لە مێردینەوە دوورە، لە سەدەی چواردا دامەزرا و لە نێوان ساڵانی ١٢٩٣-١٩٣٢دا بووە ناوەندی پاتریارکخانەی کڵێسای سریانیی کۆن."
+        ],
+        "features": [
+          { "title": "مەدرەسەی زنجیریە", "body": "یەکێک لە باشترین نموونەکانی تەلارسازیی ئارتووقی؛ بە حەوش، مزگەوت، ئارامگا و گومبەزە یاخۆرەکانیەوە تەماشای دەشتی مێردین دەکات." },
+          { "title": "دێری دەیرولزەعفەران", "body": "ناوەندی مێژوویی کڵێسای سریانیی کۆن؛ بەشێکی تایبەتی تێدایە کە گۆڕی ٥٢ پاتریارک تێیدا پارێزراوە." },
+          { "title": "تەلارسازیی کۆشکی بەردین", "body": "خانووە نەریتییەکانی مێردین کە لە بەردی چیمەنتۆی زەرد بنیاتنراون، بە پەنجەرەی تاقەوانی؛ لە لیستی میراتی کاتیی یۆنیسکۆدا تۆمارکراون." },
+          { "title": "زیوکاریی تەلکاری", "body": "هونەری زیوکاریی تەلی باریک کە لەلایەن هونەرمەندە سریانییەکانەوە پەرەی سەندووە، هێشتا لە بازاڕەکاندا دروست دەکرێت." }
+        ]
       }
     },
     "unesco": false,
