@@ -1,6 +1,6 @@
-export type Lang = "TR" | "DE" | "EN" | "KU";
+export type Lang = "TR" | "DE" | "EN" | "KU" | "CKB";
 
-type Entry = { TR: string; DE: string; EN: string; KU?: string };
+type Entry = { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
 
 export const DICT = {
   // Nav / footer (shared across every Next.js page)
@@ -33,6 +33,7 @@ export const DICT = {
 
   // Generic / shared chrome
   breadcrumb_home: { TR: "Ana Sayfa", DE: "Startseite", EN: "Home", KU: "Serûpel" },
+  breadcrumb_sep: { TR: "›", DE: "›", EN: "›", KU: "›", CKB: "‹" },
   all_destinations: { TR: "Destinasyonlar", DE: "Destinationen", EN: "Destinations", KU: "Cihên Gerê" },
   all_bundles: { TR: "Paketler", DE: "Pakete", EN: "Packages", KU: "Pakêt" },
   destination_singular: { TR: "destinasyon", DE: "Destination", EN: "destination", KU: "cîh" },

@@ -59,9 +59,13 @@ export interface DestinationInput {
   translations?: DestinationTranslations;
 }
 
-/** DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki t() ile aynı fallback mantığı. */
-export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" | "KU") {
-  const tr = lang === "TR" ? undefined : d.translations?.[lang];
+/**
+ * DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki
+ * t() ile aynı fallback mantığı. CKB için destinasyon içeriği kapsam dışı
+ * bırakıldı (Faz 3 planı) — CKB seçili olsa da bu satır sessizce TR'ye düşer.
+ */
+export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
+  const tr = lang === "TR" || lang === "CKB" ? undefined : d.translations?.[lang];
   return {
     ...d,
     name: tr?.name || d.name,

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import type { Lang } from "@/lib/dictionary";
 
-const OPTIONS: Lang[] = ["TR", "DE", "EN", "KU"];
+const OPTIONS: Lang[] = ["TR", "DE", "EN", "KU", "CKB"];
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year, matches middleware.ts
 
 export default function LanguageSwitcher({ lang }: { lang: Lang }) {

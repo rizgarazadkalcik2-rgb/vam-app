@@ -43,9 +43,13 @@ export interface BundleInput {
   translations?: BundleTranslations;
 }
 
-/** DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki t() ile aynı fallback mantığı. */
-export function localizeBundle(b: VamBundle, lang: "TR" | "DE" | "EN" | "KU") {
-  const tr = lang === "TR" ? undefined : b.translations?.[lang];
+/**
+ * DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki
+ * t() ile aynı fallback mantığı. CKB için bundle/destinasyon içeriği kapsam
+ * dışı bırakıldı (Faz 3 planı) — CKB seçili olsa da bu satır sessizce TR'ye düşer.
+ */
+export function localizeBundle(b: VamBundle, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
+  const tr = lang === "TR" || lang === "CKB" ? undefined : b.translations?.[lang];
   return {
     ...b,
     title: tr?.title || b.title,

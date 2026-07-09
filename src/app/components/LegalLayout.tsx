@@ -1,16 +1,20 @@
 import Link from "next/link";
+import type { Lang } from "@/lib/dictionary";
 
 export default function LegalLayout({
   title,
   updatedDate,
   children,
+  lang = "TR",
 }: {
   title: string;
   updatedDate: string;
   children: React.ReactNode;
+  lang?: Lang;
 }) {
+  const rtl = lang === "CKB";
   return (
-    <div style={{ minHeight: "100vh", background: "#f6f0e4" }}>
+    <div dir={rtl ? "rtl" : "ltr"} style={{ minHeight: "100vh", background: "#f6f0e4", fontFamily: rtl ? "Vazirmatn, Georgia, serif" : undefined }}>
       {/* Basit header */}
       <header
         style={{
@@ -39,7 +43,7 @@ export default function LegalLayout({
             textDecoration: "none",
           }}
         >
-          ← Ana Sayfaya Dön
+          {rtl ? "→ Ana Sayfaya Dön" : "← Ana Sayfaya Dön"}
         </Link>
       </header>
 
@@ -52,7 +56,7 @@ export default function LegalLayout({
       >
         <h1
           style={{
-            fontFamily: "Georgia, serif",
+            fontFamily: rtl ? "Vazirmatn, Georgia, serif" : "Georgia, serif",
             fontSize: 32,
             fontWeight: 700,
             color: "#1c1a16",
@@ -115,6 +119,13 @@ export default function LegalLayout({
           padding: 1px 6px;
           border-radius: 3px;
           font-size: 0.92em;
+        }
+        [dir="rtl"] .legal-content h2 {
+          font-family: Vazirmatn, Georgia, serif;
+        }
+        [dir="rtl"] .legal-content ul, [dir="rtl"] .legal-content ol {
+          padding-left: 0;
+          padding-right: 22px;
         }
       `}</style>
     </div>

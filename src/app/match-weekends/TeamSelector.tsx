@@ -7,12 +7,12 @@ import type { MatchEvent } from "@/lib/matchEvents";
 export type Team = {
   slug: string;
   name: string;
-  city: { TR: string; DE: string; EN: string; KU?: string };
+  city: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
   letter: string;
-  badge: { TR: string; DE: string; EN: string; KU?: string };
-  heroTitle: { TR: string; DE: string; EN: string; KU?: string };
-  intro: { TR: string; DE: string; EN: string; KU?: string };
-  included: { TR: string[]; DE: string[]; EN: string[]; KU?: string[] };
+  badge: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
+  heroTitle: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
+  intro: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
+  included: { TR: string[]; DE: string[]; EN: string[]; KU?: string[]; CKB?: string[] };
 };
 
 export const TEAMS: Team[] = [
@@ -295,7 +295,7 @@ export default function TeamSelector({
   const [active, setActive] = useState(0);
   const team = TEAMS[active];
 
-  const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : "tr-TR";
+  const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr-TR";
   const today = new Date().toISOString().slice(0, 10);
   const teamEvents = events.filter((e) => e.team === team.slug);
   const fixtures = teamEvents.filter(
