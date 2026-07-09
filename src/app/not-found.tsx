@@ -13,7 +13,7 @@ export default function NotFound() {
   const [lang, setLang] = useState<Lang>("TR");
 
   useEffect(() => {
-    const m = document.cookie.match(/(?:^|;\s*)vam_lang=(DE|EN|KU|TR)/);
+    const m = document.cookie.match(/(?:^|;\s*)vam_lang=(DE|EN|KU|CKB|TR)/);
     if (m) setLang(m[1] as Lang);
   }, []);
 
@@ -29,7 +29,7 @@ export default function NotFound() {
         justifyContent: "center",
         padding: "60px 24px",
         textAlign: "center",
-        fontFamily: "'Outfit', system-ui, sans-serif",
+        fontFamily: lang === "CKB" ? "'Vazirmatn', system-ui, sans-serif" : "'Outfit', system-ui, sans-serif",
       }}
     >
       <div style={{ maxWidth: 560 }}>
@@ -58,7 +58,7 @@ export default function NotFound() {
         </div>
         <h1
           style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontFamily: lang === "CKB" ? "'Vazirmatn', Georgia, serif" : "'Cormorant Garamond', Georgia, serif",
             fontSize: 34,
             fontWeight: 700,
             lineHeight: 1.15,
