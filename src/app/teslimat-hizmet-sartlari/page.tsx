@@ -100,6 +100,15 @@ function tt(key: TKey, lang: Lang): string {
   return T[key][lang] ?? T[key].TR;
 }
 
+export async function generateMetadata() {
+  const lang = await getLang();
+  return {
+    title: tt("title", lang),
+    description: `${tt("intro_pre", lang)} ${tt("intro_strong", lang)}. ${tt("intro_post", lang)}`,
+    alternates: { canonical: "/teslimat-hizmet-sartlari" },
+  };
+}
+
 export default async function TeslimatHizmetSartlariPage() {
   const lang = await getLang();
 
