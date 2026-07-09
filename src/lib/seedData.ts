@@ -1116,18 +1116,60 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "name": "Ruinen von Ani",
         "eraDisplay": "10.-11. Jh.",
-        "eraCaption": "Goldenes Zeitalter"
+        "eraCaption": "Goldenes Zeitalter",
+        "history": [
+          "Ani ist eine mittelalterliche Stadt südöstlich von Kars, im Tal des Flusses Arpaçay. Als Hauptstadt des bagratidisch-armenischen Königreichs erlebte sie ihre Blütezeit im 10.-11. Jahrhundert; dank ihrer Lage an der Seidenstraße wurde sie zu einem Handels- und Kulturzentrum, das mit dem damaligen Konstantinopel, Bagdad und Kairo konkurrieren konnte. Die Bevölkerung soll auf ihrem Höhepunkt 100.000 überschritten haben.",
+          "Wegen ihrer zahllosen Kirchen und Kapellen wurde die Stadt als \"Stadt der 1001 Kirchen\" bezeichnet. 1064 wurde sie vom seldschukischen Sultan Alparslan erobert; die große Kathedrale wurde damals in eine Moschee umgewandelt und erhielt den Namen \"Fethiye-Moschee\". Infolge mongolischer Invasionen und Erdbeben wurde die Stadt zunehmend verlassen. Die archäologische Stätte Ani wurde 2016 in die UNESCO-Welterbeliste aufgenommen."
+        ],
+        "features": [
+          { "title": "Große Kathedrale (Fethiye-Moschee)", "body": "Von Architekt Trdat erbaute Kathedrale aus rotem Tuffstein; Trdat führte auch Reparaturarbeiten an der Hagia Sophia in Istanbul durch." },
+          { "title": "Tigran-Honents-Kirche", "body": "1215 erbaut, geschmückt mit reichen Fresken, die biblische Szenen und das Leben des Heiligen Gregor darstellen — eines der am besten erhaltenen Bauwerke." },
+          { "title": "Menüçehr-Moschee", "body": "1072 erbaut, gilt als eine der ersten türkischen Moscheen Anatoliens." },
+          { "title": "Multikulturelle Architektur", "body": "In derselben Stadt stehen armenische Kirchen, eine seldschukische Moschee und ein zoroastrischer Feuertempel nebeneinander." }
+        ]
       },
       "EN": {
         "name": "Ruins of Ani",
         "eraDisplay": "10th-11th century",
-        "eraCaption": "Golden Age"
+        "eraCaption": "Golden Age",
+        "history": [
+          "Ani is a medieval city southeast of Kars, in the valley of the Arpaçay River. As the capital of the Bagratuni Armenian Kingdom, it experienced its golden age in the 10th-11th centuries; its position on the Silk Road turned it into a trade and cultural center capable of rivaling contemporary Constantinople, Baghdad, and Cairo. Its population is estimated to have exceeded 100,000 at its peak.",
+          "The city was known as the \"City of 1001 Churches\" for its countless churches and chapels. It was conquered in 1064 by the Seljuk Sultan Alp Arslan; the great cathedral was converted into a mosque at that time and named the \"Fethiye Mosque.\" Following Mongol invasions and earthquakes, the city was gradually abandoned. The Ani Archaeological Site was inscribed on the UNESCO World Heritage List in 2016."
+        ],
+        "features": [
+          { "title": "Great Cathedral (Fethiye Mosque)", "body": "A cathedral of red tuff stone built by architect Trdat, who also carried out repairs on the Hagia Sophia in Istanbul." },
+          { "title": "Tigran Honents Church", "body": "Built in 1215, decorated with rich frescoes depicting biblical scenes and the life of St. Gregory — one of the best-preserved structures." },
+          { "title": "Manuchihr Mosque", "body": "Built in 1072, considered one of the first Turkish mosques in Anatolia." },
+          { "title": "Multicultural architecture", "body": "Armenian churches, a Seljuk mosque, and a Zoroastrian fire temple stand side by side in the same city." }
+        ]
       },
       "KU": {
         "name": "Kavilên Aniyê",
         "region": "Qers",
         "eraDisplay": "Sedsala 10-11.",
-        "eraCaption": "Serdema Zêrîn"
+        "eraCaption": "Serdema Zêrîn",
+        "history": [
+          "Ani, li başûrrojhilatê Qersê, li geliyê Çemê Arpaçayê, bajarekî serdema navîn e. Wek paytexta Padîşahiya Ermenî ya Bagratûniyan, serdema xwe ya herî geş di sedsalên 10-11an de jiya; bi cihê xwe yê li ser Rêya Hevrîşimê, bû navendeke bazirganî û çandî ku dikaribû li hember Konstantînopolîs, Bexda û Qahîreya wê serdemê bisekine. Tê texmînkirin ku li lûtkeyê nifûsa wê ji 100.000î bihûrî.",
+          "Bajar ji ber gelek dêr û şapelên xwe wek \"Bajarê 1001 Dêran\" hate binavkirin. Di sala 1064an de ji hêla Sultanê Selçûqî Alparslan ve hate fetihkirin; katedrala mezin di wê demê de bû mizgeft û navê \"Mizgefta Fethiyeyê\" wergirt. Di encama êrîşên Mongolan û erdhejan de bajar hêdî hêdî hate terikandin. Cihê Arkeolojîk ê Aniyê di sala 2016an de ket Lîsteya Mîrateya Cîhanê ya UNESCOyê."
+        ],
+        "features": [
+          { "title": "Katedrala Mezin (Mizgefta Fethiyeyê)", "body": "Katedraleke ji kevirê tûfê yê sor, ji hêla mîmar Trdat ve hatiye avakirin; Trdat herwiha tamîra Ayasofyaya li Stenbolê jî kiribû." },
+          { "title": "Dêra Tîgran Honents", "body": "Di sala 1215an de hatiye çêkirin, bi freskên dewlemend ên sehneyên Încîlê û jiyana Aziz Grîgor xemilandî; yek ji avahiyên herî baş parastî." },
+          { "title": "Mizgefta Menuçehrê", "body": "Di sala 1072an de hatiye avakirin, wek yek ji mizgeftên tirkî yên yekem ên Anatolyayê tê pejirandin." },
+          { "title": "Mîmariya pirçandî", "body": "Di heman bajêr de dêrên ermenî, mizgefta Selçûqî û agirgeheke zerdeştî li kêleka hev radiwestin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "ئانی، لە باشووری ڕۆژهەڵاتی قەرس، لە دۆڵی ڕووباری ئارپاچای، شارێکی سەردەمی ناوەڕاستە. وەک پایتەختی شانشینی ئەرمەنی بەگراتونی، سەردەمی زێڕینی خۆی لە سەدەکانی ١٠-١١ بەسەربرد؛ بەهۆی شوێنی لەسەر ڕێگای ئاوریشمەوە، بووە ناوەندێکی بازرگانی و کەلتووری کە دەیتوانی لەگەڵ کۆنستانتینۆپۆل، بەغدا و قاهیرەی ئەو سەردەمە بەراوردکرێت. پێدەچێت لە لووتکەدا دانیشتووانی لە ١٠٠٠٠٠ کەس تێپەڕیبێت.",
+          "شارەکە بەهۆی چەندین کڵێسا و پەرستگای بچووکییەوە بە \"شاری ١٠٠١ کڵێسا\" ناودەبرا. لە ساڵی ١٠٦٤دا لەلایەن سوڵتانی سەلجووقی ئەلپ ئەرسلانەوە دەستەبەرکرا؛ کاتێدرالە گەورەکە لەو کاتەدا کرا بە مزگەوت و ناوی \"مزگەوتی فەتحییە\"ی لێنرا. لەئەنجامی هێرشی مۆغۆل و بومەلەرزەکاندا شارەکە هەروادیی بەجێهێڵدرا. شوێنە شوێنەوارییەکەی ئانی لە ساڵی ٢٠١٦دا خرایە لیستی میراتی جیهانی یۆنیسکۆ."
+        ],
+        "features": [
+          { "title": "کاتێدرالی گەورە (مزگەوتی فەتحییە)", "body": "کاتێدرالێک لە بەردی تۆفی سوور کە لەلایەن تەلارسازی تردات دروستکراوە؛ تردات هەروەها چاککردنەوەی ئایاسۆفیای ئیستەنبوڵیشی کردبوو." },
+          { "title": "کڵێسای تیگران هۆنێنتس", "body": "لە ساڵی ١٢١٥دا دروستکراوە، بە فرێسکۆی دەوڵەمەند کە دیمەنەکانی ئینجیل و ژیانی سەینت گریگۆر پیشان دەدەن ڕازاوەتەوە؛ یەکێک لە باشترین بیناکانی پاراستراو." },
+          { "title": "مزگەوتی مەنووچێهر", "body": "لە ساڵی ١٠٧٢دا دروستکراوە، وەک یەکێک لە یەکەم مزگەوتە تورکییەکانی ئەناتۆلیا دادەنرێت." },
+          { "title": "تەلارسازیی فرەکەلتووری", "body": "لە هەمان شاردا کڵێسای ئەرمەنی، مزگەوتی سەلجووقی و ئاگردانی زەردەشتی لەتەنیشت یەکترەوە ڕاوەستاون." }
+        ]
       }
     },
     "unesco": true,
@@ -1179,14 +1221,56 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "translations": {
       "DE": {
         "eraDisplay": "1152",
-        "eraCaption": "Bau der Festung"
+        "eraCaption": "Bau der Festung",
+        "history": [
+          "Die Festung Kars wurde laut der Inschrift an der südlichen Sürwand 1152 im Auftrag des saltukidischen Sultans Melik İzzeddin errichtet. Die Stadt erlitt während der 40-jährigen russischen Besetzung nach dem Osmanisch-Russischen Krieg von 1877-78 erhebliche Zerstörungen — das aus dieser Zeit stammende baltische Bauerbe ist im Stadtbild noch heute sichtbar.",
+          "In der Festung befinden sich der aus der seldschukischen Zeit stammende \"Drachenturm\", eines der ältesten Krankenhäuser Anatoliens, sowie das Celal-Baba-Mausoleum aus dem 12. Jahrhundert."
+        ],
+        "features": [
+          { "title": "Festung Kars", "body": "Verteidigungsbauwerk aus dem 12. Jahrhundert, das die Stadt und den Fluss Kars überblickt." },
+          { "title": "Architektur der russischen Zeit", "body": "Aus der russischen Verwaltung von 1878-1918 stammende, in Anatolien einzigartige gitterförmige Straßen und Steingebäude." },
+          { "title": "Tor nach Ani", "body": "Kars ist Ausgangspunkt und Unterkunftszentrum für den Weg zu den Ruinen von Ani." },
+          { "title": "Nähe zum Çıldır-See", "body": "Etwa 70 km entfernt liegt ein See, der im Winter vollständig zufriert und Schlittenfahrten sowie Eisfischen ermöglicht." }
+        ]
       },
       "EN": {
-        "eraCaption": "Fortress Construction"
+        "eraCaption": "Fortress Construction",
+        "history": [
+          "According to the inscription on the southern wall, Kars Castle was built in 1152 on the orders of the Saltukid Sultan Melik İzzeddin. The city suffered significant destruction during the 40-year Russian occupation following the 1877-78 Ottoman-Russian War — the Baltic-style architectural legacy from this period is still visible in the city's fabric today.",
+          "Inside the castle stands the Seljuk-era \"Dragon Tower,\" one of Anatolia's oldest hospitals, along with the 12th-century Celal Baba Mausoleum."
+        ],
+        "features": [
+          { "title": "Kars Castle", "body": "A 12th-century defensive structure overlooking the city and the Kars River." },
+          { "title": "Russian-era architecture", "body": "Grid-planned streets and stone buildings from the 1878-1918 Russian administration, unlike anything else in Anatolia." },
+          { "title": "Gateway to Ani", "body": "Kars is the starting point and lodging center for the road to the Ruins of Ani." },
+          { "title": "Proximity to Lake Çıldır", "body": "About 70 km away lies a lake that freezes completely in winter, allowing for sledding and ice fishing." }
+        ]
       },
       "KU": {
         "region": "Qers",
-        "eraCaption": "Avakirina Kelê"
+        "eraCaption": "Avakirina Kelê",
+        "history": [
+          "Li gorî kitabeya li ser dîwarê sûrê başûr, Kela Qersê di sala 1152an de bi fermana Sultanê Saltûqî Melîk Îzeddîn hatiye avakirin. Bajar, di dagirkeriya Rûsî ya 40 salan a piştî Şerê Osmanî-Rûsî yê 1877-78an de zerarek girîng dît — mîrata avahiyên şêwaza Baltîk a ji vê serdemê maye, hê jî di tevna mîmarî ya bajêr de tê dîtin.",
+          "Di nav kelehê de \"Kulla Ejderha\" ya ji serdema Selçûqiyan maye, yek ji nexweşxaneyên herî kevn ên Anatolyayê, û Tirba Celal Baba ya sedsala 12. hene."
+        ],
+        "features": [
+          { "title": "Kela Qersê", "body": "Avahiyeke parastinê ya ji sedsala 12., li ser bajêr û Çemê Qersê serwer e." },
+          { "title": "Mîmariya serdema Rûsî", "body": "Kolan û avahiyên kevir ên bi plana îzgarayê, ku ji îdareya Rûsî ya 1878-1918an mane, li Anatolyayê tayî ne." },
+          { "title": "Deriyê ku vedibe Aniyê", "body": "Qers, xala destpêkê û navenda konaklamê ye ji bo riya ber bi Kavilên Aniyê." },
+          { "title": "Nêzîkbûna Gola Çildirê", "body": "Nêzî 70 km dûr, golek ku di zivistanê de bi tevahî qeşa dibe, li wir dikare bi sonek û masîgirtina qeşayê were kirin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "بەپێی نووسینەکەی سەر شووری باشوور، قەڵای قەرس لە ساڵی ١١٥٢دا بە فەرمانی سوڵتانی سالتووقی مەلیک عیزەدین بنیادنراوە. شارەکە لە کاتی داگیرکردنی ڕووسیی ٤٠ ساڵانەی دوای شەڕی عوسمانی-ڕووسیی ١٨٧٧-١٨٧٨دا زیانێکی گەورەی بینی — میراتی تەلارسازیی شێوازی بالتیک لەم سەردەمە هێشتا لە دیمەنی تەلارسازیی شارەکەدا دەبیندرێت.",
+          "لەناو قەڵاکەدا \"قوللەی ئەژدیها\" کە لە سەردەمی سەلجووقییەوە ماوەتەوە هەیە، یەکێک لە کۆنترین نەخۆشخانەکانی ئەناتۆلیا، لەگەڵ ئارامگای جەلال بابا کە سەر بە سەدەی ١٢ە."
+        ],
+        "features": [
+          { "title": "قەڵای قەرس", "body": "بینایەکی پاراستنی سەدەی ١٢، تەماشای شارەکە و ڕووباری قەرس دەکات." },
+          { "title": "تەلارسازیی سەردەمی ڕووسی", "body": "شەقامی پلانی خشتەیی و بیناکانی بەردین کە لە بەڕێوەبردنی ڕووسیی ١٨٧٨-١٩١٨ماونەتەوە، لە ئەناتۆلیادا وەک خۆیان نییە." },
+          { "title": "دەرگای بەرەو ئانی", "body": "قەرس خاڵی دەستپێک و ناوەندی مانەوەیە بۆ ڕێگای بەرەو کاولی ئانی." },
+          { "title": "نزیکبوونەوە لە دەریاچەی چیلدیر", "body": "نزیکەی ٧٠ کیلۆمەتر دوورە، دەریاچەیەک کە لە زستاندا بە تەواوی دەبەستێت، سوڕینەوە و ڕاوی ماسیی سەر بەستوو تێدا دەکرێت." }
+        ]
       }
     },
     "unesco": false,
@@ -1239,16 +1323,58 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "name": "Berg Ararat",
         "region": "Ağrı",
-        "eraCaption": "Gipfelhöhe"
+        "eraCaption": "Gipfelhöhe",
+        "history": [
+          "Der Berg Ararat (türkisch Ağrı Dağı) ist mit 5.137 Metern der höchste Gipfel der Türkei und besteht aus zwei erloschenen Vulkankegeln, einem großen und einem kleinen. Da er im Gebiet des Königreichs Urartu (9.-6. Jahrhundert v. Chr.) liegt, wird angenommen, dass sich der Name \"Ararat\" vom Wort Urartu ableitet.",
+          "Der Berg wird mit den \"Bergen Ararat\" aus der biblischen Erzählung von Noahs Flut in Verbindung gebracht, auf denen die Arche gelandet sein soll — daher besitzt er eine symbolische Bedeutung für jüdische und christliche Traditionen. Die erste bekannte Gipfelbesteigung erfolgte 1829 durch den deutschen Arzt Friedrich Parrot."
+        ],
+        "features": [
+          { "title": "12 km² Gletscher", "body": "Der Gletscher auf dem Gipfel ist die größte Gletscherfläche der Türkei." },
+          { "title": "Doppelkegel-Struktur", "body": "Groß- und Klein-Ararat sind durch den 2.700 Meter hohen Sattel Serdarbulak miteinander verbunden." },
+          { "title": "Vielsprachige/-kulturelle Benennung", "body": "Der Berg trägt in vielen Sprachen unterschiedliche Namen — kurdisch Çiyayê Agirî, armenisch Masis, persisch Kûh-i Nûh —, jeder verweist auf eine andere Legende." },
+          { "title": "Doğubayazıt und Ishak-Pascha-Palast", "body": "Der am Fuß des Berges gelegene Landkreis beherbergt eines der bedeutendsten Beispiele osmanischer Palastarchitektur des 18. Jahrhunderts." }
+        ]
       },
       "EN": {
         "name": "Mount Ararat",
-        "eraCaption": "Summit Elevation"
+        "eraCaption": "Summit Elevation",
+        "history": [
+          "Mount Ararat (Ağrı Dağı in Turkish) is Turkey's highest peak at 5,137 meters, consisting of two extinct volcanic cones, one large and one small. Because it lies within the territory of the Kingdom of Urartu (9th-6th centuries BCE), the name \"Ararat\" is thought to derive from the word Urartu.",
+          "The mountain is associated with the \"mountains of Ararat\" where, according to the biblical account of Noah's flood, the ark came to rest — giving it symbolic importance for Jewish and Christian traditions. The first known ascent to the summit was made in 1829 by German physician Friedrich Parrot."
+        ],
+        "features": [
+          { "title": "12 km² glacier", "body": "The glacier at the summit is Turkey's largest glacial area." },
+          { "title": "Twin-cone structure", "body": "Greater and Lesser Ararat are connected by the Serdarbulak saddle at 2,700 meters elevation." },
+          { "title": "Multilingual/multicultural naming", "body": "The mountain is known by different names in many languages — Kurdish Çiyayê Agirî, Armenian Masis, Persian Kûh-i Nûh — each pointing to a different legend." },
+          { "title": "Doğubayazıt and İshak Pasha Palace", "body": "The district at the mountain's foot is home to one of the most important examples of 18th-century Ottoman palace architecture." }
+        ]
       },
       "KU": {
         "name": "Çiyayê Agirî",
         "region": "Agirî",
-        "eraCaption": "Bilindahiya Lotikê"
+        "eraCaption": "Bilindahiya Lotikê",
+        "history": [
+          "Çiyayê Agirî (bi zimanên rojavayî Ararat), bi 5.137 metreyan lûtkeya herî bilind a Tirkiyeyê ye, ku ji du konên volqanîk ên vemirî (yek mezin yek biçûk) pêk tê. Ji ber ku li erdê Padîşahiya Ûrartûyan (sedsalên 9-6. BZ) ye, tê texmînkirin ku navê \"Ararat\" ji peyva Ûrartû tê.",
+          "Çiya bi \"çiyayên Araratê\" yên di vegotina Tofana Nûh a Tewratê de, ku keştî lê rûniştiye, ve tê girêdan — ji ber vê yekê ji bo kevneşopiyên Cihû û Xiristiyan girîngiyeke sembolîk hildigire. Hilkişîna yekem a naskirî ya lûtkeyê di sala 1829an de ji hêla bijîşkê alman Friedrich Parrot ve hate kirin."
+        ],
+        "features": [
+          { "title": "Cemidiyê 12 km²", "body": "Cemidiyê li lûtkeyê, qada cemidiyê ya herî mezin a Tirkiyeyê ye." },
+          { "title": "Avahiya du-konî", "body": "Agiriyê Mezin û Biçûk bi zîna Serdarbulakê ya bi bilindahiya 2.700 metreyan bi hev ve girêdayî ne." },
+          { "title": "Navlêkirina pirzimanî/pirçandî", "body": "Çiya bi navên cuda di gelek zimanan de tê zanîn — bi Kurdî Çiyayê Agirî, bi Ermenî Masîs, bi Farisî Kûh-i Nûh — her yek îşaretê bi efsaneyeke cuda dide." },
+          { "title": "Duayezîd û Qesra Îshaq Paşa", "body": "Navçeya li binê çiya, xaniyê yek ji mînakên herî girîng ên mîmariya qesrê ya Osmanî ya sedsala 18. ye." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "چیای ئاگری (بە زمانە ڕۆژئاواییەکان ئارارات)، بە بەرزیی ٥١٣٧ مەتر بەرزترین لووتکەی تورکیایە، کە لە دوو کۆنی گڵۆپی ژێری مردوو پێکهاتووە (یەکێکیان گەورە و یەکێکیان بچووک). لەبەر ئەوەی لەسەر خاکی شانشینی ئوراردودایە (سەدەکانی ٩-٦ی پێش زایین)، پێدەچێت ناوی \"ئارارات\" لە وشەی ئوراردووەوە هاتبێت.",
+          "چیاکە بە \"چیاکانی ئارارات\" کە بەپێی گێڕانەوەی لافاوی نوح لە تەورات، بەلەمەکە لەسەری دانیشتووە، پەیوەندیدارە — بۆیە بۆ نەریتی جولەکە و مەسیحی گرنگیی هێمایی هەیە. یەکەم سەرکەوتنی ناسراو بۆ لووتکەکە لە ساڵی ١٨٢٩دا لەلایەن پزیشکی ئەڵمانی فریدریش پارۆتەوە ئەنجامدرا."
+        ],
+        "features": [
+          { "title": "بەفرۆکەی ١٢ کم²", "body": "بەفرۆکەی سەر لووتکەکە، گەورەترین ناوچەی بەفرۆکەیی تورکیایە." },
+          { "title": "پێکهاتەی دووکۆنی", "body": "ئاگریی گەورە و بچووک لە ڕێگەی گەردەنەی سەرداربولاق کە بەرزییەکەی ٢٧٠٠ مەترە پێکەوە بەستراونەتەوە." },
+          { "title": "ناونانی فرەزمان/فرەکەلتوور", "body": "چیاکە بە ناوی جیاواز لە زمانی زۆردا ناسراوە — بە کوردی چیای ئاگری، بە ئەرمەنی ماسیس، بە فارسی کووهی نووح — هەریەکەیان ئاماژە بە ئەفسانەیەکی جیاواز دەکەن." },
+          { "title": "دۆغوبایازید و کۆشکی ئیسحاق پاشا", "body": "ناوچەکەی بن چیاکە، ماڵی یەکێک لە گرنگترین نموونەکانی تەلارسازیی کۆشکی عوسمانیی سەدەی ١٨ە." }
+        ]
       }
     },
     "unesco": false,
@@ -1302,17 +1428,59 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
         "name": "Tatvan & Nemrut-Kratersee",
         "region": "Bitlis",
         "eraDisplay": "Vulkanisch",
-        "eraCaption": "Geologischer Ursprung"
+        "eraCaption": "Geologischer Ursprung",
+        "history": [
+          "Tatvan ist ein Landkreis der Provinz Bitlis am Westufer des Vansees. Der nahegelegene Berg Nemrut (der denselben Namen wie der Kommagene-Nemrut in Adıyaman trägt, aber ein anderer vulkanischer Berg ist) birgt in seinem Krater einen der größten Kraterseen der Welt, den Nemrut-Kratersee. Der See entstand, als sich eine durch vulkanische Explosionen entstandene Senke mit Wasser füllte.",
+          "Die Region ist auch von historischen Spuren wie dem seldschukischen Friedhof von Ahlat umgeben; die Entstehung des Vansees selbst wird darauf zurückgeführt, dass Lava aus diesem vulkanischen Gebiet ein Tal verstopfte."
+        ],
+        "features": [
+          { "title": "Kratersee", "body": "Ein im vulkanischen Krater entstandener See, bekannt für seine Aussicht und heißen Quellen." },
+          { "title": "Ufer des Vansees", "body": "Tatvan liegt am Westende des größten Sees der Türkei und verfügt über einen langen, seeblickreichen Küstenstreifen." },
+          { "title": "Vulkanische Geologie", "body": "Die Region bietet eine der eindrucksvollsten vulkanischen Landschaften Ostanatoliens." },
+          { "title": "Nähe zum seldschukischen Friedhof von Ahlat", "body": "Regionale Touren kombinieren häufig die Route Tatvan-Ahlat-Van." }
+        ]
       },
       "EN": {
         "name": "Tatvan & Nemrut Crater Lake",
         "eraDisplay": "Volcanic",
-        "eraCaption": "Geological Origin"
+        "eraCaption": "Geological Origin",
+        "history": [
+          "Tatvan is a district of Bitlis Province on the western shore of Lake Van. The nearby Mount Nemrut (sharing its name with, but geologically distinct from, the Commagene Nemrut in Adıyaman) holds in its crater one of the world's largest crater lakes, Nemrut Crater Lake. The lake formed when a depression created by volcanic explosions filled with water.",
+          "The region is also surrounded by historical traces such as the Seljuk-era Ahlat cemetery; the formation of Lake Van itself is attributed to lava from this volcanic region blocking a valley."
+        ],
+        "features": [
+          { "title": "Crater lake", "body": "A lake formed inside a volcanic crater, known for its scenery and hot springs." },
+          { "title": "Lake Van shoreline", "body": "Tatvan sits at the western end of Turkey's largest lake, with a long lakeside coastline." },
+          { "title": "Volcanic geology", "body": "The region offers one of the most striking volcanic landscapes in Eastern Anatolia." },
+          { "title": "Proximity to the Seljuk cemetery of Ahlat", "body": "Regional tours often combine the Tatvan-Ahlat-Van route." }
+        ]
       },
       "KU": {
         "region": "Bidlîs",
         "eraDisplay": "Volkanîk",
-        "eraCaption": "Eslê Jeolojîk"
+        "eraCaption": "Eslê Jeolojîk",
+        "history": [
+          "Tatvan, li kêleka rojava ya Gola Wanê, navçeyeke bi parêzgeha Bidlîsê ve girêdayî ye. Çiyayê Nemrûd ê nêzîk (bi heman navî yê Nemrûda Kommageneyê ya li Semsûrê, lê çiyayekî volqanîk ê cuda ye), di krîtera xwe de yek ji golên krîterê yên herî mezin ên cîhanê, Gola Krîtera Nemrûdê, vedihewîne. Gol, bi tijîbûna avê ya qada çöküntûyê ya ku ji teqînên volqanîk pêk hatiye, çêbûye.",
+          "Herêm bi şopên dîrokî yên wek goristana Selçûqî ya Ahlatê jî hatiye dorpêçkirin; çêbûna Gola Wanê bi xwe jî bi tikilîna geliyê ji hêla lavayên vê herêma volqanîk ve tê girêdan."
+        ],
+        "features": [
+          { "title": "Gola krîterê", "body": "Golek ku di hundirê krîtera volqanîk de çêbûye, bi dîmena xwe û kaniyên xwe yên avê germ tê zanîn." },
+          { "title": "Kêleka Gola Wanê", "body": "Tatvan li rojavayê gola herî mezin a Tirkiyeyê ye; xwedî perîkolek dirêj a dîmena golê ye." },
+          { "title": "Jeolojiya volqanîk", "body": "Herêm, yek ji peyzajên volqanîk ên herî balkêş ên Anatolyaya Rojhilat pêşkêş dike." },
+          { "title": "Nêzîkbûna goristana Selçûqî ya Ahlatê", "body": "Di gerên herêmî de bi gelemperî rêça Tatvan-Ahlat-Wan bi hev re tê kirin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "تاتڤان، لە کەناری ڕۆژئاوای دەریاچەی وان، ناوچەیەکە سەر بە پارێزگای بیدلیس. چیای نەمروودی نزیک (کە هەمان ناوی نەمروودی کۆماگینەی ئادییامانی هەیە، بەڵام چیایەکی گڵۆپی جیاوازە)، لە کانیاوەکەیدا یەکێک لە گەورەترین دەریاچە کانیاوەکانی جیهان، دەریاچەی کانیاوی نەمروود، هەڵدەگرێت. دەریاچەکە بە پڕبوونەوەی ئاو لە چوکاندنێک کە لە تەقینەوەی گڵۆپییەوە پێکهاتووە، دروستبووە.",
+          "ناوچەکە هەروەها بە شوێنپێی مێژوویی وەک گۆڕستانی سەلجووقیی ئەخلات دەوردراوە؛ پێکهاتنی دەریاچەی وانیش بە بەستنی دۆڵێک لەلایەن لاڤای ئەم ناوچە گڵۆپییەوە بەستراوەتەوە."
+        ],
+        "features": [
+          { "title": "دەریاچەی کانیاو", "body": "دەریاچەیەک کە لەناو کانیاوێکی گڵۆپیدا پێکهاتووە، بە دیمەن و کانی ئاوگەرمەکانی ناسراوە." },
+          { "title": "کەناری دەریاچەی وان", "body": "تاتڤان لە کۆتایی ڕۆژئاوای گەورەترین دەریاچەی تورکیایە؛ خاوەنی کەنارێکی درێژی دیمەن-دەریاچەیە." },
+          { "title": "جیۆلۆجیای گڵۆپی", "body": "ناوچەکە یەکێک لە سەرنجڕاکێشترین دیمەنە گڵۆپییەکانی ئەناتۆلیای ڕۆژهەڵات پێشکەش دەکات." },
+          { "title": "نزیکبوونەوە لە گۆڕستانی سەلجووقیی ئەخلات", "body": "لە گەشتە هەرێمییەکاندا زۆرجار ڕێڕەوی تاتڤان-ئەخلات-وان پێکەوە ئەنجامدەدرێت." }
+        ]
       }
     },
     "unesco": false,
@@ -1364,17 +1532,59 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "translations": {
       "DE": {
         "eraDisplay": "20.000 Jahre",
-        "eraCaption": "Eiszeitalter"
+        "eraCaption": "Eiszeitalter",
+        "history": [
+          "Hakkari ist eine der schroffsten und gebirgigsten Provinzen der Türkei; die Berge Cilo und Sat bilden eine der höchsten und wildesten Naturregionen im Südosten des Landes. In der Region finden sich auf das 2. Jahrtausend v. Chr. datierte Stelengräber mit Hirschmotiven — diese Stelen zählen zu den bedeutenden archäologischen Funden der Hochlandkulturen Ostanatoliens.",
+          "Die Gletscher am Berg Cilo, die auf etwa 20.000 Jahre geschätzt werden, bilden eines der eindrucksvollsten Gletschersysteme der Türkei."
+        ],
+        "features": [
+          { "title": "Cilo-Sat-Gletscher", "body": "Die auf 20.000 Jahre geschätzten Gletscher bieten zusammen mit den türkisfarbenen Gewässern der Sat-Seen ein dramatisches Hochgebirgspanorama." },
+          { "title": "Stelen mit Hirschmotiven", "body": "Auf die Bronzezeit datierte Menhire mit Hirschmotiven, zu den ältesten Spuren der Hochlandkultur der Region zählend." },
+          { "title": "Tal von Himmel und Hölle", "body": "Ein Tal nahe Çukurca, das seinen Namen seinen gegensätzlichen Landschaften verdankt." },
+          { "title": "Hochgebirgskultur", "body": "Die Region beherbergt eine der am wenigsten bekannten, aber schroffsten Naturregionen Anatoliens und eine damit verbundene eigenständige Hochland-Lebenskultur." }
+        ]
       },
       "EN": {
         "eraDisplay": "20,000 years",
-        "eraCaption": "Ice Age"
+        "eraCaption": "Ice Age",
+        "history": [
+          "Hakkari is one of Turkey's steepest and most mountainous provinces; the Cilo and Sat mountains form one of the highest and wildest stretches of nature in the country's southeast. The region contains stelae (standing stones) with deer motifs dating to the 2nd millennium BCE — these stelae are among the significant archaeological finds tied to the highland cultures of Eastern Anatolia.",
+          "The glaciers on Mount Cilo, believed to be around 20,000 years old, form one of Turkey's most impressive glacier systems."
+        ],
+        "features": [
+          { "title": "Cilo-Sat glaciers", "body": "Estimated at 20,000 years old, these glaciers offer a dramatic high-mountain panorama alongside the turquoise waters of the Sat Lakes." },
+          { "title": "Deer-motif stelae", "body": "Bronze Age standing stones with deer motifs, among the oldest traces of the region's highland culture." },
+          { "title": "Heaven-Hell Valley", "body": "A valley near Çukurca named for its strikingly contrasting landscapes." },
+          { "title": "High mountain culture", "body": "The region holds one of Anatolia's least-known yet steepest stretches of nature, along with a distinctive highland way of life shaped by it." }
+        ]
       },
       "KU": {
         "name": "Colemêrg",
         "region": "Colemêrg",
         "eraDisplay": "20.000 sal",
-        "eraCaption": "Serdema Qeşayê"
+        "eraCaption": "Serdema Qeşayê",
+        "history": [
+          "Colemêrg, yek ji parêzgehên herî tûj û çiyayî yên Tirkiyeyê ye; çiyayên Cîlo û Satê, yek ji parçeyên xwezayê yên herî bilind û çolane yên başûrrojhilatê welat pêk tînin. Li herêmê stêlên (kevirên rawestayî) bi motîfa xezalan hene ku heta hezareya 2. BZ dirêj dibin — ev stêl di nav dîtinên arkeolojîk ên girîng ên çandên zozanan ên Anatolyaya Rojhilat de ne.",
+          "Cemidiyên li Çiyayê Cîlo, ku tê texmînkirin nêzî 20.000 salî ne, yek ji pergalên cemidiyê yên herî balkêş ên Tirkiyeyê pêk tînin."
+        ],
+        "features": [
+          { "title": "Cemidiyên Cîlo-Satê", "body": "Cemidiyên ku tê texmînkirin 20.000 salî ne, bi avên xwe yên tirqoîzî yên Golên Satê re dîmeneke çiyayê bilind a dramatîk pêşkêş dikin." },
+          { "title": "Stêlên bi motîfa xezalan", "body": "Kevirên rawestayî yên bi motîfa xezalan ên Serdema Bronzê, ji şopên herî kevn ên çanda zozanan a herêmê ne." },
+          { "title": "Geliyê Buhişt-Dojehê", "body": "Geliyek li nêzî Çûkurca, ku navê xwe ji dîmenên xwe yên dijber digire." },
+          { "title": "Çanda çiyayê bilind", "body": "Herêm, yek ji parçeyên xwezayê yên herî hindik naskirî lê herî tûj ên Anatolyayê û çandeke jiyana zozanan a xwerû ya bi vê ve girêdayî vedihewîne." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "کۆلەمێرگ (حەکاری)، یەکێکە لە بەرزترین و شاختاویترین پارێزگاکانی تورکیا؛ چیاکانی جیلۆ و سات، یەکێک لە بەرزترین و کێوترین بەشەکانی سروشتی باشووری ڕۆژهەڵاتی وڵات پێکدەهێنن. لە ناوچەکەدا بەردە ڕاوەستاوەکان (ستێل) بە نەخشی ئاسک هەن کە دەگەڕێنەوە بۆ هەزارەی دووەمی پێش زایین — ئەم ستێلانە لەنێو دۆزراوە شوێنەوارییە گرنگەکانی کەلتووری زۆزانی ئەناتۆلیای ڕۆژهەڵاتدان.",
+          "بەفرۆکەکانی چیای جیلۆ، کە پێدەچێت نزیکەی ٢٠٠٠٠ ساڵ تەمەنیان بێت، یەکێک لە سەرنجڕاکێشترین سیستەمە بەفرۆکەییەکانی تورکیا پێکدەهێنن."
+        ],
+        "features": [
+          { "title": "بەفرۆکەکانی جیلۆ-سات", "body": "بەفرۆکەکان کە پێدەچێت ٢٠٠٠٠ ساڵ تەمەنیان بێت، لەگەڵ ئاوی شینی دەریاچەکانی سات، دیمەنێکی درامیی چیای بەرز پێشکەش دەکەن." },
+          { "title": "ستێلی نەخشی ئاسک", "body": "بەردە ڕاوەستاوەکانی نەخشی ئاسک کە دەگەڕێنەوە بۆ سەردەمی بڕۆنز، یەکێکن لە کۆنترین شوێنپێی کەلتووری زۆزانی ناوچەکە." },
+          { "title": "دۆڵی بەهەشت-دۆزەخ", "body": "دۆڵێک لە نزیک چۆکورجا، کە ناوی لە دیمەنە بەرامبەرەکانییەوە وەرگرتووە." },
+          { "title": "کەلتووری چیای بەرز", "body": "ناوچەکە یەکێک لە کەمناسراوترین بەڵام کێوترین بەشەکانی سروشتی ئەناتۆلیا و کەلتوورێکی تایبەتی ژیانی زۆزانی پەیوەست بەوە هەڵدەگرێت." }
+        ]
       }
     },
     "unesco": false,
