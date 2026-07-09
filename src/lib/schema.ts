@@ -188,20 +188,26 @@ async function initSchema() {
   // İkinci tek seferlik geriye dönük dolgu: history/features (tarihçe ve öne
   // çıkan özellikler) alanları translations şemasına SONRADAN eklendi — yukarıdaki
   // dolgu artık translations dolu olduğu için bir daha tetiklenmiyor. Burada her
-  // dil için sadece "history" alt-anahtarı eksikse jsonb_set ile doldurulur; admin
-  // panelinden elle girilmiş bir çeviri varsa (alt-anahtar zaten var demektir) asla
-  // ezilmez.
+  // dil için sadece "history" alt-anahtarı eksikse doldurulur; admin panelinden
+  // elle girilmiş bir çeviri varsa (alt-anahtar zaten var demektir) asla ezilmez.
+  //
+  // jsonb_set(..., create_missing=true) SADECE path'in son elemanını otomatik
+  // oluşturur — ara elemanlar (burada dil kodu, örn. "CKB") translations içinde
+  // hiç yoksa jsonb_set sessizce hiçbir şey yapmaz. Bu yüzden dil anahtarını
+  // önce COALESCE ile garantiye alıp üst seviyede `||` (shallow merge) ile
+  // birleştiriyoruz — bu, dil anahtarı ister hiç olmasın ister zaten var olup
+  // sadece history/features eksik olsun, her iki durumda da çalışır.
   for (const d of SEED_DESTINATIONS) {
     for (const lang of ["DE", "EN", "KU", "CKB"] as const) {
       const t = d.translations?.[lang];
       if (t?.history?.length || t?.features?.length) {
         const historyPath = `{${lang},history}`;
-        const featuresPath = `{${lang},features}`;
+        const langEntry = JSON.stringify({ history: t.history || [], features: t.features || [] });
         await sql`
           UPDATE destinations
-          SET translations = jsonb_set(
-            jsonb_set(translations, ${historyPath}::text[], ${JSON.stringify(t.history || [])}::jsonb, true),
-            ${featuresPath}::text[], ${JSON.stringify(t.features || [])}::jsonb, true
+          SET translations = translations || jsonb_build_object(
+            ${lang}::text,
+            COALESCE(translations->${lang}::text, '{}'::jsonb) || ${langEntry}::jsonb
           )
           WHERE slug = ${d.slug} AND translations #> ${historyPath}::text[] IS NULL;
         `;
