@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { t, type Lang } from "@/lib/dictionary";
-import type { MatchEvent } from "@/lib/matchEvents";
+import { localizeMatchEvent, type MatchEvent } from "@/lib/matchEvents";
 
 export type Team = {
   slug: string;
@@ -347,7 +347,8 @@ export default function TeamSelector({
 
   const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr-TR";
   const today = new Date().toISOString().slice(0, 10);
-  const teamEvents = events.filter((e) => e.team === team.slug);
+  const localizedEvents = events.map((e) => localizeMatchEvent(e, lang));
+  const teamEvents = localizedEvents.filter((e) => e.team === team.slug);
   const fixtures = teamEvents.filter(
     (e) => e.kind === "match" && e.event_date && String(e.event_date).slice(0, 10) >= today
   );
