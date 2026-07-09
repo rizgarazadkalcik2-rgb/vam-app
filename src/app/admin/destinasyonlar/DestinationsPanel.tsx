@@ -23,11 +23,11 @@ const labelStyle: React.CSSProperties = {
   display: "block",
 };
 
-const TABS = ["TR", "DE", "EN", "KU"] as const;
+const TABS = ["TR", "DE", "EN", "KU", "CKB"] as const;
 type Tab = (typeof TABS)[number];
 
 function emptyTranslationForm() {
-  return { name: "", region: "", eraDisplay: "", eraCaption: "" };
+  return { name: "", region: "", eraDisplay: "", eraCaption: "", historyText: "", featuresText: "" };
 }
 
 function emptyForm() {
@@ -55,6 +55,7 @@ function emptyForm() {
       DE: emptyTranslationForm(),
       EN: emptyTranslationForm(),
       KU: emptyTranslationForm(),
+      CKB: emptyTranslationForm(),
     },
   };
 }
@@ -89,18 +90,32 @@ function destinationToForm(d: VamDestination): FormState {
         region: trans.DE?.region || "",
         eraDisplay: trans.DE?.eraDisplay || "",
         eraCaption: trans.DE?.eraCaption || "",
+        historyText: (trans.DE?.history || []).join("\n\n"),
+        featuresText: (trans.DE?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
       },
       EN: {
         name: trans.EN?.name || "",
         region: trans.EN?.region || "",
         eraDisplay: trans.EN?.eraDisplay || "",
         eraCaption: trans.EN?.eraCaption || "",
+        historyText: (trans.EN?.history || []).join("\n\n"),
+        featuresText: (trans.EN?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
       },
       KU: {
         name: trans.KU?.name || "",
         region: trans.KU?.region || "",
         eraDisplay: trans.KU?.eraDisplay || "",
         eraCaption: trans.KU?.eraCaption || "",
+        historyText: (trans.KU?.history || []).join("\n\n"),
+        featuresText: (trans.KU?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+      },
+      CKB: {
+        name: trans.CKB?.name || "",
+        region: trans.CKB?.region || "",
+        eraDisplay: trans.CKB?.eraDisplay || "",
+        eraCaption: trans.CKB?.eraCaption || "",
+        historyText: (trans.CKB?.history || []).join("\n\n"),
+        featuresText: (trans.CKB?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
       },
     },
   };
@@ -108,13 +123,32 @@ function destinationToForm(d: VamDestination): FormState {
 
 function buildTranslations(f: FormState): DestinationTranslations {
   const out: DestinationTranslations = {};
-  for (const lang of ["DE", "EN", "KU"] as const) {
+  for (const lang of ["DE", "EN", "KU", "CKB"] as const) {
     const t = f.translations[lang];
-    const entry: Record<string, string> = {};
+    const entry: {
+      name?: string;
+      region?: string;
+      eraDisplay?: string;
+      eraCaption?: string;
+      history?: string[];
+      features?: { title: string; body: string }[];
+    } = {};
     if (t.name.trim()) entry.name = t.name.trim();
     if (t.region.trim()) entry.region = t.region.trim();
     if (t.eraDisplay.trim()) entry.eraDisplay = t.eraDisplay.trim();
     if (t.eraCaption.trim()) entry.eraCaption = t.eraCaption.trim();
+    const history = t.historyText.split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
+    if (history.length > 0) entry.history = history;
+    const features = t.featuresText
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const [title, ...rest] = line.split("|");
+        return { title: (title || "").trim(), body: rest.join("|").trim() };
+      })
+      .filter((ft) => ft.title);
+    if (features.length > 0) entry.features = features;
     if (Object.keys(entry).length > 0) out[lang] = entry;
   }
   return out;
@@ -323,8 +357,7 @@ export default function DestinationsPanel({
             {activeTab !== "TR" && (
               <>
                 <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
-                  Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer. Tarihçe ve öne çıkan özellikler
-                  şimdilik yalnızca Türkçe olarak yönetiliyor.
+                  Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer.
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
                   <div>
@@ -391,6 +424,48 @@ export default function DestinationsPanel({
                       style={inputStyle}
                     />
                   </div>
+                </div>
+
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>
+                    Tarihçe ({activeTab}) — her paragraf arasında BOŞ SATIR bırakın
+                  </label>
+                  <textarea
+                    value={form.translations[activeTab].historyText}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], historyText: e.target.value },
+                        },
+                      })
+                    }
+                    rows={6}
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                    style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>
+                    Öne Çıkan Özellikler ({activeTab}) — her satır <code>Başlık|Açıklama</code> formatında
+                  </label>
+                  <textarea
+                    value={form.translations[activeTab].featuresText}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], featuresText: e.target.value },
+                        },
+                      })
+                    }
+                    rows={4}
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                    style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
+                  />
                 </div>
               </>
             )}
