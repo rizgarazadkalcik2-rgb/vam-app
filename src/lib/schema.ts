@@ -82,6 +82,11 @@ async function initSchema() {
     );
   `;
 
+  // Dil bazlı çeviri (title/competition/body). Yapı: {"DE": {"title": "...", ...}, ...}.
+  // Bu tablonun seed verisi yok (tamamen admin girişli), o yüzden destinations/bundles'taki
+  // gibi bir geriye dönük dolgu döngüsüne gerek yok — yeni sütun boş '{}' ile başlar.
+  await sql`ALTER TABLE match_events ADD COLUMN IF NOT EXISTS translations JSONB NOT NULL DEFAULT '{}';`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS reservations (
       id SERIAL PRIMARY KEY,

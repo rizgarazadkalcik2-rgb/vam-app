@@ -3,6 +3,9 @@ import { ensureSchema } from "./schema";
 
 export type MatchEventKind = "match" | "news";
 
+export type MatchEventTranslation = { title?: string; competition?: string; body?: string };
+export type MatchEventTranslations = Partial<Record<"DE" | "EN" | "KU" | "CKB", MatchEventTranslation>>;
+
 export interface MatchEvent {
   id: number;
   team: string; // TeamSelector'daki slug: amedspor | vanspor | batman | mardin1969 | igdir
@@ -15,6 +18,7 @@ export interface MatchEvent {
   image_url: string | null;
   body: string | null;
   status: string;
+  translations: MatchEventTranslations;
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +34,22 @@ export interface MatchEventInput {
   imageUrl?: string | null;
   body?: string | null;
   status?: string;
+  translations?: MatchEventTranslations;
+}
+
+/**
+ * DE/EN/KU/CKB çevirisi varsa onu, yoksa TR taban değerini döner —
+ * destinations.ts'teki localizeDestination() ile aynı fallback mantığı.
+ * venue/event_date/event_time/image_url dil-bağımsız olduğu için dokunulmaz.
+ */
+export function localizeMatchEvent(e: MatchEvent, lang: "TR" | "DE" | "EN" | "KU" | "CKB"): MatchEvent {
+  const tr = lang === "TR" ? undefined : e.translations?.[lang];
+  return {
+    ...e,
+    title: tr?.title || e.title,
+    competition: tr?.competition || e.competition,
+    body: tr?.body || e.body,
+  };
 }
 
 /** Postgres DATE kolonları JS Date nesnesi olarak döner; her yerde
@@ -82,13 +102,13 @@ export async function createMatchEvent(data: MatchEventInput): Promise<MatchEven
   await ensureSchema();
   const { rows } = await sql<MatchEvent>`
     INSERT INTO match_events (
-      team, kind, title, event_date, event_time, competition, venue, image_url, body, status
+      team, kind, title, event_date, event_time, competition, venue, image_url, body, status, translations
     ) VALUES (
       ${data.team}, ${data.kind}, ${data.title},
       ${data.eventDate || null}, ${data.eventTime || null},
       ${data.competition || null}, ${data.venue || null},
       ${data.imageUrl || null}, ${data.body || null},
-      ${data.status || "active"}
+      ${data.status || "active"}, ${JSON.stringify(data.translations || {})}::jsonb
     )
     RETURNING *;
   `;
@@ -109,6 +129,7 @@ export async function updateMatchEvent(id: number, data: MatchEventInput): Promi
       image_url = ${data.imageUrl || null},
       body = ${data.body || null},
       status = ${data.status || "active"},
+      translations = ${JSON.stringify(data.translations || {})}::jsonb,
       updated_at = now()
     WHERE id = ${id}
     RETURNING *;

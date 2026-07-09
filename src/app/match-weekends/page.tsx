@@ -76,7 +76,7 @@ export default async function MatchWeekendsPage() {
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">{t("breadcrumb_home", lang)}</a> › {t("mw_breadcrumb", lang)}
+        <a href="/platform">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} {t("mw_breadcrumb", lang)}
       </div>
 
       <TeamSelector lang={lang} events={events}>

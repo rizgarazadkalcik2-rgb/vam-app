@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
     imageUrl: body?.imageUrl?.trim() || null,
     body: body?.body?.trim() || null,
     status: body?.status === "inactive" ? "inactive" : "active",
+    translations: body.translations && typeof body.translations === "object" ? body.translations : {},
   });
 
   return NextResponse.json({ event }, { status: 201 });

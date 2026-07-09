@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { MatchEvent } from "@/lib/matchEvents";
+import type { MatchEvent, MatchEventTranslations } from "@/lib/matchEvents";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
 
@@ -13,6 +13,13 @@ export const TEAM_LABELS: Record<string, string> = {
   igdir: "Iğdır FK (Iğdır)",
 };
 
+const TABS = ["TR", "DE", "EN", "KU", "CKB"] as const;
+type Tab = (typeof TABS)[number];
+
+function emptyTranslationForm() {
+  return { title: "", competition: "", body: "" };
+}
+
 const emptyForm = {
   team: "amedspor",
   kind: "match" as "match" | "news",
@@ -23,7 +30,26 @@ const emptyForm = {
   venue: "",
   imageUrl: "",
   body: "",
+  translations: {
+    DE: emptyTranslationForm(),
+    EN: emptyTranslationForm(),
+    KU: emptyTranslationForm(),
+    CKB: emptyTranslationForm(),
+  },
 };
+
+function buildTranslations(translations: typeof emptyForm.translations): MatchEventTranslations {
+  const out: MatchEventTranslations = {};
+  for (const lang of ["DE", "EN", "KU", "CKB"] as const) {
+    const t = translations[lang];
+    const entry: { title?: string; competition?: string; body?: string } = {};
+    if (t.title.trim()) entry.title = t.title.trim();
+    if (t.competition.trim()) entry.competition = t.competition.trim();
+    if (t.body.trim()) entry.body = t.body.trim();
+    if (Object.keys(entry).length > 0) out[lang] = entry;
+  }
+  return out;
+}
 
 export default function MatchWeekendsPanel({
   session,
@@ -40,6 +66,7 @@ export default function MatchWeekendsPanel({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [teamFilter, setTeamFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState<Tab>("TR");
 
   async function refresh() {
     const res = await fetch("/api/match-events");
@@ -51,11 +78,13 @@ export default function MatchWeekendsPanel({
     setEditingId(null);
     setForm({ ...emptyForm, kind, team: teamFilter !== "all" ? teamFilter : "amedspor" });
     setShowForm(true);
+    setActiveTab("TR");
     setError("");
   }
 
   function startEdit(ev: MatchEvent) {
     setEditingId(ev.id);
+    const trans = ev.translations || {};
     setForm({
       team: ev.team,
       kind: ev.kind,
@@ -66,8 +95,15 @@ export default function MatchWeekendsPanel({
       venue: ev.venue || "",
       imageUrl: ev.image_url || "",
       body: ev.body || "",
+      translations: {
+        DE: { title: trans.DE?.title || "", competition: trans.DE?.competition || "", body: trans.DE?.body || "" },
+        EN: { title: trans.EN?.title || "", competition: trans.EN?.competition || "", body: trans.EN?.body || "" },
+        KU: { title: trans.KU?.title || "", competition: trans.KU?.competition || "", body: trans.KU?.body || "" },
+        CKB: { title: trans.CKB?.title || "", competition: trans.CKB?.competition || "", body: trans.CKB?.body || "" },
+      },
     });
     setShowForm(true);
+    setActiveTab("TR");
     setError("");
   }
 
@@ -75,6 +111,7 @@ export default function MatchWeekendsPanel({
     setShowForm(false);
     setEditingId(null);
     setForm(emptyForm);
+    setActiveTab("TR");
     setError("");
   }
 
@@ -105,7 +142,7 @@ export default function MatchWeekendsPanel({
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, translations: buildTranslations(form.translations) }),
     });
     const data = await res.json();
     setSubmitting(false);
@@ -133,6 +170,7 @@ export default function MatchWeekendsPanel({
         imageUrl: ev.image_url,
         body: ev.body,
         status: ev.status === "active" ? "inactive" : "active",
+        translations: ev.translations || {},
       }),
     });
     if (res.ok) await refresh();
@@ -185,6 +223,92 @@ export default function MatchWeekendsPanel({
             {editingId ? "Kaydı Düzenle" : form.kind === "match" ? "Yeni Maç Ekle" : "Yeni Haber / Kutlama Ekle"}
           </div>
 
+          <div style={{ display: "flex", gap: 6, marginBottom: 16, borderBottom: "1px solid #e5d6bc" }}>
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  padding: "7px 16px",
+                  background: activeTab === tab ? "#c4522a" : "transparent",
+                  color: activeTab === tab ? "#fff" : "#6f6558",
+                  border: "none",
+                  borderRadius: "4px 4px 0 0",
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                {tab}
+                {tab !== "TR" && (form.translations[tab].title || form.translations[tab].body) ? " ✓" : ""}
+              </button>
+            ))}
+          </div>
+
+          {activeTab !== "TR" && (
+            <>
+              <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
+                Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer. Maçlarda rakip takım adı (title) genelde
+                özel isimdir, çevirmeye gerek yoktur.
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <input
+                  placeholder={form.kind === "match" ? `Rakip takım (${activeTab}, opsiyonel)` : `Başlık (${activeTab})`}
+                  value={form.translations[activeTab].title}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      translations: {
+                        ...form.translations,
+                        [activeTab]: { ...form.translations[activeTab], title: e.target.value },
+                      },
+                    })
+                  }
+                  dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                  style={{ ...inputStyle, width: "100%" }}
+                />
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <input
+                  placeholder={`Lig / Kupa (${activeTab}, opsiyonel)`}
+                  value={form.translations[activeTab].competition}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      translations: {
+                        ...form.translations,
+                        [activeTab]: { ...form.translations[activeTab], competition: e.target.value },
+                      },
+                    })
+                  }
+                  dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                  style={{ ...inputStyle, width: "100%" }}
+                />
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <textarea
+                  placeholder={`Not / açıklama metni (${activeTab})`}
+                  value={form.translations[activeTab].body}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      translations: {
+                        ...form.translations,
+                        [activeTab]: { ...form.translations[activeTab], body: e.target.value },
+                      },
+                    })
+                  }
+                  rows={3}
+                  dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                  style={{ ...inputStyle, width: "100%", resize: "vertical" }}
+                />
+              </div>
+            </>
+          )}
+
+          {activeTab === "TR" && (
+            <>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
             <select
               value={form.team}
@@ -260,6 +384,8 @@ export default function MatchWeekendsPanel({
               style={{ ...inputStyle, width: "100%", resize: "vertical" }}
             />
           </div>
+            </>
+          )}
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
             <label className="adm-btn adm-btn-ghost" style={{ cursor: "pointer" }}>
