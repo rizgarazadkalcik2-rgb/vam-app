@@ -6,9 +6,11 @@ export interface DestinationTranslation {
   region?: string;
   eraDisplay?: string;
   eraCaption?: string;
+  history?: string[];
+  features?: { title: string; body: string }[];
 }
 
-export type DestinationTranslations = Partial<Record<"DE" | "EN" | "KU", DestinationTranslation>>;
+export type DestinationTranslations = Partial<Record<"DE" | "EN" | "KU" | "CKB", DestinationTranslation>>;
 
 export interface VamDestination {
   id: number;
@@ -60,18 +62,20 @@ export interface DestinationInput {
 }
 
 /**
- * DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki
- * t() ile aynı fallback mantığı. CKB için destinasyon içeriği kapsam dışı
- * bırakıldı (Faz 3 planı) — CKB seçili olsa da bu satır sessizce TR'ye düşer.
+ * DE/EN/KU/CKB çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki
+ * t() ile aynı fallback mantığı. history/features (tarihçe ve öne çıkan özellikler)
+ * de aynı şekilde localize edilir; çeviri yoksa TR metne düşer.
  */
 export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
-  const tr = lang === "TR" || lang === "CKB" ? undefined : d.translations?.[lang];
+  const tr = lang === "TR" ? undefined : d.translations?.[lang];
   return {
     ...d,
     name: tr?.name || d.name,
     region: tr?.region || d.region,
     era_display: tr?.eraDisplay || d.era_display,
     era_caption: tr?.eraCaption || d.era_caption,
+    history: tr?.history?.length ? tr.history : d.history,
+    features: tr?.features?.length ? tr.features : d.features,
   };
 }
 

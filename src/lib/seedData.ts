@@ -23,7 +23,19 @@ export interface SeedDestination {
   visitDuration: string | null;
   visitBestTime: string | null;
   related: string[];
-  translations?: Partial<Record<"DE" | "EN" | "KU", { name?: string; region?: string; eraDisplay?: string; eraCaption?: string }>>;
+  translations?: Partial<
+    Record<
+      "DE" | "EN" | "KU" | "CKB",
+      {
+        name?: string;
+        region?: string;
+        eraDisplay?: string;
+        eraCaption?: string;
+        history?: string[];
+        features?: { title: string; body: string }[];
+      }
+    >
+  >;
 }
 
 export interface SeedBundle {
