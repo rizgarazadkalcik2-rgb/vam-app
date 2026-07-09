@@ -48,8 +48,9 @@ const T = {
 } as const;
 
 type TKey = keyof typeof T;
-function tt(key: TKey, lang: "TR" | "DE" | "EN" | "KU"): string {
-  return T[key][lang] ?? T[key].TR;
+function tt(key: TKey, lang: "TR" | "DE" | "EN" | "KU" | "CKB"): string {
+  const entry = T[key] as Record<string, string>;
+  return entry[lang] ?? entry.TR;
 }
 
 export async function generateMetadata() {
@@ -64,7 +65,7 @@ export default async function ImpressumPage() {
   const lang = await getLang();
 
   return (
-    <LegalLayout title={tt("title", lang)} updatedDate="6 Temmuz 2026">
+    <LegalLayout title={tt("title", lang)} updatedDate="6 Temmuz 2026" lang={lang}>
       <h2>{tt("s1_title", lang)}</h2>
       <p>
         Narin Kalçık <span style={{ color: "#8c8275" }}>{tt("sole_proprietor", lang)}</span>

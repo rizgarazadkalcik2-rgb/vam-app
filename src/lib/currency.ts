@@ -16,7 +16,7 @@ const USD_ROUND_STEP = 5;
 
 /** First-visit default only — after that, the visitor's own vam_currency cookie choice always wins (see middleware.ts). */
 export function defaultCurrencyForLang(lang: Lang): Currency {
-  if (lang === "DE" || lang === "KU") return "EUR";
+  if (lang === "DE" || lang === "KU" || lang === "CKB") return "EUR";
   if (lang === "EN") return "USD";
   return "TRY";
 }

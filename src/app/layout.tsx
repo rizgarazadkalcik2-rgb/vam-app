@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       siteName: "VAM — Visit Anatolia and Mesopotamia",
       type: "website",
-      locale: lang === "DE" ? "de_DE" : lang === "EN" ? "en_US" : lang === "KU" ? "ku_TR" : "tr_TR",
+      locale: lang === "DE" ? "de_DE" : lang === "EN" ? "en_US" : lang === "KU" ? "ku_TR" : lang === "CKB" ? "ckb_IQ" : "tr_TR",
       description,
     },
     twitter: {
@@ -57,12 +57,16 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={lang === "DE" ? "de" : lang === "EN" ? "en" : lang === "KU" ? "ku" : "tr"} className="h-full antialiased">
+    <html
+      lang={lang === "DE" ? "de" : lang === "EN" ? "en" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr"}
+      dir={lang === "CKB" ? "rtl" : "ltr"}
+      className="h-full antialiased"
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&family=Cinzel:wght@500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&family=Cinzel:wght@500;600&family=Vazirmatn:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <script

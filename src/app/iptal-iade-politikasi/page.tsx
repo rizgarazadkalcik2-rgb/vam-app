@@ -104,9 +104,10 @@ const T = {
 } as const;
 
 type TKey = keyof typeof T;
-type Lang = "TR" | "DE" | "EN" | "KU";
+type Lang = "TR" | "DE" | "EN" | "KU" | "CKB";
 function tt(key: TKey, lang: Lang): string {
-  return T[key][lang] ?? T[key].TR;
+  const entry = T[key] as Record<string, string>;
+  return entry[lang] ?? entry.TR;
 }
 
 export async function generateMetadata() {
@@ -122,7 +123,7 @@ export default async function IptalIadePolitikasiPage() {
   const lang = await getLang();
 
   return (
-    <LegalLayout title={tt("title", lang)} updatedDate="28 Haziran 2026">
+    <LegalLayout title={tt("title", lang)} updatedDate="28 Haziran 2026" lang={lang}>
       <p>{tt("intro", lang)}</p>
 
       <h2>{tt("s1_title", lang)}</h2>

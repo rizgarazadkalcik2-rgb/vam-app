@@ -10,7 +10,7 @@ const LANG_COOKIE = "vam_lang";
 const CURRENCY_COOKIE = "vam_currency";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
-function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" {
+function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" | "CKB" {
   // 1) Vercel edge geo header — where the visitor is connecting from.
   const country = request.headers.get("x-vercel-ip-country");
   if (country && GERMAN_SPEAKING_COUNTRIES.has(country)) {
@@ -30,8 +30,13 @@ function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" {
     return "TR";
   }
   // Kurdish has no single majority country, so it's detected from browser
-  // language only — "ku" covers Kurmanji; regional Sorani tags aren't
-  // handled here yet.
+  // language only. Sorani (Central Kurdish) browsers typically send "ckb"
+  // or occasionally "ku-arab"; anything else starting with "ku" is treated
+  // as Kurmanji. Browsers are inconsistent here, so the manual switcher
+  // remains the primary way users reach Sorani.
+  if (primary.startsWith("ckb") || primary.startsWith("ku-arab")) {
+    return "CKB";
+  }
   if (primary.startsWith("ku")) {
     return "KU";
   }

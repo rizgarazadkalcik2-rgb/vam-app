@@ -85,7 +85,7 @@ export default async function BundleDetailPage({
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">{t("breadcrumb_home", lang)}</a> › <a href="/bundles">{t("all_bundles", lang)}</a> › {b.title}
+        <a href="/platform">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/bundles">{t("all_bundles", lang)}</a> {t("breadcrumb_sep", lang)} {b.title}
       </div>
 
       <div className="vc-hero">

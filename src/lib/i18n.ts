@@ -7,5 +7,5 @@ export type { Lang };
 export async function getLang(): Promise<Lang> {
   const store = await cookies();
   const v = store.get("vam_lang")?.value;
-  return v === "DE" ? "DE" : v === "EN" ? "EN" : v === "KU" ? "KU" : "TR";
+  return v === "DE" ? "DE" : v === "EN" ? "EN" : v === "KU" ? "KU" : v === "CKB" ? "CKB" : "TR";
 }

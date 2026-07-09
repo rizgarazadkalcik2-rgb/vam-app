@@ -44,6 +44,31 @@
 .vc-root a { color: inherit; text-decoration: none; }
 .vc-root img { display: block; max-width: 100%; }
 
+/* Soranî (CKB) — Arap alfabesi Cormorant/Outfit/Cinzel'i desteklemiyor,
+   RTL modunda üçü de Vazirmatn'a düşer. */
+[dir="rtl"] .vc-root {
+  --font-display: "Vazirmatn", Georgia, serif;
+  --font-body: "Vazirmatn", system-ui, sans-serif;
+  --font-label: "Vazirmatn", Georgia, serif;
+}
+
+/* Yön-bağımlı kurallar — mevcut LTR kuralları değişmeden kalır, sadece
+   [dir="rtl"] altında (Soranî) ayna değerleri devreye girer. */
+[dir="rtl"] .vc-lang-switcher-sep { margin-right: 0; margin-left: 6px; }
+[dir="rtl"] .vc-switcher-group > .vc-lang-switcher:not(:last-child) {
+  padding-right: 0;
+  padding-left: 14px;
+  border-right: none;
+  border-left: 1px solid rgba(255,255,255,0.15);
+}
+/* .vc-card-tag kasıtlı olarak flip edilmedi: ikinci (rozet) etiket JSX'te
+   inline style ile her zaman sağ köşeye sabitleniyor — base kuralı burada
+   çevirmek iki etiketin üst üste binmesine yol açar. Köşe rozeti metin akışı
+   değil, sadece dekoratif bir görsel detay olduğu için LTR köşesinde kalması
+   kabul edilebilir. */
+[dir="rtl"] .vc-info-row span:last-child { text-align: left; }
+[dir="rtl"] .vc-mw-hero-letter { right: auto; left: 4%; }
+
 .vc-navbar { position: sticky; top: 0; z-index: 50; background: var(--ink-950); display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; flex-wrap: wrap; gap: 12px; }
 .vc-logo { font-family: var(--font-label); font-size: 22px; letter-spacing: 0.08em; color: #fff; }
 .vc-logo small { display: block; font-family: var(--font-body); font-size: 9px; letter-spacing: 0.15em; color: var(--ink-400); font-weight: 400; text-transform: uppercase; }
