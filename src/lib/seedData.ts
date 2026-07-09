@@ -589,18 +589,60 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "name": "Berg Nemrut",
         "eraDisplay": "62 v. Chr.",
-        "eraCaption": "Bau des Monuments"
+        "eraCaption": "Bau des Monuments",
+        "history": [
+          "Das Monument auf dem über 2.100 Meter hohen Gipfel des Berges Nemrut wurde von König Antiochos I. von Kommagene (70-31 v. Chr.) als sein eigenes Grab und zugleich als den Göttern geweihte Kultstätte (Hierothesion) errichten lassen. Kommagene war ein Königreich am Schnittpunkt hellenistisch-griechischer und persischer Kultur; deshalb ehrte Antiochos die Götter sowohl mit griechischen als auch mit persischen Namen.",
+          "Die gewaltigen Statuen auf dem Gipfel wurden 1881 wiederentdeckt. Das Monument wurde 1987 in die UNESCO-Welterbeliste aufgenommen."
+        ],
+        "features": [
+          { "title": "50 Meter hoher Tumulus", "body": "Ein aus zerkleinertem Kalkstein bestehender künstlicher Hügel, der höchstwahrscheinlich Antiochos' Grab birgt; bei seiner Errichtung war er rund 70 Meter hoch." },
+          { "title": "Ost- und Westterrasse", "body": "Auf jeder Terrasse stehen sitzende Götterstatuen (Zeus, Apollon, Herakles, die Göttin von Kommagene) sowie die Statue des Königs selbst; ihre Höhe erreicht 8-9 Meter." },
+          { "title": "Löwen- und Adlerstatuen", "body": "An den Rändern der Terrassen als Schutzfiguren aufgestellt." },
+          { "title": "Sonnenauf- und -untergang", "body": "Die Köpfe der Statuen sind im Laufe der Zeit von ihren Körpern getrennt worden; besonders beim Sonnenaufgang entsteht ein dramatisches Lichtspiel." }
+        ]
       },
       "EN": {
         "name": "Mount Nemrut",
         "eraDisplay": "62 BCE",
-        "eraCaption": "Construction of the Monument"
+        "eraCaption": "Construction of the Monument",
+        "history": [
+          "The monument atop the more-than-2,100-meter summit of Mount Nemrut was built by King Antiochus I of Commagene (70-31 BCE) as both his own tomb and a sanctuary (hierothesion) dedicated to the gods. Commagene was a kingdom at the crossroads of Hellenistic Greek and Persian cultures, so Antiochus honored the gods with both Greek and Persian names.",
+          "The colossal statues on the summit were rediscovered in 1881. The monument was inscribed on the UNESCO World Heritage List in 1987."
+        ],
+        "features": [
+          { "title": "50-meter tumulus", "body": "An artificial mound of crushed limestone, most likely containing Antiochus's tomb; it stood about 70 meters high when first built." },
+          { "title": "East and West terraces", "body": "Each terrace holds seated statues of the gods (Zeus, Apollo, Heracles, and the goddess of Commagene) as well as a statue of the king himself, reaching heights of 8-9 meters." },
+          { "title": "Lion and eagle statues", "body": "Placed at the edges of the terraces as guardian figures." },
+          { "title": "Sunrise/sunset views", "body": "The statues' heads have separated from their bodies over time; sunrise in particular creates dramatic lighting." }
+        ]
       },
       "KU": {
         "name": "Çiyayê Nemrûd",
         "region": "Semsûr",
         "eraDisplay": "62 BZ",
-        "eraCaption": "Avakirina Bîrdankê"
+        "eraCaption": "Avakirina Bîrdankê",
+        "history": [
+          "Bîrdanka li ser lûtkeya Çiyayê Nemrûd a ku ji 2.100 metreyan bilindtir e, ji hêla padîşahê Padîşahiya Kommageneyê Antîokhosê I. (70-31 BZ) ve, hem wek gora xwe hem jî wek cihek pîroz (hierothesion) ê ku ji xwedayan re hatiye veqetandin, hatiye avakirin. Kommagene padîşahiyek li xala hevbeşiya çandên Yewnaniya Helenîstîk û Farisan bû; ji ber vê yekê, Antîokhos xweda hem bi navên Yewnanî hem jî bi navên Farisî bi bîr xist.",
+          "Peykerên mezin ên li lûtkeyê di sala 1881an de ji nû ve hatin dîtin. Bîrdank di sala 1987an de ket Lîsteya Mîrateya Cîhanê ya UNESCOyê."
+        ],
+        "features": [
+          { "title": "Tûmulûsa 50 metre", "body": "Girê çêkirî yê ji kevirê şilûtê yê hûrkirî, ku bi îhtîmaleke mezin gora Antîokhos vedihewîne; dema cara yekem hatiye avakirin ~70 metre bilind bû." },
+          { "title": "Teraszên Rojhilat û Rojava", "body": "Li her terasê, peykerên xwedayên rûniştî (Zeus, Apollon, Herakles, xwedawenda Kommageneyê) û peykera padîşah bi xwe hene; bilindahiya wan digihîje 8-9 metreyan." },
+          { "title": "Peykerên şêr û helo", "body": "Li kêleka terasan wek fîgurên parastinê hatine bicihkirin." },
+          { "title": "Dîmena rojhilatin/rojava", "body": "Serê peykeran bi demê re ji laşê xwe qetiyane; bi taybetî di rojhilatinê de ronahiyeke dramatîk pêk tê." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "بیرداکەی لەسەر لووتکەی چیای نەمروود کە لە ٢١٠٠ مەتر بەرزتر بۆ دەچێت، لەلایەن پاشای شانشینی کۆماگینە ئانتیۆخۆسی یەکەم (٧٠-٣١ی پێش زایین)ەوە، هەم وەک گۆڕی خۆی و هەم وەک شوێنێکی پیرۆز (هیێرۆتێسیۆن) بۆ خواوەندەکان بنیاتنراوە. کۆماگینە شانشینێک بوو لە خاچەڕێی کەلتووری یۆنانی هەلینیستی و فارسی؛ بۆیە ئانتیۆخۆس خواوەندەکانی هەم بە ناوی یۆنانی و هەم بە ناوی فارسی ناودەبرد.",
+          "پەیکەرە گەورەکانی سەر لووتکە لە ساڵی ١٨٨١دا دووبارە دۆزرانەوە. بیرداکەکە لە ساڵی ١٩٨٧دا خرایە لیستی میراتی جیهانی یۆنیسکۆ."
+        ],
+        "features": [
+          { "title": "تومۆلووسی ٥٠ مەتری", "body": "گردێکی دەستکرد لە بەردی چیمەنتۆی وردکراو، کە بەگومانی زۆرەوە گۆڕی ئانتیۆخۆسی تێدایە؛ کاتێک یەکەم جار دروستکرا نزیکەی ٧٠ مەتر بەرز بوو." },
+          { "title": "تەراسی ڕۆژهەڵات و ڕۆژئاوا", "body": "لە هەر تەراسێکدا، پەیکەری خواوەندە دانیشتووەکان (زیوس، ئەپۆلۆن، هێراکلێس، خواوەندی کۆماگینە) و پەیکەری خودی پاشا هەیە؛ بەرزییان دەگاتە ٨-٩ مەتر." },
+          { "title": "پەیکەری شێر و هەڵۆ", "body": "لە قەراغی تەراسەکاندا وەک وێنەی پارێزەر دانراون." },
+          { "title": "دیمەنی خۆرهەڵات/خۆرئاوابوون", "body": "سەری پەیکەرەکان بەهۆی کاتەوە لە جەستەیان جیابووەتەوە؛ بەتایبەتی لە خۆرهەڵاتندا ڕووناکییەکی درامی پێکدێت." }
+        ]
       }
     },
     "unesco": true,
@@ -653,18 +695,60 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "name": "Festung Van",
         "eraDisplay": "9. Jh. v. Chr.",
-        "eraCaption": "Urartäische Epoche"
+        "eraCaption": "Urartäische Epoche",
+        "history": [
+          "Die Festung Van ist eine Felsenfestung am Ufer des Vansees aus der Zeit des Königreichs Urartu (etwa 9. Jahrhundert v. Chr.). Die Urartäer nannten sich selbst \"Biainili\" — davon leitet sich auch der Name Van ab. Die Festung birgt mit ihren Keilschrift-Felsinschriften eine der wichtigsten schriftlichen Quellen der urartäischen Epoche.",
+          "Die Alte Stadt Van am Fuß der Festung wurde bei den Ereignissen zu Beginn des 20. Jahrhunderts größtenteils zerstört und liegt heute größtenteils in Ruinen."
+        ],
+        "features": [
+          { "title": "Urartäische Felsinschriften", "body": "An verschiedenen Stellen der Festung finden sich monumentale, in Keilschrift verfasste Inschriften." },
+          { "title": "Blick auf den Vansee", "body": "Die Festung liegt an einem Punkt, der den größten See der Türkei überblickt; besonders bei Sonnenuntergang bietet sie einen berühmten Ausblick." },
+          { "title": "Ruinen der Alten Stadt Van", "body": "Südlich der Festung sind Moschee- und Bauwerksreste der alten Siedlung zu sehen." },
+          { "title": "Nähe zur Akdamar-Insel", "body": "Besuche der Festung Van werden häufig mit der per Boot erreichbaren Akdamar-Insel und ihrer armenischen Kirche aus dem 10. Jahrhundert verbunden." }
+        ]
       },
       "EN": {
         "name": "Van Castle",
         "eraDisplay": "9th century BCE",
-        "eraCaption": "Urartian Period"
+        "eraCaption": "Urartian Period",
+        "history": [
+          "Van Castle is a rock fortress on the shore of Lake Van, dating from the era of the Kingdom of Urartu (around the 9th century BCE). The Urartians called themselves \"Biainili\" — the name Van derives from this root. The castle holds one of the most important written sources of the Urartian period in its cuneiform rock inscriptions.",
+          "Old Van City at the foot of the castle was largely destroyed during the events of the early 20th century and today lies mostly in ruins."
+        ],
+        "features": [
+          { "title": "Urartian rock inscriptions", "body": "Monumental cuneiform inscriptions can be found at various points around the castle." },
+          { "title": "Lake Van views", "body": "The castle stands at a point overlooking Turkey's largest lake, offering a famous view at sunset." },
+          { "title": "Old Van City ruins", "body": "South of the castle, mosque and building remains from the old settlement can be seen." },
+          { "title": "Proximity to Akdamar Island", "body": "Visits to Van Castle are often combined with the 10th-century Armenian church on Akdamar Island, reached by boat." }
+        ]
       },
       "KU": {
         "name": "Kela Wanê",
         "region": "Wan",
         "eraDisplay": "Sedsala 9. BZ",
-        "eraCaption": "Serdema Ûrartûyan"
+        "eraCaption": "Serdema Ûrartûyan",
+        "history": [
+          "Kela Wanê, li kêleka Gola Wanê, kelehek zinarî ye ku ji serdema Padîşahiya Ûrartûyan (nêzî sedsala 9. BZ) maye. Ûrartûyan xwe bi navê \"Biainili\" bi nav dikirin — navê Wan jî ji vê rehê tê. Kele, bi kitabeyên zinarî yên bi tîpguhezî ve, yek ji çavkaniyên nivîskî yên herî girîng ên serdema Ûrartûyan vedihewîne.",
+          "Bajarê Kevn ê Wanê yê li binê kelehê, di dema bûyerên destpêka sedsala 20. de bi giranî hate hilweşandin û îro piraniya wê xerabe ye."
+        ],
+        "features": [
+          { "title": "Kitabeyên zinarî yên Ûrartûyan", "body": "Li cihên cuda yên kelehê kitabeyên mezin ên bi tîpguhezî hatine nivîsandin, hene." },
+          { "title": "Dîmena Gola Wanê", "body": "Kele li xalek e ku li ser gola herî mezin a Tirkiyeyê serwer e; di rojava de dîmeneke navdar pêşkêş dike." },
+          { "title": "Kavilên Bajarê Kevn ê Wanê", "body": "Li başûrê kelehê, kavilên mizgeft û avahiyên ji niştecihbûna kevn mane, tên dîtin." },
+          { "title": "Nêzîkbûna Girava Akdamarê", "body": "Serdanên Kela Wanê bi gelemperî bi dêra ermenî ya sedsala 10. ya li Girava Akdamarê, ku bi keştiyê tê gihîştin, ve tê girêdan." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "قەڵای وان، لە کەناری دەریاچەی وان، قەڵایەکی بەردینە کە لە سەردەمی شانشینی ئوراردودا (نزیکەی سەدەی نۆیەمی پێش زایین) ماوەتەوە. ئوراردوییەکان بە ناوی \"بیائینیلی\" ناویان دەبرد — ناوی وانیش لەم ڕەگەزەوە دێت. قەڵاکە بە نووسینە بەردینەکانی بە خەتی بزماری، یەکێک لە گرنگترین سەرچاوە نووسراوەکانی سەردەمی ئوراردو هەڵدەگرێت.",
+          "شاری کۆنی وان کە لەبن قەڵاکەدایە، لە کاتی ڕووداوەکانی سەرەتای سەدەی بیستەمدا بەگشتی ڕووخا و ئەمڕۆ زۆربەی بە کاولی ماوەتەوە."
+        ],
+        "features": [
+          { "title": "نووسینە بەردینەکانی ئوراردو", "body": "لە شوێنی جیاجیای قەڵاکەدا نووسینی گەورە بە خەتی بزماری هەیە." },
+          { "title": "دیمەنی دەریاچەی وان", "body": "قەڵاکە لە خاڵێکدایە کە تەماشای گەورەترین دەریاچەی تورکیا دەکات؛ لە کاتی خۆرئاوابووندا دیمەنێکی ناوداری هەیە." },
+          { "title": "کاولی شاری کۆنی وان", "body": "لە باشووری قەڵاکە، بەرماوەی مزگەوت و بیناکانی نیشتەجێبوونی کۆن دەبیندرێت." },
+          { "title": "نزیکبوونەوە لە دوورگەی ئاقدامار", "body": "سەردانی قەڵای وان زۆرجار لەگەڵ کڵێسای ئەرمەنیی سەدەی دەیەمی دوورگەی ئاقدامار کە بە بەلەم پێی دەگاتەوە، تێکەڵ دەکرێت." }
+        ]
       }
     },
     "unesco": false,
@@ -716,17 +800,59 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "translations": {
       "DE": {
         "eraDisplay": "10.000 v. Chr.",
-        "eraCaption": "Früheste Spuren"
+        "eraCaption": "Früheste Spuren",
+        "history": [
+          "Hasankeyf ist eine uralte Siedlung am Ufer des Tigris, erbaut an einem felsigen Hang. Die frühesten menschlichen Spuren sollen bis in die neolithische Zeit, sogar bis ins Jahr 10.000 v. Chr. zurückreichen; Tausende natürliche Höhlen in der Region dienten über Jahrhunderte als Wohnraum.",
+          "Die Stadt durchlief die römische, sassanidische, umayyadische, abbasidische, artukidische, ayyubidische und osmanische Epoche; besonders die artukidische und ayyubidische Zeit (12.-14. Jahrhundert) gilt als goldenes Zeitalter Hasankeyfs — damals war die Stadt mit ihren Brücken, Palästen und Medresen ein bedeutendes regionales Zentrum. Wegen des Ilısu-Staudamms steht ein Großteil des historischen Kerns seit 2019 teilweise unter Wasser; einige Denkmäler wurden an einen neuen Standort verlegt."
+        ],
+        "features": [
+          { "title": "Tausende Höhlenwohnungen", "body": "Natürliche und von Menschenhand geschaffene Höhlen in den Felshängen; einige wurden bis ins 20. Jahrhundert als Wohnraum genutzt." },
+          { "title": "Überreste der Hasankeyf-Brücke", "body": "Die Pfeiler dieser als eine der größten Brücken des Mittelalters geltenden Konstruktion stehen noch heute im Tigris." },
+          { "title": "Zeynel-Bey-Mausoleum", "body": "Vom akkoyunlu Herrscher Uzun Hasan für seinen Sohn errichtetes, durch seine zylindrische Form auffallendes Mausoleum (eines der versetzten Denkmäler)." },
+          { "title": "Er-Rızk-Moschee und Minarett", "body": "Auf das frühe 15. Jahrhundert datierte ayyubidische Moschee, bekannt für ihr noch erhaltenes Minarett." }
+        ]
       },
       "EN": {
         "eraDisplay": "10,000 BCE",
-        "eraCaption": "Earliest Traces"
+        "eraCaption": "Earliest Traces",
+        "history": [
+          "Hasankeyf is an ancient settlement built on a rocky slope along the banks of the Tigris. The earliest human traces are believed to date back to the Neolithic period, possibly as far as 10,000 BCE; thousands of natural caves in the area served as dwellings for centuries.",
+          "The city passed through Roman, Sassanid, Umayyad, Abbasid, Artuqid, Ayyubid, and Ottoman periods; the Artuqid and Ayyubid periods (12th-14th centuries) in particular are considered Hasankeyf's golden age — the city was then an important regional center with its bridges, palaces, and madrasas. Because of the Ilısu Dam, much of the historic core has been partially underwater since 2019; some monuments were relocated to a new site."
+        ],
+        "features": [
+          { "title": "Thousands of cave dwellings", "body": "Natural and man-made caves in the rocky slopes; some were used as dwellings until the 20th century." },
+          { "title": "Remains of Hasankeyf Bridge", "body": "The piers of what is considered one of the largest bridges of the Middle Ages still stand in the Tigris." },
+          { "title": "Zeynel Bey Mausoleum", "body": "A mausoleum built by the Aq Qoyunlu ruler Uzun Hasan for his son, notable for its cylindrical form (one of the relocated monuments)." },
+          { "title": "Er-Rızk Mosque and minaret", "body": "An Ayyubid-era mosque dating to the early 15th century, known for its still-standing minaret." }
+        ]
       },
       "KU": {
         "name": "Heskîf",
         "region": "Elih",
         "eraDisplay": "10.000 BZ",
-        "eraCaption": "Şopên Yekem"
+        "eraCaption": "Şopên Yekem",
+        "history": [
+          "Heskîf, li kêleka Çemê Dîcle, li ser gelîkî zinarî hatiye avakirin, niştecihbûneke kevnar e. Tê texmînkirin ku şopên yekem ên mirovan heta serdema Neolîtîk, heta 10.000 BZ dirêj dibin; bi hezaran şikeftên xwezayî yên herêmê, bi sedsalan wek war hatine bikaranîn.",
+          "Bajêr ji serdemên Romayê, Sasaniyan, Emewiyan, Abasiyan, Artûqiyan, Eyûbiyan û Osmaniyan derbas bû; bi taybetî serdemên Artûqî û Eyûbî (sedsalên 12-14.) wek serdema zêrîn a Heskîfê tê pejirandin — di wê serdemê de bajêr bi pir, qesr û medreseyên xwe navendeke girîng a herêmê bû. Ji ber Bendava Ilisûyê, beşeke mezin a bingeha dîrokî ji sala 2019an ve nîvî di bin avê de ye; hin bîrdank vegoheztin cihek nû."
+        ],
+        "features": [
+          { "title": "Bi hezaran şikeftxaniyan", "body": "Şikeftên xwezayî û çêkirî yên li gelîyên zinarî; hinek heta sedsala 20. wek war hatine bikaranîn." },
+          { "title": "Kavilên Pira Heskîfê", "body": "Piyên avahiya ku wek yek ji pirên herî mezin ên serdema navîn tê zanîn, hê jî li ser Dîcleyê radiwestin." },
+          { "title": "Tirba Zeynel Begê", "body": "Tirba ku ji hêla hukumdarê Akqoyûnlî Uzun Hesen ve ji bo kurê xwe hatiye çêkirin, bi forma xwe ya slîndirîk balê dikişîne (yek ji bîrdankên vegohastî)." },
+          { "title": "Mizgefta Er-Rizq û minare", "body": "Mizgefta serdema Eyûbî ya ku heta destpêka sedsala 15. tê dîtin, bi minareya xwe ya hê li ser lingan tê naskirin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "حەسەنکێف، لە کەناری ڕووباری دیجلە، لەسەر لاژوورێکی بەردین بنیاتنراوە، شوێنی نیشتەجێبوونێکی کۆنە. پێدەچێت کۆنترین شوێنپێی مرۆڤ بگاتەوە سەردەمی نیۆلیتیک، تەنانەت ساڵی ١٠٠٠٠ی پێش زایین؛ هەزاران ئەشکەوتی سروشتیی ناوچەکە، بۆ سەدەها ساڵ وەک شوێنی نیشتەجێبوون بەکارهاتووە.",
+          "شارەکە لە سەردەمی ڕۆما، ساسانی، ئومەوی، عەباسی، ئارتووقی، ئەیووبی و عوسمانیدا تێپەڕی؛ بەتایبەتی سەردەمی ئارتووقی و ئەیووبی (سەدەکانی ١٢-١٤) وەک سەردەمی زێڕینی حەسەنکێف دادەنرێت — لەو سەردەمەدا شارەکە بە پرد، کۆشک و مەدرەسەکانییەوە ناوەندێکی گرنگی هەرێمی بوو. لەبەر بەنداوی ئیلیسوو، بەشێکی گەورەی ناوەندی مێژووی لە ساڵی ٢٠١٩ەوە بەشێوەیەکی نیوەکی لەژێر ئاودایە؛ هەندێک بیرداک بۆ شوێنێکی نوێ گوازراونەتەوە."
+        ],
+        "features": [
+          { "title": "هەزاران ماڵی ئەشکەوتی", "body": "ئەشکەوتی سروشتی و دەستکرد لە لاژوورە بەردینەکاندا؛ هەندێکیان هەتا سەدەی بیستەم وەک شوێنی ژیان بەکارهاتوون." },
+          { "title": "کاولی پردی حەسەنکێف", "body": "پایەکانی ئەو بینایەی کە وەک یەکێک لە گەورەترین پردەکانی سەردەمی ناوەڕاست دادەنرێت، هێشتا لەسەر ڕووباری دیجلە ڕاوەستاون." },
+          { "title": "ئارامگای زەینەل بەگ", "body": "ئارامگایەک کە لەلایەن فەرمانڕەوای ئاق قویونلوو ئوزون حەسەنەوە بۆ کوڕەکەی دروستکراوە، بە شێوەی سیلندریی سەرنجڕاکێشە (یەکێک لە بیرداکە گوازراوەکان)." },
+          { "title": "مزگەوتی ئێر-ڕزق و منارە", "body": "مزگەوتی سەردەمی ئەیووبی کە دەگاتەوە سەرەتای سەدەی ١٥، بە منارەکەی کە هێشتا ڕاوەستاوە ناسراوە." }
+        ]
       }
     },
     "unesco": false,
@@ -779,18 +905,60 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       "DE": {
         "name": "Antike Stadt Dara",
         "eraDisplay": "505 n. Chr.",
-        "eraCaption": "Gründung"
+        "eraCaption": "Gründung",
+        "history": [
+          "Dara (antiker Name: Anastasiopolis) wurde vom oströmischen Kaiser Anastasius I. in den Jahren 505-507 n. Chr. als Garnisonsstadt errichtet, um die Ostgrenze des Reiches gegen das Sassanidenreich zu schützen. Es wurde rasch zum Verwaltungs- und Militärzentrum Obermesopotamiens; unter Kaiser Justinian I. wurden die Mauern verstärkt und gewaltige Zisternen hinzugefügt.",
+          "Die Stadt war 530 auch Schauplatz des Sieges des byzantinischen Generals Belisar über die Sassaniden. In den folgenden Jahrhunderten wechselte sie zwischen sassanidischer, byzantinischer, umayyadischer, abbasidischer, seldschukischer und osmanischer Herrschaft. Heute liegt nur etwa 10 % der Stadt an der Oberfläche, der Großteil noch unter der Erde."
+        ],
+        "features": [
+          { "title": "Gewaltige Wasserzisternen", "body": "Eine der in Fels gehauenen Zisternen (im Volksmund \"Verlies\" genannt) fasst rund 10.000 m³ Wasser — tiefer als die Yerebatan-Zisterne in Istanbul." },
+          { "title": "Wasser als Verteidigungswaffe", "body": "Die römische Garnison nutzte das Wasser der Zisternen, um Belagerungen lange standzuhalten; die Sassaniden versuchten wiederum, den Flusslauf umzuleiten, um die Stadt trockenzulegen." },
+          { "title": "4 km langes Mauersystem", "body": "Eine zweischichtige, 28-türmige Verteidigungslinie aus innerer und äußerer Mauer." },
+          { "title": "Galeriegräber (Nekropole)", "body": "In Fels gehauene, mehrstöckige Grabanlagen mit den Knochenresten von Tausenden Menschen." }
+        ]
       },
       "EN": {
         "name": "Ancient City of Dara",
         "eraDisplay": "505 CE",
-        "eraCaption": "Founding"
+        "eraCaption": "Founding",
+        "history": [
+          "Dara (ancient name Anastasiopolis) was built by the Eastern Roman Emperor Anastasius I in 505-507 CE as a garrison city to protect the empire's eastern border against the Sassanid Empire. It quickly became the administrative and military center of Upper Mesopotamia; under Emperor Justinian I the walls were strengthened and massive cisterns were added.",
+          "The city was also the site of Byzantine general Belisarius's victory over the Sassanids in 530. In later centuries it changed hands between Sassanid, Byzantine, Umayyad, Abbasid, Seljuk, and Ottoman rule. Today only about 10% of the city is above ground; most of it still lies buried."
+        ],
+        "features": [
+          { "title": "Massive water cisterns", "body": "One of the rock-cut cisterns (known locally as the \"dungeon\") has a capacity of about 10,000 m³ — deeper than Istanbul's Basilica Cistern." },
+          { "title": "Water as a weapon of defense", "body": "The Roman garrison used the water in the cisterns to withstand long sieges; the Sassanids, in turn, tried to divert the river's flow to leave the city without water." },
+          { "title": "4-km wall system", "body": "A two-layered defensive line of inner and outer walls with 28 towers." },
+          { "title": "Gallery graves (necropolis)", "body": "Multi-story, rock-cut tomb structures holding the skeletal remains of thousands of people." }
+        ]
       },
       "KU": {
         "name": "Bajarê Kevnar ê Dara",
         "region": "Mêrdîn",
         "eraDisplay": "505 PZ",
-        "eraCaption": "Damezrandin"
+        "eraCaption": "Damezrandin",
+        "history": [
+          "Dara (bi navê xwe yê kevn Anastasiopolis) ji hêla Împeratorê Romaya Rojhilat Anastasiûsê I. ve di navbera salên 505-507an PZ de, wek bajarekî garnîzonê ji bo parastina sînorê rojhilat ê împeratoriyê li dijî Împeratoriya Sasaniyan hate avakirin. Di demeke kurt de bû navenda îdarî û leşkerî ya Mezopotamyaya Jorîn; di serdema Împeratorê Justînianosê I. de sûr hatin xurtkirin û sarincên mezin hatin zêdekirin.",
+          "Bajar di sala 530î de jî bû dîmena serkeftina generalê Bîzansê Belîsarîûs li dijî Sasaniyan. Di sedsalên pêş de di navbera serweriya Sasaniyan, Bîzansê, Emewiyan, Abasiyan, Selçûqiyan û Osmaniyan de dest guherî. Îro tenê nêzî %10ê bajêr li rûerdê ye, piraniya wê hê jî di bin axê de ye."
+        ],
+        "features": [
+          { "title": "Sarincên mezin ên avê", "body": "Yek ji sarincên di zinaran de hatine kolan (di nav gel de wek \"zîndan\" tê zanîn) kapasîteya ~10.000 m³ avê hilgire; ev ji Sarinca Yerebatanê ya li Stenbolê kûrtir e." },
+          { "title": "Av wek çeka parastinê", "body": "Garnîzona Romayê, di dema dorpêçê de ava sarincan ji bo berxwedana dirêj bi kar anî; Sasaniyan jî bi guherandina herikîna çem hewl da bajêr bêav bihêlin." },
+          { "title": "Pergala sûr a 4 km", "body": "Xeteke parastinê ya du-qatî, bi 28 kulle, ku ji sûrê hundir û derve pêk tê." },
+          { "title": "Goristana galerî (nekropol)", "body": "Avahiyên gorê yên pirqat, di zinaran de hatine kolan; bermahiyên hestiyan ên bi hezaran kesan vedihewîne." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "دارا (بە ناوی کۆنی ئاناستاسیۆپۆلیس) لەلایەن ئیمپراتۆری ڕۆمای ڕۆژهەڵات ئاناستاسیۆسی یەکەمەوە لە نێوان ساڵانی ٥٠٥-٥٠٧ی زایین، وەک شاری گارنیزۆن بۆ پاراستنی سنووری ڕۆژهەڵاتی ئیمپراتۆرەتی بەرامبەر ئیمپراتۆریەتی ساسانی بنیادنرا. بە زووی بووە ناوەندی بەڕێوەبردن و سەربازیی مێزۆپۆتامیای سەرەوە؛ لە سەردەمی ئیمپراتۆر یوستینیانۆسی یەکەمدا شوورەکان بەهێزکران و ئاوگیرە گەورەکان زیادکران.",
+          "شارەکە هەروەها لە ساڵی ٥٣٠دا بووە شوێنی سەرکەوتنی جێنێرالی بیزەنتی بێلیساریۆس بەسەر ساسانییەکاندا. لە سەدەکانی دواتردا لەنێوان دەسەڵاتی ساسانی، بیزەنتی، ئومەوی، عەباسی، سەلجووقی و عوسمانیدا دەستی گۆڕی. ئەمڕۆ تەنها نزیکەی %١٠ی شارەکە لەسەر ڕووی زەوییە، زۆربەی هێشتا لەژێر خاکدایە."
+        ],
+        "features": [
+          { "title": "ئاوگیرە گەورەکانی ئاو", "body": "یەکێک لە ئاوگیرە بەردکۆڵراوەکان (لەنێو خەڵکدا بە ناوی \"زیندان\" ناسراوە) بۆشاییەکی نزیکەی ١٠٠٠٠ م³ ئاوی هەیە؛ ئەمە قووڵترە لە ئاوگیری یەرەباتانی ئیستەنبوڵ." },
+          { "title": "ئاو وەک چەکی پاراستن", "body": "گارنیزۆنی ڕۆما، لە کاتی گەمارۆدا ئاوی ئاوگیرەکانی بەکارهێنا بۆ خۆڕاگری درێژخایەن؛ ساسانییەکانیش هەوڵیان دا بە گۆڕینی ئاڕاستەی ڕووبار شارەکە بێ ئاو بهێڵنەوە." },
+          { "title": "سیستەمی شووری ٤ کیلۆمەتری", "body": "هێڵێکی پاراستنی دوو چینە، بە ٢٨ قوللە، لە شووری ناوەوە و دەرەوە پێکهاتووە." },
+          { "title": "گۆڕی گالەری (گۆڕستان)", "body": "بیناکانی گۆڕی فرەچین کە لە بەرددا کۆڵراون؛ بەرماوەی ئێسقانی هەزاران کەسیان تێدایە." }
+        ]
       }
     },
     "unesco": false,
@@ -842,17 +1010,59 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
     "translations": {
       "DE": {
         "eraDisplay": "9. Jh. v. Chr.",
-        "eraCaption": "Assyrische Aufzeichnung"
+        "eraCaption": "Assyrische Aufzeichnung",
+        "history": [
+          "Midyat ist ein Landkreis von Mardin auf dem Tur-Abdin-Plateau; sein Name soll vom assyrischen Wort \"Matiate\" stammen, was \"Stadt der Höhlen\" bedeutet — es erscheint unter diesem Namen in assyrischen Inschriften des 9. Jahrhunderts v. Chr. Tur Abdin (syrisch für \"Berg der Diener\") gilt seit Jahrhunderten als Herz der syrisch-christlichen Kultur.",
+          "Midyat trägt ein multikulturelles Gefüge, in dem Syrer, Türken, Araber und eine lokale Gemeinschaft namens \"Mahalmi\" zusammenleben. Das 397 gegründete Kloster Mor Gabriel ist eines der ältesten noch aktiven syrisch-orthodoxen Klöster der Welt."
+        ],
+        "features": [
+          { "title": "Telkari-Silberschmiedekunst", "body": "Ein jahrhundertealtes Handwerk, bei dem haarfeine Silberdrähte ohne Lötung von Hand gebogen und verbunden werden; seine Geschichte reicht bis etwa 3000 v. Chr. zurück." },
+          { "title": "Kloster Mor Gabriel", "body": "397 gegründeter Klosterkomplex aus zahlreichen Kirchen und Kapellen, in dem noch heute Gottesdienst und Unterricht stattfinden." },
+          { "title": "Steinhäuser", "body": "Die Straßen des alten Midyat erinnern mit ihren Bogengängen und steinernen Ornamenten an eine mittelalterliche Stadt." },
+          { "title": "Syrisch (Turoyo)", "body": "Ein noch in der Region gesprochener lebendiger Zweig des Aramäischen, der Sprache Jesu." }
+        ]
       },
       "EN": {
         "eraDisplay": "9th century BCE",
-        "eraCaption": "Assyrian Record"
+        "eraCaption": "Assyrian Record",
+        "history": [
+          "Midyat is a district of Mardin on the Tur Abdin plateau; its name is thought to derive from the Assyrian word \"Matiate,\" meaning \"City of Caves\" — it appears under this name in 9th-century BCE Assyrian inscriptions. Tur Abdin (Syriac for \"Mountain of the Servants\") has been known for centuries as the heart of Syriac Christian culture.",
+          "Midyat carries a multicultural fabric in which Syriacs, Turks, Arabs, and a local community known as the \"Mahalmi\" live side by side. The Mor Gabriel Monastery, founded in 397, is one of the oldest still-active Syriac Orthodox monasteries in the world."
+        ],
+        "features": [
+          { "title": "Telkari silver craftsmanship", "body": "A centuries-old craft in which hair-thin silver wires are bent and joined by hand without soldering; its history reaches back to around 3000 BCE." },
+          { "title": "Mor Gabriel Monastery", "body": "Founded in 397, a monastery complex of numerous churches and chapels where worship and teaching still continue." },
+          { "title": "Stone mansions", "body": "The streets of old Midyat, with their arched passages and carved stone ornamentation, evoke a medieval town." },
+          { "title": "Syriac (Turoyo)", "body": "A living branch of Aramaic, the language of Jesus, still spoken in the region." }
+        ]
       },
       "KU": {
         "name": "Midyad",
         "region": "Mêrdîn",
         "eraDisplay": "Sedsala 9. BZ",
-        "eraCaption": "Tomara Asûrî"
+        "eraCaption": "Tomara Asûrî",
+        "history": [
+          "Midyad, navçeya Mêrdînê ya li ser platoya Tûr Abdînê ye; tê texmînkirin ku navê wê ji peyva Asûrî \"Matiate\" tê, ku wateya wê \"Bajarê Şikeftan\" e — di kitabeyên Asûrî yên sedsala 9. BZ de bi vî navî derbas dibe. Tûr Abdîn (bi Suryanî \"Çiyayê Xulaman\") bi sedsalan wek dilê çanda Xiristiyanên Suryanî tê zanîn.",
+          "Midyad, tevneke pirçandî ya ku Suryanî, Tirk, Ereb û civakek herêmî ya bi navê \"Mahalmî\" li gel hev dijîn hildigire. Dêra Mor Gabrîel, ku di sala 397an de hatiye damezrandin, yek ji dêrên Suryanî yên Ortodoks ên herî kevn e ku hê jî çalak in li cîhanê."
+        ],
+        "features": [
+          { "title": "Zîvkariya telkarî", "body": "Huneriek bi sedsalan e ku têlên zîv ên bi qelindahiya porê bêyî çareserkirinê bi destan têne xemilandin û bihevre têne girêdan; dîroka wê heta 3000 BZ dirêj dibe." },
+          { "title": "Dêra Mor Gabrîel", "body": "Komplekseke dêrê ya di sala 397an de hatiye damezrandin, ku ji gelek dêr û şapelan pêk tê û îbadet û perwerde hê jî lê didome." },
+          { "title": "Konaxên kevir", "body": "Kolanên Midyada kevn, bi derbazgehên xwe yên kevirî û xemilandinên kevirî yên oyakirî, bajarekî serdema navîn bi bîr tîne." },
+          { "title": "Suryanî (Turoyo)", "body": "Şaxek zindî yê Aramî, zimanê Hz. Îsa, ku hê jî li herêmê tê axaftin." }
+        ]
+      },
+      "CKB": {
+        "history": [
+          "میدیاد، ناوچەیەکی مێردینە لەسەر پلاتۆی تور عەبدین؛ پێدەچێت ناوی لە وشەی ئاشووری \"ماتیاتێ\"ەوە هاتبێت، کە مانای \"شاری ئەشکەوتەکان\" دەگەیەنێت — لە نووسینە ئاشوورییەکانی سەدەی نۆیەمی پێش زایین بەم ناوە هاتووە. تور عەبدین (بە سریانی \"چیای کۆیلەکان\") بۆ سەدەها ساڵە وەک دڵی کەلتووری مەسیحیی سریانی ناسراوە.",
+          "میدیاد چێشتێکی فرەکەلتووری هەڵدەگرێت کە تێیدا سریانی، تورک، عەرەب و کۆمەڵگایەکی ناوخۆیی بەناوی \"مەحەلمی\" پێکەوە دەژین. دێری مۆر گابرییل کە لە ساڵی ٣٩٧دا دامەزراوە، یەکێکە لە کۆنترین دێرە ئۆرسۆدۆکسە سریانییەکانی هێشتا چالاکی جیهان."
+        ],
+        "features": [
+          { "title": "زیوکاریی تەلکاری", "body": "پیشەیەکی سەدەها ساڵە کە تێیدا تەلی زیوی وەک تەنکایی مووی سەر بەبێ لەحیم بەدەست چەماوە و بەیەکەوە بەستراوە؛ مێژووی دەگاتەوە نزیکەی ٣٠٠٠ی پێش زایین." },
+          { "title": "دێری مۆر گابرییل", "body": "کۆمپلێکسێکی دێری کە لە ساڵی ٣٩٧دا دامەزراوە، لە چەندین کڵێسا و پەرستگای بچووکەوە پێکهاتووە، هێشتا لێی خواپەرستی و فێرکردن بەردەوامە." },
+          { "title": "کۆشکی بەردین", "body": "شەقامەکانی میدیادی کۆن، بە تاقەوانەکانی و ڕازاندنەوەی بەردی تاشراوی، شارێکی سەردەمی ناوەڕاست بەبیر دەهێننەوە." },
+          { "title": "سریانی (تۆرۆیۆ)", "body": "لقێکی زیندووی ئارامی، زمانی عیسای مەسیح، کە هێشتا لە ناوچەکەدا قسەی پێدەکرێت." }
+        ]
       }
     },
     "unesco": false,
