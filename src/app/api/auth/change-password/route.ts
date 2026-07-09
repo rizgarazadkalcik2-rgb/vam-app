@@ -10,6 +10,9 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   const currentPassword = body?.currentPassword;
   const newPassword = body?.newPassword;
 
@@ -20,9 +23,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (newPassword.length < 6) {
+  if (newPassword.length < 12) {
     return NextResponse.json(
-      { error: "Yeni şifre en az 6 karakter olmalı." },
+      { error: "Yeni şifre en az 12 karakter olmalı." },
       { status: 400 }
     );
   }

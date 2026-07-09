@@ -38,9 +38,9 @@ export async function PATCH(
   }
 
   if (body.newPassword) {
-    if (body.newPassword.length < 6) {
+    if (body.newPassword.length < 12) {
       return NextResponse.json(
-        { error: "Şifre en az 6 karakter olmalı." },
+        { error: "Şifre en az 12 karakter olmalı." },
         { status: 400 }
       );
     }

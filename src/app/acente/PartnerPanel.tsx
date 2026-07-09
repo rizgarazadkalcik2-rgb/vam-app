@@ -545,14 +545,14 @@ export default function PartnerPanel({
 
               <label style={{ display: "block", marginBottom: 12 }}>
                 <span style={{ display: "block", fontSize: 11.5, color: "#6f6558", marginBottom: 5 }}>
-                  Yeni Şifre (en az 6 karakter)
+                  Yeni Şifre (en az 12 karakter)
                 </span>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  minLength={6}
+                  minLength={12}
                   style={{ ...inputStyle, width: "100%" }}
                 />
               </label>

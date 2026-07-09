@@ -20,6 +20,9 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   const team = body?.team;
   const kind = body?.kind === "news" ? "news" : "match";
   const title = body?.title?.trim();

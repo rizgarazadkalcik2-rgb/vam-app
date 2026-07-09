@@ -15,6 +15,9 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   const team = body?.team;
   const kind = body?.kind === "news" ? "news" : "match";
   const title = body?.title?.trim();

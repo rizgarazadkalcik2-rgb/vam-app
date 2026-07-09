@@ -21,6 +21,9 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   const username = body?.username?.trim();
   const password = body?.password;
   const displayName = body?.displayName?.trim();
@@ -33,9 +36,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (password.length < 6) {
+  if (password.length < 12) {
     return NextResponse.json(
-      { error: "Şifre en az 6 karakter olmalı." },
+      { error: "Şifre en az 12 karakter olmalı." },
       { status: 400 }
     );
   }

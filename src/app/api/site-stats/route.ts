@@ -16,6 +16,9 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
+  if (body === null) {
+    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+  }
   const items = Array.isArray(body?.stats) ? body.stats : null;
 
   if (!items || items.length === 0) {
