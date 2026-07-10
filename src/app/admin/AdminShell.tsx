@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import "./admin.css";
 
@@ -79,8 +80,7 @@ export default function AdminShell({
     <div className="adm-root">
       <aside className="adm-sidebar">
         <div className="adm-brand">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" />
+          <Image src="/logo/vam-logo-for-dark-bg.png" alt="VAM" width={1592} height={988} priority />
           <div className="adm-brand-text">
             <div className="adm-brand-name">VAM</div>
             <div className="adm-brand-sub">{role === "admin" ? "Yönetim" : "Acente"}</div>

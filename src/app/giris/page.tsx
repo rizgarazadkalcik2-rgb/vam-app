@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function GirisPage() {
   const router = useRouter();
@@ -63,7 +64,7 @@ export default function GirisPage() {
             marginBottom: 8,
           }}
         >
-          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" style={{ height: 56, display: "block" }} />
+          <Image src="/logo/vam-logo-for-dark-bg.png" alt="VAM" width={1592} height={988} style={{ height: 56, width: "auto", display: "block" }} priority />
         </div>
         <div
           style={{
