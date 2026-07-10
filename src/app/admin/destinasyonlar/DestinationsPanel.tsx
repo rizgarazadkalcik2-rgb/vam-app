@@ -201,11 +201,29 @@ export default function DestinationsPanel({
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("TR");
+  const [uploading, setUploading] = useState(false);
 
   async function refresh() {
     const res = await fetch("/api/destinations");
     const data = await res.json();
     if (res.ok) setDestinations(data.destinations);
+  }
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError("");
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    const data = await res.json();
+    setUploading(false);
+    if (!res.ok) {
+      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
+      return;
+    }
+    setForm((f) => ({ ...f, imageUrl: data.url }));
   }
 
   function startCreate() {
@@ -503,15 +521,6 @@ export default function DestinationsPanel({
                 />
               </div>
               <div>
-                <label style={labelStyle}>Görsel URL</label>
-                <input
-                  value={form.imageUrl}
-                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-                  placeholder="/images/destinations/... veya boş bırak"
-                  style={inputStyle}
-                />
-              </div>
-              <div>
                 <label style={labelStyle}>Dönem (kısa, örn. M.Ö. 10.000)</label>
                 <input
                   value={form.era}
@@ -564,6 +573,26 @@ export default function DestinationsPanel({
                   style={inputStyle}
                 />
               </div>
+            </div>
+
+            <div style={{ marginBottom: 14 }}>
+              <label style={labelStyle}>Görsel</label>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                <input
+                  value={form.imageUrl}
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                  placeholder="https://... veya /images/destinations/... (URL yapıştır ya da yükle)"
+                  style={{ ...inputStyle, flex: 1 }}
+                />
+                <label className="adm-btn adm-btn-ghost" style={{ cursor: "pointer", flexShrink: 0, padding: "8px 14px", fontSize: 12.5, border: "1px solid #e5d6bc", borderRadius: 4, color: "#664932" }}>
+                  {uploading ? "Yükleniyor..." : "Yükle"}
+                  <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleUpload} disabled={uploading} style={{ display: "none" }} />
+                </label>
+              </div>
+              {form.imageUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={form.imageUrl} alt="" style={{ height: 60, borderRadius: 6, display: "block", objectFit: "cover" }} />
+              )}
             </div>
 
             <label style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14, fontSize: 13 }}>

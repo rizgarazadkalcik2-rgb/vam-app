@@ -273,6 +273,12 @@ export default function PartnerPanel({
             >
               Paket Görseli
             </label>
+            <input
+              value={form.imageUrl}
+              onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+              placeholder="https://... (URL yapıştır ya da aşağıdan yükle)"
+              style={{ ...inputStyle, width: "100%", marginBottom: 8 }}
+            />
             {form.imageUrl && (
               <img
                 src={form.imageUrl}

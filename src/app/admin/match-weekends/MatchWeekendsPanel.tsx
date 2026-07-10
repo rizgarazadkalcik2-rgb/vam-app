@@ -387,13 +387,24 @@ export default function MatchWeekendsPanel({
             </>
           )}
 
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
-            <label className="adm-btn adm-btn-ghost" style={{ cursor: "pointer" }}>
-              {uploading ? "Yükleniyor..." : "Fotoğraf Yükle"}
-              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleUpload} style={{ display: "none" }} />
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontSize: 11.5, fontWeight: 600, color: "#6f6558", marginBottom: 4, display: "block" }}>
+              Görsel
             </label>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
+              <input
+                value={form.imageUrl}
+                onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                placeholder="https://... (URL yapıştır ya da yükle)"
+                style={{ ...inputStyle, flex: 1, minWidth: 200 }}
+              />
+              <label className="adm-btn adm-btn-ghost" style={{ cursor: "pointer" }}>
+                {uploading ? "Yükleniyor..." : "Fotoğraf Yükle"}
+                <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleUpload} style={{ display: "none" }} />
+              </label>
+            </div>
             {form.imageUrl && (
-              <>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={form.imageUrl} alt="" style={{ height: 44, borderRadius: 6, display: "block" }} />
                 <button
@@ -403,7 +414,7 @@ export default function MatchWeekendsPanel({
                 >
                   Görseli kaldır
                 </button>
-              </>
+              </div>
             )}
           </div>
 
