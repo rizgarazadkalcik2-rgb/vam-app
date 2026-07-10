@@ -30,9 +30,15 @@ export async function PUT(req: NextRequest) {
     active: !!body?.active,
     bodyTr: (body?.bodyTr || "").trim(),
     bodyDe: (body?.bodyDe || "").trim(),
+    bodyEn: body?.bodyEn?.trim() || null,
+    bodyKu: body?.bodyKu?.trim() || null,
+    bodyCkb: body?.bodyCkb?.trim() || null,
     linkUrl: body?.linkUrl?.trim() || null,
     linkLabelTr: body?.linkLabelTr?.trim() || null,
     linkLabelDe: body?.linkLabelDe?.trim() || null,
+    linkLabelEn: body?.linkLabelEn?.trim() || null,
+    linkLabelKu: body?.linkLabelKu?.trim() || null,
+    linkLabelCkb: body?.linkLabelCkb?.trim() || null,
   });
 
   return NextResponse.json({ announcement });

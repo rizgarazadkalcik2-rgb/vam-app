@@ -366,9 +366,15 @@ function AnnouncementEditor({ initial }: { initial: Announcement }) {
   const [active, setActive] = useState(initial.active);
   const [bodyTr, setBodyTr] = useState(initial.body_tr || "");
   const [bodyDe, setBodyDe] = useState(initial.body_de || "");
+  const [bodyEn, setBodyEn] = useState(initial.body_en || "");
+  const [bodyKu, setBodyKu] = useState(initial.body_ku || "");
+  const [bodyCkb, setBodyCkb] = useState(initial.body_ckb || "");
   const [linkUrl, setLinkUrl] = useState(initial.link_url || "");
   const [linkLabelTr, setLinkLabelTr] = useState(initial.link_label_tr || "");
   const [linkLabelDe, setLinkLabelDe] = useState(initial.link_label_de || "");
+  const [linkLabelEn, setLinkLabelEn] = useState(initial.link_label_en || "");
+  const [linkLabelKu, setLinkLabelKu] = useState(initial.link_label_ku || "");
+  const [linkLabelCkb, setLinkLabelCkb] = useState(initial.link_label_ckb || "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
@@ -380,7 +386,20 @@ function AnnouncementEditor({ initial }: { initial: Announcement }) {
     const res = await fetch("/api/announcement", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ active, bodyTr, bodyDe, linkUrl, linkLabelTr, linkLabelDe }),
+      body: JSON.stringify({
+        active,
+        bodyTr,
+        bodyDe,
+        bodyEn,
+        bodyKu,
+        bodyCkb,
+        linkUrl,
+        linkLabelTr,
+        linkLabelDe,
+        linkLabelEn,
+        linkLabelKu,
+        linkLabelCkb,
+      }),
     });
     const data = await res.json();
     setSaving(false);
@@ -408,7 +427,7 @@ function AnnouncementEditor({ initial }: { initial: Announcement }) {
         Duyuru şeridi sitede görünsün
       </label>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 14, marginBottom: 14 }}>
         <div>
           <label style={labelStyle}>Türkçe metin</label>
           <input style={inputStyle} value={bodyTr} onChange={(e) => setBodyTr(e.target.value)} placeholder="Bu hafta: Amedspor deplasmanı" />
@@ -417,13 +436,26 @@ function AnnouncementEditor({ initial }: { initial: Announcement }) {
           <label style={labelStyle}>Almanca metin</label>
           <input style={inputStyle} value={bodyDe} onChange={(e) => setBodyDe(e.target.value)} placeholder="Diese Woche: Amedspor Auswärtsspiel" />
         </div>
+        <div>
+          <label style={labelStyle}>İngilizce metin</label>
+          <input style={inputStyle} value={bodyEn} onChange={(e) => setBodyEn(e.target.value)} placeholder="This week: Amedspor away game" />
+        </div>
+        <div>
+          <label style={labelStyle}>Kurmancî metin</label>
+          <input style={inputStyle} value={bodyKu} onChange={(e) => setBodyKu(e.target.value)} placeholder="Vê hefteyê: Yariya derveyî ya Amedsporê" />
+        </div>
+        <div>
+          <label style={labelStyle}>Soranî metin</label>
+          <input style={{ ...inputStyle, direction: "rtl" }} value={bodyCkb} onChange={(e) => setBodyCkb(e.target.value)} placeholder="ئەم هەفتەیە..." />
+        </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
-        <div>
-          <label style={labelStyle}>Bağlantı (opsiyonel)</label>
-          <input style={inputStyle} value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="/match-weekends" />
-        </div>
+      <div style={{ marginBottom: 14 }}>
+        <label style={labelStyle}>Bağlantı (opsiyonel)</label>
+        <input style={inputStyle} value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="/match-weekends" />
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 14 }}>
         <div>
           <label style={labelStyle}>Buton metni (TR)</label>
           <input style={inputStyle} value={linkLabelTr} onChange={(e) => setLinkLabelTr(e.target.value)} placeholder="Detaylar" />
@@ -431,6 +463,18 @@ function AnnouncementEditor({ initial }: { initial: Announcement }) {
         <div>
           <label style={labelStyle}>Buton metni (DE)</label>
           <input style={inputStyle} value={linkLabelDe} onChange={(e) => setLinkLabelDe(e.target.value)} placeholder="Mehr erfahren" />
+        </div>
+        <div>
+          <label style={labelStyle}>Buton metni (EN)</label>
+          <input style={inputStyle} value={linkLabelEn} onChange={(e) => setLinkLabelEn(e.target.value)} placeholder="Details" />
+        </div>
+        <div>
+          <label style={labelStyle}>Buton metni (KU)</label>
+          <input style={inputStyle} value={linkLabelKu} onChange={(e) => setLinkLabelKu(e.target.value)} placeholder="Hûrgilî" />
+        </div>
+        <div>
+          <label style={labelStyle}>Buton metni (CKB)</label>
+          <input style={{ ...inputStyle, direction: "rtl" }} value={linkLabelCkb} onChange={(e) => setLinkLabelCkb(e.target.value)} placeholder="وردەکارییەکان" />
         </div>
       </div>
 
