@@ -6,6 +6,9 @@ export interface PlatformStat {
   num: string;
   label_tr: string;
   label_de: string;
+  label_en: string | null;
+  label_ku: string | null;
+  label_ckb: string | null;
   sort_order: number;
   created_at: string;
   updated_at: string;
@@ -15,6 +18,9 @@ export interface PlatformStatInput {
   num: string;
   labelTr: string;
   labelDe: string;
+  labelEn?: string | null;
+  labelKu?: string | null;
+  labelCkb?: string | null;
 }
 
 export async function listPlatformStats(): Promise<PlatformStat[]> {
@@ -33,8 +39,8 @@ export async function replaceAllStats(items: PlatformStatInput[]): Promise<Platf
   for (let i = 0; i < items.length; i++) {
     const s = items[i];
     await sql`
-      INSERT INTO platform_stats (num, label_tr, label_de, sort_order)
-      VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${i});
+      INSERT INTO platform_stats (num, label_tr, label_de, label_en, label_ku, label_ckb, sort_order)
+      VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${s.labelEn || null}, ${s.labelKu || null}, ${s.labelCkb || null}, ${i});
     `;
   }
   return listPlatformStats();

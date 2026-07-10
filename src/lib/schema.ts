@@ -307,22 +307,47 @@ async function initSchema() {
     );
   `;
 
+  // EN/KU/CKB etiketleri sonradan eklendi. Nullable — dolu değilse render
+  // tarafı (platform statik sayfası) label_tr'ye düşer.
+  await sql`ALTER TABLE platform_stats ADD COLUMN IF NOT EXISTS label_en TEXT;`;
+  await sql`ALTER TABLE platform_stats ADD COLUMN IF NOT EXISTS label_ku TEXT;`;
+  await sql`ALTER TABLE platform_stats ADD COLUMN IF NOT EXISTS label_ckb TEXT;`;
+
   const { rows: statsCount } = await sql`SELECT COUNT(*) as count FROM platform_stats;`;
   if (Number(statsCount[0].count) === 0) {
     const seedStats = [
-      { num: "12.000", labelTr: "Yıllık Tarih", labelDe: "Jahre Geschichte" },
-      { num: "6", labelTr: "Dil Desteği", labelDe: "Sprachen" },
-      { num: "48+", labelTr: "Destinasyon", labelDe: "Destinationen" },
-      { num: "120+", labelTr: "Yerel Rehber", labelDe: "Lokale Guides" },
-      { num: "4.8★", labelTr: "Ortalama Puan", labelDe: "Durchschnittsbewertung" },
+      { num: "12.000", labelTr: "Yıllık Tarih", labelDe: "Jahre Geschichte", labelEn: "Years of History", labelKu: "Salên Dîrokê", labelCkb: "ساڵانی مێژوو" },
+      { num: "6", labelTr: "Dil Desteği", labelDe: "Sprachen", labelEn: "Languages Supported", labelKu: "Piştgiriya Ziman", labelCkb: "پشتگیریی زمان" },
+      { num: "48+", labelTr: "Destinasyon", labelDe: "Destinationen", labelEn: "Destinations", labelKu: "Cihên Gerê", labelCkb: "شوێنی گەشتیاری" },
+      { num: "120+", labelTr: "Yerel Rehber", labelDe: "Lokale Guides", labelEn: "Local Guides", labelKu: "Rêberên Herêmî", labelCkb: "ڕابەری هەرێمی" },
+      { num: "4.8★", labelTr: "Ortalama Puan", labelDe: "Durchschnittsbewertung", labelEn: "Average Rating", labelKu: "Nirxa Navîn", labelCkb: "نرخاندنی ناوەند" },
     ];
     for (let i = 0; i < seedStats.length; i++) {
       const s = seedStats[i];
       await sql`
-        INSERT INTO platform_stats (num, label_tr, label_de, sort_order)
-        VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${i});
+        INSERT INTO platform_stats (num, label_tr, label_de, label_en, label_ku, label_ckb, sort_order)
+        VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${s.labelEn}, ${s.labelKu}, ${s.labelCkb}, ${i});
       `;
     }
+  }
+
+  // Tek seferlik geriye dönük dolgu: tablo daha önce (EN/KU/CKB sütunları eklenmeden
+  // önce) dolmuş olabilir — bu durumda seed INSERT'i hiç çalışmaz. Sadece hâlâ boş
+  // olan (label_en IS NULL) ve TR etiketi bilinen varsayılan istatistiklerle eşleşen
+  // satırları doldurur; admin panelinden elle girilmiş bir çeviri varsa dokunmaz.
+  const backfillStats: Record<string, { labelEn: string; labelKu: string; labelCkb: string }> = {
+    "Yıllık Tarih": { labelEn: "Years of History", labelKu: "Salên Dîrokê", labelCkb: "ساڵانی مێژوو" },
+    "Dil Desteği": { labelEn: "Languages Supported", labelKu: "Piştgiriya Ziman", labelCkb: "پشتگیریی زمان" },
+    "Destinasyon": { labelEn: "Destinations", labelKu: "Cihên Gerê", labelCkb: "شوێنی گەشتیاری" },
+    "Yerel Rehber": { labelEn: "Local Guides", labelKu: "Rêberên Herêmî", labelCkb: "ڕابەری هەرێمی" },
+    "Ortalama Puan": { labelEn: "Average Rating", labelKu: "Nirxa Navîn", labelCkb: "نرخاندنی ناوەند" },
+  };
+  for (const [labelTr, t] of Object.entries(backfillStats)) {
+    await sql`
+      UPDATE platform_stats
+      SET label_en = ${t.labelEn}, label_ku = ${t.labelKu}, label_ckb = ${t.labelCkb}
+      WHERE label_tr = ${labelTr} AND label_en IS NULL;
+    `;
   }
 
   // --- Site içeriği: Sayfa bölümlerinin sırası ve göster/gizle durumu ---
