@@ -274,6 +274,23 @@ async function initSchema() {
     }
   }
 
+  // İkinci tek seferlik geriye dönük dolgu: CKB çevirisi translations şemasına
+  // SONRADAN eklendi — yukarıdaki dolgu artık translations dolu (DE/EN/KU) olduğu
+  // için bir daha tetiklenmiyor. jsonb_set(create_missing=true) "CKB" anahtarı hiç
+  // yokken çalışmadığı için (bkz. destinations'taki aynı bug'ın notu) üst seviyede
+  // `||` ile birleştiriyoruz — CKB anahtarı ister hiç olmasın ister zaten var olsun
+  // çalışır; admin panelinden elle girilmiş bir CKB çevirisi varsa dokunmaz.
+  for (const b of SEED_BUNDLES) {
+    const ckb = b.translations?.CKB;
+    if (ckb && Object.keys(ckb).length > 0) {
+      await sql`
+        UPDATE bundles
+        SET translations = translations || jsonb_build_object('CKB', ${JSON.stringify(ckb)}::jsonb)
+        WHERE slug = ${b.slug} AND translations->'CKB' IS NULL;
+      `;
+    }
+  }
+
   // Bundle (çoklu destinasyon rotası) rezervasyonlarını desteklemek için yeni sütun.
   // bundles tablosu oluşturulduktan SONRA çalışmalı (FK referansı için).
   await sql`ALTER TABLE reservations ADD COLUMN IF NOT EXISTS bundle_id INTEGER REFERENCES bundles(id) ON DELETE CASCADE;`;

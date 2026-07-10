@@ -49,7 +49,7 @@ export interface SeedBundle {
   originalPrice: number | null;
   includes: string[];
   badge: string | null;
-  translations?: Partial<Record<"DE" | "EN" | "KU", { title?: string; description?: string; includes?: string[]; badge?: string }>>;
+  translations?: Partial<Record<"DE" | "EN" | "KU" | "CKB", { title?: string; description?: string; includes?: string[]; badge?: string }>>;
 }
 
 export const SEED_DESTINATIONS: SeedDestination[] = [
@@ -1684,6 +1684,17 @@ export const SEED_BUNDLES: SeedBundle[] = [
           "Taştê"
         ],
         "badge": "Herî Firotî"
+      },
+      "CKB": {
+        "title": "ڕێچکەی میراتی ئەناتۆلیای ڕۆژهەڵات",
+        "description": "گۆبەکلیتەپە، حەڕان، مێردین، دارا و قەڵای وان. پێنج شاری کۆن، ڕێڕەوێکی ڕێکخراو.",
+        "includes": [
+          "ھۆتێلی ٤★",
+          "گواستنەوە",
+          "ڕابەر",
+          "نانی بەیانی"
+        ],
+        "badge": "زۆرترین فرۆش"
       }
     }
   },
@@ -1732,6 +1743,15 @@ export const SEED_BUNDLES: SeedBundle[] = [
           "Otêla Botîk",
           "Veguhastin",
           "Rêber"
+        ]
+      },
+      "CKB": {
+        "title": "نوقومبوونی قووڵ لە مێزۆپۆتامیا",
+        "description": "لە شووری ئامەدەوە بۆ حەسەنکێف، شوێنپێی شارستانییەتە کۆنەکان بەدرێژایی ڕووباری دیجلە.",
+        "includes": [
+          "ھۆتێلی بوتیک",
+          "گواستنەوە",
+          "ڕابەر"
         ]
       }
     }
@@ -1785,6 +1805,16 @@ export const SEED_BUNDLES: SeedBundle[] = [
           "Rêber"
         ],
         "badge": "Nû"
+      },
+      "CKB": {
+        "title": "نەمروود و شانشینی کۆماگینە",
+        "description": "پەیکەرە بەردینە گەورەکانی سەر لووتکەی چیا و پەرستگا نهێنییەکانی کۆماگینە.",
+        "includes": [
+          "ھۆتێلی ٣★",
+          "گواستنەوە",
+          "ڕابەر"
+        ],
+        "badge": "نوێ"
       }
     }
   }
