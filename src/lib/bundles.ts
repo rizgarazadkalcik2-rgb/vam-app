@@ -8,7 +8,7 @@ export interface BundleTranslation {
   badge?: string;
 }
 
-export type BundleTranslations = Partial<Record<"DE" | "EN" | "KU", BundleTranslation>>;
+export type BundleTranslations = Partial<Record<"DE" | "EN" | "KU" | "CKB", BundleTranslation>>;
 
 export interface VamBundle {
   id: number;
@@ -44,12 +44,11 @@ export interface BundleInput {
 }
 
 /**
- * DE/EN/KU çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki
- * t() ile aynı fallback mantığı. CKB için bundle/destinasyon içeriği kapsam
- * dışı bırakıldı (Faz 3 planı) — CKB seçili olsa da bu satır sessizce TR'ye düşer.
+ * DE/EN/KU/CKB çevirisi varsa onu, yoksa TR taban değerini döner —
+ * destinations.ts'teki localizeDestination() ile aynı fallback mantığı.
  */
 export function localizeBundle(b: VamBundle, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
-  const tr = lang === "TR" || lang === "CKB" ? undefined : b.translations?.[lang];
+  const tr = lang === "TR" ? undefined : b.translations?.[lang];
   return {
     ...b,
     title: tr?.title || b.title,

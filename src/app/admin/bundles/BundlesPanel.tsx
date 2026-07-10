@@ -23,7 +23,7 @@ const labelStyle: React.CSSProperties = {
   display: "block",
 };
 
-const TABS = ["TR", "DE", "EN", "KU"] as const;
+const TABS = ["TR", "DE", "EN", "KU", "CKB"] as const;
 type Tab = (typeof TABS)[number];
 
 function emptyTranslationForm() {
@@ -47,6 +47,7 @@ function emptyForm() {
       DE: emptyTranslationForm(),
       EN: emptyTranslationForm(),
       KU: emptyTranslationForm(),
+      CKB: emptyTranslationForm(),
     },
   };
 }
@@ -86,13 +87,19 @@ function bundleToForm(b: VamBundle): FormState {
         includesCsv: (trans.KU?.includes || []).join(", "),
         badge: trans.KU?.badge || "",
       },
+      CKB: {
+        title: trans.CKB?.title || "",
+        description: trans.CKB?.description || "",
+        includesCsv: (trans.CKB?.includes || []).join(", "),
+        badge: trans.CKB?.badge || "",
+      },
     },
   };
 }
 
 function buildTranslations(f: FormState): BundleTranslations {
   const out: BundleTranslations = {};
-  for (const lang of ["DE", "EN", "KU"] as const) {
+  for (const lang of ["DE", "EN", "KU", "CKB"] as const) {
     const t = f.translations[lang];
     const includes = t.includesCsv.split(",").map((s) => s.trim()).filter(Boolean);
     const entry: Record<string, unknown> = {};
@@ -421,6 +428,7 @@ export default function BundlesPanel({
                         },
                       })
                     }
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
                     style={inputStyle}
                   />
                 </div>
@@ -438,6 +446,7 @@ export default function BundlesPanel({
                       })
                     }
                     rows={2}
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
                     style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
                   />
                 </div>
@@ -454,6 +463,7 @@ export default function BundlesPanel({
                         },
                       })
                     }
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
                     style={inputStyle}
                   />
                 </div>
@@ -470,6 +480,7 @@ export default function BundlesPanel({
                         },
                       })
                     }
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
                     style={inputStyle}
                   />
                 </div>
