@@ -1,8 +1,10 @@
 import Iyzipay from 'iyzipay'
 
-let _iyzipay: any = null
+type IyzipayClient = InstanceType<typeof Iyzipay>
 
-export function getIyzipay(): any {
+let _iyzipay: IyzipayClient | null = null
+
+export function getIyzipay(): IyzipayClient {
   if (!_iyzipay) {
     if (!process.env.IYZICO_API_KEY || !process.env.IYZICO_SECRET_KEY) {
       console.warn('[iyzico] IYZICO_API_KEY / IYZICO_SECRET_KEY tanimli degil.')
