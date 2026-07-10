@@ -388,6 +388,15 @@ async function initSchema() {
     );
   `;
 
+  // EN/KU/CKB metinleri sonradan eklendi. Nullable — dolu değilse render tarafı
+  // (platform statik sayfası) body_tr/link_label_tr'ye düşer.
+  await sql`ALTER TABLE announcement ADD COLUMN IF NOT EXISTS body_en TEXT;`;
+  await sql`ALTER TABLE announcement ADD COLUMN IF NOT EXISTS body_ku TEXT;`;
+  await sql`ALTER TABLE announcement ADD COLUMN IF NOT EXISTS body_ckb TEXT;`;
+  await sql`ALTER TABLE announcement ADD COLUMN IF NOT EXISTS link_label_en TEXT;`;
+  await sql`ALTER TABLE announcement ADD COLUMN IF NOT EXISTS link_label_ku TEXT;`;
+  await sql`ALTER TABLE announcement ADD COLUMN IF NOT EXISTS link_label_ckb TEXT;`;
+
   const { rows: annCount } = await sql`SELECT COUNT(*) as count FROM announcement;`;
   if (Number(annCount[0].count) === 0) {
     await sql`INSERT INTO announcement (id, active, body_tr, body_de) VALUES (1, false, '', '');`;
