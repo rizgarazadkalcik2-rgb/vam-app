@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
+import Iyzipay from 'iyzipay'
 import { getIyzipay } from '@/lib/iyzico'
+
+// iyzipay'in .d.ts'i başarı/hata sonuçlarını ayrı modellemiyor (errorMessage
+// sadece hata durumunda gelir) — bu yüzden kodun gerçekten okuduğu alanları
+// burada minimal bir arayüzle tanımlıyoruz.
+interface CheckoutFormRetrieveResult {
+  status: string
+  errorMessage?: string
+  conversationId?: string
+  paymentStatus?: string
+  paymentId?: string
+}
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
@@ -9,8 +21,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.redirect(process.env.NEXT_PUBLIC_BASE_URL + '/rezervasyon/hata?reason=no-token')
   }
 
-  const result: any = await new Promise((resolve, reject) => {
-    getIyzipay().checkoutForm.retrieve({ locale: 'tr', token }, (err: any, res: any) => {
+  const result = await new Promise<CheckoutFormRetrieveResult>((resolve, reject) => {
+    getIyzipay().checkoutForm.retrieve({ locale: Iyzipay.LOCALE.TR, token }, (err: Error | null, res: CheckoutFormRetrieveResult) => {
       if (err) reject(err)
       else resolve(res)
     })

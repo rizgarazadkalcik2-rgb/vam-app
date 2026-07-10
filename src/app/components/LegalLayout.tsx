@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Lang } from "@/lib/dictionary";
 
 export default function LegalLayout({
@@ -33,7 +34,7 @@ export default function LegalLayout({
             textDecoration: "none",
           }}
         >
-          <img src="/logo/vam-logo-for-dark-bg.png" alt="VAM" style={{ height: 56, display: "block" }} />
+          <Image src="/logo/vam-logo-for-dark-bg.png" alt="VAM" width={1592} height={988} style={{ height: 56, width: "auto", display: "block" }} />
         </Link>
         <Link
           href="/platform"

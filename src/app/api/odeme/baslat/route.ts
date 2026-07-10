@@ -3,6 +3,16 @@ import Iyzipay from 'iyzipay'
 import { getIyzipay } from '@/lib/iyzico'
 import { randomUUID } from 'crypto'
 
+// iyzipay'in .d.ts'i başarı/hata sonuçlarını ayrı modellemiyor (errorMessage
+// sadece hata durumunda gelir) — bu yüzden kodun gerçekten okuduğu alanları
+// burada minimal bir arayüzle tanımlıyoruz.
+interface CheckoutFormInitializeResult {
+  status: string
+  errorMessage?: string
+  checkoutFormContent?: string
+  token?: string
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -60,8 +70,8 @@ export async function POST(req: NextRequest) {
       ],
     }
 
-    const result: any = await new Promise((resolve, reject) => {
-      getIyzipay().checkoutFormInitialize.create(request, (err: any, res: any) => {
+    const result = await new Promise<CheckoutFormInitializeResult>((resolve, reject) => {
+      getIyzipay().checkoutFormInitialize.create(request, (err: Error | null, res: CheckoutFormInitializeResult) => {
         if (err) reject(err)
         else resolve(res)
       })
@@ -77,7 +87,7 @@ export async function POST(req: NextRequest) {
       token: result.token,
       conversationId,
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[iyzico] baslat hata:', err)
     return NextResponse.json({ error: 'Sunucu hatasi' }, { status: 500 })
   }
