@@ -78,6 +78,9 @@ interface StatRow {
   num: string;
   labelTr: string;
   labelDe: string;
+  labelEn: string;
+  labelKu: string;
+  labelCkb: string;
 }
 
 function statsToRows(stats: PlatformStat[]): StatRow[] {
@@ -86,6 +89,9 @@ function statsToRows(stats: PlatformStat[]): StatRow[] {
     num: s.num,
     labelTr: s.label_tr,
     labelDe: s.label_de,
+    labelEn: s.label_en || "",
+    labelKu: s.label_ku || "",
+    labelCkb: s.label_ckb || "",
   }));
 }
 
@@ -100,7 +106,10 @@ function StatsEditor({ initialStats }: { initialStats: PlatformStat[] }) {
     setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
   }
   function addRow() {
-    setRows((prev) => [...prev, { key: `new-${Date.now()}`, num: "", labelTr: "", labelDe: "" }]);
+    setRows((prev) => [
+      ...prev,
+      { key: `new-${Date.now()}`, num: "", labelTr: "", labelDe: "", labelEn: "", labelKu: "", labelCkb: "" },
+    ]);
   }
   function removeRow(i: number) {
     if (!confirm("Bu istatistiği kaldırmak istediğinize emin misiniz?")) return;
@@ -123,7 +132,14 @@ function StatsEditor({ initialStats }: { initialStats: PlatformStat[] }) {
     setError("");
     setSaved(false);
     const payload = {
-      stats: rows.map((r) => ({ num: r.num.trim(), labelTr: r.labelTr.trim(), labelDe: r.labelDe.trim() })),
+      stats: rows.map((r) => ({
+        num: r.num.trim(),
+        labelTr: r.labelTr.trim(),
+        labelDe: r.labelDe.trim(),
+        labelEn: r.labelEn.trim(),
+        labelKu: r.labelKu.trim(),
+        labelCkb: r.labelCkb.trim(),
+      })),
     };
     const res = await fetch("/api/site-stats", {
       method: "PUT",
@@ -172,22 +188,36 @@ function StatsEditor({ initialStats }: { initialStats: PlatformStat[] }) {
             <div style={{ fontSize: 16, color: "#c9b98f", paddingTop: 22 }} title="Sürükleyerek sırala">
               ⠿
             </div>
-            <div style={{ width: 90 }}>
+            <div style={{ width: 90, flexShrink: 0 }}>
               <label style={labelStyle}>Sayı</label>
               <input style={inputStyle} value={r.num} onChange={(e) => updateRow(i, { num: e.target.value })} placeholder="12.000" />
             </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Türkçe etiket</label>
-              <input style={inputStyle} value={r.labelTr} onChange={(e) => updateRow(i, { labelTr: e.target.value })} placeholder="Yıllık Tarih" />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Almanca etiket</label>
-              <input style={inputStyle} value={r.labelDe} onChange={(e) => updateRow(i, { labelDe: e.target.value })} placeholder="Jahre Geschichte" />
+            <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
+              <div>
+                <label style={labelStyle}>Türkçe etiket</label>
+                <input style={inputStyle} value={r.labelTr} onChange={(e) => updateRow(i, { labelTr: e.target.value })} placeholder="Yıllık Tarih" />
+              </div>
+              <div>
+                <label style={labelStyle}>Almanca etiket</label>
+                <input style={inputStyle} value={r.labelDe} onChange={(e) => updateRow(i, { labelDe: e.target.value })} placeholder="Jahre Geschichte" />
+              </div>
+              <div>
+                <label style={labelStyle}>İngilizce etiket</label>
+                <input style={inputStyle} value={r.labelEn} onChange={(e) => updateRow(i, { labelEn: e.target.value })} placeholder="Years of History" />
+              </div>
+              <div>
+                <label style={labelStyle}>Kurmancî etiket</label>
+                <input style={inputStyle} value={r.labelKu} onChange={(e) => updateRow(i, { labelKu: e.target.value })} placeholder="Salên Dîrokê" />
+              </div>
+              <div>
+                <label style={labelStyle}>Soranî etiket</label>
+                <input style={{ ...inputStyle, direction: "rtl" }} value={r.labelCkb} onChange={(e) => updateRow(i, { labelCkb: e.target.value })} placeholder="ساڵانی مێژوو" />
+              </div>
             </div>
             <button
               onClick={() => removeRow(i)}
               title="Kaldır"
-              style={{ marginTop: 20, background: "none", border: "1px solid #e5d6bc", color: "#a33", borderRadius: 4, width: 30, height: 30, cursor: "pointer", fontSize: 15 }}
+              style={{ marginTop: 20, background: "none", border: "1px solid #e5d6bc", color: "#a33", borderRadius: 4, width: 30, height: 30, cursor: "pointer", fontSize: 15, flexShrink: 0 }}
             >
               ✕
             </button>

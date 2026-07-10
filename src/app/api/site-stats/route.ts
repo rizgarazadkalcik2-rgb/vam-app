@@ -34,11 +34,16 @@ export async function PUT(req: NextRequest) {
     }
   }
 
-  const cleaned = items.map((item: { num: string; labelTr: string; labelDe: string }) => ({
-    num: item.num.toString().trim(),
-    labelTr: item.labelTr.trim(),
-    labelDe: item.labelDe.trim(),
-  }));
+  const cleaned = items.map(
+    (item: { num: string; labelTr: string; labelDe: string; labelEn?: string; labelKu?: string; labelCkb?: string }) => ({
+      num: item.num.toString().trim(),
+      labelTr: item.labelTr.trim(),
+      labelDe: item.labelDe.trim(),
+      labelEn: item.labelEn?.trim() || null,
+      labelKu: item.labelKu?.trim() || null,
+      labelCkb: item.labelCkb?.trim() || null,
+    })
+  );
 
   const stats = await replaceAllStats(cleaned);
   return NextResponse.json({ stats });
