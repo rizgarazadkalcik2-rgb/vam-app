@@ -122,7 +122,7 @@ export default function AdminShell({
           </div>
           <div className="adm-topbar-right">
             {actions}
-            <a className="adm-view-site" href="/platform" target="_blank" rel="noreferrer">
+            <a className="adm-view-site" href="/" target="_blank" rel="noreferrer">
               Siteyi Görüntüle ↗
             </a>
           </div>

@@ -11,7 +11,7 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
 
   const links = (
     <>
-      <a href="/platform">{t("nav_home", lang)}</a>
+      <a href="/">{t("nav_home", lang)}</a>
       <a href="/destinations">{t("nav_destinations", lang)}</a>
       <a href="/bundles">{t("nav_bundles", lang)}</a>
       <a href="/experiences">{t("nav_experiences", lang)}</a>
@@ -22,7 +22,7 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
 
   return (
     <nav className="vc-navbar">
-      <a className="vc-logo" href="/platform">
+      <a className="vc-logo" href="/">
         VAM<small>Visit Anatolia &amp; Mesopotamia</small>
       </a>
 
