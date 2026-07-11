@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
           name: 'VAM — Visit Anatolia and Mesopotamia',
           short_name: 'VAM',
           description: 'On bin yillik topraklarda yeni cagin turizmi.',
-          start_url: '/platform',
+          start_url: '/',
           display: 'standalone',
           background_color: '#1A1A1A',
           theme_color: '#1A1A1A',

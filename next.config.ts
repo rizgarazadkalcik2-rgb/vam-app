@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
         // halleriyle takılı kalabiliyordu — "no-cache, must-revalidate" her
         // istekte orijin sunucuyla doğrulama yapılmasını zorunlu kılar,
         // böylece bir önceki deploy'un bozuk sürümü asla takılı kalmaz.
-        source: "/platform",
+        source: "/",
         headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
       },
       {
@@ -49,9 +49,17 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // Eski /platform URL'i kaldırıldı — içerik artık kök domain'de (/).
+      // Kalıcı (308) yönlendirme, mevcut backlink/bookmark/Google indeksi
+      // SEO değerini korur.
+      { source: "/platform", destination: "/", permanent: true },
+    ];
+  },
   async rewrites() {
     return [
-      { source: "/platform", destination: "/static-pages/platform/index.html" },
+      { source: "/", destination: "/static-pages/platform/index.html" },
       { source: "/experiences", destination: "/static-pages/experiences/index.html" },
       { source: "/about", destination: "/static-pages/about/index.html" },
     ];

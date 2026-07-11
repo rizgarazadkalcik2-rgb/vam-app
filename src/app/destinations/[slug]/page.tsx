@@ -61,7 +61,7 @@ export default async function DestinationDetailPage({
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: t("breadcrumb_home", lang), item: "https://visitvam.com/platform" },
+          { "@type": "ListItem", position: 1, name: t("breadcrumb_home", lang), item: "https://visitvam.com/" },
           { "@type": "ListItem", position: 2, name: t("all_destinations", lang), item: "https://visitvam.com/destinations" },
           { "@type": "ListItem", position: 3, name: d.name, item: `https://visitvam.com/destinations/${d.slug}` },
         ],
@@ -86,7 +86,7 @@ export default async function DestinationDetailPage({
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/destinations">{t("all_destinations", lang)}</a> {t("breadcrumb_sep", lang)} {d.name}
+        <a href="/">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/destinations">{t("all_destinations", lang)}</a> {t("breadcrumb_sep", lang)} {d.name}
       </div>
 
       <div className="vc-hero">

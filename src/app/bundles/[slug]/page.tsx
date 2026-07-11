@@ -54,7 +54,7 @@ export default async function BundleDetailPage({
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: t("breadcrumb_home", lang), item: "https://visitvam.com/platform" },
+          { "@type": "ListItem", position: 1, name: t("breadcrumb_home", lang), item: "https://visitvam.com/" },
           { "@type": "ListItem", position: 2, name: t("all_bundles", lang), item: "https://visitvam.com/bundles" },
           { "@type": "ListItem", position: 3, name: b.title, item: `https://visitvam.com/bundles/${b.slug}` },
         ],
@@ -85,7 +85,7 @@ export default async function BundleDetailPage({
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <a href="/platform">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/bundles">{t("all_bundles", lang)}</a> {t("breadcrumb_sep", lang)} {b.title}
+        <a href="/">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/bundles">{t("all_bundles", lang)}</a> {t("breadcrumb_sep", lang)} {b.title}
       </div>
 
       <div className="vc-hero">

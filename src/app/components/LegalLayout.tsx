@@ -27,7 +27,7 @@ export default function LegalLayout({
         }}
       >
         <Link
-          href="/platform"
+          href="/"
           style={{
             display: "flex",
             alignItems: "center",
@@ -37,7 +37,7 @@ export default function LegalLayout({
           <Image src="/logo/vam-logo-for-dark-bg.png" alt="VAM" width={1592} height={988} style={{ height: 56, width: "auto", display: "block" }} />
         </Link>
         <Link
-          href="/platform"
+          href="/"
           style={{
             fontSize: 13,
             color: "rgba(246,240,228,0.7)",

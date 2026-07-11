@@ -74,7 +74,7 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
               {t("rez_success_body_2", lang)}
             </p>
             <Link
-              href="/platform"
+              href="/"
               style={{
                 display: "inline-block",
                 padding: "10px 24px",
