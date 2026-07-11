@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { sql } from '@vercel/postgres'
+import { buildAbsoluteAlternates } from '@/lib/hreflang'
 
 const BASE_URL = 'https://visitvam.com'
 
@@ -35,29 +36,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ])
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE_URL, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${BASE_URL}/match-weekends`, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/destinations`, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/bundles`, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${BASE_URL}/experiences`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/about`, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${BASE_URL}/impressum`, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${BASE_URL}/mesafeli-satis-sozlesmesi`, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE_URL}/gizlilik-politikasi`, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE_URL}/iptal-iade-politikasi`, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE_URL}/teslimat-hizmet-sartlari`, changeFrequency: 'yearly', priority: 0.2 },
-  ]
+    { path: '/', changeFrequency: 'weekly' as const, priority: 1.0 },
+    { path: '/match-weekends', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/destinations', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/bundles', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/experiences', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/about', changeFrequency: 'monthly' as const, priority: 0.5 },
+    { path: '/impressum', changeFrequency: 'yearly' as const, priority: 0.3 },
+    { path: '/mesafeli-satis-sozlesmesi', changeFrequency: 'yearly' as const, priority: 0.2 },
+    { path: '/gizlilik-politikasi', changeFrequency: 'yearly' as const, priority: 0.2 },
+    { path: '/iptal-iade-politikasi', changeFrequency: 'yearly' as const, priority: 0.2 },
+    { path: '/teslimat-hizmet-sartlari', changeFrequency: 'yearly' as const, priority: 0.2 },
+  ].map(({ path, changeFrequency, priority }) => ({
+    url: `${BASE_URL}${path}`,
+    changeFrequency,
+    priority,
+    alternates: { languages: buildAbsoluteAlternates(path) },
+  }))
 
   const destinationRoutes: MetadataRoute.Sitemap = destinationSlugs.map((slug) => ({
     url: `${BASE_URL}/destinations/${slug}`,
     changeFrequency: 'monthly',
     priority: 0.7,
+    alternates: { languages: buildAbsoluteAlternates(`/destinations/${slug}`) },
   }))
 
   const bundleRoutes: MetadataRoute.Sitemap = bundleSlugs.map((slug) => ({
     url: `${BASE_URL}/bundles/${slug}`,
     changeFrequency: 'monthly',
     priority: 0.7,
+    alternates: { languages: buildAbsoluteAlternates(`/bundles/${slug}`) },
   }))
 
   return [...staticRoutes, ...destinationRoutes, ...bundleRoutes]

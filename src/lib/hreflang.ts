@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import type { Lang } from "@/lib/dictionary";
 
 const URL_LANG_HEADER = "x-vam-url-lang";
+const BASE_URL = "https://visitvam.com";
 
 // middleware.ts'teki LANG_PREFIXES ile aynı eşleme — TR varsayılan dil
 // olduğu için önek almaz.
@@ -32,6 +33,19 @@ export function buildAlternates(path: string): Record<string, string> {
 /** generateMetadata()'da alternates.canonical için — sayfanın kendi dilindeki URL'i. */
 export function canonicalForLang(path: string, lang: Lang): string {
   return urlForLang(path, lang);
+}
+
+/**
+ * sitemap.ts'te her girdinin alternates.languages alanı için — orada
+ * metadataBase yok, XML'e yazılan <xhtml:link> mutlak URL gerektirir.
+ */
+export function buildAbsoluteAlternates(path: string): Record<string, string> {
+  const languages: Record<string, string> = {};
+  (Object.keys(HREFLANG_CODES) as Lang[]).forEach((lang) => {
+    languages[HREFLANG_CODES[lang]] = `${BASE_URL}${urlForLang(path, lang)}`;
+  });
+  languages["x-default"] = `${BASE_URL}${urlForLang(path, "TR")}`;
+  return languages;
 }
 
 /**
