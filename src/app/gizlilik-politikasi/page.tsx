@@ -1,5 +1,6 @@
 import LegalLayout from "../components/LegalLayout";
 import { getLang } from "@/lib/i18n";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 
 const T = {
   title: { TR: "Gizlilik Politikası", DE: "Datenschutzerklärung", EN: "Privacy Policy", KU: "Polîtîkaya Nihêniyê", CKB: "سیاسەتی تایبەتمەندی" },
@@ -126,10 +127,11 @@ function tt(key: TKey, lang: Lang): string {
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: tt("title", lang),
     description: tt("intro", lang),
-    alternates: { canonical: "/gizlilik-politikasi" },
+    alternates: { canonical: canonicalForLang("/gizlilik-politikasi", urlLang), languages: buildAlternates("/gizlilik-politikasi") },
   };
 }
 

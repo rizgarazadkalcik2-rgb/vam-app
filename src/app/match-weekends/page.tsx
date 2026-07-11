@@ -5,14 +5,16 @@ import { getLang } from "@/lib/i18n";
 import { getCurrency } from "@/lib/getCurrency";
 import { listActiveMatchEvents } from "@/lib/matchEvents";
 import { t } from "@/lib/dictionary";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 import "@/app/vam-content.css";
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: t("meta_mw_title", lang),
     description: t("meta_mw_desc", lang),
-    alternates: { canonical: "/match-weekends" },
+    alternates: { canonical: canonicalForLang("/match-weekends", urlLang), languages: buildAlternates("/match-weekends") },
   };
 }
 

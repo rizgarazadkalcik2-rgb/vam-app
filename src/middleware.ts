@@ -10,6 +10,12 @@ const LANG_COOKIE = "vam_lang";
 const CURRENCY_COOKIE = "vam_currency";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
+// generateMetadata()'da canonical/hreflang hesabı için — vam_lang çerezi
+// (geo/Accept-Language'a göre değişebilir, self-referencing canonical için
+// güvenilmez) yerine, isteğin GERÇEKTEN hangi URL önekiyle geldiğini taşır.
+// Önek yoksa "TR" (bkz. src/lib/hreflang.ts: getUrlLang()).
+const URL_LANG_HEADER = "x-vam-url-lang";
+
 // hreflang URL önekleri — TR varsayılan dil olduğu için önek almaz (mevcut
 // URL'ler hiç değişmez). DE/EN/KU/CKB için /de, /en, /ku, /ckb önekleri
 // kullanılır; bkz. src/lib/hreflang.ts.
@@ -91,12 +97,17 @@ export function middleware(request: NextRequest) {
     // middleware'de set etmek downstream'e iletilir).
     request.cookies.set(LANG_COOKIE, prefixed.lang);
 
-    const response = NextResponse.rewrite(url);
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set(URL_LANG_HEADER, prefixed.lang);
+
+    const response = NextResponse.rewrite(url, { request: { headers: requestHeaders } });
     setLangAndCurrencyCookies(response, prefixed.lang, !!request.cookies.get(CURRENCY_COOKIE));
     return response;
   }
 
-  const response = NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(URL_LANG_HEADER, "TR");
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
 
   // Respect an existing choice (manual selection or previous detection) — never override it.
   const existingLang = request.cookies.get(LANG_COOKIE)?.value as Lang | undefined;

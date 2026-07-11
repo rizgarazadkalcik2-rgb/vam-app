@@ -5,6 +5,7 @@ import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
 import { getCurrency } from "@/lib/getCurrency";
 import { chip, t } from "@/lib/dictionary";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -16,17 +17,19 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const [raw, lang] = await Promise.all([getDestinationBySlug(slug), getLang()]);
+  const urlLang = await getUrlLang();
   if (!raw || raw.status !== "active") return {};
   const d = localizeDestination(raw, lang);
 
   const description =
     (d.history && d.history[0] ? d.history[0].slice(0, 155) : "") ||
     `${d.name} — ${d.region}. ${t("meta_site_desc", lang)}`.slice(0, 155);
+  const path = `/destinations/${d.slug}`;
 
   return {
     title: `${d.name} — ${d.region}`,
     description,
-    alternates: { canonical: `/destinations/${d.slug}` },
+    alternates: { canonical: canonicalForLang(path, urlLang), languages: buildAlternates(path) },
     openGraph: {
       title: `${d.name} — ${d.region} | VAM`,
       description,

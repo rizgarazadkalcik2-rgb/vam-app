@@ -1,5 +1,6 @@
 import LegalLayout from "../components/LegalLayout";
 import { getLang } from "@/lib/i18n";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 
 const T = {
   title: { TR: "Mesafeli Satış Sözleşmesi", DE: "Fernabsatzvertrag", EN: "Distance Sales Agreement", KU: "Peymana Firotina ji Dûr ve", CKB: "پەیمانی فرۆشتنی دوور" },
@@ -160,10 +161,11 @@ function tt(key: TKey, lang: Lang): string {
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: tt("title", lang),
     description: tt("intro", lang),
-    alternates: { canonical: "/mesafeli-satis-sozlesmesi" },
+    alternates: { canonical: canonicalForLang("/mesafeli-satis-sozlesmesi", urlLang), languages: buildAlternates("/mesafeli-satis-sozlesmesi") },
   };
 }
 

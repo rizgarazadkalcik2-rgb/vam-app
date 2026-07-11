@@ -1,5 +1,6 @@
 import LegalLayout from "../components/LegalLayout";
 import { getLang } from "@/lib/i18n";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 
 const T = {
   title: { TR: "İptal ve İade Politikası", DE: "Stornierungsrichtlinie", EN: "Cancellation and Refund Policy", KU: "Polîtîkaya Betalkirin û Vegerandinê", CKB: "سیاسەتی هەڵوەشاندنەوە و گەڕاندنەوەی پارە" },
@@ -126,10 +127,11 @@ function tt(key: TKey, lang: Lang): string {
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: tt("title", lang),
     description: tt("intro", lang),
-    alternates: { canonical: "/iptal-iade-politikasi" },
+    alternates: { canonical: canonicalForLang("/iptal-iade-politikasi", urlLang), languages: buildAlternates("/iptal-iade-politikasi") },
   };
 }
 
