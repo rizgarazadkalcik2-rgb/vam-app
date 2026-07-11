@@ -10,6 +10,17 @@ const LANG_COOKIE = "vam_lang";
 const CURRENCY_COOKIE = "vam_currency";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
+// hreflang URL önekleri — TR varsayılan dil olduğu için önek almaz (mevcut
+// URL'ler hiç değişmez). DE/EN/KU/CKB için /de, /en, /ku, /ckb önekleri
+// kullanılır; bkz. src/lib/hreflang.ts.
+const LANG_PREFIXES: Record<string, Lang> = { de: "DE", en: "EN", ku: "KU", ckb: "CKB" };
+
+function extractLangPrefix(pathname: string): { lang: Lang; rest: string } | null {
+  const match = pathname.match(/^\/(de|en|ku|ckb)(\/.*)?$/);
+  if (!match) return null;
+  return { lang: LANG_PREFIXES[match[1]], rest: match[2] || "/" };
+}
+
 function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" | "CKB" {
   // 1) Vercel edge geo header — where the visitor is connecting from.
   const country = request.headers.get("x-vercel-ip-country");
@@ -45,7 +56,46 @@ function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" | "CKB" {
   return "EN";
 }
 
+function setLangAndCurrencyCookies(
+  response: NextResponse,
+  lang: Lang,
+  currencyAlreadySet: boolean
+) {
+  response.cookies.set(LANG_COOKIE, lang, {
+    path: "/",
+    maxAge: COOKIE_MAX_AGE,
+    sameSite: "lax",
+  });
+  if (!currencyAlreadySet) {
+    response.cookies.set(CURRENCY_COOKIE, defaultCurrencyForLang(lang), {
+      path: "/",
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: "lax",
+    });
+  }
+}
+
 export function middleware(request: NextRequest) {
+  const prefixed = extractLangPrefix(request.nextUrl.pathname);
+
+  if (prefixed) {
+    // Dil öneki varsa URL kaynak-doğrudur (source of truth): çerez ona göre
+    // hizalanır ve istek önek olmadan (örn. /de/destinations -> /destinations)
+    // render edilir. Tarayıcıda adres çubuğu /de/destinations olarak kalır —
+    // rewrite şeffaftır, mevcut sayfa dosyalarının hiçbiri değişmez.
+    const url = request.nextUrl.clone();
+    url.pathname = prefixed.rest;
+
+    // Aynı isteğin sunucu render'ında cookies() ile okunacak değeri de
+    // günceller (Next.js'in belgelenen deseni: request cookie'sini
+    // middleware'de set etmek downstream'e iletilir).
+    request.cookies.set(LANG_COOKIE, prefixed.lang);
+
+    const response = NextResponse.rewrite(url);
+    setLangAndCurrencyCookies(response, prefixed.lang, !!request.cookies.get(CURRENCY_COOKIE));
+    return response;
+  }
+
   const response = NextResponse.next();
 
   // Respect an existing choice (manual selection or previous detection) — never override it.
