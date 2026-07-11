@@ -5,16 +5,18 @@ import BundlesClient from "./BundlesClient";
 import { getLang } from "@/lib/i18n";
 import { getCurrency } from "@/lib/getCurrency";
 import { t } from "@/lib/dictionary";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: t("meta_bundles_title", lang),
     description: t("meta_site_desc", lang),
-    alternates: { canonical: "/bundles" },
+    alternates: { canonical: canonicalForLang("/bundles", urlLang), languages: buildAlternates("/bundles") },
   };
 }
 

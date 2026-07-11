@@ -6,6 +6,7 @@ import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
 import { formatPrice } from "@/lib/currency";
 import { getCurrency } from "@/lib/getCurrency";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -17,15 +18,17 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const [raw, lang] = await Promise.all([getBundleBySlug(slug), getLang()]);
+  const urlLang = await getUrlLang();
   if (!raw || raw.status !== "active") return {};
   const b = localizeBundle(raw, lang);
 
   const description = (b.description || "").slice(0, 155);
+  const path = `/bundles/${b.slug}`;
 
   return {
     title: b.title,
     description,
-    alternates: { canonical: `/bundles/${b.slug}` },
+    alternates: { canonical: canonicalForLang(path, urlLang), languages: buildAlternates(path) },
     openGraph: {
       title: `${b.title} | VAM`,
       description,

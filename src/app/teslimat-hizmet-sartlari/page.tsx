@@ -1,5 +1,6 @@
 import LegalLayout from "../components/LegalLayout";
 import { getLang } from "@/lib/i18n";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 
 const T = {
   title: { TR: "Teslimat ve Hizmet Şartları", DE: "Nutzungsbedingungen", EN: "Delivery and Service Terms", KU: "Mercên Radestkirin û Karûbarê", CKB: "مەرجەکانی گەیاندن و خزمەتگوزاری" },
@@ -115,10 +116,11 @@ function tt(key: TKey, lang: Lang): string {
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: tt("title", lang),
     description: `${tt("intro_pre", lang)} ${tt("intro_strong", lang)}. ${tt("intro_post", lang)}`,
-    alternates: { canonical: "/teslimat-hizmet-sartlari" },
+    alternates: { canonical: canonicalForLang("/teslimat-hizmet-sartlari", urlLang), languages: buildAlternates("/teslimat-hizmet-sartlari") },
   };
 }
 

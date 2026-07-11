@@ -5,16 +5,18 @@ import DestinationsGrid from "./DestinationsGrid";
 import { getLang } from "@/lib/i18n";
 import { getCurrency } from "@/lib/getCurrency";
 import { t } from "@/lib/dictionary";
+import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const lang = await getLang();
+  const urlLang = await getUrlLang();
   return {
     title: t("meta_dest_title", lang),
     description: t("dest_lede", lang),
-    alternates: { canonical: "/destinations" },
+    alternates: { canonical: canonicalForLang("/destinations", urlLang), languages: buildAlternates("/destinations") },
   };
 }
 
