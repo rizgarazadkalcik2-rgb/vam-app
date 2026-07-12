@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
+import CookieConsent from "./components/CookieConsent";
 import "./globals.css";
+import "./fonts.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();
@@ -34,6 +37,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const lang = await getLang();
+  const consent = (await cookies()).get("vam_consent")?.value;
 
   const organizationJsonLd = {
     "@context": "https://schema.org",
@@ -63,12 +67,6 @@ export default async function RootLayout({
       className="h-full antialiased"
     >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&family=Cinzel:wght@500;600&family=Vazirmatn:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -76,8 +74,9 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         {children}
-        <Analytics />
-        <SpeedInsights />
+        {consent === "accepted" && <Analytics />}
+        {consent === "accepted" && <SpeedInsights />}
+        <CookieConsent initialConsent={consent} lang={lang} />
       </body>
     </html>
   );

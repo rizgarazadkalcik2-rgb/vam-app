@@ -32,6 +32,17 @@ export const DICT = {
   footer_service_terms: { TR: "Hizmet Şartları", DE: "Nutzungsbedingungen", EN: "Terms of Service", KU: "Mercên Karûbarê", CKB: "مەرجەکانی خزمەتگوزاری" },
   footer_partner_login: { TR: "Acente / Yönetici Girişi", DE: "Partner-/Admin-Login", EN: "Partner / Admin Login", KU: "Ketina Partner / Rêvebir", CKB: "چوونەژوورەوەی هاوبەش/بەڕێوەبەر" },
 
+  // Cookie rıza banner'ı (site geneli, layout.tsx)
+  cookie_consent_text: {
+    TR: "Bu site, deneyiminizi iyileştirmek ve ziyaretçi istatistiklerini anlamak için çerezler kullanır.",
+    DE: "Diese Website verwendet Cookies, um Ihre Erfahrung zu verbessern und Besucherstatistiken zu verstehen.",
+    EN: "This site uses cookies to improve your experience and understand visitor statistics.",
+    KU: "Ev malper çerezan bikar tîne da ku ezmûna we baştir bike û îstatîstîkên mêvanan fêm bike.",
+    CKB: "ئەم ماڵپەڕە کووکیز بەکاردەهێنێت بۆ باشترکردنی ئەزموونت و تێگەیشتن لە ئامارەکانی سەردانکەران.",
+  },
+  cookie_consent_accept: { TR: "Kabul Et", DE: "Akzeptieren", EN: "Accept", KU: "Qebûl Bike", CKB: "قبوڵکردن" },
+  cookie_consent_reject: { TR: "Reddet", DE: "Ablehnen", EN: "Reject", KU: "Red Bike", CKB: "ڕەتکردنەوە" },
+
   // Generic / shared chrome
   breadcrumb_home: { TR: "Ana Sayfa", DE: "Startseite", EN: "Home", KU: "Serûpel", CKB: "سەرەکی" },
   breadcrumb_sep: { TR: "›", DE: "›", EN: "›", KU: "›", CKB: "‹" },
