@@ -291,6 +291,7 @@
   box-shadow: 0 1px 3px rgba(28,20,16,0.08);
   transition: box-shadow 180ms ease, transform 180ms ease;
 }
+.vc-mw-news-thumb { position: relative; height: 180px; }
 .vc-mw-news-card:hover { box-shadow: 0 10px 28px rgba(28,20,16,0.14); transform: translateY(-2px); }
 .vc-mw-news-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
 .vc-mw-news-body { padding: 14px 16px 16px; }

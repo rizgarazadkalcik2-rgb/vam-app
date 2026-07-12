@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { localizeBundle, type VamBundle } from "@/lib/bundles";
 import { chip, t, type Lang } from "@/lib/dictionary";
 import { formatPrice, type Currency } from "@/lib/currency";
+import SmartImage from "@/app/components/SmartImage";
 
 const EXP_TYPES = ["Tümü", "Arkeoloji", "Tarih", "Doğa", "Kültür", "Gastronomi"];
 
@@ -149,8 +150,12 @@ export default function BundlesClient({
               <a key={b.id} className="vc-card" href={`/bundles/${b.slug}`}>
                 <div className="vc-card-media">
                   {b.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={b.image_url} alt={b.title} />
+                    <SmartImage
+                      src={b.image_url}
+                      alt={b.title}
+                      fill
+                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    />
                   ) : (
                     <span className="vc-card-letter">{b.title[0]}</span>
                   )}

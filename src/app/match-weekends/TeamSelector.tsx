@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { t, type Lang } from "@/lib/dictionary";
 import { localizeMatchEvent, type MatchEvent } from "@/lib/matchEvents";
+import SmartImage from "@/app/components/SmartImage";
 
 export type Team = {
   slug: string;
@@ -388,8 +389,7 @@ export default function TeamSelector({
       <div className="vc-mw-hero">
         {heroImage ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="vc-mw-hero-img" src={heroImage} alt={team.name} />
+            <SmartImage className="vc-mw-hero-img" src={heroImage} alt={team.name} fill sizes="100vw" />
             <div className="vc-mw-hero-shade" />
           </>
         ) : (
@@ -424,8 +424,7 @@ export default function TeamSelector({
             {fixtures.map((f) => (
               <div className="vc-mw-fixture" key={f.id}>
                 {f.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img className="vc-mw-fixture-thumb" src={f.image_url} alt="" />
+                  <SmartImage className="vc-mw-fixture-thumb" src={f.image_url} alt="" width={64} height={64} />
                 )}
                 <div className="vc-mw-fixture-date">{fmtDate(f.event_date as string)}</div>
                 <div className="vc-mw-fixture-main">
@@ -450,8 +449,9 @@ export default function TeamSelector({
             {news.map((n) => (
               <div className="vc-mw-news-card" key={n.id}>
                 {n.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={n.image_url} alt={n.title} />
+                  <div className="vc-mw-news-thumb">
+                    <SmartImage src={n.image_url} alt={n.title} fill sizes="(max-width: 600px) 100vw, 33vw" />
+                  </div>
                 )}
                 <div className="vc-mw-news-body">
                   <div className="vc-mw-news-title">{n.title}</div>
