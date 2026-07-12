@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { Lang } from "@/lib/dictionary";
+import { t, type Lang } from "@/lib/dictionary";
 
 export default function LegalLayout({
   title,
@@ -44,7 +44,7 @@ export default function LegalLayout({
             textDecoration: "none",
           }}
         >
-          {rtl ? "→ Ana Sayfaya Dön" : "← Ana Sayfaya Dön"}
+          {rtl ? `→ ${t("rez_back_home", lang)}` : `← ${t("rez_back_home", lang)}`}
         </Link>
       </header>
 
