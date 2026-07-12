@@ -320,7 +320,7 @@ export default function MatchWeekendsPanel({
 
           {activeTab === "TR" && (
             <>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
             <select
               value={form.team}
               onChange={(e) => setForm({ ...form, team: e.target.value })}
@@ -350,7 +350,7 @@ export default function MatchWeekendsPanel({
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 12 }}>
             <input
               type="date"
               value={form.eventDate}

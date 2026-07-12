@@ -424,7 +424,7 @@ export default function DestinationsPanel({
                 <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
                   Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer.
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 14 }}>
                   <div>
                     <label style={labelStyle}>İsim ({activeTab})</label>
                     <input
@@ -491,7 +491,7 @@ export default function DestinationsPanel({
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
                   <div>
                     <label style={labelStyle}>Konum ({activeTab})</label>
                     <input
@@ -608,7 +608,7 @@ export default function DestinationsPanel({
 
             {activeTab === "TR" && (
             <>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
               <div>
                 <label style={labelStyle}>Slug (URL — küçük harf, tire ile)</label>
                 <input
@@ -747,7 +747,7 @@ export default function DestinationsPanel({
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
               <div>
                 <label style={labelStyle}>Konum</label>
                 <input
@@ -784,7 +784,7 @@ export default function DestinationsPanel({
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
               <div>
                 <label style={labelStyle}>Enlem (latitude) — opsiyonel, Google haritası için</label>
                 <input

@@ -320,7 +320,7 @@ export default function BundlesPanel({
 
             {activeTab === "TR" ? (
               <>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
                   <div>
                     <label style={labelStyle}>Slug (URL — küçük harf, tire ile)</label>
                     <input

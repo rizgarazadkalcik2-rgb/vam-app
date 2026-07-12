@@ -177,7 +177,7 @@ export default function AcentelerPanel({
             Yeni Kullanıcı Ekle
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
             <input
               placeholder="Kullanıcı adı"
               value={form.username}
@@ -194,7 +194,7 @@ export default function AcentelerPanel({
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
             <input
               type="password"
               placeholder="Şifre (en az 12 karakter)"
@@ -218,7 +218,7 @@ export default function AcentelerPanel({
             Firma Bilgileri (opsiyonel)
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
             <input
               type="email"
               placeholder="Firma e-postası"
