@@ -305,7 +305,12 @@ export default function DestinationsPanel({
   }
 
   async function handleDelete(d: VamDestination) {
-    if (!confirm(`"${d.name}" destinasyonunu silmek istediğinize emin misiniz?`)) return;
+    const typed = prompt(`Bu destinasyonu kalıcı olarak silmek için adını aynen yazın:\n"${d.name}"`);
+    if (typed === null) return;
+    if (typed !== d.name) {
+      alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/destinations/${d.id}`, { method: "DELETE" });
     const data = await res.json();
     if (res.ok) {

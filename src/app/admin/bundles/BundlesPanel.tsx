@@ -212,7 +212,12 @@ export default function BundlesPanel({
   }
 
   async function handleDelete(b: VamBundle) {
-    if (!confirm(`"${b.title}" paketini silmek istediğinize emin misiniz?`)) return;
+    const typed = prompt(`Bu bundle'ı kalıcı olarak silmek için adını aynen yazın:\n"${b.title}"`);
+    if (typed === null) return;
+    if (typed !== b.title) {
+      alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/bundles/${b.id}`, { method: "DELETE" });
     const data = await res.json();
     if (res.ok) {

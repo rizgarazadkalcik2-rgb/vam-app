@@ -177,9 +177,19 @@ export default function MatchWeekendsPanel({
   }
 
   async function handleDelete(ev: MatchEvent) {
-    if (!confirm(`"${ev.title}" kaydını silmek istediğinize emin misiniz?`)) return;
+    const typed = prompt(`Bu kaydı kalıcı olarak silmek için başlığını aynen yazın:\n"${ev.title}"`);
+    if (typed === null) return;
+    if (typed !== ev.title) {
+      alert("Girilen başlık eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/match-events/${ev.id}`, { method: "DELETE" });
-    if (res.ok) await refresh();
+    if (res.ok) {
+      await refresh();
+    } else {
+      const data = await res.json().catch(() => null);
+      alert(data?.error || "Bir hata oluştu.");
+    }
   }
 
   const filtered = teamFilter === "all" ? events : events.filter((e) => e.team === teamFilter);

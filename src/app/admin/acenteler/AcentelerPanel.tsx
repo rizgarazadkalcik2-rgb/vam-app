@@ -85,7 +85,12 @@ export default function AcentelerPanel({
   }
 
   async function handleDelete(user: SafeUser) {
-    if (!confirm(`${user.display_name} kullanıcısını silmek istediğinize emin misiniz?`)) return;
+    const typed = prompt(`Bu kullanıcıyı kalıcı olarak silmek için adını aynen yazın:\n"${user.display_name}"`);
+    if (typed === null) return;
+    if (typed !== user.display_name) {
+      alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/users/${user.id}`, { method: "DELETE" });
     const data = await res.json();
     if (res.ok) {
