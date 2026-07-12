@@ -264,6 +264,25 @@ export const DICT = {
   nf_destinations: { TR: "Destinasyonlar", DE: "Destinationen", EN: "Destinations", KU: "Cihên Gerê", CKB: "شوێنەکان" },
   nf_bundles: { TR: "Paketler", DE: "Pakete", EN: "Packages", KU: "Pakêt", CKB: "پاکێجەکان" },
 
+  // Beklenmeyen hata sayfası (error.tsx / global-error.tsx)
+  err_eyebrow: { TR: "Beklenmeyen Hata", DE: "Unerwarteter Fehler", EN: "Unexpected Error", KU: "Xeletiyek Neçaverêkirî", CKB: "هەڵەیەکی چاوەڕواننەکراو" },
+  err_title: {
+    TR: "Bir şeyler ters gitti",
+    DE: "Etwas ist schiefgelaufen",
+    EN: "Something went wrong",
+    KU: "Tiştek çewt çû",
+    CKB: "شتێک هەڵە بوو",
+  },
+  err_body: {
+    TR: "Beklenmedik bir sorun oluştu, ekibimiz bilgilendirildi. Lütfen tekrar deneyin ya da ana sayfaya dönün.",
+    DE: "Ein unerwartetes Problem ist aufgetreten, unser Team wurde informiert. Bitte versuchen Sie es erneut oder kehren Sie zur Startseite zurück.",
+    EN: "An unexpected problem occurred and our team has been notified. Please try again or return to the homepage.",
+    KU: "Pirsgirêkek neçaverêkirî çêbû, tîma me hate agahdarkirin. Ji kerema xwe dîsa biceribînin an vegerin serûpelê.",
+    CKB: "کێشەیەکی چاوەڕواننەکراو ڕوویدا، تیمەکەمان ئاگادار کراوەتەوە. تکایە دووبارە هەوڵبدەرەوە یان بگەڕێوە بۆ سەرەکی.",
+  },
+  err_retry: { TR: "Tekrar Dene", DE: "Erneut versuchen", EN: "Try Again", KU: "Dîsa Biceribîne", CKB: "دووبارە هەوڵبدەرەوە" },
+  err_home: { TR: "Ana Sayfaya Dön", DE: "Zur Startseite", EN: "Back to Home", KU: "Vegere Serûpelê", CKB: "گەڕانەوە بۆ سەرەکی" },
+
   // Match Weekends — dinamik içerik
   mw_fixtures_title: { TR: "Maç Fikstürü", DE: "Spielplan", EN: "Match Fixtures", KU: "Bernameya Maçan", CKB: "خشتەی یاریەکان" },
   mw_fixtures_sub: {
