@@ -34,30 +34,40 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
     setSubmitting(true);
     setError("");
 
-    const res = await fetch("/api/reservations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        packageId: item.kind === "package" ? item.id : undefined,
-        bundleId: item.kind === "bundle" ? item.id : undefined,
-        customerName,
-        customerEmail,
-        customerPhone,
-        travelDate: travelDate || null,
-        guestCount,
-        notes,
-      }),
-    });
+    try {
+      const res = await fetch("/api/reservations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          packageId: item.kind === "package" ? item.id : undefined,
+          bundleId: item.kind === "bundle" ? item.id : undefined,
+          customerName,
+          customerEmail,
+          customerPhone,
+          travelDate: travelDate || null,
+          guestCount,
+          notes,
+        }),
+      });
 
-    const data = await res.json();
-    setSubmitting(false);
+      // Yanıt gövdesi geçerli JSON olmayabilir (örn. bir ağ geçidi/proxy
+      // hata sayfası) — res.json() bu durumda fırlatır, .catch(() => null)
+      // ile yakalayıp aşağıda hata dalına düşürüyoruz.
+      const data = await res.json().catch(() => null);
 
-    if (!res.ok) {
-      setError(data.error || t("rez_error_generic", lang));
-      return;
+      if (!res.ok || !data) {
+        setError(data?.error || t("rez_error_generic", lang));
+        return;
+      }
+
+      setSuccess(true);
+    } catch {
+      // fetch() ağ hatası (bağlantı koptu, zaman aşımı, vb.) fırlatır —
+      // yakalanmazsa buton sonsuza kadar "Gönderiliyor…" durumunda kalırdı.
+      setError(t("rez_error_generic", lang));
+    } finally {
+      setSubmitting(false);
     }
-
-    setSuccess(true);
   }
 
   if (success) {
