@@ -69,7 +69,17 @@ export async function getSession(): Promise<SessionPayload | null> {
   // yeterli değil — devre dışı bırakılan veya şifresi sıfırlanan bir
   // kullanıcının elindeki eski çerez, aksi halde 7 gün boyunca (token süresi
   // dolana kadar) geçerli kalmaya devam ederdi.
-  const user = await findUserById(payload.userId);
+  let user;
+  try {
+    user = await findUserById(payload.userId);
+  } catch (err) {
+    // DB'ye ulaşılamıyorsa (geçici kesinti) burada patlayıp çağıran
+    // sayfa/route'u yakalanmamış bir istisnayla çökertmek yerine "oturum
+    // yok" say — fail-closed (güvenlik yönü doğru kalır) ama çağıran taraf
+    // en azından temiz bir 401/giriş sayfası görür, çıplak 500 değil.
+    console.error("[session] getSession() sırasında DB hatası:", err);
+    return null;
+  }
   if (!user || user.status !== "active" || user.session_version !== payload.sessionVersion) {
     return null;
   }
