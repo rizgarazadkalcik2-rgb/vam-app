@@ -12,7 +12,7 @@ import { rateLimit, getClientIp } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
-  const { allowed, remainingMs } = rateLimit(`login:${ip}`, 10, 5 * 60 * 1000); // 5 dakikada 10 deneme
+  const { allowed, remainingMs } = await rateLimit(`login:${ip}`, 10, 5 * 60 * 1000); // 5 dakikada 10 deneme
   if (!allowed) {
     const minutes = Math.ceil(remainingMs / 60000);
     return NextResponse.json(
