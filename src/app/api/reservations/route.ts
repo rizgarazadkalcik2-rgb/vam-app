@@ -4,9 +4,14 @@ import { createReservation, listAllReservations, listReservationsByPartner } fro
 import { getPackageById } from "@/lib/packages";
 import { getBundleById } from "@/lib/bundles";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
+import { getLang } from "@/lib/i18n";
+import { t } from "@/lib/dictionary";
 
 // Basit ama sağlam bir e-posta format kontrolü (RFC'nin tamamını değil, yaygın hataları yakalar).
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// <input type="date"> her zaman YYYY-MM-DD formatında gönderir.
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 // Bundle rezervasyonları belirli bir acenteye değil, doğrudan VAM'a bağlıdır.
 const VAM_DIRECT_PARTNER_ID = "vam-direct";
@@ -27,21 +32,27 @@ export async function GET() {
 }
 
 // Müşteri rezervasyon oluşturuyor — giriş gerektirmez, herkes erişebilir.
+// Bu formu her dilde (TR/DE/EN/KU/CKB) dolduran gerçek ziyaretçiler var —
+// hata mesajları vam_lang çerezine göre yerelleştiriliyor (bkz. dictionary.ts
+// "res_err_*" anahtarları). Aşağıdaki GET handler'ı ise sadece admin/acente
+// panelinden çağrılıyor (o panel zaten tamamen Türkçe), o yüzden dokunulmadı.
 export async function POST(req: NextRequest) {
+  const lang = await getLang();
+
   // --- Hız sınırlama: aynı IP'den kısa sürede aşırı istek gelmesini engeller ---
   const ip = getClientIp(req);
   const { allowed, remainingMs } = await rateLimit(`reservation:${ip}`, 8, 10 * 60 * 1000); // 10 dakikada 8 deneme
   if (!allowed) {
     const minutes = Math.ceil(remainingMs / 60000);
     return NextResponse.json(
-      { error: `Çok fazla rezervasyon denemesi yapıldı. Lütfen ${minutes} dakika sonra tekrar deneyin.` },
+      { error: t("res_err_ratelimit", lang).replace("{minutes}", String(minutes)) },
       { status: 429 }
     );
   }
 
   const body = await req.json().catch(() => null);
   if (body === null) {
-    return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
+    return NextResponse.json({ error: t("res_err_invalid_body", lang) }, { status: 400 });
   }
 
   const packageId = body?.packageId ? Number(body.packageId) : null;
@@ -49,20 +60,20 @@ export async function POST(req: NextRequest) {
   const customerName = body?.customerName?.trim();
   const customerEmail = body?.customerEmail?.trim();
   const customerPhone = body?.customerPhone?.trim() || "";
-  const travelDate = body?.travelDate || null;
+  const travelDateRaw = body?.travelDate || null;
   const guestCount = Number(body?.guestCount) || 1;
   const notes = body?.notes?.trim() || "";
 
   if ((!packageId && !bundleId) || (packageId && bundleId)) {
     return NextResponse.json(
-      { error: "Bir paket ya da bir rota (bundle) belirtilmeli, ikisi birden değil." },
+      { error: t("res_err_pkg_or_bundle", lang) },
       { status: 400 }
     );
   }
 
   if (!customerName || !customerEmail) {
     return NextResponse.json(
-      { error: "Ad ve e-posta gerekli." },
+      { error: t("res_err_name_email_required", lang) },
       { status: 400 }
     );
   }
@@ -70,16 +81,34 @@ export async function POST(req: NextRequest) {
   // --- E-posta format doğrulaması ---
   if (!EMAIL_REGEX.test(customerEmail)) {
     return NextResponse.json(
-      { error: "Geçerli bir e-posta adresi girin." },
+      { error: t("res_err_invalid_email", lang) },
       { status: 400 }
     );
   }
 
   if (guestCount < 1 || guestCount > 50) {
     return NextResponse.json(
-      { error: "Kişi sayısı geçersiz." },
+      { error: t("res_err_guest_count", lang) },
       { status: 400 }
     );
+  }
+
+  // --- Seyahat tarihi doğrulaması (opsiyonel alan, ama girildiyse geçerli olmalı) ---
+  let travelDate: string | null = null;
+  if (travelDateRaw) {
+    if (
+      typeof travelDateRaw !== "string" ||
+      !DATE_REGEX.test(travelDateRaw) ||
+      Number.isNaN(new Date(travelDateRaw).getTime())
+    ) {
+      return NextResponse.json({ error: t("res_err_invalid_date", lang) }, { status: 400 });
+    }
+    // ISO (YYYY-MM-DD) string karşılaştırması saat dilimi hesaplaması gerektirmez.
+    const todayStr = new Date().toISOString().slice(0, 10);
+    if (travelDateRaw < todayStr) {
+      return NextResponse.json({ error: t("res_err_past_date", lang) }, { status: 400 });
+    }
+    travelDate = travelDateRaw;
   }
 
   let reservation;
@@ -87,11 +116,11 @@ export async function POST(req: NextRequest) {
   if (packageId) {
     const pkg = await getPackageById(packageId);
     if (!pkg) {
-      return NextResponse.json({ error: "Paket bulunamadı." }, { status: 404 });
+      return NextResponse.json({ error: t("res_err_package_not_found", lang) }, { status: 404 });
     }
     if (pkg.status !== "active") {
       return NextResponse.json(
-        { error: "Bu paket şu anda rezervasyona açık değil." },
+        { error: t("res_err_package_inactive", lang) },
         { status: 400 }
       );
     }
@@ -115,11 +144,11 @@ export async function POST(req: NextRequest) {
   } else {
     const bundle = await getBundleById(bundleId as number);
     if (!bundle) {
-      return NextResponse.json({ error: "Rota (bundle) bulunamadı." }, { status: 404 });
+      return NextResponse.json({ error: t("res_err_bundle_not_found", lang) }, { status: 404 });
     }
     if (bundle.status !== "active") {
       return NextResponse.json(
-        { error: "Bu rota şu anda rezervasyona açık değil." },
+        { error: t("res_err_bundle_inactive", lang) },
         { status: 400 }
       );
     }

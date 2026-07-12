@@ -28,7 +28,13 @@
   --surface-card: #fff;
   --text-primary: var(--ink-900);
   --text-secondary: var(--ink-600);
-  --text-muted: var(--ink-400);
+  /* ink-400 (#8c8275) açık zeminlerde (--sand-50/#fff) ~3.55:1 kontrast
+     veriyor — WCAG AA'nın normal metin için istediği 4.5:1'in altında.
+     ink-400'ün kendisi koyu navbar zemininde (--ink-950) açık renkli metin
+     olarak da kullanıldığı için (.vc-logo small, .vc-lang-switcher-*)
+     doğrudan değiştirilmedi; text-muted bağımsız, daha koyu bir tonla
+     (~5.4:1) yeniden tanımlandı. */
+  --text-muted: #6f6558;
   --border-subtle: var(--sand-200);
   --border-default: var(--sand-300);
   --font-display: "Cormorant Garamond", Georgia, serif;

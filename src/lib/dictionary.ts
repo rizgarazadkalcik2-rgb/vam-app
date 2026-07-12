@@ -227,6 +227,32 @@ export const DICT = {
   rez_submit: { TR: "Rezervasyon Talebi Gönder", DE: "Buchungsanfrage senden", EN: "Send Reservation Request", KU: "Daxwaza Rezervasyonê Bişîne", CKB: "داواکاری ڕیزێرڤ بنێرە" },
   rez_submitting: { TR: "Gönderiliyor...", DE: "Wird gesendet...", EN: "Sending...", KU: "Tê şandin...", CKB: "دەنێردرێت..." },
   rez_error_generic: { TR: "Bir hata oluştu.", DE: "Es ist ein Fehler aufgetreten.", EN: "Something went wrong.", KU: "Çewtiyek çêbû.", CKB: "هەڵەیەک ڕوویدا." },
+
+  // /api/reservations POST — ziyaretçiye görünen sunucu hata mesajları (bkz. src/app/api/reservations/route.ts)
+  res_err_ratelimit: {
+    TR: "Çok fazla rezervasyon denemesi yapıldı. Lütfen {minutes} dakika sonra tekrar deneyin.",
+    DE: "Zu viele Buchungsversuche. Bitte versuchen Sie es in {minutes} Minuten erneut.",
+    EN: "Too many reservation attempts. Please try again in {minutes} minutes.",
+    KU: "Gelek hewldanên rezervasyonê hatin kirin. Ji kerema xwe piştî {minutes} deqeyan dîsa biceribînin.",
+    CKB: "زۆر هەوڵی ڕیزێرڤکردن دراوە. تکایە دوای {minutes} خولەک دووبارە هەوڵبدەرەوە.",
+  },
+  res_err_invalid_body: { TR: "Geçersiz istek gövdesi.", DE: "Ungültiger Anfrageinhalt.", EN: "Invalid request body.", KU: "Naveroka daxwazê ne derbasdar e.", CKB: "ناوەڕۆکی داواکاری نادروستە." },
+  res_err_pkg_or_bundle: {
+    TR: "Bir paket ya da bir rota (bundle) belirtilmeli, ikisi birden değil.",
+    DE: "Es muss entweder ein Paket oder eine Route angegeben werden, nicht beides.",
+    EN: "Either a package or a bundle must be specified, not both.",
+    KU: "Divê an pakêtek an rotayek (bundle) were diyarkirin, ne herduyan.",
+    CKB: "دەبێت یان پاکێجێک یان ڕووتێک دیاری بکرێت، نەک هەردووکیان.",
+  },
+  res_err_name_email_required: { TR: "Ad ve e-posta gerekli.", DE: "Name und E-Mail sind erforderlich.", EN: "Name and email are required.", KU: "Nav û e-peyam pêwîst in.", CKB: "ناو و ئیمەیل پێویستن." },
+  res_err_invalid_email: { TR: "Geçerli bir e-posta adresi girin.", DE: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", EN: "Please enter a valid email address.", KU: "Ji kerema xwe e-peyameke derbasdar binivîsin.", CKB: "تکایە ئیمەیلێکی دروست بنووسە." },
+  res_err_guest_count: { TR: "Kişi sayısı geçersiz.", DE: "Ungültige Personenzahl.", EN: "Invalid guest count.", KU: "Hejmara mêvanan ne derbasdar e.", CKB: "ژمارەی میوان نادروستە." },
+  res_err_invalid_date: { TR: "Geçersiz seyahat tarihi.", DE: "Ungültiges Reisedatum.", EN: "Invalid travel date.", KU: "Dîroka rêwîtiyê ne derbasdar e.", CKB: "بەرواری گەشت نادروستە." },
+  res_err_past_date: { TR: "Seyahat tarihi geçmişte olamaz.", DE: "Das Reisedatum darf nicht in der Vergangenheit liegen.", EN: "Travel date cannot be in the past.", KU: "Dîroka rêwîtiyê nikare di paşerojê de be.", CKB: "بەرواری گەشت ناتوانێت لە ڕابردوودا بێت." },
+  res_err_package_not_found: { TR: "Paket bulunamadı.", DE: "Paket nicht gefunden.", EN: "Package not found.", KU: "Pakêt nehat dîtin.", CKB: "پاکێج نەدۆزرایەوە." },
+  res_err_package_inactive: { TR: "Bu paket şu anda rezervasyona açık değil.", DE: "Dieses Paket ist derzeit nicht für Buchungen verfügbar.", EN: "This package is not currently open for reservations.", KU: "Ev pakêt niha ji bo rezervasyonê vekirî nine.", CKB: "ئەم پاکێجە ئێستا بۆ ڕیزێرڤکردن کراوە نییە." },
+  res_err_bundle_not_found: { TR: "Rota (bundle) bulunamadı.", DE: "Route nicht gefunden.", EN: "Bundle not found.", KU: "Rota (bundle) nehat dîtin.", CKB: "ڕووتەکە نەدۆزرایەوە." },
+  res_err_bundle_inactive: { TR: "Bu rota şu anda rezervasyona açık değil.", DE: "Diese Route ist derzeit nicht für Buchungen verfügbar.", EN: "This bundle is not currently open for reservations.", KU: "Ev rota niha ji bo rezervasyonê vekirî nine.", CKB: "ئەم ڕووتە ئێستا بۆ ڕیزێرڤکردن کراوە نییە." },
   rez_success_title: { TR: "Talebiniz alındı", DE: "Ihre Anfrage ist eingegangen", EN: "Your request has been received", KU: "Daxwaza we hat wergirtin", CKB: "داواکاریت وەرگیرا" },
   rez_success_body_1: {
     TR: "paketi için rezervasyon talebiniz kaydedildi.",

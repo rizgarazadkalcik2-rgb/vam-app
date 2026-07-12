@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { getReservationById, updateReservationStatus, updatePaymentStatus } from "@/lib/reservations";
 
+// Admin panelinin gösterdiği (ve tanıdığı) tek değerler bunlar — bkz.
+// ReservationsPanel.tsx RESERVATION_STATUS_LABELS/PAYMENT_STATUS_LABELS.
+// Whitelist olmadan burası herhangi bir string'i DB'ye yazardı.
+const VALID_RESERVATION_STATUSES = new Set(["new", "confirmed", "cancelled"]);
+const VALID_PAYMENT_STATUSES = new Set(["pending", "paid", "refunded"]);
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -30,6 +36,13 @@ export async function PATCH(
   // Sadece admin durum değiştirebilir; partner salt okunur erişime sahip.
   if (session.role !== "admin") {
     return NextResponse.json({ error: "Yetkiniz yok." }, { status: 403 });
+  }
+
+  if (body.reservationStatus && !VALID_RESERVATION_STATUSES.has(body.reservationStatus)) {
+    return NextResponse.json({ error: "Geçersiz rezervasyon durumu." }, { status: 400 });
+  }
+  if (body.paymentStatus && !VALID_PAYMENT_STATUSES.has(body.paymentStatus)) {
+    return NextResponse.json({ error: "Geçersiz ödeme durumu." }, { status: 400 });
   }
 
   let updated = reservation;
