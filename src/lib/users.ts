@@ -11,6 +11,7 @@ export interface VamUser {
   role: Role;
   display_name: string;
   status: string;
+  session_version: number;
   company_email: string | null;
   company_phone: string | null;
   company_address: string | null;
@@ -78,16 +79,22 @@ export async function createUser(data: {
 export async function updateUserPassword(id: string, newPassword: string): Promise<boolean> {
   await ensureSchema();
   const passwordHash = await bcrypt.hash(newPassword, 10);
+  // session_version artırılır — bu kullanıcının elindeki tüm eski oturum
+  // çerezleri (şifre değişmeden önce alınmış) anında geçersiz olur.
   const { rowCount } = await sql`
-    UPDATE users SET password_hash = ${passwordHash}, updated_at = now() WHERE id = ${id};
+    UPDATE users SET password_hash = ${passwordHash}, session_version = session_version + 1, updated_at = now() WHERE id = ${id};
   `;
   return (rowCount ?? 0) > 0;
 }
 
 export async function updateUserStatus(id: string, status: "active" | "disabled"): Promise<boolean> {
   await ensureSchema();
+  // session_version artırılır — devre dışı bırakma anında, kullanıcının
+  // elindeki eski oturum çerezi bir sonraki istekte geçersiz sayılır
+  // (bkz. session.ts getSession). Yeniden aktifleştirmede de artırılır,
+  // bu zararsızdır — kullanıcı yalnızca tekrar giriş yapması gerekir.
   const { rowCount } = await sql`
-    UPDATE users SET status = ${status}, updated_at = now() WHERE id = ${id};
+    UPDATE users SET status = ${status}, session_version = session_version + 1, updated_at = now() WHERE id = ${id};
   `;
   return (rowCount ?? 0) > 0;
 }

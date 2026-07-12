@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { getSession } from "@/lib/session";
+import { getSession, createSessionToken, setSessionCookie } from "@/lib/session";
 import { findUserById, updateUserPassword } from "@/lib/users";
 
 export async function POST(req: NextRequest) {
@@ -41,5 +41,22 @@ export async function POST(req: NextRequest) {
   }
 
   await updateUserPassword(session.userId, newPassword);
+
+  // updateUserPassword session_version'ı artırır, bu da mevcut çerezi
+  // (imza geçerli olsa bile) anında geçersiz kılar — kendi şifresini
+  // değiştiren kullanıcı aynı anda oturumdan atılmasın diye yeni sürümle
+  // taze bir token verip çerezi güncelliyoruz.
+  const updatedUser = await findUserById(session.userId);
+  if (updatedUser) {
+    const token = await createSessionToken({
+      userId: updatedUser.id,
+      username: updatedUser.username,
+      role: updatedUser.role,
+      displayName: updatedUser.display_name,
+      sessionVersion: updatedUser.session_version,
+    });
+    await setSessionCookie(token);
+  }
+
   return NextResponse.json({ ok: true });
 }
