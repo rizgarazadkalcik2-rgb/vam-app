@@ -19,6 +19,7 @@ export default function NotFound() {
 
   return (
     <div
+      dir={lang === "CKB" ? "rtl" : "ltr"}
       style={{
         minHeight: "100vh",
         background:
