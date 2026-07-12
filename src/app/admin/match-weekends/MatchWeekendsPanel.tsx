@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { MatchEvent, MatchEventTranslations } from "@/lib/matchEvents";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
+import TranslationBadges from "../TranslationBadges";
 
 export const TEAM_LABELS: Record<string, string> = {
   amedspor: "Amedspor (Diyarbakır)",
@@ -523,6 +524,16 @@ function EventRow({
             {ev.event_time && <> · {ev.event_time}</>}
             {ev.competition && <> · {ev.competition}</>}
             {ev.venue && <> · {ev.venue}</>}
+          </div>
+          <div style={{ marginTop: 6 }}>
+            <TranslationBadges
+              translated={{
+                DE: !!ev.translations?.DE?.title,
+                EN: !!ev.translations?.EN?.title,
+                KU: !!ev.translations?.KU?.title,
+                CKB: !!ev.translations?.CKB?.title,
+              }}
+            />
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { VamBundle, BundleTranslations } from "@/lib/bundles";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
+import TranslationBadges from "../TranslationBadges";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -593,6 +594,16 @@ export default function BundlesPanel({
                 <div style={{ fontSize: 12, color: "#6f6558", marginTop: 2 }}>
                   {b.nights} gece · ₺{Number(b.price).toLocaleString("tr-TR")}
                   {b.original_price ? ` (eski: ₺${Number(b.original_price).toLocaleString("tr-TR")})` : ""}
+                </div>
+                <div style={{ marginTop: 6 }}>
+                  <TranslationBadges
+                    translated={{
+                      DE: !!b.translations?.DE?.title,
+                      EN: !!b.translations?.EN?.title,
+                      KU: !!b.translations?.KU?.title,
+                      CKB: !!b.translations?.CKB?.title,
+                    }}
+                  />
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>

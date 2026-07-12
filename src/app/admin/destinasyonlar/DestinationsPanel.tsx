@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { VamDestination, DestinationTranslations } from "@/lib/destinations";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
+import TranslationBadges from "../TranslationBadges";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -872,6 +873,16 @@ export default function DestinationsPanel({
                 </div>
                 <div style={{ fontSize: 12, color: "#6f6558", marginTop: 2 }}>
                   {d.region} {d.era_display ? `· ${d.era_display}` : ""}
+                </div>
+                <div style={{ marginTop: 6 }}>
+                  <TranslationBadges
+                    translated={{
+                      DE: !!d.translations?.DE?.name,
+                      EN: !!d.translations?.EN?.name,
+                      KU: !!d.translations?.KU?.name,
+                      CKB: !!d.translations?.CKB?.name,
+                    }}
+                  />
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
