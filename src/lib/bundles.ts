@@ -132,8 +132,19 @@ export async function updateBundle(id: number, data: BundleInput): Promise<VamBu
   return rows[0] || null;
 }
 
-export async function deleteBundle(id: number): Promise<boolean> {
+export async function deleteBundle(id: number): Promise<{ ok: boolean; reservationCount?: number }> {
   await ensureSchema();
+
+  // Rezervasyonu olan bir bundle silinirse müşteri geçmişi (ad/e-posta/telefon)
+  // geri dönüşsüz kaybolur — silmeden önce kontrol et, varsa engelle.
+  const { rows: resRows } = await sql<{ count: string }>`
+    SELECT COUNT(*)::text as count FROM reservations WHERE bundle_id = ${id};
+  `;
+  const reservationCount = Number(resRows[0]?.count || 0);
+  if (reservationCount > 0) {
+    return { ok: false, reservationCount };
+  }
+
   const { rowCount } = await sql`DELETE FROM bundles WHERE id = ${id};`;
-  return (rowCount ?? 0) > 0;
+  return { ok: (rowCount ?? 0) > 0 };
 }

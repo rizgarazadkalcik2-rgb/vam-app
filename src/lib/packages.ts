@@ -116,10 +116,21 @@ export async function deletePackage(
   id: number,
   partnerId: string,
   isAdmin: boolean
-): Promise<boolean> {
+): Promise<{ ok: boolean; reservationCount?: number }> {
   await ensureSchema();
+
+  // Rezervasyonu olan bir paket silinirse müşteri geçmişi (ad/e-posta/telefon)
+  // geri dönüşsüz kaybolur — silmeden önce kontrol et, varsa engelle.
+  const { rows: resRows } = await sql<{ count: string }>`
+    SELECT COUNT(*)::text as count FROM reservations WHERE package_id = ${id};
+  `;
+  const reservationCount = Number(resRows[0]?.count || 0);
+  if (reservationCount > 0) {
+    return { ok: false, reservationCount };
+  }
+
   const { rowCount } = isAdmin
     ? await sql`DELETE FROM packages WHERE id = ${id};`
     : await sql`DELETE FROM packages WHERE id = ${id} AND partner_id = ${partnerId};`;
-  return (rowCount ?? 0) > 0;
+  return { ok: (rowCount ?? 0) > 0 };
 }

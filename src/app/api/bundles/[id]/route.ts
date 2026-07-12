@@ -70,8 +70,16 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   }
 
   const { id } = await params;
-  const ok = await deleteBundle(Number(id));
-  if (!ok) {
+  const result = await deleteBundle(Number(id));
+  if (!result.ok) {
+    if (result.reservationCount) {
+      return NextResponse.json(
+        {
+          error: `Bu bundle'a ait ${result.reservationCount} rezervasyon kaydı var, bu yüzden silinemez. Önce bundle'ı "pasif" yapabilirsiniz.`,
+        },
+        { status: 409 }
+      );
+    }
     return NextResponse.json({ error: "Bundle bulunamadı." }, { status: 404 });
   }
   return NextResponse.json({ ok: true });
