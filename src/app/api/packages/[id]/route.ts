@@ -55,13 +55,21 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const deleted = await deletePackage(
+  const result = await deletePackage(
     Number(id),
     session.userId,
     session.role === "admin"
   );
 
-  if (!deleted) {
+  if (!result.ok) {
+    if (result.reservationCount) {
+      return NextResponse.json(
+        {
+          error: `Bu pakete ait ${result.reservationCount} rezervasyon kaydı var, bu yüzden silinemez. Önce paketi "pasif" yapabilir veya rezervasyonları başka bir pakete taşıyabilirsiniz.`,
+        },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(
       { error: "Paket bulunamadı veya yetkiniz yok." },
       { status: 404 }

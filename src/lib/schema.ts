@@ -311,6 +311,41 @@ async function initSchema() {
     END $$;
   `;
 
+  // GÜVENLİK: package_id/bundle_id ON DELETE CASCADE idi — bir partner kendi
+  // paketini/bundle'ını sildiğinde ona bağlı TÜM rezervasyon geçmişi (müşteri
+  // adı/e-posta/telefon dahil) sessizce ve geri dönüşsüz siliniyordu (örn. bir
+  // ödeme anlaşmazlığında kanıtı yok etmek için kötüye kullanılabilir).
+  // RESTRICT'e çeviriyoruz — rezervasyonu olan bir paket/bundle artık DB
+  // seviyesinde silinemez (uygulama katmanındaki ön-kontrole ek koruma).
+  await sql`
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conname = 'reservations_package_id_fkey' AND confdeltype = 'c'
+      ) THEN
+        ALTER TABLE reservations DROP CONSTRAINT reservations_package_id_fkey;
+        ALTER TABLE reservations
+          ADD CONSTRAINT reservations_package_id_fkey
+          FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE RESTRICT;
+      END IF;
+    END $$;
+  `;
+  await sql`
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conname = 'reservations_bundle_id_fkey' AND confdeltype = 'c'
+      ) THEN
+        ALTER TABLE reservations DROP CONSTRAINT reservations_bundle_id_fkey;
+        ALTER TABLE reservations
+          ADD CONSTRAINT reservations_bundle_id_fkey
+          FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE RESTRICT;
+      END IF;
+    END $$;
+  `;
+
   // --- Site içeriği: Ana sayfa istatistik şeridi (yönetim panelinden düzenlenir) ---
   await sql`
     CREATE TABLE IF NOT EXISTS platform_stats (

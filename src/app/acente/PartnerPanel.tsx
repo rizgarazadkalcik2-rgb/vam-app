@@ -153,7 +153,12 @@ export default function PartnerPanel({
   async function handleDelete(id: number) {
     if (!confirm("Bu paketi silmek istediğinize emin misiniz?")) return;
     const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
-    if (res.ok) await refresh();
+    if (res.ok) {
+      await refresh();
+    } else {
+      const data = await res.json().catch(() => null);
+      alert(data?.error || "Bir hata oluştu.");
+    }
   }
 
   return (
