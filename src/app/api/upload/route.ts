@@ -4,6 +4,24 @@ import { getSession } from "@/lib/session";
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const EXT_BY_TYPE: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+
+// file.type tarayıcı tarafından bildiriliyor — sahte bir Content-Type ile
+// başka bir dosya türü (ör. çalıştırılabilir bir script) "image/png" diye
+// yüklenebilir. Gerçek dosya baytlarının (magic bytes) beklenen imzayla
+// eşleştiğini kontrol ederek bunu engelliyoruz.
+async function sniffImageType(file: File): Promise<string | null> {
+  const header = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+  if (header[0] === 0xff && header[1] === 0xd8 && header[2] === 0xff) return "image/jpeg";
+  if (header[0] === 0x89 && header[1] === 0x50 && header[2] === 0x4e && header[3] === 0x47) return "image/png";
+  if (
+    header[0] === 0x52 && header[1] === 0x49 && header[2] === 0x46 && header[3] === 0x46 &&
+    header[8] === 0x57 && header[9] === 0x45 && header[10] === 0x42 && header[11] === 0x50
+  ) {
+    return "image/webp";
+  }
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
@@ -32,7 +50,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ext = file.name.split(".").pop() || "jpg";
+  const sniffedType = await sniffImageType(file);
+  if (!sniffedType) {
+    return NextResponse.json(
+      { error: "Dosya içeriği geçerli bir JPEG, PNG veya WebP görseli gibi görünmüyor." },
+      { status: 400 }
+    );
+  }
+
+  const ext = EXT_BY_TYPE[sniffedType];
   const filename = `packages/${session.userId}-${Date.now()}.${ext}`;
 
   try {
