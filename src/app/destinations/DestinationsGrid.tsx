@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { localizeDestination, type VamDestination } from "@/lib/destinations";
 import { chip, t, type Lang } from "@/lib/dictionary";
+import SmartImage from "@/app/components/SmartImage";
 
 const FILTERS = ["Tümü", "Arkeoloji", "Tarih", "Doğa", "Kültür", "Mimari"];
 
@@ -48,8 +49,12 @@ export default function DestinationsGrid({
               <a key={d.id} className="vc-card" href={`/destinations/${d.slug}`}>
                 <div className="vc-card-media">
                   {d.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={d.image_url} alt={d.name} />
+                    <SmartImage
+                      src={d.image_url}
+                      alt={d.name}
+                      fill
+                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    />
                   ) : (
                     <span className="vc-card-letter">{d.name[0]}</span>
                   )}

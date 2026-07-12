@@ -6,6 +6,7 @@ import { getLang } from "@/lib/i18n";
 import { getCurrency } from "@/lib/getCurrency";
 import { chip, t } from "@/lib/dictionary";
 import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
+import SmartImage from "@/app/components/SmartImage";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -94,8 +95,7 @@ export default async function DestinationDetailPage({
 
       <div className="vc-hero">
         {d.image_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={d.image_url} alt={d.name} />
+          <SmartImage src={d.image_url} alt={d.name} fill sizes="100vw" />
         ) : (
           <div className="vc-hero-ph">
             <span className="vc-hero-letter">{d.name[0]}</span>
@@ -190,8 +190,7 @@ export default async function DestinationDetailPage({
               {related.map((r) => (
                 <a key={r.slug} className="vc-related-card" href={`/destinations/${r.slug}`}>
                   {r.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="vc-related-thumb" src={r.image_url} alt={r.name} />
+                    <SmartImage className="vc-related-thumb" src={r.image_url} alt={r.name} width={52} height={52} />
                   ) : (
                     <div className="vc-related-thumb-ph">{r.name[0]}</div>
                   )}

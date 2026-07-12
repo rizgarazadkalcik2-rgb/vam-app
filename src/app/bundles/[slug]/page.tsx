@@ -7,6 +7,7 @@ import { t } from "@/lib/dictionary";
 import { formatPrice } from "@/lib/currency";
 import { getCurrency } from "@/lib/getCurrency";
 import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
+import SmartImage from "@/app/components/SmartImage";
 import "@/app/vam-content.css";
 
 export const dynamic = "force-dynamic";
@@ -93,8 +94,7 @@ export default async function BundleDetailPage({
 
       <div className="vc-hero">
         {b.image_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={b.image_url} alt={b.title} />
+          <SmartImage src={b.image_url} alt={b.title} fill sizes="100vw" />
         ) : (
           <div className="vc-hero-ph">
             <span className="vc-hero-letter">{b.title[0]}</span>
@@ -193,8 +193,7 @@ export default async function BundleDetailPage({
               {others.map((o) => (
                 <a key={o.slug} className="vc-related-card" href={`/bundles/${o.slug}`}>
                   {o.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="vc-related-thumb" src={o.image_url} alt={o.title} />
+                    <SmartImage className="vc-related-thumb" src={o.image_url} alt={o.title} width={52} height={52} />
                   ) : (
                     <div className="vc-related-thumb-ph">{o.title[0]}</div>
                   )}
