@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { findUserById } from "./users";
 
 const JWT_SECRET_ENV = process.env.JWT_SECRET;
 if (!JWT_SECRET_ENV && process.env.NODE_ENV === "production") {
@@ -18,6 +19,7 @@ export interface SessionPayload {
   username: string;
   role: "admin" | "partner";
   displayName: string;
+  sessionVersion: number;
 }
 
 export async function createSessionToken(payload: SessionPayload): Promise<string> {
@@ -59,7 +61,20 @@ export async function getSession(): Promise<SessionPayload | null> {
   const store = await cookies();
   const token = store.get(COOKIE_NAME)?.value;
   if (!token) return null;
-  return verifySessionToken(token);
+  const payload = await verifySessionToken(token);
+  if (!payload) return null;
+
+  // GÜVENLİK: JWT imzası geçerli olsa da, kullanıcının DB'deki güncel
+  // durumunu her istekte yeniden sorguluyoruz. İmza kontrolü tek başına
+  // yeterli değil — devre dışı bırakılan veya şifresi sıfırlanan bir
+  // kullanıcının elindeki eski çerez, aksi halde 7 gün boyunca (token süresi
+  // dolana kadar) geçerli kalmaya devam ederdi.
+  const user = await findUserById(payload.userId);
+  if (!user || user.status !== "active" || user.session_version !== payload.sessionVersion) {
+    return null;
+  }
+
+  return payload;
 }
 
 export { COOKIE_NAME };

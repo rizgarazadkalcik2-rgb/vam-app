@@ -63,6 +63,15 @@ async function initSchema() {
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_address TEXT;`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_services TEXT;`;
 
+  // GÜVENLİK: oturum (session) sürüm sayacı. JWT çerezleri 7 gün geçerli ve
+  // imza doğrulaması dışında hiçbir kontrolden geçmiyordu — bir kullanıcı
+  // devre dışı bırakılsa veya şifresi sıfırlansa bile elindeki eski çerez
+  // süresi dolana kadar tüm API'lere erişebiliyordu. Artık her giriş
+  // token'ı, o anki session_version'ı içeriyor (bkz. session.ts); şifre veya
+  // durum değiştiğinde bu sayaç artırılıyor (bkz. users.ts), böylece eski
+  // çerezler bir sonraki istekte anında geçersiz sayılıyor.
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS session_version INTEGER NOT NULL DEFAULT 1;`;
+
   // Match Weekends içerikleri: fikstür maçları ve haber/kutlama kartları
   await sql`
     CREATE TABLE IF NOT EXISTS match_events (
