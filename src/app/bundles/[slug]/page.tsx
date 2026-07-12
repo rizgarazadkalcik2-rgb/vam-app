@@ -146,7 +146,7 @@ export default async function BundleDetailPage({
                 {formatPrice(Number(b.price), currency)}
               </span>
               {b.original_price && (
-                <span className="vc-price-old" style={{ marginLeft: 8 }}>
+                <span className="vc-price-old" style={{ marginInlineStart: 8 }}>
                   {formatPrice(Number(b.original_price), currency)}
                 </span>
               )}

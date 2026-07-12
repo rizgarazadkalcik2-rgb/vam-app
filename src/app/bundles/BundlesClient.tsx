@@ -75,12 +75,12 @@ export default function BundlesClient({
         <p className="vc-lede">
           {t("bundle_lede", lang)}
           {initialGuests > 0 && (
-            <span style={{ marginLeft: 6, color: "var(--color-primary)", fontWeight: 600 }}>
+            <span style={{ marginInlineStart: 6, color: "var(--color-primary)", fontWeight: 600 }}>
               · {initialGuests} {t("bundle_guests_suffix", lang)}
             </span>
           )}
           {initialDate && (
-            <span style={{ marginLeft: 6, color: "var(--color-primary)", fontWeight: 600 }}>
+            <span style={{ marginInlineStart: 6, color: "var(--color-primary)", fontWeight: 600 }}>
               · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : "tr-TR", { month: "long", year: "numeric" })}
             </span>
           )}
@@ -122,7 +122,7 @@ export default function BundlesClient({
             {t("clear_filters", lang)}
           </button>
         )}
-        <span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-muted)" }}>
+        <span style={{ marginInlineStart: "auto", fontSize: 12, color: "var(--text-muted)" }}>
           {filtered.length} {t("bundle_singular", lang)}
         </span>
       </div>

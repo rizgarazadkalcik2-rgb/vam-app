@@ -39,13 +39,20 @@
     <text x="600" y="498" font-family="Georgia, serif" font-size="30" fill="#c4522a" text-anchor="middle" letter-spacing="10" font-style="italic">manifesto</text>
   </svg>
 </div>
-  <div id="__bundler_loading">VAM yükleniyor…</div>
+  <div id="__bundler_loading">VAM…</div>
 
   <script>
     
 document.addEventListener('DOMContentLoaded', async function() {
   const loading = document.getElementById('__bundler_loading');
   function setStatus(msg) { if (loading) loading.textContent = msg; }
+  var __langMatch = document.cookie.match(/(?:^|;\s*)vam_lang=([^;]+)/);
+  var __lang = __langMatch ? decodeURIComponent(__langMatch[1]) : 'TR';
+  var LOADER_TEXT = {
+    preparing: { TR: 'VAM hazırlanıyor…', DE: 'VAM wird vorbereitet…', EN: 'Preparing VAM…', KU: 'VAM tê amadekirin…', CKB: 'VAM ئامادە دەکرێت…' },
+    rendering: { TR: 'Görüntüleniyor…', DE: 'Wird angezeigt…', EN: 'Rendering…', KU: 'Tê nîşandan…', CKB: 'پیشاندان...' }
+  };
+  function tLoader(map) { return map[__lang] || map.TR; }
 
   // Error sink persists across replaceWith since it's on window, not the DOM.
   window.addEventListener('error', function(e) {
@@ -71,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     let template = JSON.parse(templateEl.textContent);
 
     const uuids = Object.keys(manifest);
-    setStatus('Unpacking ' + uuids.length + ' assets...');
+    setStatus(tLoader(LOADER_TEXT.preparing));
 
     const blobUrls = {};
     await Promise.all(uuids.map(async (uuid) => {
@@ -119,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
     }
 
-    setStatus('Rendering...');
+    setStatus(tLoader(LOADER_TEXT.rendering));
     for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
 
     // Strip integrity + crossorigin — blob URLs from a file:// document inherit

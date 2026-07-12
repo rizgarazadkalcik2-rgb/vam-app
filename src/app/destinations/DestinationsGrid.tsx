@@ -33,7 +33,7 @@ export default function DestinationsGrid({
             {chip(f, lang)}
           </button>
         ))}
-        <span style={{ marginLeft: "auto", fontSize: 12, color: "var(--text-muted)" }}>
+        <span style={{ marginInlineStart: "auto", fontSize: 12, color: "var(--text-muted)" }}>
           {filtered.length} {t("destination_singular", lang)}
         </span>
       </div>
