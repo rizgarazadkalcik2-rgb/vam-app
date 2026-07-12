@@ -76,6 +76,9 @@ export default async function DestinationDetailPage({
         description: history[0] || d.name,
         ...(d.image_url ? { image: d.image_url } : {}),
         address: { "@type": "PostalAddress", addressRegion: d.region, addressCountry: "TR" },
+        ...(d.latitude != null && d.longitude != null
+          ? { geo: { "@type": "GeoCoordinates", latitude: d.latitude, longitude: d.longitude } }
+          : {}),
         ...(d.rating ? { aggregateRating: { "@type": "AggregateRating", ratingValue: d.rating, reviewCount: d.reviews || 1 } } : {}),
       },
     ],

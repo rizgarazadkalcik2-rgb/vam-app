@@ -38,6 +38,8 @@ export interface VamDestination {
   related: string[];
   status: string;
   translations: DestinationTranslations;
+  latitude: number | null;
+  longitude: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -63,6 +65,8 @@ export interface DestinationInput {
   related?: string[];
   status?: string;
   translations?: DestinationTranslations;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 /**
@@ -133,7 +137,7 @@ export async function createDestination(data: DestinationInput): Promise<VamDest
     INSERT INTO destinations (
       slug, name, region, era, era_display, era_caption, unesco, tags, image_url,
       rating, reviews, history, features, visit_location, visit_nearest_city,
-      visit_duration, visit_best_time, related, status, translations
+      visit_duration, visit_best_time, related, status, translations, latitude, longitude
     ) VALUES (
       ${data.slug}, ${data.name}, ${data.region}, ${data.era || null},
       ${data.eraDisplay || null}, ${data.eraCaption || null}, ${data.unesco ?? false},
@@ -143,7 +147,8 @@ export async function createDestination(data: DestinationInput): Promise<VamDest
       ${data.visitLocation || null}, ${data.visitNearestCity || null},
       ${data.visitDuration || null}, ${data.visitBestTime || null},
       ${JSON.stringify(data.related || [])}::jsonb, ${data.status || "active"},
-      ${JSON.stringify(data.translations || {})}::jsonb
+      ${JSON.stringify(data.translations || {})}::jsonb,
+      ${data.latitude ?? null}, ${data.longitude ?? null}
     )
     RETURNING *;
   `;
@@ -170,6 +175,7 @@ export async function updateDestination(
       visit_best_time = ${data.visitBestTime || null},
       related = ${JSON.stringify(data.related || [])}::jsonb,
       status = ${data.status || "active"}, translations = ${JSON.stringify(data.translations || {})}::jsonb,
+      latitude = ${data.latitude ?? null}, longitude = ${data.longitude ?? null},
       updated_at = now()
     WHERE id = ${id}
     RETURNING *;

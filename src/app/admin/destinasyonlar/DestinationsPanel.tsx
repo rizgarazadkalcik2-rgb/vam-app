@@ -61,6 +61,8 @@ function emptyForm() {
     visitNearestCity: "",
     visitDuration: "",
     visitBestTime: "",
+    latitude: "",
+    longitude: "",
     relatedCsv: "",
     status: "active" as "active" | "inactive",
     translations: {
@@ -94,6 +96,8 @@ function destinationToForm(d: VamDestination): FormState {
     visitNearestCity: d.visit_nearest_city || "",
     visitDuration: d.visit_duration || "",
     visitBestTime: d.visit_best_time || "",
+    latitude: d.latitude != null ? String(d.latitude) : "",
+    longitude: d.longitude != null ? String(d.longitude) : "",
     relatedCsv: (d.related || []).join(", "),
     status: d.status === "active" ? "active" : "inactive",
     translations: {
@@ -217,6 +221,8 @@ function formToPayload(f: FormState) {
     visitNearestCity: f.visitNearestCity.trim() || null,
     visitDuration: f.visitDuration.trim() || null,
     visitBestTime: f.visitBestTime.trim() || null,
+    latitude: f.latitude.trim() ? Number(f.latitude) : null,
+    longitude: f.longitude.trim() ? Number(f.longitude) : null,
     related: f.relatedCsv.split(",").map((s) => s.trim()).filter(Boolean),
     status: f.status,
     translations: buildTranslations(f),
@@ -773,6 +779,31 @@ export default function DestinationsPanel({
                   value={form.visitBestTime}
                   onChange={(e) => setForm({ ...form, visitBestTime: e.target.value })}
                   placeholder="örn. Nisan-Haziran"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+              <div>
+                <label style={labelStyle}>Enlem (latitude) — opsiyonel, Google haritası için</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={form.latitude}
+                  onChange={(e) => setForm({ ...form, latitude: e.target.value })}
+                  placeholder="örn. 37.2231"
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Boylam (longitude) — opsiyonel, Google haritası için</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={form.longitude}
+                  onChange={(e) => setForm({ ...form, longitude: e.target.value })}
+                  placeholder="örn. 38.9226"
                   style={inputStyle}
                 />
               </div>
