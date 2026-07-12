@@ -8,6 +8,10 @@ export interface DestinationTranslation {
   eraCaption?: string;
   history?: string[];
   features?: { title: string; body: string }[];
+  visitLocation?: string;
+  visitNearestCity?: string;
+  visitDuration?: string;
+  visitBestTime?: string;
 }
 
 export type DestinationTranslations = Partial<Record<"DE" | "EN" | "KU" | "CKB", DestinationTranslation>>;
@@ -76,6 +80,10 @@ export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" 
     era_caption: tr?.eraCaption || d.era_caption,
     history: tr?.history?.length ? tr.history : d.history,
     features: tr?.features?.length ? tr.features : d.features,
+    visit_location: tr?.visitLocation || d.visit_location,
+    visit_nearest_city: tr?.visitNearestCity || d.visit_nearest_city,
+    visit_duration: tr?.visitDuration || d.visit_duration,
+    visit_best_time: tr?.visitBestTime || d.visit_best_time,
   };
 }
 
