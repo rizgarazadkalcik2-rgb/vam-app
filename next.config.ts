@@ -24,7 +24,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["iyzipay"],
   images: {
     // Sadece Vercel Blob'dan gelen görseller optimize edilir — admin'in
     // serbest girdiği dış URL'ler next/image'ın domain-allowlist kontrolüne
