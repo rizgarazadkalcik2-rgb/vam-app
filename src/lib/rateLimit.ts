@@ -1,26 +1,35 @@
 // Hız sınırlama (rate limiting).
 //
-// UPSTASH_REDIS_REST_URL ve UPSTASH_REDIS_REST_TOKEN env değişkenleri
-// mevcutsa Upstash Redis kullanılır — tüm serverless instance'lar arasında
-// paylaşılan, kalıcı bir sayaç sağlar. Bu iki değişken yoksa (örn. local
-// geliştirme) bellek-içi (in-memory) bir yedek devreye girer; bu yedek
-// serverless ortamda instance'lar arası paylaşılmaz, sadece sıcak (warm) bir
-// instance'ta hızlı otomatik denemeleri yavaşlatır.
+// KV_REST_API_URL ve KV_REST_API_TOKEN env değişkenleri mevcutsa Upstash
+// Redis kullanılır — tüm serverless instance'lar arasında paylaşılan, kalıcı
+// bir sayaç sağlar. Bu iki değişken yoksa (örn. local geliştirme) bellek-içi
+// (in-memory) bir yedek devreye girer; bu yedek serverless ortamda
+// instance'lar arası paylaşılmaz, sadece sıcak (warm) bir instance'ta hızlı
+// otomatik denemeleri yavaşlatır.
+//
+// Not: KV_REST_API_URL/TOKEN, Vercel'in Upstash for Redis marketplace
+// entegrasyonunun otomatik oluşturduğu isimler (Storage → Marketplace →
+// Upstash). Eskiden manuel kopyala-yapıştırla girilen UPSTASH_REDIS_REST_URL/
+// TOKEN değişkenleri hiçbir zaman doğru çalışmadı (Upstash konsolunda 0
+// komut) — bu yüzden artık Redis.fromEnv() yerine doğrudan bu değişkenler
+// okunuyor.
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-// Redis.fromEnv() env değişkenleri hatalı/bozuksa (örn. kopyala-yapıştırda
-// kalan tırnak işareti) burada fırlatabilir — bu modül import edilir edilmez
-// çalıştığı için, sarmalanmazsa TÜM rate-limit'li endpoint'leri (login,
-// rezervasyon) anında 500'e düşürür. Böyle bir durumda Upstash'i "yapılandırılmamış"
-// say ve bellek-içi yedeğe düş — rate limiting bir tek-nokta-hatası olmamalı.
+// Env değişkenleri hatalı/bozuksa Redis kurucusu burada fırlatabilir — bu
+// modül import edilir edilmez çalıştığı için, sarmalanmazsa TÜM rate-limit'li
+// endpoint'leri (login, rezervasyon) anında 500'e düşürür. Böyle bir durumda
+// Upstash'i "yapılandırılmamış" say ve bellek-içi yedeğe düş — rate limiting
+// bir tek-nokta-hatası olmamalı.
 let redis: Redis | null = null;
 try {
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-    redis = Redis.fromEnv();
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (url && token) {
+    redis = new Redis({ url, token });
   }
 } catch (err) {
-  console.error("[rateLimit] Redis.fromEnv() başarısız, bellek-içi yedeğe düşülüyor:", err);
+  console.error("[rateLimit] Redis kurulumu başarısız, bellek-içi yedeğe düşülüyor:", err);
 }
 const upstashConfigured = !!redis;
 
