@@ -30,7 +30,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   // --- Hız sınırlama: aynı IP'den kısa sürede aşırı istek gelmesini engeller ---
   const ip = getClientIp(req);
-  const { allowed, remainingMs } = rateLimit(`reservation:${ip}`, 8, 10 * 60 * 1000); // 10 dakikada 8 deneme
+  const { allowed, remainingMs } = await rateLimit(`reservation:${ip}`, 8, 10 * 60 * 1000); // 10 dakikada 8 deneme
   if (!allowed) {
     const minutes = Math.ceil(remainingMs / 60000);
     return NextResponse.json(
