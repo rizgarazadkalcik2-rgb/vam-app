@@ -9,8 +9,20 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-const upstashConfigured = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
-const redis = upstashConfigured ? Redis.fromEnv() : null;
+// Redis.fromEnv() env değişkenleri hatalı/bozuksa (örn. kopyala-yapıştırda
+// kalan tırnak işareti) burada fırlatabilir — bu modül import edilir edilmez
+// çalıştığı için, sarmalanmazsa TÜM rate-limit'li endpoint'leri (login,
+// rezervasyon) anında 500'e düşürür. Böyle bir durumda Upstash'i "yapılandırılmamış"
+// say ve bellek-içi yedeğe düş — rate limiting bir tek-nokta-hatası olmamalı.
+let redis: Redis | null = null;
+try {
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    redis = Redis.fromEnv();
+  }
+} catch (err) {
+  console.error("[rateLimit] Redis.fromEnv() başarısız, bellek-içi yedeğe düşülüyor:", err);
+}
+const upstashConfigured = !!redis;
 
 // Aynı (limit, windowMs) çifti için tek bir Ratelimit örneği yeniden kullanılır.
 const limiters = new Map<string, Ratelimit>();
@@ -73,8 +85,15 @@ export async function rateLimit(key: string, limit: number, windowMs: number): P
     return rateLimitInMemory(key, limit, windowMs);
   }
 
-  const { success, reset } = await getLimiter(limit, windowMs).limit(key);
-  return { allowed: success, remainingMs: success ? 0 : Math.max(0, reset - Date.now()) };
+  try {
+    const { success, reset } = await getLimiter(limit, windowMs).limit(key);
+    return { allowed: success, remainingMs: success ? 0 : Math.max(0, reset - Date.now()) };
+  } catch (err) {
+    // Upstash isteği başarısız oldu (ağ, kimlik doğrulama, vb.) — login/rezervasyon
+    // gibi kritik akışları çökertmek yerine bu istek için bellek-içi yedeğe düş.
+    console.error("[rateLimit] Upstash isteği başarısız, bellek-içi yedeğe düşülüyor:", err);
+    return rateLimitInMemory(key, limit, windowMs);
+  }
 }
 
 export function getClientIp(req: Request): string {
