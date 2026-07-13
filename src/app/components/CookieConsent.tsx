@@ -21,6 +21,8 @@ export default function CookieConsent({ initialConsent, lang }: { initialConsent
 
   return (
     <div
+      role="region"
+      aria-label={t("cookie_consent_text", lang)}
       style={{
         position: "fixed",
         left: 0,

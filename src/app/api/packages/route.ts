@@ -30,6 +30,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const nights = Number(body.nights) || 1;
+  const priceTry = Number(body.priceTry) || 0;
+  const capacity = Number(body.capacity) || 0;
+  if (nights < 1 || priceTry < 0 || capacity < 0) {
+    return NextResponse.json(
+      { error: "Gece sayısı en az 1, fiyat ve kontenjan negatif olamaz." },
+      { status: 400 }
+    );
+  }
+
   // Admin, istediği acente adına paket ekleyebilir (body'den partnerId/partnerName gelir).
   // Partner (acente) ise her zaman kendi adına ekler, body'deki değerler göz ardı edilir.
   const partnerId =
@@ -42,9 +52,9 @@ export async function POST(req: NextRequest) {
     partnerName,
     title: body.title,
     destination: body.destination,
-    nights: Number(body.nights) || 1,
-    priceTry: Number(body.priceTry) || 0,
-    capacity: Number(body.capacity) || 0,
+    nights,
+    priceTry,
+    capacity,
     description: body.description || "",
     imageUrl: body.imageUrl || undefined,
   });

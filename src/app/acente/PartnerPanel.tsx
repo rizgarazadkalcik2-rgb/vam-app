@@ -224,66 +224,75 @@ export default function PartnerPanel({
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
-            <input
-              placeholder="Paket başlığı"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              required
-              style={inputStyle}
-            />
-            <input
-              placeholder="Destinasyon"
-              value={form.destination}
-              onChange={(e) => setForm({ ...form, destination: e.target.value })}
-              required
-              style={inputStyle}
-            />
+            <label style={labelWrap}>
+              <span style={labelText}>Paket başlığı</span>
+              <input
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                required
+                style={inputStyle}
+              />
+            </label>
+            <label style={labelWrap}>
+              <span style={labelText}>Destinasyon</span>
+              <input
+                value={form.destination}
+                onChange={(e) => setForm({ ...form, destination: e.target.value })}
+                required
+                style={inputStyle}
+              />
+            </label>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
-            <input
-              type="number"
-              placeholder="Gece sayısı"
-              value={form.nights}
-              onChange={(e) => setForm({ ...form, nights: Number(e.target.value) })}
-              style={inputStyle}
-            />
-            <input
-              type="number"
-              placeholder="Fiyat (TRY)"
-              value={form.priceTry}
-              onChange={(e) => setForm({ ...form, priceTry: Number(e.target.value) })}
-              style={inputStyle}
-            />
-            <input
-              type="number"
-              placeholder="Kontenjan"
-              value={form.capacity}
-              onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
-              style={inputStyle}
-            />
+            <label style={labelWrap}>
+              <span style={labelText}>Gece sayısı</span>
+              <input
+                type="number"
+                min={1}
+                value={form.nights}
+                onChange={(e) => setForm({ ...form, nights: Math.max(1, Number(e.target.value)) })}
+                style={inputStyle}
+              />
+            </label>
+            <label style={labelWrap}>
+              <span style={labelText}>Fiyat (TRY)</span>
+              <input
+                type="number"
+                min={0}
+                value={form.priceTry}
+                onChange={(e) => setForm({ ...form, priceTry: Math.max(0, Number(e.target.value)) })}
+                style={inputStyle}
+              />
+            </label>
+            <label style={labelWrap}>
+              <span style={labelText}>Kontenjan</span>
+              <input
+                type="number"
+                min={0}
+                value={form.capacity}
+                onChange={(e) => setForm({ ...form, capacity: Math.max(0, Number(e.target.value)) })}
+                style={inputStyle}
+              />
+            </label>
           </div>
 
-          <textarea
-            placeholder="Açıklama"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            rows={3}
-            style={{ ...inputStyle, width: "100%", marginBottom: 12, resize: "vertical" }}
-          />
+          <label style={labelWrap}>
+            <span style={labelText}>Açıklama</span>
+            <textarea
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              rows={3}
+              style={{ ...inputStyle, width: "100%", marginBottom: 12, resize: "vertical" }}
+            />
+          </label>
 
           <div style={{ marginBottom: 12 }}>
-            <label
-              style={{
-                display: "block",
-                fontSize: 11.5,
-                color: "#6f6558",
-                marginBottom: 6,
-              }}
-            >
+            <label htmlFor="pkg-image-url" style={{ ...labelText, marginBottom: 6 }}>
               Paket Görseli
             </label>
             <input
+              id="pkg-image-url"
               value={form.imageUrl}
               onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
               placeholder="https://... (URL yapıştır ya da aşağıdan yükle)"
@@ -305,6 +314,7 @@ export default function PartnerPanel({
             )}
             <input
               type="file"
+              aria-label="Paket görseli dosyası yükle"
               accept="image/jpeg,image/png,image/webp"
               onChange={handleImageUpload}
               disabled={uploading}
@@ -635,4 +645,13 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 4,
   fontSize: 13.5,
   outline: "none",
+};
+
+const labelWrap: React.CSSProperties = { display: "block" };
+
+const labelText: React.CSSProperties = {
+  display: "block",
+  fontSize: 11.5,
+  color: "#6f6558",
+  marginBottom: 4,
 };

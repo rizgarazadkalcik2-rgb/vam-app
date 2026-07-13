@@ -17,6 +17,16 @@ export async function PATCH(
     return NextResponse.json({ error: "Geçersiz veri." }, { status: 400 });
   }
 
+  const nights = Number(body.nights) || 1;
+  const priceTry = Number(body.priceTry) || 0;
+  const capacity = Number(body.capacity) || 0;
+  if (nights < 1 || priceTry < 0 || capacity < 0) {
+    return NextResponse.json(
+      { error: "Gece sayısı en az 1, fiyat ve kontenjan negatif olamaz." },
+      { status: 400 }
+    );
+  }
+
   const updated = await updatePackage(
     Number(id),
     session.userId,
@@ -24,9 +34,9 @@ export async function PATCH(
     {
       title: body.title,
       destination: body.destination,
-      nights: Number(body.nights) || 1,
-      priceTry: Number(body.priceTry) || 0,
-      capacity: Number(body.capacity) || 0,
+      nights,
+      priceTry,
+      capacity,
       description: body.description || "",
       status: body.status || "active",
       imageUrl: body.imageUrl,

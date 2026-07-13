@@ -3,6 +3,9 @@ import { getSession } from "@/lib/session";
 import { listAllMatchEvents, createMatchEvent } from "@/lib/matchEvents";
 
 const VALID_TEAMS = ["amedspor", "vanspor", "batman", "mardin1969", "igdir"];
+// <input type="date"> her zaman YYYY-MM-DD formatında gönderir (reservations
+// route'undaki DATE_REGEX ile aynı desen).
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 export async function GET() {
   const session = await getSession();
@@ -38,6 +41,12 @@ export async function POST(req: NextRequest) {
   }
   if (kind === "match" && !body?.eventDate) {
     return NextResponse.json({ error: "Maç için tarih gerekli." }, { status: 400 });
+  }
+  // event_date DATE sütunu geçersiz bir string'i zaten reddediyordu ama
+  // route'ta try/catch olmadığı için bu ham bir 500'e yol açıyordu —
+  // reservations'daki travelDate ile aynı formata göre burada da doğrula.
+  if (body?.eventDate && (typeof body.eventDate !== "string" || !DATE_REGEX.test(body.eventDate) || Number.isNaN(new Date(body.eventDate).getTime()))) {
+    return NextResponse.json({ error: "Geçersiz tarih formatı." }, { status: 400 });
   }
 
   const event = await createMatchEvent({

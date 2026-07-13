@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { listAllDestinations, createDestination, slugExists } from "@/lib/destinations";
+import { isUniqueViolation } from "@/lib/pgErrors";
 
 export async function GET() {
   const session = await getSession();
@@ -46,30 +47,52 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const destination = await createDestination({
-    slug,
-    name,
-    region,
-    era: body.era || null,
-    eraDisplay: body.eraDisplay || null,
-    eraCaption: body.eraCaption || null,
-    unesco: !!body.unesco,
-    tags: Array.isArray(body.tags) ? body.tags : [],
-    imageUrl: body.imageUrl || null,
-    rating: body.rating ?? null,
-    reviews: body.reviews ?? null,
-    history: Array.isArray(body.history) ? body.history : [],
-    features: Array.isArray(body.features) ? body.features : [],
-    visitLocation: body.visitLocation || null,
-    visitNearestCity: body.visitNearestCity || null,
-    visitDuration: body.visitDuration || null,
-    visitBestTime: body.visitBestTime || null,
-    latitude: body.latitude != null && body.latitude !== "" ? Number(body.latitude) : null,
-    longitude: body.longitude != null && body.longitude !== "" ? Number(body.longitude) : null,
-    related: Array.isArray(body.related) ? body.related : [],
-    status: body.status || "active",
-    translations: body.translations && typeof body.translations === "object" ? body.translations : {},
-  });
+  // rating/reviews opsiyonel — ama girildiyse anlamlı bir aralıkta olmalı.
+  // Doğrulanmadan geçerse Postgres NUMERIC sütununa yazarken ham 500 fırlatabilir.
+  if (body.rating != null && body.rating !== "") {
+    const r = Number(body.rating);
+    if (!Number.isFinite(r) || r < 1 || r > 5) {
+      return NextResponse.json({ error: "Puan 1 ile 5 arasında olmalı." }, { status: 400 });
+    }
+  }
+  if (body.reviews != null && body.reviews !== "") {
+    const rv = Number(body.reviews);
+    if (!Number.isFinite(rv) || rv < 0) {
+      return NextResponse.json({ error: "Değerlendirme sayısı negatif olamaz." }, { status: 400 });
+    }
+  }
 
-  return NextResponse.json({ destination }, { status: 201 });
+  try {
+    const destination = await createDestination({
+      slug,
+      name,
+      region,
+      era: body.era || null,
+      eraDisplay: body.eraDisplay || null,
+      eraCaption: body.eraCaption || null,
+      unesco: !!body.unesco,
+      tags: Array.isArray(body.tags) ? body.tags : [],
+      imageUrl: body.imageUrl || null,
+      rating: body.rating != null && body.rating !== "" ? Number(body.rating) : null,
+      reviews: body.reviews != null && body.reviews !== "" ? Number(body.reviews) : null,
+      history: Array.isArray(body.history) ? body.history : [],
+      features: Array.isArray(body.features) ? body.features : [],
+      visitLocation: body.visitLocation || null,
+      visitNearestCity: body.visitNearestCity || null,
+      visitDuration: body.visitDuration || null,
+      visitBestTime: body.visitBestTime || null,
+      latitude: body.latitude != null && body.latitude !== "" ? Number(body.latitude) : null,
+      longitude: body.longitude != null && body.longitude !== "" ? Number(body.longitude) : null,
+      related: Array.isArray(body.related) ? body.related : [],
+      status: body.status || "active",
+      translations: body.translations && typeof body.translations === "object" ? body.translations : {},
+    });
+    return NextResponse.json({ destination }, { status: 201 });
+  } catch (err) {
+    if (isUniqueViolation(err)) {
+      return NextResponse.json({ error: "Bu slug zaten kullanılıyor." }, { status: 409 });
+    }
+    console.error("[destinations POST]", err);
+    return NextResponse.json({ error: "Destinasyon oluşturulurken bir hata oluştu." }, { status: 500 });
+  }
 }

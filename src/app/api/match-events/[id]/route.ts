@@ -3,6 +3,7 @@ import { getSession } from "@/lib/session";
 import { updateMatchEvent, deleteMatchEvent } from "@/lib/matchEvents";
 
 const VALID_TEAMS = ["amedspor", "vanspor", "batman", "mardin1969", "igdir"];
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 export async function PATCH(
   req: NextRequest,
@@ -24,6 +25,9 @@ export async function PATCH(
 
   if (!team || !VALID_TEAMS.includes(team) || !title) {
     return NextResponse.json({ error: "Takım ve başlık gerekli." }, { status: 400 });
+  }
+  if (body?.eventDate && (typeof body.eventDate !== "string" || !DATE_REGEX.test(body.eventDate) || Number.isNaN(new Date(body.eventDate).getTime()))) {
+    return NextResponse.json({ error: "Geçersiz tarih formatı." }, { status: 400 });
   }
 
   const event = await updateMatchEvent(Number(id), {
