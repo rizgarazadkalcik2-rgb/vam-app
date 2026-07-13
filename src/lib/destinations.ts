@@ -8,6 +8,10 @@ export interface DestinationTranslation {
   eraCaption?: string;
   history?: string[];
   features?: { title: string; body: string }[];
+  visitLocation?: string;
+  visitNearestCity?: string;
+  visitDuration?: string;
+  visitBestTime?: string;
 }
 
 export type DestinationTranslations = Partial<Record<"DE" | "EN" | "KU" | "CKB", DestinationTranslation>>;
@@ -34,6 +38,8 @@ export interface VamDestination {
   related: string[];
   status: string;
   translations: DestinationTranslations;
+  latitude: number | null;
+  longitude: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -59,6 +65,8 @@ export interface DestinationInput {
   related?: string[];
   status?: string;
   translations?: DestinationTranslations;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 /**
@@ -76,6 +84,10 @@ export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" 
     era_caption: tr?.eraCaption || d.era_caption,
     history: tr?.history?.length ? tr.history : d.history,
     features: tr?.features?.length ? tr.features : d.features,
+    visit_location: tr?.visitLocation || d.visit_location,
+    visit_nearest_city: tr?.visitNearestCity || d.visit_nearest_city,
+    visit_duration: tr?.visitDuration || d.visit_duration,
+    visit_best_time: tr?.visitBestTime || d.visit_best_time,
   };
 }
 
@@ -125,7 +137,7 @@ export async function createDestination(data: DestinationInput): Promise<VamDest
     INSERT INTO destinations (
       slug, name, region, era, era_display, era_caption, unesco, tags, image_url,
       rating, reviews, history, features, visit_location, visit_nearest_city,
-      visit_duration, visit_best_time, related, status, translations
+      visit_duration, visit_best_time, related, status, translations, latitude, longitude
     ) VALUES (
       ${data.slug}, ${data.name}, ${data.region}, ${data.era || null},
       ${data.eraDisplay || null}, ${data.eraCaption || null}, ${data.unesco ?? false},
@@ -135,7 +147,8 @@ export async function createDestination(data: DestinationInput): Promise<VamDest
       ${data.visitLocation || null}, ${data.visitNearestCity || null},
       ${data.visitDuration || null}, ${data.visitBestTime || null},
       ${JSON.stringify(data.related || [])}::jsonb, ${data.status || "active"},
-      ${JSON.stringify(data.translations || {})}::jsonb
+      ${JSON.stringify(data.translations || {})}::jsonb,
+      ${data.latitude ?? null}, ${data.longitude ?? null}
     )
     RETURNING *;
   `;
@@ -162,6 +175,7 @@ export async function updateDestination(
       visit_best_time = ${data.visitBestTime || null},
       related = ${JSON.stringify(data.related || [])}::jsonb,
       status = ${data.status || "active"}, translations = ${JSON.stringify(data.translations || {})}::jsonb,
+      latitude = ${data.latitude ?? null}, longitude = ${data.longitude ?? null},
       updated_at = now()
     WHERE id = ${id}
     RETURNING *;

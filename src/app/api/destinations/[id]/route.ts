@@ -58,6 +58,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     visitNearestCity: body.visitNearestCity || null,
     visitDuration: body.visitDuration || null,
     visitBestTime: body.visitBestTime || null,
+    latitude: body.latitude != null && body.latitude !== "" ? Number(body.latitude) : null,
+    longitude: body.longitude != null && body.longitude !== "" ? Number(body.longitude) : null,
     related: Array.isArray(body.related) ? body.related : [],
     status: body.status || "active",
     translations: body.translations && typeof body.translations === "object" ? body.translations : {},

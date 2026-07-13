@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { getSession } from "@/lib/session";
-import { rateLimit } from "@/lib/rateLimit";
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -28,19 +27,6 @@ export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Giriş gerekli." }, { status: 401 });
-  }
-
-  // Kullanıcı başına sınırlama — oturumlu bir hesap sınırsız 5 MB'lık dosyayı
-  // Vercel Blob'a yükleyip depolama/maliyet aşımına yol açamasın diye.
-  // 20/10dk, art arda birkaç paket/destinasyon eklerken gerçek kullanımı
-  // engellemeyecek kadar cömert, scriptli kötüye kullanımı engelleyecek kadar sıkı.
-  const { allowed, remainingMs } = await rateLimit(`upload:${session.userId}`, 20, 10 * 60 * 1000);
-  if (!allowed) {
-    const minutes = Math.ceil(remainingMs / 60000);
-    return NextResponse.json(
-      { error: `Çok fazla dosya yüklendi. Lütfen ${minutes} dakika sonra tekrar deneyin.` },
-      { status: 429 }
-    );
   }
 
   const formData = await req.formData().catch(() => null);

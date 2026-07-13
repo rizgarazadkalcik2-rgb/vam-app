@@ -3,6 +3,12 @@ import Image from "next/image";
 const BLOB_HOST_SUFFIX = ".public.blob.vercel-storage.com";
 
 function isOptimizable(url: string): boolean {
+  // Kök-göreli yerel /public dosyaları ("//" ile başlayan protokol-göreli
+  // dış host URL'leri hariç) next/image'da hiçbir remotePatterns config'i
+  // gerekmeden optimize edilebilir — bazı seed destinasyonların image_url'i
+  // bu şekilde (örn. /images/destinations/mardin.jpg), önceden new URL()
+  // göreli path'te fırlattığı için bunlar hep düz <img>'e düşüyordu.
+  if (url.startsWith("/") && !url.startsWith("//")) return true;
   try {
     return new URL(url).hostname.endsWith(BLOB_HOST_SUFFIX);
   } catch {

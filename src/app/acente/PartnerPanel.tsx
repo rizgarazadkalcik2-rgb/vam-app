@@ -150,8 +150,13 @@ export default function PartnerPanel({
     setForm(emptyForm);
   }
 
-  async function handleDelete(id: number) {
-    if (!confirm("Bu paketi silmek istediğinize emin misiniz?")) return;
+  async function handleDelete(id: number, title: string) {
+    const typed = prompt(`Bu paketi kalıcı olarak silmek için adını aynen yazın:\n"${title}"`);
+    if (typed === null) return;
+    if (typed !== title) {
+      alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
     if (res.ok) {
       await refresh();
@@ -415,7 +420,7 @@ export default function PartnerPanel({
                   Düzenle
                 </button>
                 <button
-                  onClick={() => handleDelete(pkg.id)}
+                  onClick={() => handleDelete(pkg.id, pkg.title)}
                   style={{
                     padding: "6px 14px",
                     background: "transparent",

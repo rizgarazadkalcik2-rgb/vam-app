@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { VamDestination, DestinationTranslations } from "@/lib/destinations";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
+import TranslationBadges from "../TranslationBadges";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -27,7 +28,18 @@ const TABS = ["TR", "DE", "EN", "KU", "CKB"] as const;
 type Tab = (typeof TABS)[number];
 
 function emptyTranslationForm() {
-  return { name: "", region: "", eraDisplay: "", eraCaption: "", historyText: "", featuresText: "" };
+  return {
+    name: "",
+    region: "",
+    eraDisplay: "",
+    eraCaption: "",
+    historyText: "",
+    featuresText: "",
+    visitLocation: "",
+    visitNearestCity: "",
+    visitDuration: "",
+    visitBestTime: "",
+  };
 }
 
 function emptyForm() {
@@ -49,6 +61,8 @@ function emptyForm() {
     visitNearestCity: "",
     visitDuration: "",
     visitBestTime: "",
+    latitude: "",
+    longitude: "",
     relatedCsv: "",
     status: "active" as "active" | "inactive",
     translations: {
@@ -82,6 +96,8 @@ function destinationToForm(d: VamDestination): FormState {
     visitNearestCity: d.visit_nearest_city || "",
     visitDuration: d.visit_duration || "",
     visitBestTime: d.visit_best_time || "",
+    latitude: d.latitude != null ? String(d.latitude) : "",
+    longitude: d.longitude != null ? String(d.longitude) : "",
     relatedCsv: (d.related || []).join(", "),
     status: d.status === "active" ? "active" : "inactive",
     translations: {
@@ -92,6 +108,10 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.DE?.eraCaption || "",
         historyText: (trans.DE?.history || []).join("\n\n"),
         featuresText: (trans.DE?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        visitLocation: trans.DE?.visitLocation || "",
+        visitNearestCity: trans.DE?.visitNearestCity || "",
+        visitDuration: trans.DE?.visitDuration || "",
+        visitBestTime: trans.DE?.visitBestTime || "",
       },
       EN: {
         name: trans.EN?.name || "",
@@ -100,6 +120,10 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.EN?.eraCaption || "",
         historyText: (trans.EN?.history || []).join("\n\n"),
         featuresText: (trans.EN?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        visitLocation: trans.EN?.visitLocation || "",
+        visitNearestCity: trans.EN?.visitNearestCity || "",
+        visitDuration: trans.EN?.visitDuration || "",
+        visitBestTime: trans.EN?.visitBestTime || "",
       },
       KU: {
         name: trans.KU?.name || "",
@@ -108,6 +132,10 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.KU?.eraCaption || "",
         historyText: (trans.KU?.history || []).join("\n\n"),
         featuresText: (trans.KU?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        visitLocation: trans.KU?.visitLocation || "",
+        visitNearestCity: trans.KU?.visitNearestCity || "",
+        visitDuration: trans.KU?.visitDuration || "",
+        visitBestTime: trans.KU?.visitBestTime || "",
       },
       CKB: {
         name: trans.CKB?.name || "",
@@ -116,6 +144,10 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.CKB?.eraCaption || "",
         historyText: (trans.CKB?.history || []).join("\n\n"),
         featuresText: (trans.CKB?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        visitLocation: trans.CKB?.visitLocation || "",
+        visitNearestCity: trans.CKB?.visitNearestCity || "",
+        visitDuration: trans.CKB?.visitDuration || "",
+        visitBestTime: trans.CKB?.visitBestTime || "",
       },
     },
   };
@@ -132,11 +164,19 @@ function buildTranslations(f: FormState): DestinationTranslations {
       eraCaption?: string;
       history?: string[];
       features?: { title: string; body: string }[];
+      visitLocation?: string;
+      visitNearestCity?: string;
+      visitDuration?: string;
+      visitBestTime?: string;
     } = {};
     if (t.name.trim()) entry.name = t.name.trim();
     if (t.region.trim()) entry.region = t.region.trim();
     if (t.eraDisplay.trim()) entry.eraDisplay = t.eraDisplay.trim();
     if (t.eraCaption.trim()) entry.eraCaption = t.eraCaption.trim();
+    if (t.visitLocation.trim()) entry.visitLocation = t.visitLocation.trim();
+    if (t.visitNearestCity.trim()) entry.visitNearestCity = t.visitNearestCity.trim();
+    if (t.visitDuration.trim()) entry.visitDuration = t.visitDuration.trim();
+    if (t.visitBestTime.trim()) entry.visitBestTime = t.visitBestTime.trim();
     const history = t.historyText.split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
     if (history.length > 0) entry.history = history;
     const features = t.featuresText
@@ -181,6 +221,8 @@ function formToPayload(f: FormState) {
     visitNearestCity: f.visitNearestCity.trim() || null,
     visitDuration: f.visitDuration.trim() || null,
     visitBestTime: f.visitBestTime.trim() || null,
+    latitude: f.latitude.trim() ? Number(f.latitude) : null,
+    longitude: f.longitude.trim() ? Number(f.longitude) : null,
     related: f.relatedCsv.split(",").map((s) => s.trim()).filter(Boolean),
     status: f.status,
     translations: buildTranslations(f),
@@ -270,7 +312,12 @@ export default function DestinationsPanel({
   }
 
   async function handleDelete(d: VamDestination) {
-    if (!confirm(`"${d.name}" destinasyonunu silmek istediğinize emin misiniz?`)) return;
+    const typed = prompt(`Bu destinasyonu kalıcı olarak silmek için adını aynen yazın:\n"${d.name}"`);
+    if (typed === null) return;
+    if (typed !== d.name) {
+      alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/destinations/${d.id}`, { method: "DELETE" });
     const data = await res.json();
     if (res.ok) {
@@ -377,7 +424,7 @@ export default function DestinationsPanel({
                 <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
                   Boş bırakılan alanlar otomatik olarak Türkçe içeriğe düşer.
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 14 }}>
                   <div>
                     <label style={labelStyle}>İsim ({activeTab})</label>
                     <input
@@ -444,6 +491,77 @@ export default function DestinationsPanel({
                   </div>
                 </div>
 
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
+                  <div>
+                    <label style={labelStyle}>Konum ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].visitLocation}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], visitLocation: e.target.value },
+                          },
+                        })
+                      }
+                      dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>En Yakın Şehir ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].visitNearestCity}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], visitNearestCity: e.target.value },
+                          },
+                        })
+                      }
+                      dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Önerilen Süre ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].visitDuration}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], visitDuration: e.target.value },
+                          },
+                        })
+                      }
+                      dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>En İyi Zaman ({activeTab})</label>
+                    <input
+                      value={form.translations[activeTab].visitBestTime}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          translations: {
+                            ...form.translations,
+                            [activeTab]: { ...form.translations[activeTab], visitBestTime: e.target.value },
+                          },
+                        })
+                      }
+                      dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+
                 <div style={{ marginBottom: 12 }}>
                   <label style={labelStyle}>
                     Tarihçe ({activeTab}) — her paragraf arasında BOŞ SATIR bırakın
@@ -490,7 +608,7 @@ export default function DestinationsPanel({
 
             {activeTab === "TR" && (
             <>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
               <div>
                 <label style={labelStyle}>Slug (URL — küçük harf, tire ile)</label>
                 <input
@@ -629,7 +747,7 @@ export default function DestinationsPanel({
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
               <div>
                 <label style={labelStyle}>Konum</label>
                 <input
@@ -661,6 +779,31 @@ export default function DestinationsPanel({
                   value={form.visitBestTime}
                   onChange={(e) => setForm({ ...form, visitBestTime: e.target.value })}
                   placeholder="örn. Nisan-Haziran"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
+              <div>
+                <label style={labelStyle}>Enlem (latitude) — opsiyonel, Google haritası için</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={form.latitude}
+                  onChange={(e) => setForm({ ...form, latitude: e.target.value })}
+                  placeholder="örn. 37.2231"
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Boylam (longitude) — opsiyonel, Google haritası için</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={form.longitude}
+                  onChange={(e) => setForm({ ...form, longitude: e.target.value })}
+                  placeholder="örn. 38.9226"
                   style={inputStyle}
                 />
               </div>
@@ -761,6 +904,16 @@ export default function DestinationsPanel({
                 </div>
                 <div style={{ fontSize: 12, color: "#6f6558", marginTop: 2 }}>
                   {d.region} {d.era_display ? `· ${d.era_display}` : ""}
+                </div>
+                <div style={{ marginTop: 6 }}>
+                  <TranslationBadges
+                    translated={{
+                      DE: !!d.translations?.DE?.name,
+                      EN: !!d.translations?.EN?.name,
+                      KU: !!d.translations?.KU?.name,
+                      CKB: !!d.translations?.CKB?.name,
+                    }}
+                  />
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>

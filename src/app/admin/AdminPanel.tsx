@@ -44,8 +44,13 @@ export default function AdminPanel({
     if (res.ok) setPackages(data.packages);
   }
 
-  async function handleDelete(id: number) {
-    if (!confirm("Bu paketi silmek istediğinize emin misiniz?")) return;
+  async function handleDelete(id: number, title: string) {
+    const typed = prompt(`Bu paketi kalıcı olarak silmek için adını aynen yazın:\n"${title}"`);
+    if (typed === null) return;
+    if (typed !== title) {
+      alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
     if (res.ok) {
       await refresh();
@@ -196,7 +201,7 @@ export default function AdminPanel({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
             gap: 12,
             marginBottom: 20,
           }}
@@ -272,7 +277,7 @@ export default function AdminPanel({
               </select>
             </label>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
               <input
                 placeholder="Paket başlığı"
                 value={form.title}
@@ -289,7 +294,7 @@ export default function AdminPanel({
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 12 }}>
               <input
                 type="number"
                 placeholder="Gece sayısı"
@@ -490,7 +495,7 @@ export default function AdminPanel({
                       {pkg.status === "active" ? "Pasifleştir" : "Aktifleştir"}
                     </button>
                     <button
-                      onClick={() => handleDelete(pkg.id)}
+                      onClick={() => handleDelete(pkg.id, pkg.title)}
                       style={{
                         padding: "6px 12px",
                         background: "transparent",

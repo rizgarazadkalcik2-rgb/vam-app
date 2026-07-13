@@ -168,6 +168,12 @@ async function initSchema() {
   // Eksik dil/alan TR taban değerine düşer (dictionary.ts'teki t() fallback deseniyle aynı mantık).
   await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS translations JSONB NOT NULL DEFAULT '{}';`;
 
+  // Enlem/boylam — JSON-LD TouristAttraction şemasının "geo" alanı için
+  // (Google'ın harita bazlı zengin sonuçları bunu bekler). Opsiyonel: admin
+  // henüz girmediyse JSON-LD basitçe geo alanını atlar, hata vermez.
+  await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS latitude NUMERIC;`;
+  await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS longitude NUMERIC;`;
+
   const { rows: destCount } = await sql`SELECT COUNT(*) as count FROM destinations;`;
   if (Number(destCount[0].count) === 0) {
     for (const d of SEED_DESTINATIONS) {

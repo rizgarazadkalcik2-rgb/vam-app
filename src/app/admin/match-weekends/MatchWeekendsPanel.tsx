@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { MatchEvent, MatchEventTranslations } from "@/lib/matchEvents";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
+import TranslationBadges from "../TranslationBadges";
 
 export const TEAM_LABELS: Record<string, string> = {
   amedspor: "Amedspor (Diyarbakır)",
@@ -177,9 +178,19 @@ export default function MatchWeekendsPanel({
   }
 
   async function handleDelete(ev: MatchEvent) {
-    if (!confirm(`"${ev.title}" kaydını silmek istediğinize emin misiniz?`)) return;
+    const typed = prompt(`Bu kaydı kalıcı olarak silmek için başlığını aynen yazın:\n"${ev.title}"`);
+    if (typed === null) return;
+    if (typed !== ev.title) {
+      alert("Girilen başlık eşleşmedi, silme işlemi iptal edildi.");
+      return;
+    }
     const res = await fetch(`/api/match-events/${ev.id}`, { method: "DELETE" });
-    if (res.ok) await refresh();
+    if (res.ok) {
+      await refresh();
+    } else {
+      const data = await res.json().catch(() => null);
+      alert(data?.error || "Bir hata oluştu.");
+    }
   }
 
   const filtered = teamFilter === "all" ? events : events.filter((e) => e.team === teamFilter);
@@ -309,7 +320,7 @@ export default function MatchWeekendsPanel({
 
           {activeTab === "TR" && (
             <>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
             <select
               value={form.team}
               onChange={(e) => setForm({ ...form, team: e.target.value })}
@@ -339,7 +350,7 @@ export default function MatchWeekendsPanel({
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 12 }}>
             <input
               type="date"
               value={form.eventDate}
@@ -513,6 +524,16 @@ function EventRow({
             {ev.event_time && <> · {ev.event_time}</>}
             {ev.competition && <> · {ev.competition}</>}
             {ev.venue && <> · {ev.venue}</>}
+          </div>
+          <div style={{ marginTop: 6 }}>
+            <TranslationBadges
+              translated={{
+                DE: !!ev.translations?.DE?.title,
+                EN: !!ev.translations?.EN?.title,
+                KU: !!ev.translations?.KU?.title,
+                CKB: !!ev.translations?.CKB?.title,
+              }}
+            />
           </div>
         </div>
       </div>
