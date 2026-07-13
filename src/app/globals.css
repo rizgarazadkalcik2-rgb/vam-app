@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Bazı form input'ları (rezervasyon, giriş, acente paneli) inline style
+   ile outline:none uyguluyor — React inline style'da :focus pseudo-class
+   yazılamadığı için bu telafisiz kalıyor, klavye kullanıcısı hangi alanda
+   olduğunu göremiyor (WCAG 2.4.7). Global bir yedek odak halkası
+   tanımlıyoruz; !important gerekli çünkü inline style'lar normal bir CSS
+   seçicisinden her zaman daha yüksek özgüllüğe sahip. Admin panelindeki
+   .adm-content kuralı zaten kendi box-shadow halkasını kullanıyor, orada
+   çakışma olmaz. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid #c4522a !important;
+  outline-offset: 1px !important;
+}
