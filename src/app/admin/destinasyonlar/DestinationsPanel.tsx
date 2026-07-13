@@ -676,6 +676,10 @@ export default function DestinationsPanel({
               <div>
                 <label style={labelStyle}>Puan (1-5, opsiyonel)</label>
                 <input
+                  type="number"
+                  min={1}
+                  max={5}
+                  step="0.1"
                   value={form.rating}
                   onChange={(e) => setForm({ ...form, rating: e.target.value })}
                   placeholder="4.9"
@@ -685,6 +689,8 @@ export default function DestinationsPanel({
               <div>
                 <label style={labelStyle}>Değerlendirme Sayısı (opsiyonel)</label>
                 <input
+                  type="number"
+                  min={0}
                   value={form.reviews}
                   onChange={(e) => setForm({ ...form, reviews: e.target.value })}
                   placeholder="312"

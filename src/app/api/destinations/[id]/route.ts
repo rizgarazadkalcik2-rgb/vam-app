@@ -40,6 +40,19 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     );
   }
 
+  if (body.rating != null && body.rating !== "") {
+    const r = Number(body.rating);
+    if (!Number.isFinite(r) || r < 1 || r > 5) {
+      return NextResponse.json({ error: "Puan 1 ile 5 arasında olmalı." }, { status: 400 });
+    }
+  }
+  if (body.reviews != null && body.reviews !== "") {
+    const rv = Number(body.reviews);
+    if (!Number.isFinite(rv) || rv < 0) {
+      return NextResponse.json({ error: "Değerlendirme sayısı negatif olamaz." }, { status: 400 });
+    }
+  }
+
   const destination = await updateDestination(destId, {
     slug,
     name,
@@ -50,8 +63,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     unesco: !!body.unesco,
     tags: Array.isArray(body.tags) ? body.tags : [],
     imageUrl: body.imageUrl || null,
-    rating: body.rating ?? null,
-    reviews: body.reviews ?? null,
+    rating: body.rating != null && body.rating !== "" ? Number(body.rating) : null,
+    reviews: body.reviews != null && body.reviews !== "" ? Number(body.reviews) : null,
     history: Array.isArray(body.history) ? body.history : [],
     features: Array.isArray(body.features) ? body.features : [],
     visitLocation: body.visitLocation || null,
