@@ -28,6 +28,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     );
   }
 
+  if (!Number.isFinite(nights) || nights < 1 || !Number.isFinite(price) || price < 0) {
+    return NextResponse.json(
+      { error: "Gece sayısı en az 1, fiyat negatif olamaz." },
+      { status: 400 }
+    );
+  }
+
   if (!/^[a-z0-9-]+$/.test(slug)) {
     return NextResponse.json(
       { error: "Slug sadece küçük harf, rakam ve tire (-) içerebilir." },
