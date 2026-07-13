@@ -304,3 +304,19 @@
 .vc-mw-news-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
 .vc-mw-news-date { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.06em; color: var(--color-primary); margin-bottom: 6px; }
 .vc-mw-news-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* Hareket duyarlı (vestibular) kullanıcılar için: hover'daki transform
+   (translateY) hareketi kapatılır, geçiş süreleri neredeyse sıfıra iner.
+   Renk/gölge geçişleri (box-shadow, border-color) dokunulmadan kalır —
+   hareket hissi yaratmıyorlar, sorun değiller. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  .vc-card:hover,
+  .vc-mw-news-card:hover,
+  .vc-service-card:hover {
+    transform: none !important;
+  }
+}
