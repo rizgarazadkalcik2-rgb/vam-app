@@ -128,7 +128,7 @@ export default async function TeslimatHizmetSartlariPage() {
   const lang = await getLang();
 
   return (
-    <LegalLayout title={tt("title", lang)} updatedDate="28 Haziran 2026" lang={lang}>
+    <LegalLayout title={tt("title", lang)} updatedDate="2026-06-28" lang={lang}>
       <p>
         {tt("intro_pre", lang)} <strong>{tt("intro_strong", lang)}</strong>. {tt("intro_post", lang)}
       </p>

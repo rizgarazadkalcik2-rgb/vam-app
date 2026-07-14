@@ -269,6 +269,7 @@ export const DICT = {
     CKB: "تیمەکەمان بۆ هەنگاوی پارەدان لە ڕێگەی ئیمەیلەوە پەیوەندیت پێوە دەکات.",
   },
   rez_back_home: { TR: "Ana Sayfaya Dön", DE: "Zur Startseite", EN: "Back to Home", KU: "Vegere Serûpelê", CKB: "گەڕانەوە بۆ سەرەکی" },
+  legal_last_updated: { TR: "Son güncelleme", DE: "Letzte Aktualisierung", EN: "Last updated", KU: "Rojanekirina dawî", CKB: "دوایین نوێکردنەوە" },
 
   // 404 page
   nf_eyebrow: { TR: "404 — Sayfa Bulunamadı", DE: "404 — Seite nicht gefunden", EN: "404 — Page Not Found", KU: "404 — Rûpel Nehat Dîtin", CKB: "404 — پەڕە نەدۆزرایەوە" },
