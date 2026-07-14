@@ -69,10 +69,35 @@ export interface DestinationInput {
   longitude?: number | null;
 }
 
+// history/features gibi çok-öğeli alanlarda bir admin diziyi KISMEN çevirmiş
+// olabilir (örn. 4 features'tan sadece 2'si DE'ye çevrilmiş). Eskiden dizi
+// tamamen boş değilse tamamı "çevrilmiş" sayılıp öyle kullanılıyordu — bu da
+// çevrilmeyen öğelerin sessizce kaybolmasına yol açıyordu. Şimdi öğe
+// bazında karşılaştırıyoruz: her index için çeviri varsa onu, yoksa o
+// index'teki TR öğeyi kullanıyoruz.
+function mergeStringArray(translated: string[] | undefined, base: string[]): string[] {
+  if (!translated || !translated.length) return base;
+  return base.map((item, i) => (translated[i]?.trim() ? translated[i] : item));
+}
+
+function mergeFeatureArray(
+  translated: { title: string; body: string }[] | undefined,
+  base: { title: string; body: string }[]
+): { title: string; body: string }[] {
+  if (!translated || !translated.length) return base;
+  return base.map((item, i) => {
+    const tItem = translated[i];
+    return {
+      title: tItem?.title?.trim() ? tItem.title : item.title,
+      body: tItem?.body?.trim() ? tItem.body : item.body,
+    };
+  });
+}
+
 /**
  * DE/EN/KU/CKB çevirisi varsa onu, yoksa TR taban değerini döner — dictionary.ts'teki
  * t() ile aynı fallback mantığı. history/features (tarihçe ve öne çıkan özellikler)
- * de aynı şekilde localize edilir; çeviri yoksa TR metne düşer.
+ * de aynı şekilde localize edilir; çeviri yoksa TR metne düşer (öğe bazında, bkz. mergeStringArray/mergeFeatureArray).
  */
 export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
   const tr = lang === "TR" ? undefined : d.translations?.[lang];
@@ -82,8 +107,8 @@ export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" 
     region: tr?.region || d.region,
     era_display: tr?.eraDisplay || d.era_display,
     era_caption: tr?.eraCaption || d.era_caption,
-    history: tr?.history?.length ? tr.history : d.history,
-    features: tr?.features?.length ? tr.features : d.features,
+    history: mergeStringArray(tr?.history, d.history),
+    features: mergeFeatureArray(tr?.features, d.features),
     visit_location: tr?.visitLocation || d.visit_location,
     visit_nearest_city: tr?.visitNearestCity || d.visit_nearest_city,
     visit_duration: tr?.visitDuration || d.visit_duration,

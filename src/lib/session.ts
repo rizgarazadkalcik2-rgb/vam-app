@@ -3,14 +3,27 @@ import { cookies } from "next/headers";
 import { findUserById } from "./users";
 
 const JWT_SECRET_ENV = process.env.JWT_SECRET;
-if (!JWT_SECRET_ENV && process.env.NODE_ENV === "production") {
-  console.error(
-    "[GUVENLIK] JWT_SECRET ortam degiskeni tanimli degil — varsayilan (guvensiz) secret kullaniliyor! Vercel proje ayarlarindan JWT_SECRET eklenmeli."
-  );
+
+// GÜVENLİK: secret'i modül yüklenirken değil, ilk gerçek kullanımda (token
+// imzalama/doğrulama) hesaplıyoruz. Böylece `next build` sırasında bu modül
+// statik analiz için import edilirse (JWT_SECRET henüz build ortamına
+// enjekte edilmemiş olabilir) build çökmez — ama prodüksiyonda gerçek bir
+// isteğin secret'i KULLANMAYA çalıştığı an env değişkeni hâlâ eksikse,
+// bilinen/sabit bir secret'e sessizce düşmek yerine hemen fırlatıyoruz
+// (fail-closed). Eskiden eksik env değişkeninde kaynak kodda görünen sabit
+// bir dev-secret'a düşülüyordu — bu, imzası bilinen bir secret'le sahte
+// admin token'ı üretilebilmesi anlamına geliyordu.
+function getSecret(): Uint8Array {
+  if (!JWT_SECRET_ENV) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "[GUVENLIK] JWT_SECRET ortam degiskeni tanimli degil — Vercel proje ayarlarindan eklenmeden oturum imzalama/dogrulama calismaz."
+      );
+    }
+    return new TextEncoder().encode("vam-dev-secret-change-in-production-please");
+  }
+  return new TextEncoder().encode(JWT_SECRET_ENV);
 }
-const SECRET = new TextEncoder().encode(
-  JWT_SECRET_ENV || "vam-dev-secret-change-in-production-please"
-);
 const COOKIE_NAME = "vam_session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 7; // 7 gün
 
@@ -27,14 +40,14 @@ export async function createSessionToken(payload: SessionPayload): Promise<strin
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${SESSION_DURATION_SECONDS}s`)
-    .sign(SECRET);
+    .sign(getSecret());
 }
 
 export async function verifySessionToken(
   token: string
 ): Promise<SessionPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, SECRET);
+    const { payload } = await jwtVerify(token, getSecret());
     return payload as unknown as SessionPayload;
   } catch {
     return null;

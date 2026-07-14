@@ -82,7 +82,7 @@ export default function BundlesClient({
           )}
           {initialDate && (
             <span style={{ marginInlineStart: 6, color: "var(--color-primary)", fontWeight: 600 }}>
-              · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : "tr-TR", { month: "long", year: "numeric" })}
+              · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr-TR", { month: "long", year: "numeric" })}
             </span>
           )}
         </p>

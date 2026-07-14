@@ -33,15 +33,28 @@ export async function listPlatformStats(): Promise<PlatformStat[]> {
 
 // Sıralamayı ve içeriği tek seferde, tam liste olarak günceller.
 // Basit tutmak için: mevcut tüm satırları silip yeniden ekler (sıra numarası dizideki konuma göre atanır).
+// DELETE + INSERT'ler tek transaction içinde — aradaki bir INSERT başarısız
+// olursa tablo boş kalmak yerine ROLLBACK ile önceki hâline döner (bu tablo
+// ana sayfadaki canlı istatistik şeridini besliyor).
 export async function replaceAllStats(items: PlatformStatInput[]): Promise<PlatformStat[]> {
   await ensureSchema();
-  await sql`DELETE FROM platform_stats;`;
-  for (let i = 0; i < items.length; i++) {
-    const s = items[i];
-    await sql`
-      INSERT INTO platform_stats (num, label_tr, label_de, label_en, label_ku, label_ckb, sort_order)
-      VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${s.labelEn || null}, ${s.labelKu || null}, ${s.labelCkb || null}, ${i});
-    `;
+  const client = await sql.connect();
+  try {
+    await client.sql`BEGIN`;
+    await client.sql`DELETE FROM platform_stats;`;
+    for (let i = 0; i < items.length; i++) {
+      const s = items[i];
+      await client.sql`
+        INSERT INTO platform_stats (num, label_tr, label_de, label_en, label_ku, label_ckb, sort_order)
+        VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${s.labelEn || null}, ${s.labelKu || null}, ${s.labelCkb || null}, ${i});
+      `;
+    }
+    await client.sql`COMMIT`;
+  } catch (err) {
+    await client.sql`ROLLBACK`;
+    throw err;
+  } finally {
+    client.release();
   }
   return listPlatformStats();
 }

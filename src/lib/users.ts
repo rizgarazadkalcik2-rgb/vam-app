@@ -163,6 +163,16 @@ export async function recordFailedLogin(id: string): Promise<void> {
   }
 }
 
+export async function bumpSessionVersion(id: string): Promise<void> {
+  await ensureSchema();
+  // Aktif JWT'yi sunucu tarafında anında geçersiz kılmak için kullanılır
+  // (bkz. logout route) — şifre değişimi/hesap devre dışı bırakmayla aynı
+  // mekanizma (session.ts getSession() session_version karşılaştırması).
+  await sql`
+    UPDATE users SET session_version = session_version + 1, updated_at = now() WHERE id = ${id};
+  `;
+}
+
 export async function resetFailedLogins(id: string): Promise<void> {
   await ensureSchema();
   await sql`

@@ -50,7 +50,7 @@ export default async function BundleDetailPage({
 
   const others = (await listActiveBundles()).filter((x) => x.slug !== b.slug).slice(0, 3).map((x) => localizeBundle(x, lang));
 
-  const questionSubject = encodeURIComponent(`Soru – ${b.title}`);
+  const questionSubject = encodeURIComponent(`${t("bundle_mailto_subject", lang)} – ${b.title}`);
 
   const jsonLd = {
     "@context": "https://schema.org",

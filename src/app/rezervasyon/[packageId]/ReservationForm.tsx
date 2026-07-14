@@ -197,7 +197,14 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
               type="number"
               min={1}
               value={guestCount}
-              onChange={(e) => setGuestCount(Math.max(1, Number(e.target.value)))}
+              onChange={(e) => {
+                // Alan boşaltıldığında veya geçici olarak geçersiz bir
+                // sayı içerdiğinde Number(...) NaN dönebilir — bu da fiyat
+                // özetinde "NaN ₺" gösterilmesine yol açardı. Her zaman
+                // geçerli, en az 1 olan bir tam sayıya sabitliyoruz.
+                const n = Math.floor(Number(e.target.value));
+                setGuestCount(Number.isFinite(n) ? Math.max(1, n) : 1);
+              }}
               style={inputStyle}
             />
           </label>

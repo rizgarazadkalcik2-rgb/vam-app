@@ -78,6 +78,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // --- Uzunluk sınırları: bu endpoint girişsiz/herkese açık, sınır olmadan
+  // çok büyük (MB boyutunda) değerler DB'yi şişirebilir. ---
+  if (
+    customerName.length > 200 ||
+    customerEmail.length > 254 ||
+    customerPhone.length > 40 ||
+    notes.length > 2000
+  ) {
+    return NextResponse.json(
+      { error: t("res_err_field_too_long", lang) },
+      { status: 400 }
+    );
+  }
+
   // --- E-posta format doğrulaması ---
   if (!EMAIL_REGEX.test(customerEmail)) {
     return NextResponse.json(
