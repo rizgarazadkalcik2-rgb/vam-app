@@ -43,6 +43,14 @@ export interface BundleInput {
   translations?: BundleTranslations;
 }
 
+// includes dizisi kısmen çevrilmiş olabilir (bkz. destinations.ts'teki aynı
+// yorum) — öğe bazında karşılaştırıp çevrilmeyen öğelerde TR'ye düşüyoruz,
+// dizinin tamamını atlamıyoruz.
+function mergeStringArray(translated: string[] | undefined, base: string[]): string[] {
+  if (!translated || !translated.length) return base;
+  return base.map((item, i) => (translated[i]?.trim() ? translated[i] : item));
+}
+
 /**
  * DE/EN/KU/CKB çevirisi varsa onu, yoksa TR taban değerini döner —
  * destinations.ts'teki localizeDestination() ile aynı fallback mantığı.
@@ -53,7 +61,7 @@ export function localizeBundle(b: VamBundle, lang: "TR" | "DE" | "EN" | "KU" | "
     ...b,
     title: tr?.title || b.title,
     description: tr?.description || b.description,
-    includes: tr?.includes && tr.includes.length > 0 ? tr.includes : b.includes,
+    includes: mergeStringArray(tr?.includes, b.includes),
     badge: tr?.badge || b.badge,
   };
 }

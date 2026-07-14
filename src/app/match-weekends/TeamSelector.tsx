@@ -369,8 +369,8 @@ export default function TeamSelector({
     if (v === "Deplasman") return t("mw_venue_away", lang);
     return v;
   }
-  const subjectHero = encodeURIComponent(`Match Weekends – ${team.name} – Deneyim Talebi`);
-  const subjectItinerary = encodeURIComponent(`Match Weekends – ${team.name} – Kişisel Güzergah Talebi`);
+  const subjectHero = encodeURIComponent(`Match Weekends – ${team.name} – ${t("mw_mailto_subject_experience", lang)}`);
+  const subjectItinerary = encodeURIComponent(`Match Weekends – ${team.name} – ${t("mw_mailto_subject_itinerary", lang)}`);
 
   return (
     <>

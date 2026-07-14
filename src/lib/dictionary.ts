@@ -108,6 +108,7 @@ export const DICT = {
     CKB: "پاکێجی هەڵبژێردراو کە جێگە و ڕابەری تێدایە، لەگەڵ هاوبەشە ناوچەییەکان بە شێوازی هاوبەشکردنی داهات ئامادەکراوە.",
   },
   bundle_guests_suffix: { TR: "kişi", DE: "Personen", EN: "people", KU: "kes", CKB: "کەس" },
+  bundle_mailto_subject: { TR: "Soru", DE: "Frage", EN: "Question", KU: "Pirs", CKB: "پرسیار" },
   bundle_label_destination: { TR: "Destinasyon:", DE: "Destination:", EN: "Destination:", KU: "Cîh:", CKB: "شوێن:" },
   bundle_label_experience: { TR: "Deneyim:", DE: "Erlebnis:", EN: "Experience:", KU: "Ezmûn:", CKB: "ئەزموون:" },
   bundle_empty: { TR: "Bu kriterlere uygun paket bulunamadı.", DE: "Keine Pakete passen zu diesen Kriterien.", EN: "No packages match these criteria.", KU: "Li gorî van pîvanan tu pakêt nehat dîtin.", CKB: "هیچ پاکێجێک لەگەڵ ئەم پێوەرانە ناگونجێت." },
@@ -247,6 +248,7 @@ export const DICT = {
   res_err_name_email_required: { TR: "Ad ve e-posta gerekli.", DE: "Name und E-Mail sind erforderlich.", EN: "Name and email are required.", KU: "Nav û e-peyam pêwîst in.", CKB: "ناو و ئیمەیل پێویستن." },
   res_err_invalid_email: { TR: "Geçerli bir e-posta adresi girin.", DE: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", EN: "Please enter a valid email address.", KU: "Ji kerema xwe e-peyameke derbasdar binivîsin.", CKB: "تکایە ئیمەیلێکی دروست بنووسە." },
   res_err_guest_count: { TR: "Kişi sayısı geçersiz.", DE: "Ungültige Personenzahl.", EN: "Invalid guest count.", KU: "Hejmara mêvanan ne derbasdar e.", CKB: "ژمارەی میوان نادروستە." },
+  res_err_field_too_long: { TR: "Girilen bilgilerden biri çok uzun.", DE: "Eine der eingegebenen Angaben ist zu lang.", EN: "One of the entered fields is too long.", KU: "Yek ji zanyariyên hatine nivîsandin pir dirêj e.", CKB: "یەکێک لە زانیاریە داخڵکراوەکان زۆر درێژە." },
   res_err_invalid_date: { TR: "Geçersiz seyahat tarihi.", DE: "Ungültiges Reisedatum.", EN: "Invalid travel date.", KU: "Dîroka rêwîtiyê ne derbasdar e.", CKB: "بەرواری گەشت نادروستە." },
   res_err_past_date: { TR: "Seyahat tarihi geçmişte olamaz.", DE: "Das Reisedatum darf nicht in der Vergangenheit liegen.", EN: "Travel date cannot be in the past.", KU: "Dîroka rêwîtiyê nikare di paşerojê de be.", CKB: "بەرواری گەشت ناتوانێت لە ڕابردوودا بێت." },
   res_err_package_not_found: { TR: "Paket bulunamadı.", DE: "Paket nicht gefunden.", EN: "Package not found.", KU: "Pakêt nehat dîtin.", CKB: "پاکێج نەدۆزرایەوە." },
@@ -322,6 +324,8 @@ export const DICT = {
   mw_news_title: { TR: "Haberler & Kutlamalar", DE: "News & Feiern", EN: "News & Celebrations", KU: "Nûçe & Pîrozbahî", CKB: "هەواڵ و ئاهەنگ" },
   mw_venue_home: { TR: "İç saha", DE: "Heimspiel", EN: "Home", KU: "Malê", CKB: "ماڵەوە" },
   mw_venue_away: { TR: "Deplasman", DE: "Auswärts", EN: "Away", KU: "Derve", CKB: "دەرەوە" },
+  mw_mailto_subject_experience: { TR: "Deneyim Talebi", DE: "Erlebnisanfrage", EN: "Experience Request", KU: "Daxwaza Ezmûnê", CKB: "داواکاری ئەزموون" },
+  mw_mailto_subject_itinerary: { TR: "Kişisel Güzergah Talebi", DE: "Anfrage für individuelle Route", EN: "Personal Itinerary Request", KU: "Daxwaza Rêwîtiya Kesane", CKB: "داواکاری ڕێڕەوی کەسی" },
 
   // Site-wide meta
   meta_site_desc: {

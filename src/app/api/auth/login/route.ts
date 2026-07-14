@@ -10,6 +10,12 @@ import {
 import { createSessionToken, setSessionCookie } from "@/lib/session";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
 
+// Zamanlama yan-kanalını kapatmak için: kullanıcı bulunamadığında da gerçek
+// bir bcrypt.compare çalıştırıyoruz (bu sabit hash'e karşı) — aksi halde
+// var olmayan kullanıcı adları var olanlara göre çok daha hızlı 401 döner ve
+// bu fark, yanıt süresi ölçülerek kullanıcı adı numaralandırmasına izin verir.
+const DUMMY_HASH = "$2b$10$D7sUuwUeK89zq.vIDKIsRuPsMeI2SWpr1GSlZSQQ1MvxUxWUlZRna";
+
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
   const { allowed, remainingMs } = await rateLimit(`login:${ip}`, 10, 5 * 60 * 1000); // 5 dakikada 10 deneme
@@ -34,6 +40,7 @@ export async function POST(req: NextRequest) {
 
   const user = await findUserByUsername(username);
   if (!user || user.status === "disabled") {
+    await bcrypt.compare(password, DUMMY_HASH);
     return NextResponse.json(
       { error: "Kullanıcı adı veya şifre hatalı." },
       { status: 401 }
