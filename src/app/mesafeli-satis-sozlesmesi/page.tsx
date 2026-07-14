@@ -173,7 +173,7 @@ export default async function MesafeliSatisSozlesmesiPage() {
   const lang = await getLang();
 
   return (
-    <LegalLayout title={tt("title", lang)} updatedDate="28 Haziran 2026" lang={lang}>
+    <LegalLayout title={tt("title", lang)} updatedDate="2026-06-28" lang={lang}>
       <p>{tt("intro", lang)}</p>
 
       <h2>{tt("s1_title", lang)}</h2>

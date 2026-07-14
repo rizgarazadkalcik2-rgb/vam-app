@@ -2,6 +2,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { t, type Lang } from "@/lib/dictionary";
 
+// Intl.DateTimeFormat her zaman "en yakın desteklenen locale"ye düşer, asla
+// fırlatmaz — ku/ckb için de doğru ay adı ve rakamlarla biçimlendiriyor.
+const LEGAL_DATE_LOCALES: Record<Lang, string> = {
+  TR: "tr-TR",
+  DE: "de-DE",
+  EN: "en-US",
+  KU: "ku",
+  CKB: "ckb",
+};
+
+function formatLegalDate(isoDate: string, lang: Lang): string {
+  try {
+    return new Intl.DateTimeFormat(LEGAL_DATE_LOCALES[lang], {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(isoDate));
+  } catch {
+    return isoDate;
+  }
+}
+
 export default function LegalLayout({
   title,
   updatedDate,
@@ -9,6 +31,7 @@ export default function LegalLayout({
   lang = "TR",
 }: {
   title: string;
+  /** ISO tarih (örn. "2026-06-28") — dile göre biçimlendirilir, hardcoded Türkçe tarih string'i DEĞİL. */
   updatedDate: string;
   children: React.ReactNode;
   lang?: Lang;
@@ -67,7 +90,7 @@ export default function LegalLayout({
           {title}
         </h1>
         <p style={{ fontSize: 13, color: "#8c8275", marginBottom: 40 }}>
-          Son güncelleme: {updatedDate}
+          {t("legal_last_updated", lang)}: {formatLegalDate(updatedDate, lang)}
         </p>
 
         <div

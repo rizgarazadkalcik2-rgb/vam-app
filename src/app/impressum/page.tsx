@@ -72,7 +72,7 @@ export default async function ImpressumPage() {
   const lang = await getLang();
 
   return (
-    <LegalLayout title={tt("title", lang)} updatedDate="6 Temmuz 2026" lang={lang}>
+    <LegalLayout title={tt("title", lang)} updatedDate="2026-07-06" lang={lang}>
       <h2>{tt("s1_title", lang)}</h2>
       <p>
         Narin Kalçık <span style={{ color: "#8c8275" }}>{tt("sole_proprietor", lang)}</span>
