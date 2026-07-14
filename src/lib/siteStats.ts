@@ -23,6 +23,20 @@ export interface PlatformStatInput {
   labelCkb?: string | null;
 }
 
+// announcement.ts'teki localizeAnnouncement() ile aynı desen — bkz. o dosyadaki yorum.
+export function localizePlatformStat(s: PlatformStat, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
+  const label =
+    lang === "DE" ? s.label_de :
+    lang === "EN" ? s.label_en :
+    lang === "KU" ? s.label_ku :
+    lang === "CKB" ? s.label_ckb :
+    s.label_tr;
+  return {
+    ...s,
+    label: label || s.label_tr,
+  };
+}
+
 export async function listPlatformStats(): Promise<PlatformStat[]> {
   await ensureSchema();
   const { rows } = await sql<PlatformStat>`

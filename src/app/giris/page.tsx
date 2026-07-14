@@ -141,6 +141,8 @@ export default function GirisPage() {
 
         {error && (
           <div
+            role="alert"
+            aria-live="assertive"
             style={{
               background: "rgba(196,82,42,0.15)",
               border: "1px solid rgba(196,82,42,0.4)",

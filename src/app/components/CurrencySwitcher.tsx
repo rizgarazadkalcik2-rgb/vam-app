@@ -29,6 +29,7 @@ export default function CurrencySwitcher({ currency }: { currency: Currency }) {
             className={`vc-lang-switcher-btn${opt.code === currency ? " active" : ""}`}
             onClick={() => selectCurrency(opt.code)}
             aria-current={opt.code === currency}
+            aria-label={opt.code}
           >
             {opt.symbol}
           </button>

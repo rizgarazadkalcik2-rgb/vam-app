@@ -184,7 +184,7 @@
 .vc-features { margin-top: 36px; }
 .vc-feature { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
 .vc-feature:last-child { border-bottom: none; }
-.vc-feature h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.vc-feature h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .vc-feature p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
 
 .vc-sidebar-card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 24px; position: sticky; top: 90px; margin-bottom: 18px; }

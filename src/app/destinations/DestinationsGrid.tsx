@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { localizeDestination, type VamDestination } from "@/lib/destinations";
 import { chip, t, type Lang } from "@/lib/dictionary";
 import SmartImage from "@/app/components/SmartImage";
@@ -46,7 +47,7 @@ export default function DestinationsGrid({
           {filtered.map((raw) => {
             const d = localizeDestination(raw, lang);
             return (
-              <a key={d.id} className="vc-card" href={`/destinations/${d.slug}`}>
+              <Link key={d.id} className="vc-card" href={`/destinations/${d.slug}`}>
                 <div className="vc-card-media">
                   {d.image_url ? (
                     <SmartImage
@@ -69,7 +70,7 @@ export default function DestinationsGrid({
                   </div>
                   <div className="vc-card-meta">{d.era_display || d.era}</div>
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>

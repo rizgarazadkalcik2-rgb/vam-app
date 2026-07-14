@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { getDestinationBySlug, listActiveDestinations, localizeDestination } from "@/lib/destinations";
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
@@ -93,7 +94,7 @@ export default async function DestinationDetailPage({
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <a href="/">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/destinations">{t("all_destinations", lang)}</a> {t("breadcrumb_sep", lang)} {d.name}
+        <Link href="/">{t("breadcrumb_home", lang)}</Link> {t("breadcrumb_sep", lang)} <Link href="/destinations">{t("all_destinations", lang)}</Link> {t("breadcrumb_sep", lang)} {d.name}
       </div>
 
       <div className="vc-hero">
@@ -127,9 +128,9 @@ export default async function DestinationDetailPage({
 
       <div className="vc-layout">
         <main>
-          <a className="vc-back" href="/destinations">
+          <Link className="vc-back" href="/destinations">
             {t("dest_back", lang)}
-          </a>
+          </Link>
           {history[0] && <p className="vc-lead">{history[0]}</p>}
           {history.slice(1).map((p, i) => (
             <p key={i} className="vc-p">
@@ -139,10 +140,10 @@ export default async function DestinationDetailPage({
 
           {features.length > 0 && (
             <div className="vc-features">
-              <div className="vc-section-label">{t("dest_features_title", lang)}</div>
+              <h2 className="vc-section-label">{t("dest_features_title", lang)}</h2>
               {features.map((f, i) => (
                 <div key={i} className="vc-feature">
-                  <h4>{f.title}</h4>
+                  <h3>{f.title}</h3>
                   <p>{f.body}</p>
                 </div>
               ))}
@@ -182,16 +183,16 @@ export default async function DestinationDetailPage({
                 <span>{d.visit_best_time}</span>
               </div>
             )}
-            <a className="vc-btn-cta" style={{ display: "block", textAlign: "center", marginTop: 18 }} href="/bundles">
+            <Link className="vc-btn-cta" style={{ display: "block", textAlign: "center", marginTop: 18 }} href="/bundles">
               {t("dest_related_bundles_btn", lang)}
-            </a>
+            </Link>
           </div>
 
           {related.length > 0 && (
             <div className="vc-sidebar-card">
-              <div className="vc-section-label">{t("dest_related_title", lang)}</div>
+              <h2 className="vc-section-label">{t("dest_related_title", lang)}</h2>
               {related.map((r) => (
-                <a key={r.slug} className="vc-related-card" href={`/destinations/${r.slug}`}>
+                <Link key={r.slug} className="vc-related-card" href={`/destinations/${r.slug}`}>
                   {r.image_url ? (
                     <SmartImage className="vc-related-thumb" src={r.image_url} alt={r.name} width={52} height={52} />
                   ) : (
@@ -201,7 +202,7 @@ export default async function DestinationDetailPage({
                     <div className="vc-related-name">{r.name}</div>
                     <div className="vc-related-region">{r.region}</div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           )}
