@@ -241,7 +241,7 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
           </div>
 
           {error && (
-            <div style={{ color: "#a64022", fontSize: 12.5, marginBottom: 16 }}>{error}</div>
+            <div role="alert" aria-live="assertive" style={{ color: "#a64022", fontSize: 12.5, marginBottom: 16 }}>{error}</div>
           )}
 
           <button

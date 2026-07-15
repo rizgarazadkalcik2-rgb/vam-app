@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { localizeBundle, type VamBundle } from "@/lib/bundles";
 import { chip, t, type Lang } from "@/lib/dictionary";
 import { formatPrice, type Currency } from "@/lib/currency";
@@ -147,7 +148,7 @@ export default function BundlesClient({
           {filtered.map((raw) => {
             const b = localizeBundle(raw, lang);
             return (
-              <a key={b.id} className="vc-card" href={`/bundles/${b.slug}`}>
+              <Link key={b.id} className="vc-card" href={`/bundles/${b.slug}`}>
                 <div className="vc-card-media">
                   {b.image_url ? (
                     <SmartImage
@@ -185,7 +186,7 @@ export default function BundlesClient({
                     <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{t("bundle_per_person", lang)}</span>
                   </div>
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>

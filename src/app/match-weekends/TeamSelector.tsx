@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { t, type Lang } from "@/lib/dictionary";
 import { localizeMatchEvent, type MatchEvent } from "@/lib/matchEvents";
 import SmartImage from "@/app/components/SmartImage";
@@ -482,9 +483,9 @@ export default function TeamSelector({
               <a className="vc-btn-cta" href={`mailto:info@visitvam.com?subject=${subjectItinerary}`}>
                 {t("mw_plan_week", lang)}
               </a>
-              <a className="vc-btn-cta-ghost" href="/bundles">
+              <Link className="vc-btn-cta-ghost" href="/bundles">
                 {t("mw_view_routes", lang)}
-              </a>
+              </Link>
             </div>
           </div>
           <div className="vc-mw-band-card">

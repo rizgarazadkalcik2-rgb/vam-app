@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { t, type Lang } from "@/lib/dictionary";
 import type { Currency } from "@/lib/currency";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -11,20 +12,20 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
 
   const links = (
     <>
-      <a href="/">{t("nav_home", lang)}</a>
-      <a href="/destinations">{t("nav_destinations", lang)}</a>
-      <a href="/bundles">{t("nav_bundles", lang)}</a>
-      <a href="/experiences">{t("nav_experiences", lang)}</a>
-      <a href="/match-weekends">{t("nav_matchweekends", lang)}</a>
-      <a href="/about">{t("nav_about", lang)}</a>
+      <Link href="/">{t("nav_home", lang)}</Link>
+      <Link href="/destinations">{t("nav_destinations", lang)}</Link>
+      <Link href="/bundles">{t("nav_bundles", lang)}</Link>
+      <Link href="/experiences">{t("nav_experiences", lang)}</Link>
+      <Link href="/match-weekends">{t("nav_matchweekends", lang)}</Link>
+      <Link href="/about">{t("nav_about", lang)}</Link>
     </>
   );
 
   return (
     <nav className="vc-navbar">
-      <a className="vc-logo" href="/">
+      <Link className="vc-logo" href="/">
         VAM<small>Visit Anatolia &amp; Mesopotamia</small>
-      </a>
+      </Link>
 
       <button
         className={`vc-nav-toggle${open ? " open" : ""}`}
@@ -40,15 +41,15 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
         <LanguageSwitcher lang={lang} />
         <CurrencySwitcher currency={currency} />
       </div>
-      <a className="vc-btn-cta" href="/bundles">
+      <Link className="vc-btn-cta" href="/bundles">
         {t("nav_cta", lang)}
-      </a>
+      </Link>
 
       <div className={`vc-nav-mobile-panel${open ? " open" : ""}`} onClick={() => setOpen(false)}>
         {links}
-        <a className="vc-btn-cta" href="/bundles">
+        <Link className="vc-btn-cta" href="/bundles">
           {t("nav_cta", lang)}
-        </a>
+        </Link>
         <div className="vc-switcher-group">
           <LanguageSwitcher lang={lang} />
           <CurrencySwitcher currency={currency} />

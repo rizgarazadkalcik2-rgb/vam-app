@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { getBundleBySlug, listActiveBundles, localizeBundle } from "@/lib/bundles";
 import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
@@ -89,7 +90,7 @@ export default async function BundleDetailPage({
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <a href="/">{t("breadcrumb_home", lang)}</a> {t("breadcrumb_sep", lang)} <a href="/bundles">{t("all_bundles", lang)}</a> {t("breadcrumb_sep", lang)} {b.title}
+        <Link href="/">{t("breadcrumb_home", lang)}</Link> {t("breadcrumb_sep", lang)} <Link href="/bundles">{t("all_bundles", lang)}</Link> {t("breadcrumb_sep", lang)} {b.title}
       </div>
 
       <div className="vc-hero">
@@ -115,13 +116,13 @@ export default async function BundleDetailPage({
 
       <div className="vc-layout">
         <main>
-          <a className="vc-back" href="/bundles">
+          <Link className="vc-back" href="/bundles">
             {t("bundle_back", lang)}
-          </a>
+          </Link>
           <p className="vc-lead">{b.description}</p>
 
           <div className="vc-features">
-            <div className="vc-section-label">{t("bundle_route_title", lang)}</div>
+            <h2 className="vc-section-label">{t("bundle_route_title", lang)}</h2>
             <div className="vc-card-tags" style={{ marginBottom: 20 }}>
               {(b.destinations || []).map((dn) => (
                 <span key={dn} className="vc-card-pill">
@@ -130,7 +131,7 @@ export default async function BundleDetailPage({
               ))}
             </div>
 
-            <div className="vc-section-label">{t("bundle_includes_title", lang)}</div>
+            <h2 className="vc-section-label">{t("bundle_includes_title", lang)}</h2>
             <ul className="vc-checklist">
               {(b.includes || []).map((inc) => (
                 <li key={inc}>{inc}</li>
@@ -162,13 +163,13 @@ export default async function BundleDetailPage({
               <span>{(b.destinations || []).length} {t("bundle_point_suffix", lang)}</span>
             </div>
 
-            <a
+            <Link
               className="vc-btn-cta"
               style={{ display: "block", textAlign: "center", marginTop: 18 }}
               href={`/rezervasyon/bundle/${b.id}`}
             >
               {t("bundle_book_now", lang)}
-            </a>
+            </Link>
             <a
               href={`mailto:info@visitvam.com?subject=${questionSubject}`}
               style={{
@@ -189,9 +190,9 @@ export default async function BundleDetailPage({
 
           {others.length > 0 && (
             <div className="vc-sidebar-card">
-              <div className="vc-section-label">{t("bundle_other_routes", lang)}</div>
+              <h2 className="vc-section-label">{t("bundle_other_routes", lang)}</h2>
               {others.map((o) => (
-                <a key={o.slug} className="vc-related-card" href={`/bundles/${o.slug}`}>
+                <Link key={o.slug} className="vc-related-card" href={`/bundles/${o.slug}`}>
                   {o.image_url ? (
                     <SmartImage className="vc-related-thumb" src={o.image_url} alt={o.title} width={52} height={52} />
                   ) : (
@@ -203,7 +204,7 @@ export default async function BundleDetailPage({
                       {formatPrice(Number(o.price), currency)} · {o.nights} {t("bundle_night", lang)}
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           )}

@@ -33,6 +33,32 @@ export interface AnnouncementInput {
   linkLabelCkb?: string | null;
 }
 
+// destinations.ts/bundles.ts'teki localizeX() fonksiyonlarıyla aynı desen —
+// diğer içerik tiplerinden farklı olarak tek bir translations JSONB sütunu
+// yerine düz per-dil sütunlar (body_de, body_en, ...) kullanıyor, ama
+// fallback mantığı (çeviri yoksa TR'ye düş) aynı. Bunu burada merkezileştirmek,
+// gelecekteki her tüketicinin "field_en || field_tr" mantığını kendi
+// başına hatırlamasını gerektirmez.
+export function localizeAnnouncement(a: Announcement, lang: "TR" | "DE" | "EN" | "KU" | "CKB") {
+  const body =
+    lang === "DE" ? a.body_de :
+    lang === "EN" ? a.body_en :
+    lang === "KU" ? a.body_ku :
+    lang === "CKB" ? a.body_ckb :
+    a.body_tr;
+  const linkLabel =
+    lang === "DE" ? a.link_label_de :
+    lang === "EN" ? a.link_label_en :
+    lang === "KU" ? a.link_label_ku :
+    lang === "CKB" ? a.link_label_ckb :
+    a.link_label_tr;
+  return {
+    ...a,
+    body: body || a.body_tr,
+    linkLabel: linkLabel || a.link_label_tr,
+  };
+}
+
 export async function getAnnouncement(): Promise<Announcement> {
   await ensureSchema();
   const { rows } = await sql<Announcement>`SELECT * FROM announcement WHERE id = 1 LIMIT 1;`;
