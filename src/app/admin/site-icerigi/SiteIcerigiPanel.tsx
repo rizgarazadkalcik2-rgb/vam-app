@@ -141,20 +141,25 @@ function StatsEditor({ initialStats }: { initialStats: PlatformStat[] }) {
         labelCkb: r.labelCkb.trim(),
       })),
     };
-    const res = await fetch("/api/site-stats", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    setSaving(false);
-    if (!res.ok) {
-      setError(data.error || "Bir hata oluştu.");
-      return;
+    try {
+      const res = await fetch("/api/site-stats", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+      setRows(statsToRows(data.stats));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setSaving(false);
     }
-    setRows(statsToRows(data.stats));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
   }
 
   return (
@@ -291,20 +296,25 @@ function SectionsEditor({ initialSections }: { initialSections: PageSection[] })
       page: "platform",
       sections: rows.map((r) => ({ sectionKey: r.sectionKey, enabled: r.enabled })),
     };
-    const res = await fetch("/api/page-sections", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    setSaving(false);
-    if (!res.ok) {
-      setError(data.error || "Bir hata oluştu.");
-      return;
+    try {
+      const res = await fetch("/api/page-sections", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+      setRows(sectionsToRows(data.sections));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setSaving(false);
     }
-    setRows(sectionsToRows(data.sections));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
   }
 
   return (
@@ -383,32 +393,37 @@ function AnnouncementEditor({ initial }: { initial: Announcement }) {
     setSaving(true);
     setError("");
     setSaved(false);
-    const res = await fetch("/api/announcement", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        active,
-        bodyTr,
-        bodyDe,
-        bodyEn,
-        bodyKu,
-        bodyCkb,
-        linkUrl,
-        linkLabelTr,
-        linkLabelDe,
-        linkLabelEn,
-        linkLabelKu,
-        linkLabelCkb,
-      }),
-    });
-    const data = await res.json();
-    setSaving(false);
-    if (!res.ok) {
-      setError(data.error || "Bir hata oluştu.");
-      return;
+    try {
+      const res = await fetch("/api/announcement", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          active,
+          bodyTr,
+          bodyDe,
+          bodyEn,
+          bodyKu,
+          bodyCkb,
+          linkUrl,
+          linkLabelTr,
+          linkLabelDe,
+          linkLabelEn,
+          linkLabelKu,
+          linkLabelCkb,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setSaving(false);
     }
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
   }
 
   return (

@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Lang } from "@/lib/dictionary";
 import { t } from "@/lib/dictionary";
 import { formatPrice, type Currency } from "@/lib/currency";
+import SmartImage from "@/app/components/SmartImage";
 
 /** Normalized shape so the same form serves both packages and bundles. */
 export type ReservationItem = {
@@ -110,27 +111,21 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
         {item.imageUrl && (
           <div
             style={{
+              position: "relative",
               width: "100%",
               height: 200,
               background: "#f6f0e4",
               borderRadius: 8,
               marginBottom: 20,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
               overflow: "hidden",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <SmartImage
               src={item.imageUrl}
               alt={item.title}
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-                display: "block",
-              }}
+              fill
+              sizes="(max-width: 480px) 100vw, 480px"
+              style={{ objectFit: "contain" }}
             />
           </div>
         )}

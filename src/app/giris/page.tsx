@@ -21,16 +21,19 @@ export default function GirisPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Giriş başarısız.");
-        setLoading(false);
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.redirect) {
+        setError(data?.error || "Giriş başarısız.");
         return;
       }
       router.push(data.redirect);
       router.refresh();
     } catch {
       setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      // Başarılı girişte router.push sayfadan uzaklaştırır, bu satır zararsızdır;
+      // ama redirect hiç gerçekleşmezse (ör. data.redirect eksikse) buton
+      // "Giriş yapılıyor..." durumunda kalıcı takılı kalmaz.
       setLoading(false);
     }
   }

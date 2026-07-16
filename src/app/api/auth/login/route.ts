@@ -28,8 +28,18 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
-  const username = body?.username?.trim();
-  const password = body?.password;
+  // typeof kontrolü .trim()/bcrypt.compare çağrılarından ÖNCE yapılmalı —
+  // username/password JSON'da sayı/obje/dizi olarak gelirse (örn. {"password":12345678})
+  // bu metodlar TypeError fırlatır: .trim() sayılarda yok, bcrypt.compare de
+  // string olmayan bir argümanla reddediyor (yakalanmamış bir Promise rejection).
+  if (typeof body?.username !== "string" || typeof body?.password !== "string") {
+    return NextResponse.json(
+      { error: "Kullanıcı adı ve şifre gerekli." },
+      { status: 400 }
+    );
+  }
+  const username = body.username.trim();
+  const password = body.password;
 
   if (!username || !password) {
     return NextResponse.json(

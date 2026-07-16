@@ -361,6 +361,17 @@ async function initSchema() {
     END $$;
   `;
 
+  // Varsayılan içeriğin sadece GERÇEKTEN ilk kurulumda tohumlandığını, bir
+  // admin bilerek listeyi boşalttıktan (replaceAllStats([])) sonra bir
+  // sonraki soğuk başlangıçta "tablo boş = hiç doldurulmamış" sanılıp
+  // varsayılanların sessizce geri gelmediğini garanti eden işaret tablosu.
+  await sql`
+    CREATE TABLE IF NOT EXISTS schema_seed_state (
+      key TEXT PRIMARY KEY,
+      seeded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
   // --- Site içeriği: Ana sayfa istatistik şeridi (yönetim panelinden düzenlenir) ---
   await sql`
     CREATE TABLE IF NOT EXISTS platform_stats (
@@ -380,22 +391,30 @@ async function initSchema() {
   await sql`ALTER TABLE platform_stats ADD COLUMN IF NOT EXISTS label_ku TEXT;`;
   await sql`ALTER TABLE platform_stats ADD COLUMN IF NOT EXISTS label_ckb TEXT;`;
 
-  const { rows: statsCount } = await sql`SELECT COUNT(*) as count FROM platform_stats;`;
-  if (Number(statsCount[0].count) === 0) {
-    const seedStats = [
-      { num: "12.000", labelTr: "Yıllık Tarih", labelDe: "Jahre Geschichte", labelEn: "Years of History", labelKu: "Salên Dîrokê", labelCkb: "ساڵانی مێژوو" },
-      { num: "6", labelTr: "Dil Desteği", labelDe: "Sprachen", labelEn: "Languages Supported", labelKu: "Piştgiriya Ziman", labelCkb: "پشتگیریی زمان" },
-      { num: "48+", labelTr: "Destinasyon", labelDe: "Destinationen", labelEn: "Destinations", labelKu: "Cihên Gerê", labelCkb: "شوێنی گەشتیاری" },
-      { num: "120+", labelTr: "Yerel Rehber", labelDe: "Lokale Guides", labelEn: "Local Guides", labelKu: "Rêberên Herêmî", labelCkb: "ڕابەری هەرێمی" },
-      { num: "4.8★", labelTr: "Ortalama Puan", labelDe: "Durchschnittsbewertung", labelEn: "Average Rating", labelKu: "Nirxa Navîn", labelCkb: "نرخاندنی ناوەند" },
-    ];
-    for (let i = 0; i < seedStats.length; i++) {
-      const s = seedStats[i];
-      await sql`
-        INSERT INTO platform_stats (num, label_tr, label_de, label_en, label_ku, label_ckb, sort_order)
-        VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${s.labelEn}, ${s.labelKu}, ${s.labelCkb}, ${i});
-      `;
+  const { rows: statsSeedMarker } = await sql`SELECT 1 FROM schema_seed_state WHERE key = 'platform_stats' LIMIT 1;`;
+  if (statsSeedMarker.length === 0) {
+    // Marker yoksa bu ya gerçekten ilk kurulum ya da bu satır bu koddan
+    // ÖNCE (sayım bazlı eski mantıkla) zaten doldurulmuş bir prod DB'si —
+    // count halen kontrol ediliyor ama marker'ı her durumda (tohumlasak da
+    // tohumlamasak da) yazıyoruz, böylece bir daha asla count'a bakılmıyor.
+    const { rows: statsCount } = await sql`SELECT COUNT(*) as count FROM platform_stats;`;
+    if (Number(statsCount[0].count) === 0) {
+      const seedStats = [
+        { num: "12.000", labelTr: "Yıllık Tarih", labelDe: "Jahre Geschichte", labelEn: "Years of History", labelKu: "Salên Dîrokê", labelCkb: "ساڵانی مێژوو" },
+        { num: "6", labelTr: "Dil Desteği", labelDe: "Sprachen", labelEn: "Languages Supported", labelKu: "Piştgiriya Ziman", labelCkb: "پشتگیریی زمان" },
+        { num: "48+", labelTr: "Destinasyon", labelDe: "Destinationen", labelEn: "Destinations", labelKu: "Cihên Gerê", labelCkb: "شوێنی گەشتیاری" },
+        { num: "120+", labelTr: "Yerel Rehber", labelDe: "Lokale Guides", labelEn: "Local Guides", labelKu: "Rêberên Herêmî", labelCkb: "ڕابەری هەرێمی" },
+        { num: "4.8★", labelTr: "Ortalama Puan", labelDe: "Durchschnittsbewertung", labelEn: "Average Rating", labelKu: "Nirxa Navîn", labelCkb: "نرخاندنی ناوەند" },
+      ];
+      for (let i = 0; i < seedStats.length; i++) {
+        const s = seedStats[i];
+        await sql`
+          INSERT INTO platform_stats (num, label_tr, label_de, label_en, label_ku, label_ckb, sort_order)
+          VALUES (${s.num}, ${s.labelTr}, ${s.labelDe}, ${s.labelEn}, ${s.labelKu}, ${s.labelCkb}, ${i});
+        `;
+      }
     }
+    await sql`INSERT INTO schema_seed_state (key) VALUES ('platform_stats') ON CONFLICT (key) DO NOTHING;`;
   }
 
   // Tek seferlik geriye dönük dolgu: tablo daha önce (EN/KU/CKB sütunları eklenmeden
@@ -429,15 +448,19 @@ async function initSchema() {
     );
   `;
 
-  const { rows: sectionsCount } = await sql`SELECT COUNT(*) as count FROM page_sections WHERE page = 'platform';`;
-  if (Number(sectionsCount[0].count) === 0) {
-    const seedSections = ["stats", "dest_strip", "experiences", "bundles", "why_vam", "cta", "lang_strip"];
-    for (let i = 0; i < seedSections.length; i++) {
-      await sql`
-        INSERT INTO page_sections (page, section_key, enabled, sort_order)
-        VALUES ('platform', ${seedSections[i]}, true, ${i});
-      `;
+  const { rows: sectionsSeedMarker } = await sql`SELECT 1 FROM schema_seed_state WHERE key = 'page_sections_platform' LIMIT 1;`;
+  if (sectionsSeedMarker.length === 0) {
+    const { rows: sectionsCount } = await sql`SELECT COUNT(*) as count FROM page_sections WHERE page = 'platform';`;
+    if (Number(sectionsCount[0].count) === 0) {
+      const seedSections = ["stats", "dest_strip", "experiences", "bundles", "why_vam", "cta", "lang_strip"];
+      for (let i = 0; i < seedSections.length; i++) {
+        await sql`
+          INSERT INTO page_sections (page, section_key, enabled, sort_order)
+          VALUES ('platform', ${seedSections[i]}, true, ${i});
+        `;
+      }
     }
+    await sql`INSERT INTO schema_seed_state (key) VALUES ('page_sections_platform') ON CONFLICT (key) DO NOTHING;`;
   }
 
   // --- Site içeriği: Haftalık duyuru / özel etkinlik şeridi (tekil kayıt) ---

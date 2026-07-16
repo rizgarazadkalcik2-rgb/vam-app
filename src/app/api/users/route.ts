@@ -24,9 +24,15 @@ export async function POST(req: NextRequest) {
   if (body === null) {
     return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
   }
-  const username = body?.username?.trim();
-  const password = body?.password;
-  const displayName = body?.displayName?.trim();
+  if (typeof body?.username !== "string" || typeof body?.password !== "string" || typeof body?.displayName !== "string") {
+    return NextResponse.json(
+      { error: "Kullanıcı adı, şifre ve görünen ad gerekli." },
+      { status: 400 }
+    );
+  }
+  const username = body.username.trim();
+  const password = body.password;
+  const displayName = body.displayName.trim();
   const role = body?.role === "admin" ? "admin" : "partner";
 
   if (!username || !password || !displayName) {

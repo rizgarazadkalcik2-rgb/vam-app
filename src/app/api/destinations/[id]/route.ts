@@ -11,6 +11,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const destId = Number(id);
+  if (!Number.isFinite(destId)) {
+    return NextResponse.json({ error: "Geçersiz destinasyon ID." }, { status: 400 });
+  }
   const body = await req.json().catch(() => null);
   if (body === null) {
     return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
@@ -52,6 +55,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (!Number.isFinite(rv) || rv < 0) {
       return NextResponse.json({ error: "Değerlendirme sayısı negatif olamaz." }, { status: 400 });
     }
+  }
+  if (body.latitude != null && body.latitude !== "" && !Number.isFinite(Number(body.latitude))) {
+    return NextResponse.json({ error: "Geçersiz enlem değeri." }, { status: 400 });
+  }
+  if (body.longitude != null && body.longitude !== "" && !Number.isFinite(Number(body.longitude))) {
+    return NextResponse.json({ error: "Geçersiz boylam değeri." }, { status: 400 });
   }
 
   try {
@@ -100,7 +109,11 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   }
 
   const { id } = await params;
-  const ok = await deleteDestination(Number(id));
+  const destId = Number(id);
+  if (!Number.isFinite(destId)) {
+    return NextResponse.json({ error: "Geçersiz destinasyon ID." }, { status: 400 });
+  }
+  const ok = await deleteDestination(destId);
   if (!ok) {
     return NextResponse.json({ error: "Destinasyon bulunamadı." }, { status: 404 });
   }

@@ -14,6 +14,7 @@ const T = {
   s1_title: { TR: "1. Taraflar", DE: "1. Vertragsparteien", EN: "1. Parties", KU: "1. Alî", CKB: "١. لایەنەکان" },
   seller_title: { TR: "Satıcı", DE: "Verkäufer", EN: "Seller", KU: "Firotkar", CKB: "فرۆشیار" },
   unvan_label: { TR: "Unvan", DE: "Firma", EN: "Business name", KU: "Nav", CKB: "ناو" },
+  sole_proprietor: { TR: "şahıs işletmesi", DE: "Einzelunternehmen", EN: "sole proprietorship", KU: "karsaziya takekesî", CKB: "کارگێڕی تاکەکەسی" },
   address_label: { TR: "Adres", DE: "Adresse", EN: "Address", KU: "Navnîşan", CKB: "ناونیشان" },
   tax_label: { TR: "Vergi Dairesi / VKN", DE: "Finanzamt / Steuernummer", EN: "Tax Office / Tax ID", KU: "Îdareya Bacê / Hejmara Bacê", CKB: "بەڕێوەبەرایەتی باج / ژمارەی باج" },
   email_label: { TR: "E-posta", DE: "E-Mail", EN: "Email", KU: "E-peyam", CKB: "ئیمەیل" },
@@ -179,7 +180,7 @@ export default async function MesafeliSatisSozlesmesiPage() {
       <h2>{tt("s1_title", lang)}</h2>
       <h3>{tt("seller_title", lang)}</h3>
       <p>
-        {tt("unvan_label", lang)}: Narin Kalçık ({lang === "DE" ? "Einzelunternehmen" : lang === "EN" ? "sole proprietorship" : lang === "KU" ? "karsaziya takekesî" : lang === "CKB" ? "کارگێڕی تاکەکەسی" : "şahıs işletmesi"})
+        {tt("unvan_label", lang)}: Narin Kalçık ({tt("sole_proprietor", lang)})
         <br />
         {tt("address_label", lang)}: Akköprü Mahallesi, Orta Sokak No: 68, Tuşba/Van, Türkiye
         <br />

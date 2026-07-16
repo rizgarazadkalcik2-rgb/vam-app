@@ -15,6 +15,10 @@ export async function PATCH(
   }
 
   const { id } = await params;
+  const eventId = Number(id);
+  if (!Number.isFinite(eventId)) {
+    return NextResponse.json({ error: "Geçersiz kayıt ID." }, { status: 400 });
+  }
   const body = await req.json().catch(() => null);
   if (body === null) {
     return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
@@ -30,7 +34,7 @@ export async function PATCH(
     return NextResponse.json({ error: "Geçersiz tarih formatı." }, { status: 400 });
   }
 
-  const event = await updateMatchEvent(Number(id), {
+  const event = await updateMatchEvent(eventId, {
     team,
     kind,
     title,
@@ -59,7 +63,11 @@ export async function DELETE(
     return NextResponse.json({ error: "Yetkiniz yok." }, { status: 403 });
   }
   const { id } = await params;
-  const ok = await deleteMatchEvent(Number(id));
+  const eventId = Number(id);
+  if (!Number.isFinite(eventId)) {
+    return NextResponse.json({ error: "Geçersiz kayıt ID." }, { status: 400 });
+  }
+  const ok = await deleteMatchEvent(eventId);
   if (!ok) {
     return NextResponse.json({ error: "Kayıt bulunamadı." }, { status: 404 });
   }

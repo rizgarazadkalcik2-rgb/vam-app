@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 
 const BLOB_HOST_SUFFIX = ".public.blob.vercel-storage.com";
 
@@ -16,7 +17,7 @@ function isOptimizable(url: string): boolean {
   }
 }
 
-type Props = { src: string; alt: string; className?: string } & (
+type Props = { src: string; alt: string; className?: string; style?: CSSProperties } & (
   | { fill: true; sizes: string; width?: never; height?: never }
   | { fill?: false; width: number; height: number; sizes?: never }
 );
@@ -27,14 +28,14 @@ type Props = { src: string; alt: string; className?: string } & (
  * fırlattığından, sadece Blob URL'leri optimize edilir — diğerleri eskisi
  * gibi düz <img> olarak render edilir (regresyon yok).
  */
-export default function SmartImage({ src, alt, className, ...rest }: Props) {
+export default function SmartImage({ src, alt, className, style, ...rest }: Props) {
   if (!isOptimizable(src)) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} className={className} />;
+    return <img src={src} alt={alt} className={className} style={style} />;
   }
   return rest.fill ? (
-    <Image src={src} alt={alt} fill sizes={rest.sizes} className={className} />
+    <Image src={src} alt={alt} fill sizes={rest.sizes} className={className} style={style} />
   ) : (
-    <Image src={src} alt={alt} width={rest.width} height={rest.height} className={className} />
+    <Image src={src} alt={alt} width={rest.width} height={rest.height} className={className} style={style} />
   );
 }

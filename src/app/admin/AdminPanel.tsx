@@ -62,20 +62,30 @@ export default function AdminPanel({
 
   async function toggleStatus(pkg: VamPackage) {
     const newStatus = pkg.status === "active" ? "inactive" : "active";
-    const res = await fetch(`/api/packages/${pkg.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: pkg.title,
-        destination: pkg.destination,
-        nights: pkg.nights,
-        priceTry: Number(pkg.price_try),
-        capacity: pkg.capacity,
-        description: pkg.description,
-        status: newStatus,
-      }),
-    });
-    if (res.ok) await refresh();
+    try {
+      const res = await fetch(`/api/packages/${pkg.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: pkg.title,
+          destination: pkg.destination,
+          nights: pkg.nights,
+          priceTry: Number(pkg.price_try),
+          capacity: pkg.capacity,
+          description: pkg.description,
+          status: newStatus,
+          imageUrl: pkg.image_url || undefined,
+        }),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Durum değiştirilemedi.");
+      }
+    } catch {
+      alert("Durum değiştirilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    }
   }
 
   function startCreate() {
@@ -111,19 +121,24 @@ export default function AdminPanel({
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    setUploading(false);
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json().catch(() => null);
 
-    if (!res.ok) {
-      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
-      return;
+      if (!res.ok) {
+        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        return;
+      }
+
+      setForm((f) => ({ ...f, imageUrl: data.url }));
+    } catch {
+      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setUploading(false);
     }
-
-    setForm((f) => ({ ...f, imageUrl: data.url }));
   }
 
   function cancelForm() {
@@ -167,22 +182,26 @@ export default function AdminPanel({
       payload.partnerName = selectedPartner.display_name;
     }
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error || "Bir hata oluştu.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+
+      cancelForm();
+      await refresh();
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    cancelForm();
-    setSubmitting(false);
-    await refresh();
   }
 
   const partnerGroups = packages.reduce<Record<string, VamPackage[]>>((acc, p) => {
@@ -372,7 +391,7 @@ export default function AdminPanel({
             <div style={{ display: "flex", gap: 10 }}>
               <button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || uploading}
                 style={{
                   padding: "9px 20px",
                   background: "#c4522a",

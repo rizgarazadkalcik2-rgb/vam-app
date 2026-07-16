@@ -21,15 +21,27 @@ export function defaultCurrencyForLang(lang: Lang): Currency {
   return "TRY";
 }
 
-/** Formats a TRY amount for display in the chosen currency — independent of interface language. */
-export function formatPrice(amountTry: number, currency: Currency): string {
+/**
+ * Converts a TRY amount to the chosen currency's rounded numeric value —
+ * no symbol/locale formatting. Use this (not formatPrice) anywhere the
+ * bare number is needed, e.g. structured data (JSON-LD Offer.price), where
+ * priceCurrency and price must describe the SAME amount or crawlers/rich
+ * results index a wildly wrong price.
+ */
+export function convertPrice(amountTry: number, currency: Currency): number {
   if (currency === "EUR") {
-    const eur = Math.round(amountTry / TRY_PER_EUR / EUR_ROUND_STEP) * EUR_ROUND_STEP;
-    return `${eur.toLocaleString("de-DE")} €`;
+    return Math.round(amountTry / TRY_PER_EUR / EUR_ROUND_STEP) * EUR_ROUND_STEP;
   }
   if (currency === "USD") {
-    const usd = Math.round(amountTry / TRY_PER_USD / USD_ROUND_STEP) * USD_ROUND_STEP;
-    return `$${usd.toLocaleString("en-US")}`;
+    return Math.round(amountTry / TRY_PER_USD / USD_ROUND_STEP) * USD_ROUND_STEP;
   }
-  return `₺${amountTry.toLocaleString("tr-TR")}`;
+  return amountTry;
+}
+
+/** Formats a TRY amount for display in the chosen currency — independent of interface language. */
+export function formatPrice(amountTry: number, currency: Currency): string {
+  const amount = convertPrice(amountTry, currency);
+  if (currency === "EUR") return `${amount.toLocaleString("de-DE")} €`;
+  if (currency === "USD") return `$${amount.toLocaleString("en-US")}`;
+  return `₺${amount.toLocaleString("tr-TR")}`;
 }

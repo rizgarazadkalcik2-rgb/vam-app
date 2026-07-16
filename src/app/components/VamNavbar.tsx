@@ -30,7 +30,7 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
       <button
         className={`vc-nav-toggle${open ? " open" : ""}`}
         onClick={() => setOpen((o) => !o)}
-        aria-label="Menu"
+        aria-label={t("nav_menu_label", lang)}
         aria-expanded={open}
       >
         <span /><span /><span />
