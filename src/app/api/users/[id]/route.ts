@@ -38,7 +38,7 @@ export async function PATCH(
   }
 
   if (body.newPassword) {
-    if (body.newPassword.length < 12) {
+    if (typeof body.newPassword !== "string" || body.newPassword.length < 12) {
       return NextResponse.json(
         { error: "Şifre en az 12 karakter olmalı." },
         { status: 400 }

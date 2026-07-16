@@ -23,7 +23,7 @@ export const TEAMS: Team[] = [
     name: "Amedspor",
     city: { TR: "Diyarbakır", DE: "Diyarbakır", EN: "Diyarbakır", KU: "Amed", CKB: "ئامەد" },
     letter: "A",
-    badge: { TR: "Amedspor Experience", DE: "Amedspor Experience", EN: "Amedspor Experience", CKB: "Amedspor Experience" },
+    badge: { TR: "Amedspor Experience", DE: "Amedspor Experience", EN: "Amedspor Experience", KU: "Amedspor Experience", CKB: "Amedspor Experience" },
     heroTitle: {
       TR: "Amed'in Yaşayan Tarihine ve Modern Kimliğine Bir Yolculuk",
       DE: "Eine Reise in Amed's lebendige Geschichte und moderne Identität",
@@ -86,7 +86,7 @@ export const TEAMS: Team[] = [
     name: "Vanspor FK",
     city: { TR: "Van", DE: "Van", EN: "Van", KU: "Wan", CKB: "وان" },
     letter: "V",
-    badge: { TR: "Vanspor Experience", DE: "Vanspor Experience", EN: "Vanspor Experience", CKB: "Vanspor Experience" },
+    badge: { TR: "Vanspor Experience", DE: "Vanspor Experience", EN: "Vanspor Experience", KU: "Vanspor Experience", CKB: "Vanspor Experience" },
     heroTitle: {
       TR: "Van'ın Gölü Kadar Derin Bir Kimliğe Yolculuk",
       DE: "Eine Reise in eine Identität, so tief wie der Vansee",
@@ -149,7 +149,7 @@ export const TEAMS: Team[] = [
     name: "Batman Petrol Spor",
     city: { TR: "Batman", DE: "Batman", EN: "Batman", KU: "Elih", CKB: "ئەلیح" },
     letter: "B",
-    badge: { TR: "Batman Petrol Spor Experience", DE: "Batman Petrol Spor Experience", EN: "Batman Petrol Spor Experience", CKB: "Batman Petrol Spor Experience" },
+    badge: { TR: "Batman Petrol Spor Experience", DE: "Batman Petrol Spor Experience", EN: "Batman Petrol Spor Experience", KU: "Batman Petrol Spor Experience", CKB: "Batman Petrol Spor Experience" },
     heroTitle: {
       TR: "Dicle'nin Kıyısında Yaşayan Bir Direnişe Yolculuk",
       DE: "Eine Reise zu einem lebendigen Widerstand am Ufer des Tigris",
@@ -212,7 +212,7 @@ export const TEAMS: Team[] = [
     name: "Mardin 1969 Spor",
     city: { TR: "Mardin", DE: "Mardin", EN: "Mardin", KU: "Mêrdîn", CKB: "مێردین" },
     letter: "M",
-    badge: { TR: "Mardin 1969 Experience", DE: "Mardin 1969 Experience", EN: "Mardin 1969 Experience", CKB: "Mardin 1969 Experience" },
+    badge: { TR: "Mardin 1969 Experience", DE: "Mardin 1969 Experience", EN: "Mardin 1969 Experience", KU: "Mardin 1969 Experience", CKB: "Mardin 1969 Experience" },
     heroTitle: {
       TR: "Taş Şehrin Sabrına ve Zarafetine Yolculuk",
       DE: "Eine Reise zur Geduld und Eleganz der Steinstadt",
@@ -275,7 +275,7 @@ export const TEAMS: Team[] = [
     name: "Iğdır FK",
     city: { TR: "Iğdır", DE: "Iğdır", EN: "Iğdır", KU: "Îgdir", CKB: "ئیگدیر" },
     letter: "I",
-    badge: { TR: "Iğdır FK Experience", DE: "Iğdır FK Experience", EN: "Iğdır FK Experience", CKB: "Iğdır FK Experience" },
+    badge: { TR: "Iğdır FK Experience", DE: "Iğdır FK Experience", EN: "Iğdır FK Experience", KU: "Iğdır FK Experience", CKB: "Iğdır FK Experience" },
     heroTitle: {
       TR: "Ağrı'nın Gölgesinde Büyüyen Bir Ovaya Yolculuk",
       DE: "Eine Reise in eine Ebene, die im Schatten des Ararat wächst",
@@ -348,7 +348,12 @@ export default function TeamSelector({
   const team = TEAMS[active];
 
   const locale = lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr-TR";
-  const today = new Date().toISOString().slice(0, 10);
+  // toISOString() UTC'ye göre "bugün"ü verir — UTC'nin doğusundaki ziyaretçilerde
+  // (DE, CKB kullanıcıları vb.) yerel gece yarısından sonraki ilk birkaç saat
+  // hâlâ UTC'de "dün" olabilir, bu da geçmiş bir maçın "yaklaşan" listede kalmasına
+  // yol açar. Yerel tarih bileşenlerinden (UTC'ye çevirmeden) oluşturuyoruz.
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const localizedEvents = events.map((e) => localizeMatchEvent(e, lang));
   const teamEvents = localizedEvents.filter((e) => e.team === team.slug);
   const fixtures = teamEvents.filter(
@@ -419,7 +424,7 @@ export default function TeamSelector({
 
       {fixtures.length > 0 && (
         <div className="vc-mw-fixtures">
-          <div className="vc-section-label">{t("mw_fixtures_title", lang)}</div>
+          <h2 className="vc-section-label">{t("mw_fixtures_title", lang)}</h2>
           <p className="vc-mw-fixtures-sub">{t("mw_fixtures_sub", lang)}</p>
           <div className="vc-mw-fixture-list">
             {fixtures.map((f) => (
@@ -445,7 +450,7 @@ export default function TeamSelector({
 
       {news.length > 0 && (
         <div className="vc-mw-news">
-          <div className="vc-section-label">{t("mw_news_title", lang)}</div>
+          <h2 className="vc-section-label">{t("mw_news_title", lang)}</h2>
           <div className="vc-mw-news-grid">
             {news.map((n) => (
               <div className="vc-mw-news-card" key={n.id}>
@@ -489,9 +494,9 @@ export default function TeamSelector({
             </div>
           </div>
           <div className="vc-mw-band-card">
-            <div className="vc-section-label" style={{ color: "var(--gold-300)" }}>
+            <h2 className="vc-section-label" style={{ color: "var(--gold-300)" }}>
               {t("mw_included_title", lang)}
-            </div>
+            </h2>
             <ul className="vc-checklist">
               {(team.included[lang] ?? team.included.TR).map((item) => (
                 <li key={item}>{item}</li>

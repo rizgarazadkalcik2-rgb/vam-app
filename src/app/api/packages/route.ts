@@ -33,7 +33,14 @@ export async function POST(req: NextRequest) {
   const nights = Number(body.nights) || 1;
   const priceTry = Number(body.priceTry) || 0;
   const capacity = Number(body.capacity) || 0;
-  if (nights < 1 || priceTry < 0 || capacity < 0) {
+  // `Infinity`/`-Infinity` her iki karşılaştırmayı da (<1, <0) geçebilir
+  // (Infinity < 1 false, ama -Infinity < 0 true olur) — Number.isFinite ile
+  // her iki uca karşı da koruma sağlanıyor (bundles/destinations route'larıyla aynı desen).
+  if (
+    !Number.isFinite(nights) || nights < 1 ||
+    !Number.isFinite(priceTry) || priceTry < 0 ||
+    !Number.isFinite(capacity) || capacity < 0
+  ) {
     return NextResponse.json(
       { error: "Gece sayısı en az 1, fiyat ve kontenjan negatif olamaz." },
       { status: 400 }
@@ -47,17 +54,21 @@ export async function POST(req: NextRequest) {
   const partnerName =
     session.role === "admin" && body.partnerName ? body.partnerName : session.displayName;
 
-  const created = await createPackage({
-    partnerId,
-    partnerName,
-    title: body.title,
-    destination: body.destination,
-    nights,
-    priceTry,
-    capacity,
-    description: body.description || "",
-    imageUrl: body.imageUrl || undefined,
-  });
-
-  return NextResponse.json({ package: created }, { status: 201 });
+  try {
+    const created = await createPackage({
+      partnerId,
+      partnerName,
+      title: body.title,
+      destination: body.destination,
+      nights,
+      priceTry,
+      capacity,
+      description: body.description || "",
+      imageUrl: body.imageUrl || undefined,
+    });
+    return NextResponse.json({ package: created }, { status: 201 });
+  } catch (err) {
+    console.error("[packages POST]", err);
+    return NextResponse.json({ error: "Paket oluşturulurken bir hata oluştu." }, { status: 500 });
+  }
 }

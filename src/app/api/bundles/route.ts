@@ -44,6 +44,9 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+  if (body.originalPrice && !Number.isFinite(Number(body.originalPrice))) {
+    return NextResponse.json({ error: "Geçersiz eski fiyat değeri." }, { status: 400 });
+  }
 
   if (!/^[a-z0-9-]+$/.test(slug)) {
     return NextResponse.json(

@@ -11,6 +11,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const bundleId = Number(id);
+  if (!Number.isFinite(bundleId)) {
+    return NextResponse.json({ error: "Geçersiz bundle ID." }, { status: 400 });
+  }
   const body = await req.json().catch(() => null);
   if (body === null) {
     return NextResponse.json({ error: "Geçersiz istek gövdesi." }, { status: 400 });
@@ -34,6 +37,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       { error: "Gece sayısı en az 1, fiyat negatif olamaz." },
       { status: 400 }
     );
+  }
+  if (body.originalPrice && !Number.isFinite(Number(body.originalPrice))) {
+    return NextResponse.json({ error: "Geçersiz eski fiyat değeri." }, { status: 400 });
   }
 
   if (!/^[a-z0-9-]+$/.test(slug)) {
@@ -86,7 +92,11 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   }
 
   const { id } = await params;
-  const result = await deleteBundle(Number(id));
+  const bundleId = Number(id);
+  if (!Number.isFinite(bundleId)) {
+    return NextResponse.json({ error: "Geçersiz bundle ID." }, { status: 400 });
+  }
+  const result = await deleteBundle(bundleId);
   if (!result.ok) {
     if (result.reservationCount) {
       return NextResponse.json(

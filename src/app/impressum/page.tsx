@@ -30,11 +30,11 @@ const T = {
   },
   s5_title: { TR: "Uyuşmazlıkların Çevrimiçi Çözümü", DE: "Online-Streitbeilegung", EN: "Online Dispute Resolution", KU: "Çareseriya Serhêl a Nakokiyan", CKB: "چارەسەری ئۆنلاینی ناکۆکی" },
   s5_body: {
-    TR: "Avrupa Birliği'nde ikamet eden tüketiciler, Avrupa Komisyonu'nun çevrimiçi uyuşmazlık çözüm platformuna şu bağlantıdan ulaşabilir:",
-    DE: "Verbraucher mit Wohnsitz in der Europäischen Union können die Online-Streitbeilegungsplattform der Europäischen Kommission über folgenden Link erreichen:",
-    EN: "Consumers residing in the European Union can access the European Commission's online dispute resolution platform here:",
-    KU: "Xerîdarên ku li Yekîtiya Ewropayê dijîn, dikarin bigihîjin platforma çareseriya nakokiyê ya serhêl a Komîsyona Ewropayê ji vê girêdanê:",
-    CKB: "بەکارهێنەرانی نیشتەجێ لە یەکێتی ئەوروپا دەتوانن لەم بەستەرەوە بگەنە پلاتفۆرمی چارەسەری ئۆنلاینی ناکۆکی کۆمیسیۆنی ئەوروپا:",
+    TR: "Avrupa Komisyonu, çevrimiçi uyuşmazlık çözüm (ODR) platformunu Temmuz 2025 itibarıyla kapatmıştır. Avrupa Birliği'nde ikamet eden tüketiciler, ulusal uyuşmazlık çözüm kuruluşları hakkında bilgiye aşağıdaki bağlantıdan ulaşabilir:",
+    DE: "Die Europäische Kommission hat ihre Plattform zur Online-Streitbeilegung (OS) im Juli 2025 eingestellt. Verbraucher mit Wohnsitz in der Europäischen Union finden Informationen zu nationalen Streitbeilegungsstellen unter folgendem Link:",
+    EN: "The European Commission discontinued its online dispute resolution (ODR) platform in July 2025. Consumers residing in the European Union can find information about national dispute resolution bodies at the following link:",
+    KU: "Komîsyona Ewropayê di Tîrmeha 2025an de platforma xwe ya çareseriya nakokiyê ya serhêl (ODR) girt. Xerîdarên ku li Yekîtiya Ewropayê dijîn, dikarin li ser saziyên neteweyî yên çareseriya nakokiyê agahiyan ji vê girêdanê bistînin:",
+    CKB: "کۆمیسیۆنی ئەوروپا لە تەمووزی ٢٠٢٥دا پلاتفۆرمی چارەسەری ئۆنلاینی ناکۆکی (ODR) ڕاگرت. بەکارهێنەرانی نیشتەجێ لە یەکێتی ئەوروپا دەتوانن زانیاری دەربارەی دەستە نیشتیمانییەکانی چارەسەری ناکۆکی لەم بەستەرەوە بەدەست بهێنن:",
   },
   s5_note: {
     TR: "Bu platforma katılma veya bu platform üzerinden uyuşmazlık çözme yükümlülüğümüz ya da isteğimiz bulunmamaktadır.",
@@ -100,8 +100,8 @@ export default async function ImpressumPage() {
       <h2>{tt("s5_title", lang)}</h2>
       <p>
         {tt("s5_body", lang)}{" "}
-        <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">
-          https://ec.europa.eu/consumers/odr
+        <a href="https://consumer-redress.ec.europa.eu/site-relocation_en" target="_blank" rel="noopener noreferrer">
+          https://consumer-redress.ec.europa.eu
         </a>
       </p>
       <p>{tt("s5_note", lang)}</p>

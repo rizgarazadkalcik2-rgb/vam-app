@@ -123,14 +123,19 @@ export default function MatchWeekendsPanel({
     setError("");
     const formData = new FormData();
     formData.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    const data = await res.json();
-    setUploading(false);
-    if (!res.ok) {
-      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
-      return;
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        return;
+      }
+      setForm((f) => ({ ...f, imageUrl: data.url }));
+    } catch {
+      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setUploading(false);
     }
-    setForm((f) => ({ ...f, imageUrl: data.url }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -140,41 +145,55 @@ export default function MatchWeekendsPanel({
 
     const url = editingId ? `/api/match-events/${editingId}` : "/api/match-events";
     const method = editingId ? "PATCH" : "POST";
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, translations: buildTranslations(form.translations) }),
-    });
-    const data = await res.json();
-    setSubmitting(false);
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, translations: buildTranslations(form.translations) }),
+      });
+      const data = await res.json().catch(() => null);
 
-    if (!res.ok) {
-      setError(data.error || "Bir hata oluştu.");
-      return;
+      if (!res.ok) {
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+      cancelForm();
+      await refresh();
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setSubmitting(false);
     }
-    cancelForm();
-    await refresh();
   }
 
   async function toggleStatus(ev: MatchEvent) {
-    const res = await fetch(`/api/match-events/${ev.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        team: ev.team,
-        kind: ev.kind,
-        title: ev.title,
-        eventDate: ev.event_date ? String(ev.event_date).slice(0, 10) : null,
-        eventTime: ev.event_time,
-        competition: ev.competition,
-        venue: ev.venue,
-        imageUrl: ev.image_url,
-        body: ev.body,
-        status: ev.status === "active" ? "inactive" : "active",
-        translations: ev.translations || {},
-      }),
-    });
-    if (res.ok) await refresh();
+    try {
+      const res = await fetch(`/api/match-events/${ev.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          team: ev.team,
+          kind: ev.kind,
+          title: ev.title,
+          eventDate: ev.event_date ? String(ev.event_date).slice(0, 10) : null,
+          eventTime: ev.event_time,
+          competition: ev.competition,
+          venue: ev.venue,
+          imageUrl: ev.image_url,
+          body: ev.body,
+          status: ev.status === "active" ? "inactive" : "active",
+          translations: ev.translations || {},
+        }),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Durum değiştirilemedi.");
+      }
+    } catch {
+      alert("Durum değiştirilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    }
   }
 
   async function handleDelete(ev: MatchEvent) {

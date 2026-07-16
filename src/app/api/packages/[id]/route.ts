@@ -12,6 +12,11 @@ export async function PATCH(
   }
 
   const { id } = await params;
+  const packageId = Number(id);
+  if (!Number.isFinite(packageId)) {
+    return NextResponse.json({ error: "Geçersiz paket ID." }, { status: 400 });
+  }
+
   const body = await req.json().catch(() => null);
   if (!body) {
     return NextResponse.json({ error: "Geçersiz veri." }, { status: 400 });
@@ -20,39 +25,48 @@ export async function PATCH(
   const nights = Number(body.nights) || 1;
   const priceTry = Number(body.priceTry) || 0;
   const capacity = Number(body.capacity) || 0;
-  if (nights < 1 || priceTry < 0 || capacity < 0) {
+  if (
+    !Number.isFinite(nights) || nights < 1 ||
+    !Number.isFinite(priceTry) || priceTry < 0 ||
+    !Number.isFinite(capacity) || capacity < 0
+  ) {
     return NextResponse.json(
       { error: "Gece sayısı en az 1, fiyat ve kontenjan negatif olamaz." },
       { status: 400 }
     );
   }
 
-  const updated = await updatePackage(
-    Number(id),
-    session.userId,
-    session.role === "admin",
-    {
-      title: body.title,
-      destination: body.destination,
-      nights,
-      priceTry,
-      capacity,
-      description: body.description || "",
-      status: body.status || "active",
-      imageUrl: body.imageUrl,
-      newPartnerId: body.newPartnerId,
-      newPartnerName: body.newPartnerName,
-    }
-  );
-
-  if (!updated) {
-    return NextResponse.json(
-      { error: "Paket bulunamadı veya yetkiniz yok." },
-      { status: 404 }
+  try {
+    const updated = await updatePackage(
+      packageId,
+      session.userId,
+      session.role === "admin",
+      {
+        title: body.title,
+        destination: body.destination,
+        nights,
+        priceTry,
+        capacity,
+        description: body.description || "",
+        status: body.status || "active",
+        imageUrl: body.imageUrl,
+        newPartnerId: body.newPartnerId,
+        newPartnerName: body.newPartnerName,
+      }
     );
-  }
 
-  return NextResponse.json({ package: updated });
+    if (!updated) {
+      return NextResponse.json(
+        { error: "Paket bulunamadı veya yetkiniz yok." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ package: updated });
+  } catch (err) {
+    console.error("[packages PATCH]", err);
+    return NextResponse.json({ error: "Paket güncellenirken bir hata oluştu." }, { status: 500 });
+  }
 }
 
 export async function DELETE(
@@ -65,8 +79,13 @@ export async function DELETE(
   }
 
   const { id } = await params;
+  const packageId = Number(id);
+  if (!Number.isFinite(packageId)) {
+    return NextResponse.json({ error: "Geçersiz paket ID." }, { status: 400 });
+  }
+
   const result = await deletePackage(
-    Number(id),
+    packageId,
     session.userId,
     session.role === "admin"
   );

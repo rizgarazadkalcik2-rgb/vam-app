@@ -159,14 +159,19 @@ export default function BundlesPanel({
     setError("");
     const formData = new FormData();
     formData.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    const data = await res.json();
-    setUploading(false);
-    if (!res.ok) {
-      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
-      return;
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        return;
+      }
+      setForm((f) => ({ ...f, imageUrl: data.url }));
+    } catch {
+      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setUploading(false);
     }
-    setForm((f) => ({ ...f, imageUrl: data.url }));
   }
 
   function startCreate() {
@@ -194,22 +199,26 @@ export default function BundlesPanel({
     const url = editingId ? `/api/bundles/${editingId}` : "/api/bundles";
     const method = editingId ? "PATCH" : "POST";
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error || "Bir hata oluştu.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+
+      setShowForm(false);
+      await refresh();
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    setSubmitting(false);
-    setShowForm(false);
-    await refresh();
   }
 
   async function handleDelete(b: VamBundle) {
@@ -527,7 +536,7 @@ export default function BundlesPanel({
             <div style={{ display: "flex", gap: 10 }}>
               <button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || uploading}
                 style={{
                   padding: "9px 20px",
                   background: "#c4522a",

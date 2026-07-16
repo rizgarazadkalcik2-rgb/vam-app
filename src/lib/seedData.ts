@@ -33,6 +33,10 @@ export interface SeedDestination {
         eraCaption?: string;
         history?: string[];
         features?: { title: string; body: string }[];
+        visitLocation?: string;
+        visitNearestCity?: string;
+        visitDuration?: string;
+        visitBestTime?: string;
       }
     >
   >;
@@ -75,7 +79,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Tierreliefs", "body": "Auf den Säulen sind Tierfiguren wie Schlangen, Skorpione, Füchse und Wildschweine im Relief dargestellt." },
           { "title": "Bau vor der Landwirtschaft", "body": "Die Erbauer betrieben noch keine Landwirtschaft — ein Beleg dafür, dass organisierte Gemeinschaftsarbeit schon vor der Landwirtschaft möglich war." },
           { "title": "Absichtliche Verfüllung", "body": "Die Bauwerke wurden zu einem bestimmten Zeitpunkt absichtlich mit Erde und Schutt verfüllt; der Grund dafür ist bis heute umstritten." }
-        ]
+        ],
+        "visitLocation": "Şanlıurfa, Bezirk Haliliye, Stadtteil Örencik",
+        "visitNearestCity": "Şanlıurfa Zentrum (~15 km)",
+        "visitDuration": "2-3 Stunden",
+        "visitBestTime": "Frühlings-/Herbstmorgen oder Sonnenuntergang"
       },
       "EN": {
         "region": "Şanlıurfa",
@@ -91,7 +99,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Animal reliefs", "body": "Animal figures such as snakes, scorpions, foxes, and wild boars are carved in relief on the pillars." },
           { "title": "Built before farming", "body": "The builders were not yet practicing agriculture — evidence that organized collective work was possible before farming began." },
           { "title": "Deliberate burial", "body": "At some point the structures were deliberately buried under earth and rubble; the reason remains debated." }
-        ]
+        ],
+        "visitLocation": "Şanlıurfa, Haliliye district, Örencik neighborhood",
+        "visitNearestCity": "Şanlıurfa city center (~15 km)",
+        "visitDuration": "2-3 hours",
+        "visitBestTime": "Spring/autumn morning or sunset"
       },
       "KU": {
         "region": "Riha",
@@ -107,9 +119,16 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Kelûşên heywanan", "body": "Li ser stûnan, wêneyên heywanan ên wek mar, dûpişk, rovî û berazê kovî bi teknîka kelûşê hatine xêzkirin." },
           { "title": "Avakirina berî çandiniyê", "body": "Avakerên vê avahiyê hêj bi çandiniyê re nebûn; ev nîşan dide ku xebata civakî ya organîzekirî berî çandiniyê jî pêkan bû." },
           { "title": "Veşartina bi mebest", "body": "Avahî di xalek de bi mebest bi ax û bermayiyan hatine veşartin; sedema vê hîn jî nakok e." }
-        ]
+        ],
+        "visitLocation": "Riha, navçeya Haliliyeyê, Taxa Örencikê",
+        "visitNearestCity": "Navenda Rihayê (~15 km)",
+        "visitDuration": "2-3 saet",
+        "visitBestTime": "Sibeha biharê/payizê an jî rojava"
       },
       "CKB": {
+        "region": "شانلیئۆرفا",
+        "eraDisplay": "٩٦٠٠ی پێش زایین",
+        "eraCaption": "بەرواری خەمڵێنراو",
         "history": [
           "گۆبەکلیتەپە، لە باکووری ڕۆژهەڵاتی شانلیئۆرفا، نزیکەی ١٥ کیلۆمەتر لە گوندی ئۆرەنجیکەوە، شوێنێکی شوێنەوارییە کە لەسەر گردێک بنیاتنراوە. پێدەچێت ئەم بیناکان لە نێوان ساڵانی ٩٦٠٠-٧٣٠٠ی پێش زایین، واتە نزیکەی ١١-١٢ هەزار ساڵ لەمەوپێش دروستکرابن — ئەمەش وای لێدەکات بە هەرە کۆنترین کۆمپلێکسی پەرستگای دیارییکراوی ناسراو.",
           "ئەم شوێنە بۆ یەکەم جار لە ساڵی ١٩٦٣دا لە توێژینەوەیەکی هاوبەشی ڕووکاری زانکۆکانی ئیستەنبوڵ و شیکاگۆدا دۆزرایەوە، بەڵام گرنگیی ڕاستەقینەی تەنها بە هەڵکۆڵینەکانی کە لە ساڵی ١٩٩٥دا لەلایەن ئارکیۆلۆژیستی ئەڵمانی کلاوس شمیدتەوە دەستی پێکرد، دەرکەوت. دۆزینەوەکانی شمیدت ئەو ڕیزبەندییەی کە هەتا ئەو کاتە پەسەندبوو \"یەکەم چاندن، پاشان پەرستگا\" بەرەوپێچ کردەوە: لێرەدا، پێش دەستپێکردنی چاندن و ژیانی نیشتەجێبوون، بیناکانی گەورە کە لەلایەن کۆمەڵگای ڕاوچی-کۆکەرەوە دروستکرابوون دۆزرانەوە.",
@@ -120,7 +139,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "نەخشی ئاژەڵ", "body": "لەسەر کۆڵەکەکان، وێنەی ئاژەڵ وەک مار، دووپشک، ڕێوی و بەرازی کێوی بە تەکنیکی نەخشکردن دروستکراون." },
           { "title": "بنیادنان پێش چاندن", "body": "ئەوانەی ئەم بینایان بنیاد ناوە هێشتا خەریکی چاندن نەبوون؛ ئەمە پیشان دەدات کارکردنی کۆمەڵایەتیی ڕێکخراو پێش چاندن گونجاو بووە." },
           { "title": "شاردنەوەی ئەنقەست", "body": "بیناکان لە خاڵێکدا بە ئەنقەست بە خاک و بەرماوە شاردراونەتەوە؛ هۆکاری ئەمە هێشتا مشتومڕی لەسەرە." }
-        ]
+        ],
+        "visitLocation": "شانلیئۆرفا، هەلیلیە، گەڕەکی ئۆرەنجیک",
+        "visitNearestCity": "ناوەندی شانلیئۆرفا (نزیکەی ١٥ کیلۆمەتر)",
+        "visitDuration": "٢-٣ کاتژمێر",
+        "visitBestTime": "بەیانیانی بەهار/پاییز یان ڕۆژئاوابوون"
       }
     },
     "unesco": true,
@@ -183,7 +206,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Wandmalereien und Reliefs", "body": "Unter den Funden befinden sich Jagdszenen, Stierkopf-Reliefs (Bukranien) und geometrische Muster." },
           { "title": "Bestattungen im Hausinneren", "body": "Die Toten wurden unter den Plattformen im Hausinneren bestattet; neue Häuser wurden auf den alten errichtet, wodurch sich ein 18-schichtiger Hügel bildete." },
           { "title": "Egalitäre Siedlung", "body": "Die Bauten weisen keine architektonischen Unterschiede auf, die auf eine Hierarchie hindeuten — ein Hinweis auf die relativ egalitäre Struktur der damaligen Gesellschaft." }
-        ]
+        ],
+        "visitLocation": "Konya, Landkreis Çumra, Stadtteil Küçükköy",
+        "visitNearestCity": "Konya Zentrum (~52 km), Çumra (~10 km)",
+        "visitDuration": "1,5-2 Stunden",
+        "visitBestTime": "Tagsüber zwischen April und Oktober"
       },
       "EN": {
         "eraDisplay": "7400 BCE",
@@ -197,7 +224,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Wall paintings and reliefs", "body": "Hunting scenes, bull-head reliefs (bucrania), and geometric patterns are among the finds." },
           { "title": "Burials within houses", "body": "The dead were buried beneath platforms inside houses; new houses were built atop old ones, forming an 18-layer mound." },
           { "title": "Egalitarian settlement", "body": "The structures show no architectural distinction pointing to hierarchy, suggesting the relatively egalitarian structure of the society of the time." }
-        ]
+        ],
+        "visitLocation": "Konya, Çumra district, Küçükköy neighborhood",
+        "visitNearestCity": "Konya center (~52 km), Çumra (~10 km)",
+        "visitDuration": "1.5-2 hours",
+        "visitBestTime": "Daytime hours between April and October"
       },
       "KU": {
         "eraDisplay": "7400 BZ",
@@ -211,9 +242,16 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Wêneyên dîwêr û kelûş", "body": "Sehneyên nêçîrê, kelûşên serê ga (bukranyum) û şêweyên geometrîk di nav berhemên dîtî de ne." },
           { "title": "Veşartina di nav xaniyan de", "body": "Miriyan li binê platformên di nav xaniyan de hatine veşartin; xaniyên nû li ser yên kevn hatine avakirin, kombûyeke 18 qatî pêk anî." },
           { "title": "Niştecihbûna wekhev", "body": "Di avahiyan de ferqeke mîmarî ya ku îşaretê bide hiyerarşiyê tune; ev jî nîşan dide ku civaka wê serdemê bi awayekî têkildar wekhev bû." }
-        ]
+        ],
+        "visitLocation": "Konya, navçeya Çumra, Taxa Küçükköyê",
+        "visitNearestCity": "Navenda Konyayê (~52 km), Çumra (~10 km)",
+        "visitDuration": "1.5-2 saet",
+        "visitBestTime": "Di navbera Nîsan-Cotmehê de demên rojê"
       },
       "CKB": {
+        "region": "کۆنیا",
+        "eraDisplay": "٧٤٠٠ی پێش زایین",
+        "eraCaption": "بەرواری خەمڵێنراو",
         "history": [
           "چاتالهۆیۆک، لە ناوچەی چۆمرای کۆنیا، لەسەر پلاتۆی ئەناتۆلیای باشوور، شوێنی نیشتەجێبوونێکی نیۆلیتیکە کە لە دوو گردی (ڕۆژهەڵات و ڕۆژئاوا) پێکهاتووە. گردی ڕۆژهەڵات ١٨ چینی نیشتەجێبوونی نێوان ساڵانی ٧٤٠٠-٦٢٠٠ی پێش زایین لەخۆدەگرێت؛ گردی ڕۆژئاواش سەر بە سەردەمی کالکۆلیتیکە لە نێوان ساڵانی ٦٢٠٠-٥٢٠٠ی پێش زایین.",
           "ئەم شوێنە بۆ یەکەم جار لە ساڵی ١٩٥٨دا لەلایەن ئارکیۆلۆژیستی بەریتانی جەیمس مێلائارت و تیمەکەیەوە دۆزرایەوە؛ هەڵکۆڵینەکانی نێوان ساڵانی ١٩٦١-١٩٦٥ بەرماوەی زیاتر لە ١٦٠ ماڵیان دەرخست. چاتالهۆیۆک لە ساڵی ٢٠١٢دا خرایە لیستی میراتی جیهانی یۆنیسکۆ، چونکە بەڵگەیەکی دەگمەنی گواستنەوە لە گوند بۆ ژیانی شارستانی لە شوێنێکی یەکسان کە زیاتر لە ٢٠٠٠ ساڵ بەردەوام بووە پێشکەش دەکات."
@@ -223,7 +261,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "وێنەی دیوار و نەخش", "body": "دیمەنی ڕاوکردن، نەخشی سەری گا (بوکرانیۆم) و نەخشی جیۆمەتری لەنێو دۆزراوەکاندان." },
           { "title": "شاردنەوە لەناو خانووەکان", "body": "مردووەکان لەژێر سەکۆکانی ناو خانووەکان شاردراونەتەوە؛ خانووی نوێ لەسەر ئەوانی کۆن دروستکراوە، کۆمەڵێکی ١٨ چینی پێکهێناوە." },
           { "title": "نیشتەجێبوونی یەکسان", "body": "لە بیناکاندا هیچ جیاوازیی تەلارسازی کە ئاماژە بە پلەبەندی بکات نییە؛ ئەمە ئاماژەیە بۆ پێکهاتەی نسبەتەن یەکسانی کۆمەڵگای ئەو سەردەمە." }
-        ]
+        ],
+        "visitLocation": "کۆنیا، ناوچەی چۆمرا، گەڕەکی کیچیک‌کۆی",
+        "visitNearestCity": "ناوەندی کۆنیا (نزیکەی ٥٢ کیلۆمەتر)، چۆمرا (نزیکەی ١٠ کیلۆمەتر)",
+        "visitDuration": "١.٥-٢ کاتژمێر",
+        "visitBestTime": "کاتژمێرەکانی ڕۆژ لە نێوان نیسان تا تشرینی یەکەم"
       }
     },
     "unesco": true,
@@ -284,8 +326,12 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Kegelförmige Kuppelhäuser", "body": "Jede Kuppel steht für einen Raum; die Anzahl der Kuppeln zeigte den Wohlstand der Familie an. Da es keine Fenster oder Glas gab, blieben die Kuppelspitzen offen, um Licht und Rauch entweichen zu lassen." },
           { "title": "Festung von Harran", "body": "Das Verteidigungsbauwerk der Stadt trägt Spuren von Reparaturen aus verschiedenen Epochen." },
           { "title": "Ruinen der Ulu-Moschee", "body": "Eine der ältesten Moscheen Anatoliens, erbaut im 8. Jahrhundert unter den Umayyaden." },
-          { "title": "Antike Universitätsruinen", "body": "Reste der einst bedeutenden Lehr- und Übersetzungsstätte, die im Mittelalter griechisches und persisches Wissen bewahrte." }
-        ]
+          { "title": "Sabäisches Erbe", "body": "Harran war ein Zentrum, in dem die Sabäer, die den Mondgott Sin verehrten, bis ins 11. Jahrhundert fortbestanden." }
+        ],
+        "visitLocation": "Şanlıurfa, Landkreis Harran",
+        "visitNearestCity": "Şanlıurfa Zentrum (~45 km)",
+        "visitDuration": "2-3 Stunden",
+        "visitBestTime": "Frühling/Herbst; im Sommer kann es sehr heiß werden"
       },
       "EN": {
         "eraDisplay": "6th century BCE",
@@ -298,8 +344,12 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Beehive-domed houses", "body": "Each dome represents a room; the number of domes indicated a family's wealth. With no windows or glass, the domes' tops were left open to let light and smoke escape." },
           { "title": "Harran Castle", "body": "The city's defensive structure bears traces of repairs from different periods." },
           { "title": "Ruins of the Great Mosque", "body": "One of the oldest mosques in Anatolia, built in the 8th century under the Umayyads." },
-          { "title": "Ancient university ruins", "body": "Remains of what was once an important center of teaching and translation, preserving Greek and Persian knowledge in the Middle Ages." }
-        ]
+          { "title": "Sabian heritage", "body": "Harran was a center where the Sabians, who worshipped the moon god Sin, persisted until the 11th century." }
+        ],
+        "visitLocation": "Şanlıurfa, Harran district",
+        "visitNearestCity": "Şanlıurfa city center (~45 km)",
+        "visitDuration": "2-3 hours",
+        "visitBestTime": "Spring/autumn; summers can be very hot"
       },
       "KU": {
         "region": "Riha",
@@ -313,10 +363,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Xaniyên kombeta konîk", "body": "Her kombet ji bo odeyekê ye; hejmara kombetan rewşa aborî ya malbatê nîşan dida. Ji ber ku pace û camê tunebû, serê kombetan vekirî hatine hiştin da ku ronahî û dûmanê derkeve." },
           { "title": "Kela Herranê", "body": "Avahiya parastina bajêr, şopên tamîrkirinê yên ji serdemên cuda hildigire." },
           { "title": "Kavilên Mizgefta Mezin", "body": "Yek ji mizgeftên herî kevn ên Anatolyayê, di sedsala 8. de di bin Emewiyan de hatiye avakirin." },
-          { "title": "Kavilên zanîngeha kevnar", "body": "Bermahiyên navendeke fêrkirin û wergerandinê ya girîng, ku di serdema navîn de zanîna Yewnanî û Farisî parastiye." }
-        ]
+          { "title": "Mîrateya Sabiyan", "body": "Herran navendek bû ku Sabiyên ku perizîna xwedayê heyvê Sîn dikirin, heta sedsala 11an domandin." }
+        ],
+        "visitLocation": "Riha, navçeya Herranê",
+        "visitNearestCity": "Navenda Rihayê (~45 km)",
+        "visitDuration": "2-3 saet",
+        "visitBestTime": "Bihar/payiz; havîn dikare gelekî germ be"
       },
       "CKB": {
+        "region": "شانلیئۆرفا",
+        "eraDisplay": "سەدەی شەشەم پێش زایین",
+        "eraCaption": "نیشتەجێبوونی سەرەتایی",
         "history": [
           "حەڕان، ناوچەیەکە لە باشووری شانلیئۆرفا، لە نزیک سنووری سووریا. ناوی کە بە زمانی سومەری و ئەکەدی مانای \"ڕێگای کاروان/گەشت\" دەگەیەنێت، لە سەردەمی کۆندا لە خاچەڕێی ڕێگا بازرگانییەکانی ئەناتۆلیا-سووریا-مێزۆپۆتامیا بوو. حەڕان کە لە سەردەمی سومەری، ئاشووری، بابلی و حیتییەکانەوە نیشتەجێبوو، لە ساڵی ٧٤٤دا بۆ ماوەیەکی کورت بووە پایتەختی خەلافەتی ئومەوی.",
           "شارەکە لە سەردەمی ناوەڕاستدا ناوەندێکی زانستیی گرنگ بوو؛ ناوی زانکۆی حەڕانیش ئەم میراتە زیندوو ڕادەگرێت. ئەمڕۆ زۆرترین بە خانووە گومبەز-کۆنییەکانی دەناسرێتەوە کە دەگاتە سەدەی شەشەمی پێش زایین و یەکێکە لە کۆنترین نەریتی خانووی گومبەزی کۆنی جیهان."
@@ -325,8 +382,12 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "خانووی گومبەز-کۆنی", "body": "هەر گومبەزێک نوێنەرایەتی ژوورێک دەکات؛ ژمارەی گومبەزەکان بارودۆخی داراییی خێزانی نیشان دەدا. لەبەر نەبوونی پەنجەرە و شووشە، سەروی گومبەزەکان کراوە هێڵدراوە بۆ دەرچوونی ڕووناکی و دووکەڵ." },
           { "title": "قەڵای حەڕان", "body": "بینای پاراستنی شارەکە شوێنی چاککردنەوەی سەردەمە جیاوازەکان هەڵدەگرێت." },
           { "title": "کاولی مزگەوتی گەورە", "body": "یەکێک لە کۆنترین مزگەوتەکانی ئەناتۆلیا، لە سەدەی ٨ لەژێر ئومەوییەکاندا بنیادنراوە." },
-          { "title": "کاولی زانکۆیە کۆنەکە", "body": "بەرماوەی ئەوەی کە جارێکیان ناوەندێکی گرنگی فێرکردن و وەرگێڕان بوو، زانیاری یۆنانی و فارسی لە سەردەمی ناوەڕاستدا پاراستبوو." }
-        ]
+          { "title": "میراتی سابییەکان", "body": "حەڕان ناوەندێک بوو کە سابییەکان، کە پەرستنی خودای مانگ سین دەکرد، هەتا سەدەی ١١ بەردەوام بوون." }
+        ],
+        "visitLocation": "شانلیئۆرفا، ناوچەی حەڕان",
+        "visitNearestCity": "ناوەندی شانلیئۆرفا (نزیکەی ٤٥ کیلۆمەتر)",
+        "visitDuration": "٢-٣ کاتژمێر",
+        "visitBestTime": "بەهار/پاییز؛ لە هاوین دەشێت زۆر گەرم بێت"
       }
     },
     "unesco": false,
@@ -351,7 +412,7 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
       },
       {
         "title": "Ulu Cami kalıntıları",
-        "body": "İslam dünyasının ilk üniversitelerinden biri olarak kabul edilen yapının kalıntıları hâlâ ziyaret edilebiliyor."
+        "body": "8. yüzyılda Emeviler döneminde inşa edilen, Anadolu'nun en eski camilerinden biri."
       },
       {
         "title": "Sabiilik mirası",
@@ -388,7 +449,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Hevsel-Gärten", "body": "Rund 700 Hektar landwirtschaftliche und naturbelassene Fläche zwischen Tigris und Stadtmauer; Heimat von mehr als 180 Vogelarten." },
           { "title": "Zehnbogenbrücke", "body": "Die historische Brücke über den Tigris ist mit dem Wasser- und Verkehrssystem der Stadt verbunden." },
           { "title": "Mehrschichtige Architektur", "body": "Innerhalb derselben Stadtmauer stehen Bauten aus römischer, artukidischer, akkoyunlu und osmanischer Zeit nebeneinander." }
-        ]
+        ],
+        "visitLocation": "Diyarbakır, Bezirk Sur (Suriçi)",
+        "visitNearestCity": "Diyarbakır Zentrum (die Stadt selbst)",
+        "visitDuration": "Halber Tag (3-4 Stunden)",
+        "visitBestTime": "Frühling/Herbst; der Sonnenuntergang lässt sich von der Stadtmauer aus beobachten"
       },
       "EN": {
         "name": "Diyarbakır City Walls",
@@ -403,7 +468,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Hevsel Gardens", "body": "About 700 hectares of agricultural and natural land between the Tigris and the walls; home to more than 180 bird species." },
           { "title": "Ten-Eyed Bridge", "body": "The historic bridge over the Tigris is linked to the city's water and transport systems." },
           { "title": "Multi-layered architecture", "body": "Roman, Artuqid, Aq Qoyunlu, and Ottoman-era structures stand side by side within the same walls." }
-        ]
+        ],
+        "visitLocation": "Diyarbakır, Sur district (Suriçi)",
+        "visitNearestCity": "Diyarbakır center (the city itself)",
+        "visitDuration": "Half a day (3-4 hours)",
+        "visitBestTime": "Spring/autumn; sunset can be watched from the city walls"
       },
       "KU": {
         "name": "Sûrên Amedê",
@@ -419,9 +488,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Baxên Hevselê", "body": "Navbera Çemê Dîcle û sûr, qadeke çandiniyê/xwezayî ya ~700 hektaran; xaniyê zêdetirî 180 celebên çûkan e." },
           { "title": "Pira Deh Çavan", "body": "Pira dîrokî ya li ser Dîcleyê, bi pergala avê û veguhastinê ya bajêr ve girêdayî ye." },
           { "title": "Mîmariya pirqat", "body": "Di heman sûr de avahiyên serdema Romayê, Artûqî, Akqoyûnlî û Osmanî li kêleka hev radiwestin." }
-        ]
+        ],
+        "visitLocation": "Amed, navçeya Sur (Suriçi)",
+        "visitNearestCity": "Navenda Amedê (bajêr bi xwe)",
+        "visitDuration": "Nîvro (3-4 saet)",
+        "visitBestTime": "Bihar/payiz; rojava ji ser sûran tê dîtin"
       },
       "CKB": {
+        "name": "شوورەکانی ئامەد",
+        "region": "ئامەد",
+        "eraDisplay": "هەزارەی چوارەمی پێش زایین",
+        "eraCaption": "نیشتەجێبوونی بەردەوام",
         "history": [
           "بنەمای مێژووی ئامەد، گردی ئامیدا لەناو قەڵادا، پیشان دەدات کە شارەکە لە هەزارەی شەشەمی پێش زایینەوە بەردەوام نیشتەجێ بووە. کۆنترین بیناکانی پاراستنی ناسراو لەلایەن هوریەکانەوە لە هەزارەی چوارەمی پێش زایین دروستکراون؛ بنەمای شوورەکانی ئێستا لە سەردەمی کۆنستانتیۆسی دووەمی ئیمپراتۆری ڕۆما (سەدەی چوار) دانرا.",
           "لە سەدەکانی دواتردا شارەکە بە زنجیرەیی لەژێر دەسەڵاتی ڕۆما، ساسانی، بیزەنتی، ئومەوی، عەباسی، مەروانی، سەلجووقی، ئارتووقی، ئاق قویونلوو، سەفەوی و عوسمانیدا تێپەڕی — هەریەکەیان شوێنپێی خۆیان لەسەر شوورەکان و شارەکە بەجێهێشت. قەڵای ئامەد و باخچەکانی حەڤسەل لە ساڵی ٢٠١٥دا وەک \"دیمەنی کەلتووری\" خرایە لیستی میراتی جیهانی یۆنیسکۆ."
@@ -431,7 +508,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "باخچەکانی حەڤسەل", "body": "نزیکەی ٧٠٠ هەکتار زەوی کشتوکاڵی و سروشتی لەنێوان ڕووباری دیجلە و شوورەکە؛ ماڵی زیاتر لە ١٨٠ جۆری باڵندە." },
           { "title": "پردی دە چاوی", "body": "پردە مێژووییەکەی سەر ڕووباری دیجلە، بە سیستەمی ئاو و گواستنەوەی شارەکەوە بەستراوەتەوە." },
           { "title": "تەلارسازیی فرەچین", "body": "لەناو یەک شوورەدا بیناکانی سەردەمی ڕۆما، ئارتووقی، ئاق قویونلوو و عوسمانی لەتەنیشت یەکترەوە ڕاوەستاون." }
-        ]
+        ],
+        "visitLocation": "ئامەد، ناوچەی سوور (سووریچی)",
+        "visitNearestCity": "ناوەندی ئامەد (خودی شارەکە)",
+        "visitDuration": "نیوەڕۆژێک (٣-٤ کاتژمێر)",
+        "visitBestTime": "بەهار/پاییز؛ ڕۆژئاوابوون لەسەر شوورەکانەوە دەبینرێت"
       }
     },
     "unesco": true,
@@ -493,7 +574,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Kloster Deyrulzafaran", "body": "Historisches Zentrum der syrisch-orthodoxen Kirche; enthält einen besonderen Bereich, in dem die Gräber von 52 Patriarchen erhalten sind." },
           { "title": "Steinhaus-Architektur", "body": "Aus gelbem Kalkstein erbaute traditionelle Mardiner Häuser mit Bogenfenstern, geführt auf der vorläufigen UNESCO-Welterbeliste." },
           { "title": "Telkari-Silberfiligran", "body": "Die von syrischen Meistern entwickelte feine Silberdraht-Kunst wird bis heute in den Basaren gefertigt." }
-        ]
+        ],
+        "visitLocation": "Mardin Zentrum (Altstadt)",
+        "visitNearestCity": "Mardin selbst",
+        "visitDuration": "Halber bis ganzer Tag",
+        "visitBestTime": "Jede Jahreszeit; der Blick auf die Ebene ist bei Sonnenuntergang besonders eindrucksvoll"
       },
       "EN": {
         "eraDisplay": "4th century CE",
@@ -507,7 +592,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Deyrulzafaran Monastery", "body": "The historic seat of the Syriac Orthodox Church; it contains a special section preserving the tombs of 52 patriarchs." },
           { "title": "Stone mansion architecture", "body": "Traditional Mardin houses built of yellow limestone with arched windows, listed on UNESCO's tentative heritage list." },
           { "title": "Telkari silver filigree", "body": "A fine silver-wire craft developed by Syriac artisans, still produced in the bazaars today." }
-        ]
+        ],
+        "visitLocation": "Mardin center (old town)",
+        "visitNearestCity": "Mardin itself",
+        "visitDuration": "Half to full day",
+        "visitBestTime": "Any season; the plain view is especially striking at sunset"
       },
       "KU": {
         "name": "Mêrdîn",
@@ -523,9 +612,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Dêra Deyrulzeferanê", "body": "Navenda dîrokî ya Dêra Suryanî ya Kevin; beşeke taybet a ku 52 gorên patrîkan tê de hatine parastin dihewîne." },
           { "title": "Mîmariya konaxên kevir", "body": "Xaniyên kevneşopî yên Mêrdînê yên ji kevirê şilûtê yê zer hatine avakirin, bi pace kevirî; di lîsteya mîrateya demkî ya UNESCOyê de cih digirin." },
           { "title": "Zîvkariya telkarî", "body": "Hunera zîvkariya têlên zirav ku ji hêla hunermendên Suryanî ve hatiye pêşxistin, îro jî hê di bazaran de tê çêkirin." }
-        ]
+        ],
+        "visitLocation": "Navenda Mêrdînê (bajarê kevin)",
+        "visitNearestCity": "Mêrdîn bi xwe",
+        "visitDuration": "Nîvro heta rojek",
+        "visitBestTime": "Her demsal; li ber rojavabûnê dîmena deşta li ber çav bi taybetî balkêş e"
       },
       "CKB": {
+        "name": "مێردین",
+        "region": "مێردین",
+        "eraDisplay": "سەدەی چوارەمی زایین",
+        "eraCaption": "یەکەم تۆمار",
         "history": [
           "مێردین، لەسەر لاژووری باشووری بازنەی مێردین-میدیاد، لەسەر پشتێکی ستراتیژی کە تەماشای دەشتی مێزۆپۆتامیا دەکات، بنیاتنراوە. هەرچەندە ناوی بۆ یەکەم جار لە سەدەی چوارەمدا باسکراوە، بەڵام لە بەشی باشووری گردەکەشدا شوێنپێی پێش مێژوویش دۆزراوەتەوە. شارەکە بە درێژایی مێژوو بووە ناوەندێک کە ئایین و گەلانی جیاواز (موسڵمان، مەسیحیی سریانی، ئەرمەنی، جولەکە) پێکەوە تێیدا ژیاون.",
           "مەدرەسەی زنجیریە (سوڵتان عیسا)، یەکێک لە شکۆدارترین بیناکانی شار، لە ساڵی ١٣٨٥دا لەلایەن میری ئارتووقی نەجمەدین عیساوە تەواوکرا. دێری دەیرولزەعفەران کە ٥ کیلۆمەتر لە مێردینەوە دوورە، لە سەدەی چواردا دامەزرا و لە نێوان ساڵانی ١٢٩٣-١٩٣٢دا بووە ناوەندی پاتریارکخانەی کڵێسای سریانیی کۆن."
@@ -535,7 +632,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "دێری دەیرولزەعفەران", "body": "ناوەندی مێژوویی کڵێسای سریانیی کۆن؛ بەشێکی تایبەتی تێدایە کە گۆڕی ٥٢ پاتریارک تێیدا پارێزراوە." },
           { "title": "تەلارسازیی کۆشکی بەردین", "body": "خانووە نەریتییەکانی مێردین کە لە بەردی چیمەنتۆی زەرد بنیاتنراون، بە پەنجەرەی تاقەوانی؛ لە لیستی میراتی کاتیی یۆنیسکۆدا تۆمارکراون." },
           { "title": "زیوکاریی تەلکاری", "body": "هونەری زیوکاریی تەلی باریک کە لەلایەن هونەرمەندە سریانییەکانەوە پەرەی سەندووە، هێشتا لە بازاڕەکاندا دروست دەکرێت." }
-        ]
+        ],
+        "visitLocation": "ناوەندی مێردین (شاری کۆن)",
+        "visitNearestCity": "خودی مێردین",
+        "visitDuration": "نیوەڕۆژ تا ڕۆژێکی تەواو",
+        "visitBestTime": "هەموو وەرزێک؛ دیمەنی دەشتەکە لە کاتی ڕۆژئاوابووندا بەتایبەتی سەرنجڕاکێشە"
       }
     },
     "unesco": false,
@@ -599,7 +700,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Ost- und Westterrasse", "body": "Auf jeder Terrasse stehen sitzende Götterstatuen (Zeus, Apollon, Herakles, die Göttin von Kommagene) sowie die Statue des Königs selbst; ihre Höhe erreicht 8-9 Meter." },
           { "title": "Löwen- und Adlerstatuen", "body": "An den Rändern der Terrassen als Schutzfiguren aufgestellt." },
           { "title": "Sonnenauf- und -untergang", "body": "Die Köpfe der Statuen sind im Laufe der Zeit von ihren Körpern getrennt worden; besonders beim Sonnenaufgang entsteht ein dramatisches Lichtspiel." }
-        ]
+        ],
+        "visitLocation": "Adıyaman, Bezirk Kahta",
+        "visitNearestCity": "Stadtzentrum Adıyaman (~85 km), Kahta (~50 km)",
+        "visitDuration": "Halber Tag (Hin- und Rückfahrt inbegriffen)",
+        "visitBestTime": "Sonnenaufgang (Abfahrt gegen 04:00-05:00 Uhr morgens) oder Sonnenuntergang"
       },
       "EN": {
         "name": "Mount Nemrut",
@@ -614,7 +719,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "East and West terraces", "body": "Each terrace holds seated statues of the gods (Zeus, Apollo, Heracles, and the goddess of Commagene) as well as a statue of the king himself, reaching heights of 8-9 meters." },
           { "title": "Lion and eagle statues", "body": "Placed at the edges of the terraces as guardian figures." },
           { "title": "Sunrise/sunset views", "body": "The statues' heads have separated from their bodies over time; sunrise in particular creates dramatic lighting." }
-        ]
+        ],
+        "visitLocation": "Adıyaman, Kahta district",
+        "visitNearestCity": "Adıyaman city center (~85 km), Kahta (~50 km)",
+        "visitDuration": "Half a day (round trip included)",
+        "visitBestTime": "Sunrise (departure around 4:00-5:00 AM) or sunset"
       },
       "KU": {
         "name": "Çiyayê Nemrûd",
@@ -630,9 +739,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Teraszên Rojhilat û Rojava", "body": "Li her terasê, peykerên xwedayên rûniştî (Zeus, Apollon, Herakles, xwedawenda Kommageneyê) û peykera padîşah bi xwe hene; bilindahiya wan digihîje 8-9 metreyan." },
           { "title": "Peykerên şêr û helo", "body": "Li kêleka terasan wek fîgurên parastinê hatine bicihkirin." },
           { "title": "Dîmena rojhilatin/rojava", "body": "Serê peykeran bi demê re ji laşê xwe qetiyane; bi taybetî di rojhilatinê de ronahiyeke dramatîk pêk tê." }
-        ]
+        ],
+        "visitLocation": "Semsûr, Navçeya Kahtayê",
+        "visitNearestCity": "Navenda Semsûrê (~85 km), Kahta (~50 km)",
+        "visitDuration": "Nîvê rojê (çûn-hatin tê de)",
+        "visitBestTime": "Rojhilatina rojê (derketina saet 04:00-05:00ê sibehê) an jî rojava"
       },
       "CKB": {
+        "name": "چیای نەمروود",
+        "region": "ئادییامان",
+        "eraDisplay": "٦٢ی پێش زایین",
+        "eraCaption": "بنیادنانی بیرداکە",
         "history": [
           "بیرداکەی لەسەر لووتکەی چیای نەمروود کە لە ٢١٠٠ مەتر بەرزتر بۆ دەچێت، لەلایەن پاشای شانشینی کۆماگینە ئانتیۆخۆسی یەکەم (٧٠-٣١ی پێش زایین)ەوە، هەم وەک گۆڕی خۆی و هەم وەک شوێنێکی پیرۆز (هیێرۆتێسیۆن) بۆ خواوەندەکان بنیاتنراوە. کۆماگینە شانشینێک بوو لە خاچەڕێی کەلتووری یۆنانی هەلینیستی و فارسی؛ بۆیە ئانتیۆخۆس خواوەندەکانی هەم بە ناوی یۆنانی و هەم بە ناوی فارسی ناودەبرد.",
           "پەیکەرە گەورەکانی سەر لووتکە لە ساڵی ١٨٨١دا دووبارە دۆزرانەوە. بیرداکەکە لە ساڵی ١٩٨٧دا خرایە لیستی میراتی جیهانی یۆنیسکۆ."
@@ -642,7 +759,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "تەراسی ڕۆژهەڵات و ڕۆژئاوا", "body": "لە هەر تەراسێکدا، پەیکەری خواوەندە دانیشتووەکان (زیوس، ئەپۆلۆن، هێراکلێس، خواوەندی کۆماگینە) و پەیکەری خودی پاشا هەیە؛ بەرزییان دەگاتە ٨-٩ مەتر." },
           { "title": "پەیکەری شێر و هەڵۆ", "body": "لە قەراغی تەراسەکاندا وەک وێنەی پارێزەر دانراون." },
           { "title": "دیمەنی خۆرهەڵات/خۆرئاوابوون", "body": "سەری پەیکەرەکان بەهۆی کاتەوە لە جەستەیان جیابووەتەوە؛ بەتایبەتی لە خۆرهەڵاتندا ڕووناکییەکی درامی پێکدێت." }
-        ]
+        ],
+        "visitLocation": "ئادییامان، ناحیەی کاختا",
+        "visitNearestCity": "ناوەندی ئادییامان (~٨٥ کم)، کاختا (~٥٠ کم)",
+        "visitDuration": "نیوەڕۆژێک (هاتوچۆ لەخۆدەگرێت)",
+        "visitBestTime": "خۆرهەڵات (دەرچوون کاتژمێر ٠٤:٠٠-٠٥:٠٠ی بەیانی) یان خۆرئاوابوون"
       }
     },
     "unesco": true,
@@ -705,7 +826,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Blick auf den Vansee", "body": "Die Festung liegt an einem Punkt, der den größten See der Türkei überblickt; besonders bei Sonnenuntergang bietet sie einen berühmten Ausblick." },
           { "title": "Ruinen der Alten Stadt Van", "body": "Südlich der Festung sind Moschee- und Bauwerksreste der alten Siedlung zu sehen." },
           { "title": "Nähe zur Akdamar-Insel", "body": "Besuche der Festung Van werden häufig mit der per Boot erreichbaren Akdamar-Insel und ihrer armenischen Kirche aus dem 10. Jahrhundert verbunden." }
-        ]
+        ],
+        "visitLocation": "Van, Stadtzentrum",
+        "visitNearestCity": "Van selbst",
+        "visitDuration": "2 Stunden",
+        "visitBestTime": "Die Stunden kurz vor Sonnenuntergang"
       },
       "EN": {
         "name": "Van Castle",
@@ -720,7 +845,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Lake Van views", "body": "The castle stands at a point overlooking Turkey's largest lake, offering a famous view at sunset." },
           { "title": "Old Van City ruins", "body": "South of the castle, mosque and building remains from the old settlement can be seen." },
           { "title": "Proximity to Akdamar Island", "body": "Visits to Van Castle are often combined with the 10th-century Armenian church on Akdamar Island, reached by boat." }
-        ]
+        ],
+        "visitLocation": "Van city center",
+        "visitNearestCity": "Van itself",
+        "visitDuration": "2 hours",
+        "visitBestTime": "Hours close to sunset"
       },
       "KU": {
         "name": "Kela Wanê",
@@ -736,9 +865,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Dîmena Gola Wanê", "body": "Kele li xalek e ku li ser gola herî mezin a Tirkiyeyê serwer e; di rojava de dîmeneke navdar pêşkêş dike." },
           { "title": "Kavilên Bajarê Kevn ê Wanê", "body": "Li başûrê kelehê, kavilên mizgeft û avahiyên ji niştecihbûna kevn mane, tên dîtin." },
           { "title": "Nêzîkbûna Girava Akdamarê", "body": "Serdanên Kela Wanê bi gelemperî bi dêra ermenî ya sedsala 10. ya li Girava Akdamarê, ku bi keştiyê tê gihîştin, ve tê girêdan." }
-        ]
+        ],
+        "visitLocation": "Navenda Wanê",
+        "visitNearestCity": "Wan bi xwe",
+        "visitDuration": "2 saet",
+        "visitBestTime": "Saetên nêzî rojavabûnê"
       },
       "CKB": {
+        "name": "قەڵای وان",
+        "region": "وان",
+        "eraDisplay": "سەدەی نۆیەمی پێش زایین",
+        "eraCaption": "سەردەمی ئوراردو",
         "history": [
           "قەڵای وان، لە کەناری دەریاچەی وان، قەڵایەکی بەردینە کە لە سەردەمی شانشینی ئوراردودا (نزیکەی سەدەی نۆیەمی پێش زایین) ماوەتەوە. ئوراردوییەکان بە ناوی \"بیائینیلی\" ناویان دەبرد — ناوی وانیش لەم ڕەگەزەوە دێت. قەڵاکە بە نووسینە بەردینەکانی بە خەتی بزماری، یەکێک لە گرنگترین سەرچاوە نووسراوەکانی سەردەمی ئوراردو هەڵدەگرێت.",
           "شاری کۆنی وان کە لەبن قەڵاکەدایە، لە کاتی ڕووداوەکانی سەرەتای سەدەی بیستەمدا بەگشتی ڕووخا و ئەمڕۆ زۆربەی بە کاولی ماوەتەوە."
@@ -748,7 +885,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "دیمەنی دەریاچەی وان", "body": "قەڵاکە لە خاڵێکدایە کە تەماشای گەورەترین دەریاچەی تورکیا دەکات؛ لە کاتی خۆرئاوابووندا دیمەنێکی ناوداری هەیە." },
           { "title": "کاولی شاری کۆنی وان", "body": "لە باشووری قەڵاکە، بەرماوەی مزگەوت و بیناکانی نیشتەجێبوونی کۆن دەبیندرێت." },
           { "title": "نزیکبوونەوە لە دوورگەی ئاقدامار", "body": "سەردانی قەڵای وان زۆرجار لەگەڵ کڵێسای ئەرمەنیی سەدەی دەیەمی دوورگەی ئاقدامار کە بە بەلەم پێی دەگاتەوە، تێکەڵ دەکرێت." }
-        ]
+        ],
+        "visitLocation": "ناوەندی وان",
+        "visitNearestCity": "خودی وان",
+        "visitDuration": "٢ کاتژمێر",
+        "visitBestTime": "کاتژمێرەکانی نزیک خۆرئاوابوون"
       }
     },
     "unesco": false,
@@ -810,7 +951,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Überreste der Hasankeyf-Brücke", "body": "Die Pfeiler dieser als eine der größten Brücken des Mittelalters geltenden Konstruktion stehen noch heute im Tigris." },
           { "title": "Zeynel-Bey-Mausoleum", "body": "Vom akkoyunlu Herrscher Uzun Hasan für seinen Sohn errichtetes, durch seine zylindrische Form auffallendes Mausoleum (eines der versetzten Denkmäler)." },
           { "title": "Er-Rızk-Moschee und Minarett", "body": "Auf das frühe 15. Jahrhundert datierte ayyubidische Moschee, bekannt für ihr noch erhaltenes Minarett." }
-        ]
+        ],
+        "visitLocation": "Batman, Bezirk Hasankeyf",
+        "visitNearestCity": "Zentrum Batman (~40 km)",
+        "visitDuration": "2-3 Stunden",
+        "visitBestTime": "Früher Morgen (ideal für Licht und Temperatur)"
       },
       "EN": {
         "eraDisplay": "10,000 BCE",
@@ -824,7 +969,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Remains of Hasankeyf Bridge", "body": "The piers of what is considered one of the largest bridges of the Middle Ages still stand in the Tigris." },
           { "title": "Zeynel Bey Mausoleum", "body": "A mausoleum built by the Aq Qoyunlu ruler Uzun Hasan for his son, notable for its cylindrical form (one of the relocated monuments)." },
           { "title": "Er-Rızk Mosque and minaret", "body": "An Ayyubid-era mosque dating to the early 15th century, known for its still-standing minaret." }
-        ]
+        ],
+        "visitLocation": "Batman, Hasankeyf district",
+        "visitNearestCity": "Batman city center (~40 km)",
+        "visitDuration": "2-3 hours",
+        "visitBestTime": "Early morning hours (ideal for light and temperature)"
       },
       "KU": {
         "name": "Heskîf",
@@ -840,9 +989,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Kavilên Pira Heskîfê", "body": "Piyên avahiya ku wek yek ji pirên herî mezin ên serdema navîn tê zanîn, hê jî li ser Dîcleyê radiwestin." },
           { "title": "Tirba Zeynel Begê", "body": "Tirba ku ji hêla hukumdarê Akqoyûnlî Uzun Hesen ve ji bo kurê xwe hatiye çêkirin, bi forma xwe ya slîndirîk balê dikişîne (yek ji bîrdankên vegohastî)." },
           { "title": "Mizgefta Er-Rizq û minare", "body": "Mizgefta serdema Eyûbî ya ku heta destpêka sedsala 15. tê dîtin, bi minareya xwe ya hê li ser lingan tê naskirin." }
-        ]
+        ],
+        "visitLocation": "Elih, Navçeya Heskîfê",
+        "visitNearestCity": "Navenda Elihê (~40 km)",
+        "visitDuration": "2-3 saet",
+        "visitBestTime": "Serê sibehê zû (ji bo ronahî û germahiyê îdeal)"
       },
       "CKB": {
+        "name": "حەسەنکێف",
+        "region": "بەتمان",
+        "eraDisplay": "١٠٠٠٠ی پێش زایین",
+        "eraCaption": "شوێنپێی مرۆڤی یەکەم",
         "history": [
           "حەسەنکێف، لە کەناری ڕووباری دیجلە، لەسەر لاژوورێکی بەردین بنیاتنراوە، شوێنی نیشتەجێبوونێکی کۆنە. پێدەچێت کۆنترین شوێنپێی مرۆڤ بگاتەوە سەردەمی نیۆلیتیک، تەنانەت ساڵی ١٠٠٠٠ی پێش زایین؛ هەزاران ئەشکەوتی سروشتیی ناوچەکە، بۆ سەدەها ساڵ وەک شوێنی نیشتەجێبوون بەکارهاتووە.",
           "شارەکە لە سەردەمی ڕۆما، ساسانی، ئومەوی، عەباسی، ئارتووقی، ئەیووبی و عوسمانیدا تێپەڕی؛ بەتایبەتی سەردەمی ئارتووقی و ئەیووبی (سەدەکانی ١٢-١٤) وەک سەردەمی زێڕینی حەسەنکێف دادەنرێت — لەو سەردەمەدا شارەکە بە پرد، کۆشک و مەدرەسەکانییەوە ناوەندێکی گرنگی هەرێمی بوو. لەبەر بەنداوی ئیلیسوو، بەشێکی گەورەی ناوەندی مێژووی لە ساڵی ٢٠١٩ەوە بەشێوەیەکی نیوەکی لەژێر ئاودایە؛ هەندێک بیرداک بۆ شوێنێکی نوێ گوازراونەتەوە."
@@ -852,7 +1009,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "کاولی پردی حەسەنکێف", "body": "پایەکانی ئەو بینایەی کە وەک یەکێک لە گەورەترین پردەکانی سەردەمی ناوەڕاست دادەنرێت، هێشتا لەسەر ڕووباری دیجلە ڕاوەستاون." },
           { "title": "ئارامگای زەینەل بەگ", "body": "ئارامگایەک کە لەلایەن فەرمانڕەوای ئاق قویونلوو ئوزون حەسەنەوە بۆ کوڕەکەی دروستکراوە، بە شێوەی سیلندریی سەرنجڕاکێشە (یەکێک لە بیرداکە گوازراوەکان)." },
           { "title": "مزگەوتی ئێر-ڕزق و منارە", "body": "مزگەوتی سەردەمی ئەیووبی کە دەگاتەوە سەرەتای سەدەی ١٥، بە منارەکەی کە هێشتا ڕاوەستاوە ناسراوە." }
-        ]
+        ],
+        "visitLocation": "بەتمان، ناحیەی حەسەنکێف",
+        "visitNearestCity": "ناوەندی بەتمان (~٤٠ کم)",
+        "visitDuration": "٢-٣ کاتژمێر",
+        "visitBestTime": "بەیانی زوو (گونجاو بۆ ڕووناکی و گەرمی)"
       }
     },
     "unesco": false,
@@ -915,7 +1076,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Wasser als Verteidigungswaffe", "body": "Die römische Garnison nutzte das Wasser der Zisternen, um Belagerungen lange standzuhalten; die Sassaniden versuchten wiederum, den Flusslauf umzuleiten, um die Stadt trockenzulegen." },
           { "title": "4 km langes Mauersystem", "body": "Eine zweischichtige, 28-türmige Verteidigungslinie aus innerer und äußerer Mauer." },
           { "title": "Galeriegräber (Nekropole)", "body": "In Fels gehauene, mehrstöckige Grabanlagen mit den Knochenresten von Tausenden Menschen." }
-        ]
+        ],
+        "visitLocation": "Mardin, Dorf Oğuz (Bezirk Artuklu)",
+        "visitNearestCity": "Zentrum Mardin (~30 km)",
+        "visitDuration": "1,5-2 Stunden",
+        "visitBestTime": "Frühling/Herbst; Dorfkinder bieten oft freiwillig eine Führung an"
       },
       "EN": {
         "name": "Ancient City of Dara",
@@ -930,7 +1095,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Water as a weapon of defense", "body": "The Roman garrison used the water in the cisterns to withstand long sieges; the Sassanids, in turn, tried to divert the river's flow to leave the city without water." },
           { "title": "4-km wall system", "body": "A two-layered defensive line of inner and outer walls with 28 towers." },
           { "title": "Gallery graves (necropolis)", "body": "Multi-story, rock-cut tomb structures holding the skeletal remains of thousands of people." }
-        ]
+        ],
+        "visitLocation": "Mardin, Oğuz Village (Artuklu district)",
+        "visitNearestCity": "Mardin city center (~30 km)",
+        "visitDuration": "1.5-2 hours",
+        "visitBestTime": "Spring/autumn; village children often volunteer as guides"
       },
       "KU": {
         "name": "Bajarê Kevnar ê Dara",
@@ -946,9 +1115,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Av wek çeka parastinê", "body": "Garnîzona Romayê, di dema dorpêçê de ava sarincan ji bo berxwedana dirêj bi kar anî; Sasaniyan jî bi guherandina herikîna çem hewl da bajêr bêav bihêlin." },
           { "title": "Pergala sûr a 4 km", "body": "Xeteke parastinê ya du-qatî, bi 28 kulle, ku ji sûrê hundir û derve pêk tê." },
           { "title": "Goristana galerî (nekropol)", "body": "Avahiyên gorê yên pirqat, di zinaran de hatine kolan; bermahiyên hestiyan ên bi hezaran kesan vedihewîne." }
-        ]
+        ],
+        "visitLocation": "Mêrdîn, Gundê Oğuzê (Navçeya Artukluyê)",
+        "visitNearestCity": "Navenda Mêrdînê (~30 km)",
+        "visitDuration": "1.5-2 saet",
+        "visitBestTime": "Bihar/payîz; zarokên gund bi dilxwazî rêberiyê dikin"
       },
       "CKB": {
+        "name": "شاری کۆنی دارا",
+        "region": "مێردین",
+        "eraDisplay": "٥٠٥ی زایین",
+        "eraCaption": "دامەزراندن",
         "history": [
           "دارا (بە ناوی کۆنی ئاناستاسیۆپۆلیس) لەلایەن ئیمپراتۆری ڕۆمای ڕۆژهەڵات ئاناستاسیۆسی یەکەمەوە لە نێوان ساڵانی ٥٠٥-٥٠٧ی زایین، وەک شاری گارنیزۆن بۆ پاراستنی سنووری ڕۆژهەڵاتی ئیمپراتۆرەتی بەرامبەر ئیمپراتۆریەتی ساسانی بنیادنرا. بە زووی بووە ناوەندی بەڕێوەبردن و سەربازیی مێزۆپۆتامیای سەرەوە؛ لە سەردەمی ئیمپراتۆر یوستینیانۆسی یەکەمدا شوورەکان بەهێزکران و ئاوگیرە گەورەکان زیادکران.",
           "شارەکە هەروەها لە ساڵی ٥٣٠دا بووە شوێنی سەرکەوتنی جێنێرالی بیزەنتی بێلیساریۆس بەسەر ساسانییەکاندا. لە سەدەکانی دواتردا لەنێوان دەسەڵاتی ساسانی، بیزەنتی، ئومەوی، عەباسی، سەلجووقی و عوسمانیدا دەستی گۆڕی. ئەمڕۆ تەنها نزیکەی %١٠ی شارەکە لەسەر ڕووی زەوییە، زۆربەی هێشتا لەژێر خاکدایە."
@@ -958,7 +1135,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "ئاو وەک چەکی پاراستن", "body": "گارنیزۆنی ڕۆما، لە کاتی گەمارۆدا ئاوی ئاوگیرەکانی بەکارهێنا بۆ خۆڕاگری درێژخایەن؛ ساسانییەکانیش هەوڵیان دا بە گۆڕینی ئاڕاستەی ڕووبار شارەکە بێ ئاو بهێڵنەوە." },
           { "title": "سیستەمی شووری ٤ کیلۆمەتری", "body": "هێڵێکی پاراستنی دوو چینە، بە ٢٨ قوللە، لە شووری ناوەوە و دەرەوە پێکهاتووە." },
           { "title": "گۆڕی گالەری (گۆڕستان)", "body": "بیناکانی گۆڕی فرەچین کە لە بەرددا کۆڵراون؛ بەرماوەی ئێسقانی هەزاران کەسیان تێدایە." }
-        ]
+        ],
+        "visitLocation": "مێردین، گوندی ئۆغوز (ناحیەی ئارتوکلو)",
+        "visitNearestCity": "ناوەندی مێردین (~٣٠ کم)",
+        "visitDuration": "١.٥-٢ کاتژمێر",
+        "visitBestTime": "بەهار/پاییز؛ منداڵانی گوند بە خۆبەخشی ڕێبەرایەتی دەکەن"
       }
     },
     "unesco": false,
@@ -1020,7 +1201,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Kloster Mor Gabriel", "body": "397 gegründeter Klosterkomplex aus zahlreichen Kirchen und Kapellen, in dem noch heute Gottesdienst und Unterricht stattfinden." },
           { "title": "Steinhäuser", "body": "Die Straßen des alten Midyat erinnern mit ihren Bogengängen und steinernen Ornamenten an eine mittelalterliche Stadt." },
           { "title": "Syrisch (Turoyo)", "body": "Ein noch in der Region gesprochener lebendiger Zweig des Aramäischen, der Sprache Jesu." }
-        ]
+        ],
+        "visitLocation": "Mardin, Bezirk Midyat",
+        "visitNearestCity": "Zentrum Mardin (~60 km)",
+        "visitDuration": "Halber Tag",
+        "visitBestTime": "Zu jeder Jahreszeit; der Silberschmiede-Basar ist unter der Woche ruhiger"
       },
       "EN": {
         "eraDisplay": "9th century BCE",
@@ -1034,7 +1219,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Mor Gabriel Monastery", "body": "Founded in 397, a monastery complex of numerous churches and chapels where worship and teaching still continue." },
           { "title": "Stone mansions", "body": "The streets of old Midyat, with their arched passages and carved stone ornamentation, evoke a medieval town." },
           { "title": "Syriac (Turoyo)", "body": "A living branch of Aramaic, the language of Jesus, still spoken in the region." }
-        ]
+        ],
+        "visitLocation": "Mardin, Midyat district",
+        "visitNearestCity": "Mardin city center (~60 km)",
+        "visitDuration": "Half a day",
+        "visitBestTime": "Any season; the silversmiths' bazaar is quieter on weekdays"
       },
       "KU": {
         "name": "Midyad",
@@ -1050,9 +1239,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Dêra Mor Gabrîel", "body": "Komplekseke dêrê ya di sala 397an de hatiye damezrandin, ku ji gelek dêr û şapelan pêk tê û îbadet û perwerde hê jî lê didome." },
           { "title": "Konaxên kevir", "body": "Kolanên Midyada kevn, bi derbazgehên xwe yên kevirî û xemilandinên kevirî yên oyakirî, bajarekî serdema navîn bi bîr tîne." },
           { "title": "Suryanî (Turoyo)", "body": "Şaxek zindî yê Aramî, zimanê Hz. Îsa, ku hê jî li herêmê tê axaftin." }
-        ]
+        ],
+        "visitLocation": "Mêrdîn, Navçeya Midyadê",
+        "visitNearestCity": "Navenda Mêrdînê (~60 km)",
+        "visitDuration": "Nîvê rojê",
+        "visitBestTime": "Her demsal; sûka zîvkeran di hefteyê de hêdîtir e"
       },
       "CKB": {
+        "name": "میدیاد",
+        "region": "مێردین",
+        "eraDisplay": "سەدەی نۆیەمی پێش زایین",
+        "eraCaption": "تۆماری ئاشووری",
         "history": [
           "میدیاد، ناوچەیەکی مێردینە لەسەر پلاتۆی تور عەبدین؛ پێدەچێت ناوی لە وشەی ئاشووری \"ماتیاتێ\"ەوە هاتبێت، کە مانای \"شاری ئەشکەوتەکان\" دەگەیەنێت — لە نووسینە ئاشوورییەکانی سەدەی نۆیەمی پێش زایین بەم ناوە هاتووە. تور عەبدین (بە سریانی \"چیای کۆیلەکان\") بۆ سەدەها ساڵە وەک دڵی کەلتووری مەسیحیی سریانی ناسراوە.",
           "میدیاد چێشتێکی فرەکەلتووری هەڵدەگرێت کە تێیدا سریانی، تورک، عەرەب و کۆمەڵگایەکی ناوخۆیی بەناوی \"مەحەلمی\" پێکەوە دەژین. دێری مۆر گابرییل کە لە ساڵی ٣٩٧دا دامەزراوە، یەکێکە لە کۆنترین دێرە ئۆرسۆدۆکسە سریانییەکانی هێشتا چالاکی جیهان."
@@ -1062,7 +1259,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "دێری مۆر گابرییل", "body": "کۆمپلێکسێکی دێری کە لە ساڵی ٣٩٧دا دامەزراوە، لە چەندین کڵێسا و پەرستگای بچووکەوە پێکهاتووە، هێشتا لێی خواپەرستی و فێرکردن بەردەوامە." },
           { "title": "کۆشکی بەردین", "body": "شەقامەکانی میدیادی کۆن، بە تاقەوانەکانی و ڕازاندنەوەی بەردی تاشراوی، شارێکی سەردەمی ناوەڕاست بەبیر دەهێننەوە." },
           { "title": "سریانی (تۆرۆیۆ)", "body": "لقێکی زیندووی ئارامی، زمانی عیسای مەسیح، کە هێشتا لە ناوچەکەدا قسەی پێدەکرێت." }
-        ]
+        ],
+        "visitLocation": "مێردین، ناحیەی میدیاد",
+        "visitNearestCity": "ناوەندی مێردین (~٦٠ کم)",
+        "visitDuration": "نیوەڕۆژێک",
+        "visitBestTime": "هەموو وەرزێک؛ بازاڕی زیوکاران لە ڕۆژانی هەفتەدا هێمنترە"
       }
     },
     "unesco": false,
@@ -1126,7 +1327,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Tigran-Honents-Kirche", "body": "1215 erbaut, geschmückt mit reichen Fresken, die biblische Szenen und das Leben des Heiligen Gregor darstellen — eines der am besten erhaltenen Bauwerke." },
           { "title": "Menüçehr-Moschee", "body": "1072 erbaut, gilt als eine der ersten türkischen Moscheen Anatoliens." },
           { "title": "Multikulturelle Architektur", "body": "In derselben Stadt stehen armenische Kirchen, eine seldschukische Moschee und ein zoroastrischer Feuertempel nebeneinander." }
-        ]
+        ],
+        "visitLocation": "Etwa 45 km vom Zentrum von Kars entfernt, an der türkisch-armenischen Grenze",
+        "visitNearestCity": "Zentrum von Kars",
+        "visitDuration": "3-4 Stunden",
+        "visitBestTime": "Sommer (grüne Hochebene) oder Winter (dramatische schneebedeckte Landschaft)"
       },
       "EN": {
         "name": "Ruins of Ani",
@@ -1141,7 +1346,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Tigran Honents Church", "body": "Built in 1215, decorated with rich frescoes depicting biblical scenes and the life of St. Gregory — one of the best-preserved structures." },
           { "title": "Manuchihr Mosque", "body": "Built in 1072, considered one of the first Turkish mosques in Anatolia." },
           { "title": "Multicultural architecture", "body": "Armenian churches, a Seljuk mosque, and a Zoroastrian fire temple stand side by side in the same city." }
-        ]
+        ],
+        "visitLocation": "About 45 km from central Kars, on the Turkey-Armenia border",
+        "visitNearestCity": "Central Kars",
+        "visitDuration": "3-4 hours",
+        "visitBestTime": "Summer (green plateau) or winter (dramatic snow-covered scenery)"
       },
       "KU": {
         "name": "Kavilên Aniyê",
@@ -1157,9 +1366,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Dêra Tîgran Honents", "body": "Di sala 1215an de hatiye çêkirin, bi freskên dewlemend ên sehneyên Încîlê û jiyana Aziz Grîgor xemilandî; yek ji avahiyên herî baş parastî." },
           { "title": "Mizgefta Menuçehrê", "body": "Di sala 1072an de hatiye avakirin, wek yek ji mizgeftên tirkî yên yekem ên Anatolyayê tê pejirandin." },
           { "title": "Mîmariya pirçandî", "body": "Di heman bajêr de dêrên ermenî, mizgefta Selçûqî û agirgeheke zerdeştî li kêleka hev radiwestin." }
-        ]
+        ],
+        "visitLocation": "Nêzî 45 km ji navenda Qersê, li sînorê Tirkiye-Ermenistanê",
+        "visitNearestCity": "Navenda Qersê",
+        "visitDuration": "3-4 saet",
+        "visitBestTime": "Havîn (platoya kesk) an zivistan (dîmena berfê ya dramatîk)"
       },
       "CKB": {
+        "name": "کاولەکانی ئانی",
+        "region": "قەرس",
+        "eraDisplay": "سەدەی ١٠-١١",
+        "eraCaption": "سەردەمی زێڕین",
         "history": [
           "ئانی، لە باشووری ڕۆژهەڵاتی قەرس، لە دۆڵی ڕووباری ئارپاچای، شارێکی سەردەمی ناوەڕاستە. وەک پایتەختی شانشینی ئەرمەنی بەگراتونی، سەردەمی زێڕینی خۆی لە سەدەکانی ١٠-١١ بەسەربرد؛ بەهۆی شوێنی لەسەر ڕێگای ئاوریشمەوە، بووە ناوەندێکی بازرگانی و کەلتووری کە دەیتوانی لەگەڵ کۆنستانتینۆپۆل، بەغدا و قاهیرەی ئەو سەردەمە بەراوردکرێت. پێدەچێت لە لووتکەدا دانیشتووانی لە ١٠٠٠٠٠ کەس تێپەڕیبێت.",
           "شارەکە بەهۆی چەندین کڵێسا و پەرستگای بچووکییەوە بە \"شاری ١٠٠١ کڵێسا\" ناودەبرا. لە ساڵی ١٠٦٤دا لەلایەن سوڵتانی سەلجووقی ئەلپ ئەرسلانەوە دەستەبەرکرا؛ کاتێدرالە گەورەکە لەو کاتەدا کرا بە مزگەوت و ناوی \"مزگەوتی فەتحییە\"ی لێنرا. لەئەنجامی هێرشی مۆغۆل و بومەلەرزەکاندا شارەکە هەروادیی بەجێهێڵدرا. شوێنە شوێنەوارییەکەی ئانی لە ساڵی ٢٠١٦دا خرایە لیستی میراتی جیهانی یۆنیسکۆ."
@@ -1169,7 +1386,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "کڵێسای تیگران هۆنێنتس", "body": "لە ساڵی ١٢١٥دا دروستکراوە، بە فرێسکۆی دەوڵەمەند کە دیمەنەکانی ئینجیل و ژیانی سەینت گریگۆر پیشان دەدەن ڕازاوەتەوە؛ یەکێک لە باشترین بیناکانی پاراستراو." },
           { "title": "مزگەوتی مەنووچێهر", "body": "لە ساڵی ١٠٧٢دا دروستکراوە، وەک یەکێک لە یەکەم مزگەوتە تورکییەکانی ئەناتۆلیا دادەنرێت." },
           { "title": "تەلارسازیی فرەکەلتووری", "body": "لە هەمان شاردا کڵێسای ئەرمەنی، مزگەوتی سەلجووقی و ئاگردانی زەردەشتی لەتەنیشت یەکترەوە ڕاوەستاون." }
-        ]
+        ],
+        "visitLocation": "نزیکەی ٤٥ کم لە ناوەندی قەرسەوە، لەسەر سنووری تورکیا-ئەرمەنستان",
+        "visitNearestCity": "ناوەندی قەرس",
+        "visitDuration": "٣-٤ کاتژمێر",
+        "visitBestTime": "هاوین (پلاتۆی سەوز) یان زستان (دیمەنی درامیی بەفراوی)"
       }
     },
     "unesco": true,
@@ -1231,7 +1452,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Architektur der russischen Zeit", "body": "Aus der russischen Verwaltung von 1878-1918 stammende, in Anatolien einzigartige gitterförmige Straßen und Steingebäude." },
           { "title": "Tor nach Ani", "body": "Kars ist Ausgangspunkt und Unterkunftszentrum für den Weg zu den Ruinen von Ani." },
           { "title": "Nähe zum Çıldır-See", "body": "Etwa 70 km entfernt liegt ein See, der im Winter vollständig zufriert und Schlittenfahrten sowie Eisfischen ermöglicht." }
-        ]
+        ],
+        "visitLocation": "Zentrum von Kars",
+        "visitNearestCity": "Kars selbst",
+        "visitDuration": "Halber Tag",
+        "visitBestTime": "Winter (Schneelandschaft und Erlebnis mit dem Doğu Ekspresi) oder Sommer"
       },
       "EN": {
         "eraCaption": "Fortress Construction",
@@ -1244,7 +1469,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Russian-era architecture", "body": "Grid-planned streets and stone buildings from the 1878-1918 Russian administration, unlike anything else in Anatolia." },
           { "title": "Gateway to Ani", "body": "Kars is the starting point and lodging center for the road to the Ruins of Ani." },
           { "title": "Proximity to Lake Çıldır", "body": "About 70 km away lies a lake that freezes completely in winter, allowing for sledding and ice fishing." }
-        ]
+        ],
+        "visitLocation": "Central Kars",
+        "visitNearestCity": "Kars itself",
+        "visitDuration": "Half a day",
+        "visitBestTime": "Winter (snowy scenery and the Doğu Ekspresi train experience) or summer"
       },
       "KU": {
         "region": "Qers",
@@ -1258,9 +1487,16 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Mîmariya serdema Rûsî", "body": "Kolan û avahiyên kevir ên bi plana îzgarayê, ku ji îdareya Rûsî ya 1878-1918an mane, li Anatolyayê tayî ne." },
           { "title": "Deriyê ku vedibe Aniyê", "body": "Qers, xala destpêkê û navenda konaklamê ye ji bo riya ber bi Kavilên Aniyê." },
           { "title": "Nêzîkbûna Gola Çildirê", "body": "Nêzî 70 km dûr, golek ku di zivistanê de bi tevahî qeşa dibe, li wir dikare bi sonek û masîgirtina qeşayê were kirin." }
-        ]
+        ],
+        "visitLocation": "Navenda Qersê",
+        "visitNearestCity": "Qers bi xwe",
+        "visitDuration": "Nîv roj",
+        "visitBestTime": "Zivistan (dîmena berfê û tecrubeya trêna Doğu Ekspresi) an havîn"
       },
       "CKB": {
+        "region": "قەرس",
+        "eraDisplay": "١١٥٢",
+        "eraCaption": "بنیادنانی قەڵا",
         "history": [
           "بەپێی نووسینەکەی سەر شووری باشوور، قەڵای قەرس لە ساڵی ١١٥٢دا بە فەرمانی سوڵتانی سالتووقی مەلیک عیزەدین بنیادنراوە. شارەکە لە کاتی داگیرکردنی ڕووسیی ٤٠ ساڵانەی دوای شەڕی عوسمانی-ڕووسیی ١٨٧٧-١٨٧٨دا زیانێکی گەورەی بینی — میراتی تەلارسازیی شێوازی بالتیک لەم سەردەمە هێشتا لە دیمەنی تەلارسازیی شارەکەدا دەبیندرێت.",
           "لەناو قەڵاکەدا \"قوللەی ئەژدیها\" کە لە سەردەمی سەلجووقییەوە ماوەتەوە هەیە، یەکێک لە کۆنترین نەخۆشخانەکانی ئەناتۆلیا، لەگەڵ ئارامگای جەلال بابا کە سەر بە سەدەی ١٢ە."
@@ -1270,7 +1506,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "تەلارسازیی سەردەمی ڕووسی", "body": "شەقامی پلانی خشتەیی و بیناکانی بەردین کە لە بەڕێوەبردنی ڕووسیی ١٨٧٨-١٩١٨ماونەتەوە، لە ئەناتۆلیادا وەک خۆیان نییە." },
           { "title": "دەرگای بەرەو ئانی", "body": "قەرس خاڵی دەستپێک و ناوەندی مانەوەیە بۆ ڕێگای بەرەو کاولی ئانی." },
           { "title": "نزیکبوونەوە لە دەریاچەی چیلدیر", "body": "نزیکەی ٧٠ کیلۆمەتر دوورە، دەریاچەیەک کە لە زستاندا بە تەواوی دەبەستێت، سوڕینەوە و ڕاوی ماسیی سەر بەستوو تێدا دەکرێت." }
-        ]
+        ],
+        "visitLocation": "ناوەندی قەرس",
+        "visitNearestCity": "خودی قەرس",
+        "visitDuration": "نیوەڕۆژێک",
+        "visitBestTime": "زستان (دیمەنی بەفر و ئەزموونی ترێنی دۆغو ئێکسپرێس) یان هاوین"
       }
     },
     "unesco": false,
@@ -1333,7 +1573,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Doppelkegel-Struktur", "body": "Groß- und Klein-Ararat sind durch den 2.700 Meter hohen Sattel Serdarbulak miteinander verbunden." },
           { "title": "Vielsprachige/-kulturelle Benennung", "body": "Der Berg trägt in vielen Sprachen unterschiedliche Namen — kurdisch Çiyayê Agirî, armenisch Masis, persisch Kûh-i Nûh —, jeder verweist auf eine andere Legende." },
           { "title": "Doğubayazıt und Ishak-Pascha-Palast", "body": "Der am Fuß des Berges gelegene Landkreis beherbergt eines der bedeutendsten Beispiele osmanischer Palastarchitektur des 18. Jahrhunderts." }
-        ]
+        ],
+        "visitLocation": "Ağrı, Kreis Doğubayazıt",
+        "visitNearestCity": "Doğubayazıt",
+        "visitDuration": "Halber Tag für die Aussicht; 3-5 Tage für den Gipfel (Bergführer erforderlich)",
+        "visitBestTime": "Juli-September (Besteigung); die Aussicht ist ganzjährig möglich"
       },
       "EN": {
         "name": "Mount Ararat",
@@ -1347,7 +1591,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Twin-cone structure", "body": "Greater and Lesser Ararat are connected by the Serdarbulak saddle at 2,700 meters elevation." },
           { "title": "Multilingual/multicultural naming", "body": "The mountain is known by different names in many languages — Kurdish Çiyayê Agirî, Armenian Masis, Persian Kûh-i Nûh — each pointing to a different legend." },
           { "title": "Doğubayazıt and İshak Pasha Palace", "body": "The district at the mountain's foot is home to one of the most important examples of 18th-century Ottoman palace architecture." }
-        ]
+        ],
+        "visitLocation": "Ağrı, Doğubayazıt district",
+        "visitNearestCity": "Doğubayazıt",
+        "visitDuration": "Half a day for the view; 3-5 days for the summit (guide required)",
+        "visitBestTime": "July-September (climbing); the view is good in any season"
       },
       "KU": {
         "name": "Çiyayê Agirî",
@@ -1362,9 +1610,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Avahiya du-konî", "body": "Agiriyê Mezin û Biçûk bi zîna Serdarbulakê ya bi bilindahiya 2.700 metreyan bi hev ve girêdayî ne." },
           { "title": "Navlêkirina pirzimanî/pirçandî", "body": "Çiya bi navên cuda di gelek zimanan de tê zanîn — bi Kurdî Çiyayê Agirî, bi Ermenî Masîs, bi Farisî Kûh-i Nûh — her yek îşaretê bi efsaneyeke cuda dide." },
           { "title": "Duayezîd û Qesra Îshaq Paşa", "body": "Navçeya li binê çiya, xaniyê yek ji mînakên herî girîng ên mîmariya qesrê ya Osmanî ya sedsala 18. ye." }
-        ]
+        ],
+        "visitLocation": "Agirî, navçeya Duayezîdê",
+        "visitNearestCity": "Duayezîd",
+        "visitDuration": "Ji bo dîmenê nîv roj; ji bo lûtkeyê 3-5 roj (rêberê pêwîst e)",
+        "visitBestTime": "Tîrmeh-Îlon (hilkişîn); dîmen di her demsalê de baş e"
       },
       "CKB": {
+        "name": "چیای ئاگری",
+        "region": "ئاگری",
+        "eraDisplay": "٥١٣٧ مەتر",
+        "eraCaption": "بەرزیی لووتکە",
         "history": [
           "چیای ئاگری (بە زمانە ڕۆژئاواییەکان ئارارات)، بە بەرزیی ٥١٣٧ مەتر بەرزترین لووتکەی تورکیایە، کە لە دوو کۆنی گڵۆپی ژێری مردوو پێکهاتووە (یەکێکیان گەورە و یەکێکیان بچووک). لەبەر ئەوەی لەسەر خاکی شانشینی ئوراردودایە (سەدەکانی ٩-٦ی پێش زایین)، پێدەچێت ناوی \"ئارارات\" لە وشەی ئوراردووەوە هاتبێت.",
           "چیاکە بە \"چیاکانی ئارارات\" کە بەپێی گێڕانەوەی لافاوی نوح لە تەورات، بەلەمەکە لەسەری دانیشتووە، پەیوەندیدارە — بۆیە بۆ نەریتی جولەکە و مەسیحی گرنگیی هێمایی هەیە. یەکەم سەرکەوتنی ناسراو بۆ لووتکەکە لە ساڵی ١٨٢٩دا لەلایەن پزیشکی ئەڵمانی فریدریش پارۆتەوە ئەنجامدرا."
@@ -1374,7 +1630,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "پێکهاتەی دووکۆنی", "body": "ئاگریی گەورە و بچووک لە ڕێگەی گەردەنەی سەرداربولاق کە بەرزییەکەی ٢٧٠٠ مەترە پێکەوە بەستراونەتەوە." },
           { "title": "ناونانی فرەزمان/فرەکەلتوور", "body": "چیاکە بە ناوی جیاواز لە زمانی زۆردا ناسراوە — بە کوردی چیای ئاگری، بە ئەرمەنی ماسیس، بە فارسی کووهی نووح — هەریەکەیان ئاماژە بە ئەفسانەیەکی جیاواز دەکەن." },
           { "title": "دۆغوبایازید و کۆشکی ئیسحاق پاشا", "body": "ناوچەکەی بن چیاکە، ماڵی یەکێک لە گرنگترین نموونەکانی تەلارسازیی کۆشکی عوسمانیی سەدەی ١٨ە." }
-        ]
+        ],
+        "visitLocation": "ئاگری، ناوچەی دۆغوبایازید",
+        "visitNearestCity": "دۆغوبایازید",
+        "visitDuration": "بۆ دیمەن نیوەڕۆژێک؛ بۆ لووتکە ٣-٥ ڕۆژ (ڕابەر پێویستە)",
+        "visitBestTime": "تەمووز-ئەیلوول (هەڵکشان)؛ دیمەن لە هەموو وەرزێکدا باشە"
       }
     },
     "unesco": false,
@@ -1438,7 +1698,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Ufer des Vansees", "body": "Tatvan liegt am Westende des größten Sees der Türkei und verfügt über einen langen, seeblickreichen Küstenstreifen." },
           { "title": "Vulkanische Geologie", "body": "Die Region bietet eine der eindrucksvollsten vulkanischen Landschaften Ostanatoliens." },
           { "title": "Nähe zum seldschukischen Friedhof von Ahlat", "body": "Regionale Touren kombinieren häufig die Route Tatvan-Ahlat-Van." }
-        ]
+        ],
+        "visitLocation": "Bitlis, Kreis Tatvan",
+        "visitNearestCity": "Tatvan selbst; etwa 150 km bis Van",
+        "visitDuration": "Halber Tag",
+        "visitBestTime": "Sommermonate (wegen der Straßenverhältnisse)"
       },
       "EN": {
         "name": "Tatvan & Nemrut Crater Lake",
@@ -1453,9 +1717,14 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Lake Van shoreline", "body": "Tatvan sits at the western end of Turkey's largest lake, with a long lakeside coastline." },
           { "title": "Volcanic geology", "body": "The region offers one of the most striking volcanic landscapes in Eastern Anatolia." },
           { "title": "Proximity to the Seljuk cemetery of Ahlat", "body": "Regional tours often combine the Tatvan-Ahlat-Van route." }
-        ]
+        ],
+        "visitLocation": "Bitlis, Tatvan district",
+        "visitNearestCity": "Tatvan itself; about 150 km to Van",
+        "visitDuration": "Half a day",
+        "visitBestTime": "Summer months (due to road conditions)"
       },
       "KU": {
+        "name": "Tatvan & Gola Krîtera Nemrûdê",
         "region": "Bidlîs",
         "eraDisplay": "Volkanîk",
         "eraCaption": "Eslê Jeolojîk",
@@ -1468,9 +1737,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Kêleka Gola Wanê", "body": "Tatvan li rojavayê gola herî mezin a Tirkiyeyê ye; xwedî perîkolek dirêj a dîmena golê ye." },
           { "title": "Jeolojiya volqanîk", "body": "Herêm, yek ji peyzajên volqanîk ên herî balkêş ên Anatolyaya Rojhilat pêşkêş dike." },
           { "title": "Nêzîkbûna goristana Selçûqî ya Ahlatê", "body": "Di gerên herêmî de bi gelemperî rêça Tatvan-Ahlat-Wan bi hev re tê kirin." }
-        ]
+        ],
+        "visitLocation": "Bidlîs, navçeya Tatvanê",
+        "visitNearestCity": "Tatvan bi xwe; nêzî 150 km heta Wanê",
+        "visitDuration": "Nîv roj",
+        "visitBestTime": "Mehên havînê (ji ber rewşa rê)"
       },
       "CKB": {
+        "name": "تاتڤان و دەریاچەی کرەیتەری نەمروود",
+        "region": "بیدلیس",
+        "eraDisplay": "ڤولکانی",
+        "eraCaption": "ڕەچەڵەکی جیۆلۆجی",
         "history": [
           "تاتڤان، لە کەناری ڕۆژئاوای دەریاچەی وان، ناوچەیەکە سەر بە پارێزگای بیدلیس. چیای نەمروودی نزیک (کە هەمان ناوی نەمروودی کۆماگینەی ئادییامانی هەیە، بەڵام چیایەکی گڵۆپی جیاوازە)، لە کانیاوەکەیدا یەکێک لە گەورەترین دەریاچە کانیاوەکانی جیهان، دەریاچەی کانیاوی نەمروود، هەڵدەگرێت. دەریاچەکە بە پڕبوونەوەی ئاو لە چوکاندنێک کە لە تەقینەوەی گڵۆپییەوە پێکهاتووە، دروستبووە.",
           "ناوچەکە هەروەها بە شوێنپێی مێژوویی وەک گۆڕستانی سەلجووقیی ئەخلات دەوردراوە؛ پێکهاتنی دەریاچەی وانیش بە بەستنی دۆڵێک لەلایەن لاڤای ئەم ناوچە گڵۆپییەوە بەستراوەتەوە."
@@ -1480,7 +1757,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "کەناری دەریاچەی وان", "body": "تاتڤان لە کۆتایی ڕۆژئاوای گەورەترین دەریاچەی تورکیایە؛ خاوەنی کەنارێکی درێژی دیمەن-دەریاچەیە." },
           { "title": "جیۆلۆجیای گڵۆپی", "body": "ناوچەکە یەکێک لە سەرنجڕاکێشترین دیمەنە گڵۆپییەکانی ئەناتۆلیای ڕۆژهەڵات پێشکەش دەکات." },
           { "title": "نزیکبوونەوە لە گۆڕستانی سەلجووقیی ئەخلات", "body": "لە گەشتە هەرێمییەکاندا زۆرجار ڕێڕەوی تاتڤان-ئەخلات-وان پێکەوە ئەنجامدەدرێت." }
-        ]
+        ],
+        "visitLocation": "بیدلیس، ناوچەی تاتڤان",
+        "visitNearestCity": "خودی تاتڤان؛ نزیکەی ١٥٠ کم بۆ وان",
+        "visitDuration": "نیوەڕۆژێک",
+        "visitBestTime": "مانگەکانی هاوین (لەبەر بارودۆخی ڕێگا)"
       }
     },
     "unesco": false,
@@ -1542,7 +1823,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Stelen mit Hirschmotiven", "body": "Auf die Bronzezeit datierte Menhire mit Hirschmotiven, zu den ältesten Spuren der Hochlandkultur der Region zählend." },
           { "title": "Tal von Himmel und Hölle", "body": "Ein Tal nahe Çukurca, das seinen Namen seinen gegensätzlichen Landschaften verdankt." },
           { "title": "Hochgebirgskultur", "body": "Die Region beherbergt eine der am wenigsten bekannten, aber schroffsten Naturregionen Anatoliens und eine damit verbundene eigenständige Hochland-Lebenskultur." }
-        ]
+        ],
+        "visitLocation": "Zentrum von Hakkari, Kreise Çukurca und Yüksekova",
+        "visitNearestCity": "Etwa 200 km bis Van, Zentrum von Hakkari",
+        "visitDuration": "2-3 Tage (für die Cilo-Sat-Tour)",
+        "visitBestTime": "Juli-September (nach der Schneeschmelze)"
       },
       "EN": {
         "eraDisplay": "20,000 years",
@@ -1556,7 +1841,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Deer-motif stelae", "body": "Bronze Age standing stones with deer motifs, among the oldest traces of the region's highland culture." },
           { "title": "Heaven-Hell Valley", "body": "A valley near Çukurca named for its strikingly contrasting landscapes." },
           { "title": "High mountain culture", "body": "The region holds one of Anatolia's least-known yet steepest stretches of nature, along with a distinctive highland way of life shaped by it." }
-        ]
+        ],
+        "visitLocation": "Central Hakkari, Çukurca and Yüksekova districts",
+        "visitNearestCity": "About 200 km to Van, central Hakkari",
+        "visitDuration": "2-3 days (for the Cilo-Sat tour)",
+        "visitBestTime": "July-September (after the snow melts)"
       },
       "KU": {
         "name": "Colemêrg",
@@ -1572,9 +1861,17 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "Stêlên bi motîfa xezalan", "body": "Kevirên rawestayî yên bi motîfa xezalan ên Serdema Bronzê, ji şopên herî kevn ên çanda zozanan a herêmê ne." },
           { "title": "Geliyê Buhişt-Dojehê", "body": "Geliyek li nêzî Çûkurca, ku navê xwe ji dîmenên xwe yên dijber digire." },
           { "title": "Çanda çiyayê bilind", "body": "Herêm, yek ji parçeyên xwezayê yên herî hindik naskirî lê herî tûj ên Anatolyayê û çandeke jiyana zozanan a xwerû ya bi vê ve girêdayî vedihewîne." }
-        ]
+        ],
+        "visitLocation": "Navenda Colemêrgê, navçeyên Çûkurca û Yüksekova",
+        "visitNearestCity": "Nêzî 200 km heta Wanê, navenda Colemêrgê",
+        "visitDuration": "2-3 roj (ji bo geşta Cîlo-Satê)",
+        "visitBestTime": "Tîrmeh-Îlon (piştî heliyana berfê)"
       },
       "CKB": {
+        "name": "کۆلەمێرگ",
+        "region": "کۆلەمێرگ",
+        "eraDisplay": "٢٠٠٠٠ ساڵ",
+        "eraCaption": "سەردەمی قەشا",
         "history": [
           "کۆلەمێرگ (حەکاری)، یەکێکە لە بەرزترین و شاختاویترین پارێزگاکانی تورکیا؛ چیاکانی جیلۆ و سات، یەکێک لە بەرزترین و کێوترین بەشەکانی سروشتی باشووری ڕۆژهەڵاتی وڵات پێکدەهێنن. لە ناوچەکەدا بەردە ڕاوەستاوەکان (ستێل) بە نەخشی ئاسک هەن کە دەگەڕێنەوە بۆ هەزارەی دووەمی پێش زایین — ئەم ستێلانە لەنێو دۆزراوە شوێنەوارییە گرنگەکانی کەلتووری زۆزانی ئەناتۆلیای ڕۆژهەڵاتدان.",
           "بەفرۆکەکانی چیای جیلۆ، کە پێدەچێت نزیکەی ٢٠٠٠٠ ساڵ تەمەنیان بێت، یەکێک لە سەرنجڕاکێشترین سیستەمە بەفرۆکەییەکانی تورکیا پێکدەهێنن."
@@ -1584,7 +1881,11 @@ export const SEED_DESTINATIONS: SeedDestination[] = [
           { "title": "ستێلی نەخشی ئاسک", "body": "بەردە ڕاوەستاوەکانی نەخشی ئاسک کە دەگەڕێنەوە بۆ سەردەمی بڕۆنز، یەکێکن لە کۆنترین شوێنپێی کەلتووری زۆزانی ناوچەکە." },
           { "title": "دۆڵی بەهەشت-دۆزەخ", "body": "دۆڵێک لە نزیک چۆکورجا، کە ناوی لە دیمەنە بەرامبەرەکانییەوە وەرگرتووە." },
           { "title": "کەلتووری چیای بەرز", "body": "ناوچەکە یەکێک لە کەمناسراوترین بەڵام کێوترین بەشەکانی سروشتی ئەناتۆلیا و کەلتوورێکی تایبەتی ژیانی زۆزانی پەیوەست بەوە هەڵدەگرێت." }
-        ]
+        ],
+        "visitLocation": "ناوەندی کۆلەمێرگ، ناوچەکانی چۆکورجا و یوکسەکۆڤا",
+        "visitNearestCity": "نزیکەی ٢٠٠ کم بۆ وان، ناوەندی کۆلەمێرگ",
+        "visitDuration": "٢-٣ ڕۆژ (بۆ گەشتی جیلۆ-سات)",
+        "visitBestTime": "تەمووز-ئەیلوول (دوای توانەوەی بەفر)"
       }
     },
     "unesco": false,

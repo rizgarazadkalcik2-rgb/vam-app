@@ -28,7 +28,9 @@ export async function POST(req: NextRequest) {
   const currentPassword = body?.currentPassword;
   const newPassword = body?.newPassword;
 
-  if (!currentPassword || !newPassword) {
+  // typeof kontrolü: string olmayan bir değer (örn. sayı) `.length`/bcrypt.compare
+  // üzerinden ya yanlış sonuç ya da yakalanmamış bir hata üretebilir.
+  if (typeof currentPassword !== "string" || typeof newPassword !== "string" || !currentPassword || !newPassword) {
     return NextResponse.json(
       { error: "Mevcut şifre ve yeni şifre gerekli." },
       { status: 400 }

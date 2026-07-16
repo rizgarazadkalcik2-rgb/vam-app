@@ -5,6 +5,7 @@ type Entry = { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
 export const DICT = {
   // Nav / footer (shared across every Next.js page)
   nav_home: { TR: "Ana Sayfa", DE: "Startseite", EN: "Home", KU: "Serûpel", CKB: "سەرەکی" },
+  nav_menu_label: { TR: "Menü", DE: "Menü", EN: "Menu", KU: "Menû", CKB: "مینیو" },
   nav_destinations: { TR: "Destinasyonlar", DE: "Destinationen", EN: "Destinations", KU: "Cihên Gerê", CKB: "شوێنەکان" },
   nav_bundles: { TR: "Paketler", DE: "Pakete", EN: "Packages", KU: "Pakêt", CKB: "پاکێجەکان" },
   nav_experiences: { TR: "Deneyimler", DE: "Erlebnisse", EN: "Experiences", KU: "Ezmûn", CKB: "ئەزموونەکان" },
@@ -253,6 +254,7 @@ export const DICT = {
   res_err_past_date: { TR: "Seyahat tarihi geçmişte olamaz.", DE: "Das Reisedatum darf nicht in der Vergangenheit liegen.", EN: "Travel date cannot be in the past.", KU: "Dîroka rêwîtiyê nikare di paşerojê de be.", CKB: "بەرواری گەشت ناتوانێت لە ڕابردوودا بێت." },
   res_err_package_not_found: { TR: "Paket bulunamadı.", DE: "Paket nicht gefunden.", EN: "Package not found.", KU: "Pakêt nehat dîtin.", CKB: "پاکێج نەدۆزرایەوە." },
   res_err_package_inactive: { TR: "Bu paket şu anda rezervasyona açık değil.", DE: "Dieses Paket ist derzeit nicht für Buchungen verfügbar.", EN: "This package is not currently open for reservations.", KU: "Ev pakêt niha ji bo rezervasyonê vekirî nine.", CKB: "ئەم پاکێجە ئێستا بۆ ڕیزێرڤکردن کراوە نییە." },
+  res_err_package_full: { TR: "Bu paket için yeterli kontenjan kalmadı.", DE: "Für dieses Paket ist keine ausreichende Kapazität mehr verfügbar.", EN: "There is not enough remaining capacity for this package.", KU: "Ji bo vê pakêtê kapasîteya têrê nemaye.", CKB: "بۆ ئەم پاکێجە توانای پێویست نەماوە." },
   res_err_bundle_not_found: { TR: "Rota (bundle) bulunamadı.", DE: "Route nicht gefunden.", EN: "Bundle not found.", KU: "Rota (bundle) nehat dîtin.", CKB: "ڕووتەکە نەدۆزرایەوە." },
   res_err_bundle_inactive: { TR: "Bu rota şu anda rezervasyona açık değil.", DE: "Diese Route ist derzeit nicht für Buchungen verfügbar.", EN: "This bundle is not currently open for reservations.", KU: "Ev rota niha ji bo rezervasyonê vekirî nine.", CKB: "ئەم ڕووتە ئێستا بۆ ڕیزێرڤکردن کراوە نییە." },
   rez_success_title: { TR: "Talebiniz alındı", DE: "Ihre Anfrage ist eingegangen", EN: "Your request has been received", KU: "Daxwaza we hat wergirtin", CKB: "داواکاریت وەرگیرا" },

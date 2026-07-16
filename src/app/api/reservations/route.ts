@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { createReservation, listAllReservations, listReservationsByPartner } from "@/lib/reservations";
+import { createReservation, listAllReservations, listReservationsByPartner, getReservedGuestCountForPackage } from "@/lib/reservations";
 import { getPackageById } from "@/lib/packages";
 import { getBundleById } from "@/lib/bundles";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
@@ -135,6 +135,14 @@ export async function POST(req: NextRequest) {
     if (pkg.status !== "active") {
       return NextResponse.json(
         { error: t("res_err_package_inactive", lang) },
+        { status: 400 }
+      );
+    }
+
+    const alreadyReserved = await getReservedGuestCountForPackage(pkg.id);
+    if (alreadyReserved + guestCount > pkg.capacity) {
+      return NextResponse.json(
+        { error: t("res_err_package_full", lang) },
         { status: 400 }
       );
     }

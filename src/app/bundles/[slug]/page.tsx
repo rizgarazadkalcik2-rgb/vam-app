@@ -5,7 +5,7 @@ import VamNavbar from "@/app/components/VamNavbar";
 import VamFooter from "@/app/components/VamFooter";
 import { getLang } from "@/lib/i18n";
 import { t } from "@/lib/dictionary";
-import { formatPrice } from "@/lib/currency";
+import { formatPrice, convertPrice } from "@/lib/currency";
 import { getCurrency } from "@/lib/getCurrency";
 import { buildAlternates, canonicalForLang, getUrlLang } from "@/lib/hreflang";
 import SmartImage from "@/app/components/SmartImage";
@@ -72,7 +72,7 @@ export default async function BundleDetailPage({
         touristType: "Cultural tourism",
         offers: {
           "@type": "Offer",
-          price: Number(b.price),
+          price: convertPrice(Number(b.price), currency),
           priceCurrency: currency,
           url: `https://visitvam.com/bundles/${b.slug}`,
           availability: "https://schema.org/InStock",

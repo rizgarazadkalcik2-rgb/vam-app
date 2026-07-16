@@ -81,11 +81,19 @@ export default function BundlesClient({
               · {initialGuests} {t("bundle_guests_suffix", lang)}
             </span>
           )}
-          {initialDate && (
-            <span style={{ marginInlineStart: 6, color: "var(--color-primary)", fontWeight: 600 }}>
-              · {new Date(initialDate + "-01").toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr-TR", { month: "long", year: "numeric" })}
-            </span>
-          )}
+          {initialDate && (() => {
+            // `new Date("YYYY-MM-01")` ISO string'i UTC gece yarısı olarak ayrıştırır;
+            // UTC'nin batısındaki (ör. Amerika kıtası) ziyaretçilerde toLocaleDateString
+            // bunu yerel saatte hep BİR ÖNCEKİ gün/ay olarak gösterir. Yıl/ay'ı
+            // Date constructor'ına doğrudan (yerel bileşenler olarak) vererek bunu önlüyoruz.
+            const [y, m] = initialDate.split("-").map(Number);
+            const localDate = new Date(y, (m || 1) - 1, 1);
+            return (
+              <span style={{ marginInlineStart: 6, color: "var(--color-primary)", fontWeight: 600 }}>
+                · {localDate.toLocaleDateString(lang === "DE" ? "de-DE" : lang === "EN" ? "en-US" : lang === "KU" ? "ku" : lang === "CKB" ? "ckb" : "tr-TR", { month: "long", year: "numeric" })}
+              </span>
+            );
+          })()}
         </p>
       </div>
 

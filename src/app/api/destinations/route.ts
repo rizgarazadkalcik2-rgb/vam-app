@@ -61,6 +61,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Değerlendirme sayısı negatif olamaz." }, { status: 400 });
     }
   }
+  if (body.latitude != null && body.latitude !== "" && !Number.isFinite(Number(body.latitude))) {
+    return NextResponse.json({ error: "Geçersiz enlem değeri." }, { status: 400 });
+  }
+  if (body.longitude != null && body.longitude !== "" && !Number.isFinite(Number(body.longitude))) {
+    return NextResponse.json({ error: "Geçersiz boylam değeri." }, { status: 400 });
+  }
 
   try {
     const destination = await createDestination({

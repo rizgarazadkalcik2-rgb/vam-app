@@ -51,22 +51,26 @@ export default function AcentelerPanel({
     setSubmitting(true);
     setError("");
 
-    const res = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error || "Bir hata oluştu.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+
+      setForm(emptyForm);
+      await refresh();
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    setForm(emptyForm);
-    setSubmitting(false);
-    await refresh();
   }
 
   async function toggleStatus(user: SafeUser) {

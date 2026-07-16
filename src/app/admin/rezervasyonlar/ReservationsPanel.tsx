@@ -34,12 +34,21 @@ export default function ReservationsPanel({
   }
 
   async function updateStatus(id: number, field: "reservationStatus" | "paymentStatus", value: string) {
-    const res = await fetch(`/api/reservations/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: value }),
-    });
-    if (res.ok) await refresh();
+    try {
+      const res = await fetch(`/api/reservations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value }),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Durum güncellenemedi.");
+      }
+    } catch {
+      alert("Durum güncellenemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    }
   }
 
   const filtered =

@@ -55,22 +55,27 @@ export default function PartnerPanel({
     setPasswordSuccess(false);
     setPasswordSubmitting(true);
 
-    const res = await fetch("/api/auth/change-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword, newPassword }),
-    });
-    const data = await res.json();
-    setPasswordSubmitting(false);
+    try {
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json().catch(() => null);
 
-    if (!res.ok) {
-      setPasswordError(data.error || "Bir hata oluştu.");
-      return;
+      if (!res.ok) {
+        setPasswordError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+
+      setPasswordSuccess(true);
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch {
+      setPasswordError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setPasswordSubmitting(false);
     }
-
-    setPasswordSuccess(true);
-    setCurrentPassword("");
-    setNewPassword("");
   }
 
   async function refresh() {
@@ -90,19 +95,24 @@ export default function PartnerPanel({
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    setUploading(false);
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json().catch(() => null);
 
-    if (!res.ok) {
-      setError(data.error || "Görsel yüklenirken bir hata oluştu.");
-      return;
+      if (!res.ok) {
+        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        return;
+      }
+
+      setForm((f) => ({ ...f, imageUrl: data.url }));
+    } catch {
+      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setUploading(false);
     }
-
-    setForm((f) => ({ ...f, imageUrl: data.url }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -113,23 +123,27 @@ export default function PartnerPanel({
     const url = editingId ? `/api/packages/${editingId}` : "/api/packages";
     const method = editingId ? "PATCH" : "POST";
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, status: "active" }),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, status: "active" }),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error || "Bir hata oluştu.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Bir hata oluştu.");
+        return;
+      }
+
+      setForm(emptyForm);
+      setEditingId(null);
+      await refresh();
+    } catch {
+      setError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    setForm(emptyForm);
-    setEditingId(null);
-    setSubmitting(false);
-    await refresh();
   }
 
   function startEdit(pkg: VamPackage) {
@@ -334,7 +348,7 @@ export default function PartnerPanel({
           <div style={{ display: "flex", gap: 10 }}>
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || uploading}
               style={{
                 padding: "9px 20px",
                 background: "#c4522a",
