@@ -86,6 +86,7 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
             </p>
             <Link
               href="/"
+              prefetch={false}
               style={{
                 display: "inline-block",
                 padding: "10px 24px",

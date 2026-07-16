@@ -51,6 +51,7 @@ export default function LegalLayout({
       >
         <Link
           href="/"
+          prefetch={false}
           style={{
             display: "flex",
             alignItems: "center",
@@ -61,6 +62,7 @@ export default function LegalLayout({
         </Link>
         <Link
           href="/"
+          prefetch={false}
           style={{
             fontSize: 13,
             color: "rgba(246,240,228,0.7)",
