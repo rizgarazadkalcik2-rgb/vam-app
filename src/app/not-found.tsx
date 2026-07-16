@@ -81,6 +81,7 @@ export default function NotFound() {
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
           <Link
             href="/"
+            prefetch={false}
             style={{
               padding: "11px 26px",
               background: "#c4522a",

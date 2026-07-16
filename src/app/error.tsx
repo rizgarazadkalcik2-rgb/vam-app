@@ -105,6 +105,7 @@ export default function ErrorPage({
           </button>
           <Link
             href="/"
+            prefetch={false}
             style={{
               padding: "11px 26px",
               border: "1px solid rgba(232,188,68,0.45)",

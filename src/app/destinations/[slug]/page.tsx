@@ -94,7 +94,7 @@ export default async function DestinationDetailPage({
       <VamNavbar lang={lang} currency={currency} />
 
       <div className="vc-breadcrumb">
-        <Link href="/">{t("breadcrumb_home", lang)}</Link> {t("breadcrumb_sep", lang)} <Link href="/destinations">{t("all_destinations", lang)}</Link> {t("breadcrumb_sep", lang)} {d.name}
+        <Link href="/" prefetch={false}>{t("breadcrumb_home", lang)}</Link> {t("breadcrumb_sep", lang)} <Link href="/destinations">{t("all_destinations", lang)}</Link> {t("breadcrumb_sep", lang)} {d.name}
       </div>
 
       <div className="vc-hero">
