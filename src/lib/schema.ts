@@ -19,6 +19,20 @@ export function ensureSchema(): Promise<void> {
 }
 
 async function initSchema() {
+  // Varsayılan içeriğin sadece GERÇEKTEN ilk kurulumda tohumlandığını, bir
+  // admin bilerek listeyi boşalttıktan sonra bir sonraki soğuk başlangıçta
+  // "tablo boş = hiç doldurulmamış" sanılmadığını garanti eden işaret tablosu.
+  // Ayrıca tek seferlik geriye dönük içerik dolgularının (bkz. destinations
+  // bloğu) her soğuk başlangıçta tekrar tekrar aynı sorguları çalıştırmasını
+  // önlemek için de kullanılıyor — en üstte oluşturuluyor ki dosyanın her
+  // yerinden (destinations dahil) erişilebilsin.
+  await sql`
+    CREATE TABLE IF NOT EXISTS schema_seed_state (
+      key TEXT PRIMARY KEY,
+      seeded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `;
+
   await sql`
     CREATE TABLE IF NOT EXISTS packages (
       id SERIAL PRIMARY KEY,
@@ -235,6 +249,109 @@ async function initSchema() {
     }
   }
 
+  // Üçüncü tek seferlik geriye dönük dolgu: name/region/eraDisplay/eraCaption
+  // (kart üstü bilgiler) ve visitLocation/visitNearestCity/visitDuration/
+  // visitBestTime (pratik ziyaret bilgileri) alanları translations şemasına
+  // SONRADAN eklendi — yukarıdaki dolgu sadece "history" alt-anahtarına bakıyor,
+  // production'daki tüm destinasyonlarda bu zaten dolu olduğu için bir daha hiç
+  // tetiklenmiyor ve bu yeni alanlar production'a asla ulaşmıyordu. Burada HER
+  // ALAN AYRI AYRI kontrol edilir (tek bir "history var mı" kontrolü yeterli
+  // değil — bazı destinasyonlarda bu alanlardan sadece bir kısmı eksik olabilir)
+  // — admin panelinden elle girilmiş bir değer varsa asla ezilmez. Tüm blok
+  // schema_seed_state işaretiyle korunuyor; ilk başarılı çalışmadan sonra bir
+  // daha hiç tetiklenmeyip soğuk başlangıçlarda gereksiz sorgu yükü yaratmaz.
+  const { rows: destCardFieldsMarker } = await sql`
+    SELECT 1 FROM schema_seed_state WHERE key = 'destinations_card_practical_fields_v1' LIMIT 1;
+  `;
+  if (destCardFieldsMarker.length === 0) {
+    const CARD_FIELDS = [
+      "name", "region", "eraDisplay", "eraCaption",
+      "visitLocation", "visitNearestCity", "visitDuration", "visitBestTime",
+    ] as const;
+    // Bu, ~480 bağımsız UPDATE sorgusuna kadar çıkabiliyor (15 destinasyon × 4
+    // dil × 8 alan) — her biri farklı bir alan/satır hedeflediği için sırayla
+    // await etmek yerine hepsini paralel ateşliyoruz (aynı satıra denk gelenler
+    // Postgres'in satır kilidiyle zaten güvenle sıralanır). Bu marker zaten tek
+    // seferlik olduğu için bu maliyet sadece deploy sonrası ilk isteğe biner.
+    const updates: Promise<unknown>[] = [];
+    for (const d of SEED_DESTINATIONS) {
+      for (const lang of ["DE", "EN", "KU", "CKB"] as const) {
+        const t = d.translations?.[lang];
+        if (!t) continue;
+        for (const field of CARD_FIELDS) {
+          const value = t[field];
+          if (!value) continue;
+          const fieldPath = `{${lang},${field}}`;
+          updates.push(sql`
+            UPDATE destinations
+            SET translations = jsonb_set(
+              CASE WHEN translations ? ${lang}::text THEN translations
+                   ELSE translations || jsonb_build_object(${lang}::text, '{}'::jsonb) END,
+              ${fieldPath}::text[],
+              ${JSON.stringify(value)}::jsonb,
+              true
+            )
+            WHERE slug = ${d.slug} AND translations #> ${fieldPath}::text[] IS NULL;
+          `);
+        }
+      }
+    }
+    await Promise.all(updates);
+    await sql`INSERT INTO schema_seed_state (key) VALUES ('destinations_card_practical_fields_v1') ON CONFLICT (key) DO NOTHING;`;
+  }
+
+  // Dördüncü tek seferlik geriye dönük düzeltme: Harran'ın "Ulu Cami kalıntıları"
+  // özelliğinin TR gövdesi yanlışlıkla bir üniversiteyi anlatıyordu (başlıkla
+  // uyuşmuyordu); DE/EN/KU/CKB çevirilerindeki 4. özellik ("üniversite kalıntıları")
+  // ise TR'nin gerçek 4. özelliği olan "Sabiilik mirası" ile hiç eşleşmiyordu.
+  // Eski (yanlış) metinle EŞLEŞEN satırları hedefliyoruz — bu hem admin'in
+  // elle düzelttiği satırları asla ezmez hem de sorgu doğal olarak tek
+  // seferlik kalır (ikinci çalıştırmada eski metin artık yok, WHERE hiçbir
+  // satır bulmaz) — ayrı bir işaret satırına gerek yok.
+  await sql`
+    UPDATE destinations
+    SET features = jsonb_set(features, '{2,body}', ${JSON.stringify(
+      "8. yüzyılda Emeviler döneminde inşa edilen, Anadolu'nun en eski camilerinden biri."
+    )}::jsonb)
+    WHERE slug = 'harran'
+      AND features->2->>'body' = 'İslam dünyasının ilk üniversitelerinden biri olarak kabul edilen yapının kalıntıları hâlâ ziyaret edilebiliyor.';
+  `;
+  const HARRAN_FEATURE4_FIX: Record<string, { oldTitle: string; newTitle: string; newBody: string }> = {
+    DE: {
+      oldTitle: "Antike Universitätsruinen",
+      newTitle: "Sabäisches Erbe",
+      newBody: "Harran war ein Zentrum, in dem die Sabäer, die den Mondgott Sin verehrten, bis ins 11. Jahrhundert fortbestanden.",
+    },
+    EN: {
+      oldTitle: "Ancient university ruins",
+      newTitle: "Sabian heritage",
+      newBody: "Harran was a center where the Sabians, who worshipped the moon god Sin, persisted until the 11th century.",
+    },
+    KU: {
+      oldTitle: "Kavilên zanîngeha kevnar",
+      newTitle: "Mîrateya Sabiyan",
+      newBody: "Herran navendek bû ku Sabiyên ku perizîna xwedayê heyvê Sîn dikirin, heta sedsala 11an domandin.",
+    },
+    CKB: {
+      oldTitle: "کاولی زانکۆیە کۆنەکە",
+      newTitle: "میراتی سابییەکان",
+      newBody: "حەڕان ناوەندێک بوو کە سابییەکان، کە پەرستنی خودای مانگ سین دەکرد، هەتا سەدەی ١١ بەردەوام بوون.",
+    },
+  };
+  for (const [lang, fix] of Object.entries(HARRAN_FEATURE4_FIX)) {
+    const featurePath = `{${lang},features,3}`;
+    const titlePath = `{${lang},features,3,title}`;
+    await sql`
+      UPDATE destinations
+      SET translations = jsonb_set(
+        translations,
+        ${featurePath}::text[],
+        ${JSON.stringify({ title: fix.newTitle, body: fix.newBody })}::jsonb
+      )
+      WHERE slug = 'harran' AND translations #>> ${titlePath}::text[] = ${fix.oldTitle};
+    `;
+  }
+
   // --- Bundle Paketleri ---
   await sql`
     CREATE TABLE IF NOT EXISTS bundles (
@@ -359,17 +476,6 @@ async function initSchema() {
           FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE RESTRICT;
       END IF;
     END $$;
-  `;
-
-  // Varsayılan içeriğin sadece GERÇEKTEN ilk kurulumda tohumlandığını, bir
-  // admin bilerek listeyi boşalttıktan (replaceAllStats([])) sonra bir
-  // sonraki soğuk başlangıçta "tablo boş = hiç doldurulmamış" sanılıp
-  // varsayılanların sessizce geri gelmediğini garanti eden işaret tablosu.
-  await sql`
-    CREATE TABLE IF NOT EXISTS schema_seed_state (
-      key TEXT PRIMARY KEY,
-      seeded_at TIMESTAMPTZ NOT NULL DEFAULT now()
-    );
   `;
 
   // --- Site içeriği: Ana sayfa istatistik şeridi (yönetim panelinden düzenlenir) ---
