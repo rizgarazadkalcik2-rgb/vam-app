@@ -27,6 +27,22 @@ function extractLangPrefix(pathname: string): { lang: Lang; rest: string } | nul
   return { lang: LANG_PREFIXES[match[1]], rest: match[2] || "/" };
 }
 
+// Arama motoru/sosyal paylaşım bot'ları önek'siz URL'lerde her zaman TR
+// görmeli — çünkü bu URL'ler kendi <link hreflang="tr">/canonical'ında TR
+// olarak beyan ediliyor (bkz. src/lib/hreflang.ts). Bot'lar çerez taşımadığı
+// için normalde geo-IP/Accept-Language'e düşerlerdi (Googlebot çoğunlukla
+// ABD IP'siyle tarar, Accept-Language sinyali zayıftır) — bu da fiilen
+// İngilizce içerik tarayıp TR diye indekslenen bir tutarsızlık yaratırdı.
+// Gerçek ziyaretçiler (diaspora hedefi için otomatik dil algılama) bundan
+// etkilenmez, sadece bot'lar önek'siz URL'de sabit TR görür.
+const CRAWLER_UA_PATTERN =
+  /bot|crawler|spider|slurp|googlebot|bingbot|yandex|baiduspider|duckduckbot|facebookexternalhit|whatsapp|linkedinbot|twitterbot|slackbot|telegrambot|discordbot|embedly|quora link preview|pinterest|redditbot|applebot|semrushbot|ahrefsbot|mj12bot/i;
+
+function isCrawler(request: NextRequest): boolean {
+  const ua = request.headers.get("user-agent") || "";
+  return CRAWLER_UA_PATTERN.test(ua);
+}
+
 function detectLang(request: NextRequest): "DE" | "EN" | "TR" | "KU" | "CKB" {
   // 1) Vercel edge geo header — where the visitor is connecting from.
   const country = request.headers.get("x-vercel-ip-country");
@@ -110,8 +126,9 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next({ request: { headers: requestHeaders } });
 
   // Respect an existing choice (manual selection or previous detection) — never override it.
+  // Bot'lar için geo/Accept-Language algılamasını atla — bkz. isCrawler() yorumu.
   const existingLang = request.cookies.get(LANG_COOKIE)?.value as Lang | undefined;
-  const lang: Lang = existingLang ?? detectLang(request);
+  const lang: Lang = existingLang ?? (isCrawler(request) ? "TR" : detectLang(request));
   if (!existingLang) {
     response.cookies.set(LANG_COOKIE, lang, {
       path: "/",
