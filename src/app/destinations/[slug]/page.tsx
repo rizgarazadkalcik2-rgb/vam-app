@@ -35,7 +35,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${d.name} — ${d.region} | VAM`,
       description,
-      ...(d.image_url ? { images: [{ url: d.image_url }] } : {}),
+      ...(d.image_url ? { images: [{ url: d.image_url, alt: d.name }] } : {}),
     },
   };
 }
