@@ -106,6 +106,30 @@ export async function getReservationById(id: number): Promise<VamReservation | n
   return rows[0] || null;
 }
 
+// KVKK/GDPR: gizlilik politikamız kullanıcılara verilerinin silinmesini talep
+// etme hakkı tanıyor (bkz. /gizlilik-politikasi). Rezervasyon kaydını (fiyat/
+// tarih/durum — muhasebe ve kontenjan hesapları için gerekli) tamamen silmek
+// yerine, sadece kişisel verileri (ad/e-posta/telefon/not) sabit bir
+// yer tutucuyla değiştiriyoruz — bu hem yasal talebi karşılar hem iş
+// verisinin bütünlüğünü (toplam ciro, kontenjan geçmişi vb.) korur.
+const ANONYMIZED_NAME = "[Silinen Müşteri Verisi]";
+const ANONYMIZED_EMAIL = "silindi@visitvam.com";
+
+export async function anonymizeReservationCustomerData(id: number): Promise<VamReservation | null> {
+  await ensureSchema();
+  const { rows } = await sql<VamReservation>`
+    UPDATE reservations
+    SET customer_name = ${ANONYMIZED_NAME},
+        customer_email = ${ANONYMIZED_EMAIL},
+        customer_phone = NULL,
+        notes = NULL,
+        updated_at = now()
+    WHERE id = ${id}
+    RETURNING *;
+  `;
+  return rows[0] || null;
+}
+
 // İptal edilmemiş rezervasyonlardaki toplam kişi sayısını döner (kalan kontenjan hesaplamak için).
 export async function getReservedGuestCountForPackage(packageId: number): Promise<number> {
   await ensureSchema();

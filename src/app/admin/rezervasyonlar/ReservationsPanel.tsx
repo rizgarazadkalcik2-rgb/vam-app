@@ -17,6 +17,11 @@ const PAYMENT_STATUS_LABELS: Record<string, { label: string; color: string }> = 
   refunded: { label: "İade Edildi", color: "#a64022" },
 };
 
+// lib/reservations.ts'teki anonymizeReservationCustomerData()'nın yazdığı
+// sabit yer tutucuyla birebir aynı olmalı — bir kaydın zaten silinmiş
+// olduğunu anlayıp butonu/müşteri bilgisini buna göre göstermek için.
+const ANONYMIZED_NAME = "[Silinen Müşteri Verisi]";
+
 export default function ReservationsPanel({
   session,
   initialReservations,
@@ -48,6 +53,31 @@ export default function ReservationsPanel({
       }
     } catch {
       alert("Durum güncellenemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    }
+  }
+
+  async function anonymizeCustomerData(id: number) {
+    if (
+      !confirm(
+        "Bu rezervasyonun müşteri bilgilerini (ad, e-posta, telefon, not) kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz — sadece KVKK/GDPR silme talebi karşılandığında kullanın."
+      )
+    ) {
+      return;
+    }
+    try {
+      const res = await fetch(`/api/reservations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ anonymizeCustomerData: true }),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Müşteri verisi silinemedi.");
+      }
+    } catch {
+      alert("Müşteri verisi silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -94,6 +124,7 @@ export default function ReservationsPanel({
           {filtered.map((r) => {
             const resStatus = RESERVATION_STATUS_LABELS[r.reservation_status] || RESERVATION_STATUS_LABELS.new;
             const payStatus = PAYMENT_STATUS_LABELS[r.payment_status] || PAYMENT_STATUS_LABELS.pending;
+            const isAnonymized = r.customer_name === ANONYMIZED_NAME;
             return (
               <div
                 key={r.id}
@@ -122,6 +153,7 @@ export default function ReservationsPanel({
                   <div style={{ display: "flex", gap: 6 }}>
                     <Badge label={resStatus.label} color={resStatus.color} />
                     <Badge label={payStatus.label} color={payStatus.color} />
+                    {isAnonymized && <Badge label="KVKK: Veri Silindi" color="#6f6558" />}
                   </div>
                 </div>
 
@@ -205,6 +237,13 @@ export default function ReservationsPanel({
                       label="İade Edildi İşaretle"
                       color="#835d3e"
                       onClick={() => updateStatus(r.id, "paymentStatus", "refunded")}
+                    />
+                  )}
+                  {!isAnonymized && (
+                    <ActionButton
+                      label="KVKK: Müşteri Verisini Sil"
+                      color="#6f6558"
+                      onClick={() => anonymizeCustomerData(r.id)}
                     />
                   )}
                 </div>

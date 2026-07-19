@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { getReservationById, updateReservationStatus, updatePaymentStatus } from "@/lib/reservations";
+import {
+  getReservationById,
+  updateReservationStatus,
+  updatePaymentStatus,
+  anonymizeReservationCustomerData,
+} from "@/lib/reservations";
 
 // Admin panelinin gösterdiği (ve tanıdığı) tek değerler bunlar — bkz.
 // ReservationsPanel.tsx RESERVATION_STATUS_LABELS/PAYMENT_STATUS_LABELS.
@@ -52,6 +57,12 @@ export async function PATCH(
   }
   if (body.paymentStatus) {
     const result = await updatePaymentStatus(Number(id), body.paymentStatus);
+    if (result) updated = result;
+  }
+
+  // KVKK/GDPR silme talebi — sadece kişisel veriler temizlenir, kayıt kalır (bkz. reservations.ts).
+  if (body.anonymizeCustomerData === true) {
+    const result = await anonymizeReservationCustomerData(Number(id));
     if (result) updated = result;
   }
 
