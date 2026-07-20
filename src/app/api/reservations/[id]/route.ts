@@ -23,7 +23,12 @@ export async function PATCH(
   }
 
   const { id } = await params;
-  const reservation = await getReservationById(Number(id));
+  const reservationId = Number(id);
+  if (!Number.isFinite(reservationId)) {
+    return NextResponse.json({ error: "Geçersiz rezervasyon ID." }, { status: 400 });
+  }
+
+  const reservation = await getReservationById(reservationId);
   if (!reservation) {
     return NextResponse.json({ error: "Rezervasyon bulunamadı." }, { status: 404 });
   }
@@ -52,17 +57,17 @@ export async function PATCH(
 
   let updated = reservation;
   if (body.reservationStatus) {
-    const result = await updateReservationStatus(Number(id), body.reservationStatus);
+    const result = await updateReservationStatus(reservationId, body.reservationStatus);
     if (result) updated = result;
   }
   if (body.paymentStatus) {
-    const result = await updatePaymentStatus(Number(id), body.paymentStatus);
+    const result = await updatePaymentStatus(reservationId, body.paymentStatus);
     if (result) updated = result;
   }
 
   // KVKK/GDPR silme talebi — sadece kişisel veriler temizlenir, kayıt kalır (bkz. reservations.ts).
   if (body.anonymizeCustomerData === true) {
-    const result = await anonymizeReservationCustomerData(Number(id));
+    const result = await anonymizeReservationCustomerData(reservationId);
     if (result) updated = result;
   }
 

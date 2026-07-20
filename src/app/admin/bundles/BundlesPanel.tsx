@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { VamBundle, BundleTranslations } from "@/lib/bundles";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
@@ -145,6 +145,10 @@ export default function BundlesPanel({
   const [showForm, setShowForm] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("TR");
   const [uploading, setUploading] = useState(false);
+  // Bir görsel yüklemesi devam ederken admin başka bir bundle'ı düzenlemeye
+  // geçerse, yükleme bittiğinde sonuç hâlâ açık olan (farklı) forma yazılırdı.
+  // Bu ref yükleme başladığındaki "form oturumunu" damgalar.
+  const formSessionRef = useRef(0);
 
   async function refresh() {
     const res = await fetch("/api/bundles");
@@ -155,6 +159,7 @@ export default function BundlesPanel({
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    const sessionAtStart = formSessionRef.current;
     setUploading(true);
     setError("");
     const formData = new FormData();
@@ -163,18 +168,25 @@ export default function BundlesPanel({
       const res = await fetch("/api/upload", { method: "POST", body: formData });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        if (sessionAtStart === formSessionRef.current) {
+          setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        }
         return;
       }
-      setForm((f) => ({ ...f, imageUrl: data.url }));
+      if (sessionAtStart === formSessionRef.current) {
+        setForm((f) => ({ ...f, imageUrl: data.url }));
+      }
     } catch {
-      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      if (sessionAtStart === formSessionRef.current) {
+        setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      }
     } finally {
       setUploading(false);
     }
   }
 
   function startCreate() {
+    formSessionRef.current += 1;
     setForm(emptyForm());
     setEditingId(null);
     setShowForm(true);
@@ -183,6 +195,7 @@ export default function BundlesPanel({
   }
 
   function startEdit(b: VamBundle) {
+    formSessionRef.current += 1;
     setForm(bundleToForm(b));
     setEditingId(b.id);
     setShowForm(true);
@@ -228,28 +241,36 @@ export default function BundlesPanel({
       alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
       return;
     }
-    const res = await fetch(`/api/bundles/${b.id}`, { method: "DELETE" });
-    const data = await res.json();
-    if (res.ok) {
-      await refresh();
-    } else {
-      alert(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/bundles/${b.id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        await refresh();
+      } else {
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Bundle silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
   async function toggleStatus(b: VamBundle) {
     const newStatus: "active" | "inactive" = b.status === "active" ? "inactive" : "active";
     const payload = { ...bundleToForm(b), status: newStatus };
-    const res = await fetch(`/api/bundles/${b.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formToPayload(payload)),
-    });
-    if (res.ok) {
-      await refresh();
-    } else {
-      const data = await res.json();
-      alert(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/bundles/${b.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formToPayload(payload)),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Durum değiştirilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -552,7 +573,10 @@ export default function BundlesPanel({
               </button>
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={() => {
+                  formSessionRef.current += 1;
+                  setShowForm(false);
+                }}
                 style={{
                   padding: "9px 20px",
                   background: "transparent",

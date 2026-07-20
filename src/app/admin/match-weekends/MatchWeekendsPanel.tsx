@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { MatchEvent, MatchEventTranslations } from "@/lib/matchEvents";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
@@ -68,6 +68,10 @@ export default function MatchWeekendsPanel({
   const [error, setError] = useState("");
   const [teamFilter, setTeamFilter] = useState("all");
   const [activeTab, setActiveTab] = useState<Tab>("TR");
+  // Bir görsel yüklemesi devam ederken admin başka bir kaydı düzenlemeye
+  // geçerse, yükleme bittiğinde sonuç hâlâ açık olan (farklı) forma yazılırdı.
+  // Bu ref yükleme başladığındaki "form oturumunu" damgalar.
+  const formSessionRef = useRef(0);
 
   async function refresh() {
     const res = await fetch("/api/match-events");
@@ -76,6 +80,7 @@ export default function MatchWeekendsPanel({
   }
 
   function startCreate(kind: "match" | "news") {
+    formSessionRef.current += 1;
     setEditingId(null);
     setForm({ ...emptyForm, kind, team: teamFilter !== "all" ? teamFilter : "amedspor" });
     setShowForm(true);
@@ -84,6 +89,7 @@ export default function MatchWeekendsPanel({
   }
 
   function startEdit(ev: MatchEvent) {
+    formSessionRef.current += 1;
     setEditingId(ev.id);
     const trans = ev.translations || {};
     setForm({
@@ -109,6 +115,7 @@ export default function MatchWeekendsPanel({
   }
 
   function cancelForm() {
+    formSessionRef.current += 1;
     setShowForm(false);
     setEditingId(null);
     setForm(emptyForm);
@@ -119,6 +126,7 @@ export default function MatchWeekendsPanel({
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    const sessionAtStart = formSessionRef.current;
     setUploading(true);
     setError("");
     const formData = new FormData();
@@ -127,12 +135,18 @@ export default function MatchWeekendsPanel({
       const res = await fetch("/api/upload", { method: "POST", body: formData });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        if (sessionAtStart === formSessionRef.current) {
+          setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        }
         return;
       }
-      setForm((f) => ({ ...f, imageUrl: data.url }));
+      if (sessionAtStart === formSessionRef.current) {
+        setForm((f) => ({ ...f, imageUrl: data.url }));
+      }
     } catch {
-      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      if (sessionAtStart === formSessionRef.current) {
+        setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      }
     } finally {
       setUploading(false);
     }
@@ -203,12 +217,16 @@ export default function MatchWeekendsPanel({
       alert("Girilen başlık eşleşmedi, silme işlemi iptal edildi.");
       return;
     }
-    const res = await fetch(`/api/match-events/${ev.id}`, { method: "DELETE" });
-    if (res.ok) {
-      await refresh();
-    } else {
-      const data = await res.json().catch(() => null);
-      alert(data?.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/match-events/${ev.id}`, { method: "DELETE" });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Kayıt silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 

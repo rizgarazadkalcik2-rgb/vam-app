@@ -57,8 +57,8 @@ export async function POST(req: NextRequest) {
   }
   if (body.reviews != null && body.reviews !== "") {
     const rv = Number(body.reviews);
-    if (!Number.isFinite(rv) || rv < 0) {
-      return NextResponse.json({ error: "Değerlendirme sayısı negatif olamaz." }, { status: 400 });
+    if (!Number.isFinite(rv) || !Number.isInteger(rv) || rv < 0) {
+      return NextResponse.json({ error: "Değerlendirme sayısı negatif olmayan bir tam sayı olmalı." }, { status: 400 });
     }
   }
   if (body.latitude != null && body.latitude !== "" && !Number.isFinite(Number(body.latitude))) {

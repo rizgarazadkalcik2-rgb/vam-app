@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { VamDestination, DestinationTranslations } from "@/lib/destinations";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "../AdminShell";
@@ -244,6 +244,10 @@ export default function DestinationsPanel({
   const [showForm, setShowForm] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("TR");
   const [uploading, setUploading] = useState(false);
+  // Bir görsel yüklemesi devam ederken admin başka bir destinasyonu düzenlemeye
+  // geçerse, yükleme bittiğinde sonuç hâlâ açık olan (farklı) forma yazılırdı.
+  // Bu ref yükleme başladığındaki "form oturumunu" damgalar.
+  const formSessionRef = useRef(0);
 
   async function refresh() {
     const res = await fetch("/api/destinations");
@@ -254,6 +258,7 @@ export default function DestinationsPanel({
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    const sessionAtStart = formSessionRef.current;
     setUploading(true);
     setError("");
     const formData = new FormData();
@@ -262,18 +267,25 @@ export default function DestinationsPanel({
       const res = await fetch("/api/upload", { method: "POST", body: formData });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        if (sessionAtStart === formSessionRef.current) {
+          setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        }
         return;
       }
-      setForm((f) => ({ ...f, imageUrl: data.url }));
+      if (sessionAtStart === formSessionRef.current) {
+        setForm((f) => ({ ...f, imageUrl: data.url }));
+      }
     } catch {
-      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      if (sessionAtStart === formSessionRef.current) {
+        setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      }
     } finally {
       setUploading(false);
     }
   }
 
   function startCreate() {
+    formSessionRef.current += 1;
     setForm(emptyForm());
     setEditingId(null);
     setShowForm(true);
@@ -282,6 +294,7 @@ export default function DestinationsPanel({
   }
 
   function startEdit(d: VamDestination) {
+    formSessionRef.current += 1;
     setForm(destinationToForm(d));
     setEditingId(d.id);
     setShowForm(true);
@@ -327,28 +340,36 @@ export default function DestinationsPanel({
       alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
       return;
     }
-    const res = await fetch(`/api/destinations/${d.id}`, { method: "DELETE" });
-    const data = await res.json();
-    if (res.ok) {
-      await refresh();
-    } else {
-      alert(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/destinations/${d.id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        await refresh();
+      } else {
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Destinasyon silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
   async function toggleStatus(d: VamDestination) {
     const newStatus: "active" | "inactive" = d.status === "active" ? "inactive" : "active";
     const payload = { ...destinationToForm(d), status: newStatus };
-    const res = await fetch(`/api/destinations/${d.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formToPayload(payload)),
-    });
-    if (res.ok) {
-      await refresh();
-    } else {
-      const data = await res.json();
-      alert(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/destinations/${d.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formToPayload(payload)),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Durum değiştirilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -869,7 +890,10 @@ export default function DestinationsPanel({
               </button>
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={() => {
+                  formSessionRef.current += 1;
+                  setShowForm(false);
+                }}
                 style={{
                   padding: "9px 20px",
                   background: "transparent",

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { listAllUsers, createUser, usernameExists } from "@/lib/users";
+import { isUniqueViolation } from "@/lib/pgErrors";
 
 export async function GET() {
   const session = await getSession();
@@ -56,15 +57,29 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const companyEmail = body?.companyEmail?.trim() || null;
-  const companyPhone = body?.companyPhone?.trim() || null;
-  const companyAddress = body?.companyAddress?.trim() || null;
-  const companyServices = body?.companyServices?.trim() || null;
+  // ?.trim?.() — bu alanlar string olmayan bir değerle (ör. sayı) gelirse
+  // ?.trim() TypeError fırlatır; ?.trim?.() bu durumda sessizce undefined
+  // döner (users/[id]/route.ts'teki PATCH ile aynı desen).
+  const companyEmail = body?.companyEmail?.trim?.() || null;
+  const companyPhone = body?.companyPhone?.trim?.() || null;
+  const companyAddress = body?.companyAddress?.trim?.() || null;
+  const companyServices = body?.companyServices?.trim?.() || null;
 
-  const user = await createUser({
-    username, password, role, displayName,
-    companyEmail, companyPhone, companyAddress, companyServices,
-  });
-  const { password_hash, ...safeUser } = user;
-  return NextResponse.json({ user: safeUser }, { status: 201 });
+  try {
+    const user = await createUser({
+      username, password, role, displayName,
+      companyEmail, companyPhone, companyAddress, companyServices,
+    });
+    const { password_hash, ...safeUser } = user;
+    return NextResponse.json({ user: safeUser }, { status: 201 });
+  } catch (err) {
+    // usernameExists() ön-kontrolü ile INSERT arasında (çok nadir) bir
+    // zamanlama penceresinde iki admin aynı kullanıcı adını oluşturabilir —
+    // DB'nin UNIQUE kısıtlaması bunu reddeder, burada dostane 409'a çeviriyoruz.
+    if (isUniqueViolation(err)) {
+      return NextResponse.json({ error: "Bu kullanıcı adı zaten kullanılıyor." }, { status: 409 });
+    }
+    console.error("[users POST]", err);
+    return NextResponse.json({ error: "Kullanıcı oluşturulurken bir hata oluştu." }, { status: 500 });
+  }
 }

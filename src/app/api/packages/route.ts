@@ -36,13 +36,16 @@ export async function POST(req: NextRequest) {
   // `Infinity`/`-Infinity` her iki karşılaştırmayı da (<1, <0) geçebilir
   // (Infinity < 1 false, ama -Infinity < 0 true olur) — Number.isFinite ile
   // her iki uca karşı da koruma sağlanıyor (bundles/destinations route'larıyla aynı desen).
+  // nights/capacity DB'de INTEGER sütun — ondalıklı bir değer (ör. 2.5)
+  // Number.isFinite'ı geçer ama INSERT sırasında Postgres'te yakalanmamış
+  // bir hataya yol açar, bu yüzden ayrıca Number.isInteger kontrol ediliyor.
   if (
-    !Number.isFinite(nights) || nights < 1 ||
+    !Number.isFinite(nights) || !Number.isInteger(nights) || nights < 1 ||
     !Number.isFinite(priceTry) || priceTry < 0 ||
-    !Number.isFinite(capacity) || capacity < 0
+    !Number.isFinite(capacity) || !Number.isInteger(capacity) || capacity < 0
   ) {
     return NextResponse.json(
-      { error: "Gece sayısı en az 1, fiyat ve kontenjan negatif olamaz." },
+      { error: "Gece sayısı en az 1 tam sayı olmalı, fiyat ve kontenjan negatif olmayan bir sayı olmalı." },
       { status: 400 }
     );
   }

@@ -75,16 +75,20 @@ export default function AcentelerPanel({
 
   async function toggleStatus(user: SafeUser) {
     const newStatus = user.status === "active" ? "disabled" : "active";
-    const res = await fetch(`/api/users/${user.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      await refresh();
-    } else {
-      alert(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/users/${user.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        await refresh();
+      } else {
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Durum değiştirilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -95,12 +99,16 @@ export default function AcentelerPanel({
       alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
       return;
     }
-    const res = await fetch(`/api/users/${user.id}`, { method: "DELETE" });
-    const data = await res.json();
-    if (res.ok) {
-      await refresh();
-    } else {
-      alert(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/users/${user.id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        await refresh();
+      } else {
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Kullanıcı silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -121,17 +129,21 @@ export default function AcentelerPanel({
     if (!profileTarget) return;
     setProfileError("");
 
-    const res = await fetch(`/api/users/${profileTarget.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(profileForm),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setProfileTarget(null);
-      await refresh();
-    } else {
-      setProfileError(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/users/${profileTarget.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profileForm),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        setProfileTarget(null);
+        await refresh();
+      } else {
+        setProfileError(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      setProfileError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -145,17 +157,21 @@ export default function AcentelerPanel({
       return;
     }
 
-    const res = await fetch(`/api/users/${resetTarget.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ newPassword: resetPassword }),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setResetTarget(null);
-      setResetPassword("");
-    } else {
-      setResetError(data.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/users/${resetTarget.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newPassword: resetPassword }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        setResetTarget(null);
+        setResetPassword("");
+      } else {
+        setResetError(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      setResetError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 

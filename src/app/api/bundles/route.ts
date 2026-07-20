@@ -38,9 +38,9 @@ export async function POST(req: NextRequest) {
   // `!nights`/`!price` sadece 0/NaN'ı yakalar — negatif bir değer (-3, -100)
   // truthy olduğu için üstteki kontrolü geçer. UI'de min var ama API doğrudan
   // çağrılırsa bu koruma bypass edilebilir.
-  if (!Number.isFinite(nights) || nights < 1 || !Number.isFinite(price) || price < 0) {
+  if (!Number.isFinite(nights) || !Number.isInteger(nights) || nights < 1 || !Number.isFinite(price) || price < 0) {
     return NextResponse.json(
-      { error: "Gece sayısı en az 1, fiyat negatif olamaz." },
+      { error: "Gece sayısı en az 1 tam sayı olmalı, fiyat negatif olamaz." },
       { status: 400 }
     );
   }
