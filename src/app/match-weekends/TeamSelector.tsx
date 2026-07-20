@@ -15,6 +15,7 @@ export type Team = {
   heroTitle: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
   intro: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
   included: { TR: string[]; DE: string[]; EN: string[]; KU?: string[]; CKB?: string[] };
+  routeDesc: { TR: string; DE: string; EN: string; KU?: string; CKB?: string };
 };
 
 export const TEAMS: Team[] = [
@@ -80,6 +81,13 @@ export const TEAMS: Team[] = [
         "پلانی کاتی ئازاد بۆ ڕۆژانی بێ یاری",
       ],
     },
+    routeDesc: {
+      TR: "Stat sadece bir durak. Güzergahınızı; Sur içindeki taş evler, Hevsel Bahçeleri'nde bir akşamüstü, Dicle kıyısında bir sofra ve yerel esnafla kurulan sahici bir sohbet üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.",
+      DE: "Das Stadion ist nur eine Station. Wir gestalten Ihre Route um die Steinhäuser in Sur, einen Nachmittag in den Hevsel-Gärten, eine Tafel am Tigrisufer und ein echtes Gespräch mit lokalen Händlern. Der Spieltag wird zum Anlass, die Stadt kennenzulernen.",
+      EN: "The stadium is only one stop. We build your route around the stone houses of Sur, an afternoon in the Hevsel Gardens, a table by the Tigris, and a real conversation with local shopkeepers. Match day becomes the reason to get to know the city.",
+      KU: "Staldiyûm tenê xalek e. Em rêya we li dora xaniyên kevir ên hundirê Sûrê, danekê êvarî li Baxçeyên Hevselê, sifrekê li kêleka Dîcleyê û sohbeteke rastîn a bi esnafên herêmî re ava dikin. Roja maçê dibe sedemek ji bo naskirina bajêr.",
+      CKB: "یاریگا تەنها یەک وەستگەیە. ڕێگاکەت لەسەر بنەمای خانووە بەردینەکانی ناو سوور، ئێوارەیەک لە باخچەکانی هەڤسێل، خوانێک لەسەر کەناری دیجلە و گفتوگۆیەکی ڕاستەقینە لەگەڵ کاسبکارە ناوچەییەکان ئامادە دەکەین. ڕۆژی یاری دەبێتە هۆکارێک بۆ ناسینی شارەکە.",
+    },
   },
   {
     slug: "vanspor",
@@ -142,6 +150,13 @@ export const TEAMS: Team[] = [
         "تاشتەی وان و وەستگەکانی تامی ناوچەیی",
         "پلانی کاتی ئازاد بۆ ڕۆژانی بێ یاری",
       ],
+    },
+    routeDesc: {
+      TR: "Stat sadece bir durak. Güzergahınızı; Van Kalesi'nin Urartu izleri, Akdamar Adası'na tekne turu, zengin bir Van kahvaltısı sofrası ve yerel esnafla kurulan sahici bir sohbet üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.",
+      DE: "Das Stadion ist nur eine Station. Wir gestalten Ihre Route um die Urartu-Spuren der Burg von Van, eine Bootstour zur Akdamar-Insel, ein reichhaltiges Van-Frühstück und ein echtes Gespräch mit lokalen Händlern. Der Spieltag wird zum Anlass, die Stadt kennenzulernen.",
+      EN: "The stadium is only one stop. We build your route around the Urartian traces of Van Castle, a boat tour to Akdamar Island, a generous Van breakfast spread, and a real conversation with local shopkeepers. Match day becomes the reason to get to know the city.",
+      KU: "Staldiyûm tenê xalek e. Em rêya we li dora şopên Ûrartûyan ên Kela Wanê, gera keştiyê ya Girava Akdamarê, taştêyeke dewlemend a Wanê û sohbeteke rastîn a bi esnafên herêmî re ava dikin. Roja maçê dibe sedemek ji bo naskirina bajêr.",
+      CKB: "یاریگا تەنها یەک وەستگەیە. ڕێگاکەت لەسەر بنەمای شوێنەوارەکانی ئوورارتووی قەڵای وان، گەڕانی بەلەم بۆ دوورگەی ئاقدامار، تاشتەیەکی دەوڵەمەندی وان و گفتوگۆیەکی ڕاستەقینە لەگەڵ کاسبکارە ناوچەییەکان ئامادە دەکەین. ڕۆژی یاری دەبێتە هۆکارێک بۆ ناسینی شارەکە.",
     },
   },
   {
@@ -206,6 +221,13 @@ export const TEAMS: Team[] = [
         "پلانی کاتی ئازاد بۆ ڕۆژانی بێ یاری",
       ],
     },
+    routeDesc: {
+      TR: "Stat sadece bir durak. Güzergahınızı; Hasankeyf'in kayalık yerleşimleri, Dicle Vadisi boyunca bir gezi, mağara evlerinin izleri ve yerel esnafla kurulan sahici bir sohbet üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.",
+      DE: "Das Stadion ist nur eine Station. Wir gestalten Ihre Route um die Felsensiedlungen von Hasankeyf, einen Ausflug durch das Tigristal, die Spuren der Höhlenwohnungen und ein echtes Gespräch mit lokalen Händlern. Der Spieltag wird zum Anlass, die Stadt kennenzulernen.",
+      EN: "The stadium is only one stop. We build your route around the rock-cut settlements of Hasankeyf, a trip along the Tigris Valley, the traces of the cave dwellings, and a real conversation with local shopkeepers. Match day becomes the reason to get to know the city.",
+      KU: "Staldiyûm tenê xalek e. Em rêya we li dora niştecihên zinarî yên Heskîfê, gerek li Geliyê Dîcleyê, şopên xaniyên şikeftê û sohbeteke rastîn a bi esnafên herêmî re ava dikin. Roja maçê dibe sedemek ji bo naskirina bajêr.",
+      CKB: "یاریگا تەنها یەک وەستگەیە. ڕێگاکەت لەسەر بنەمای گوندە تاشەبەردییەکانی حەسەنکێف، گەشتێک بەدرێژایی دۆڵی دیجلە، شوێنەوارەکانی ماڵە ئەشکەوتییەکان و گفتوگۆیەکی ڕاستەقینە لەگەڵ کاسبکارە ناوچەییەکان ئامادە دەکەین. ڕۆژی یاری دەبێتە هۆکارێک بۆ ناسینی شارەکە.",
+    },
   },
   {
     slug: "mardin1969",
@@ -269,6 +291,13 @@ export const TEAMS: Team[] = [
         "پلانی کاتی ئازاد بۆ ڕۆژانی بێ یاری",
       ],
     },
+    routeDesc: {
+      TR: "Stat sadece bir durak. Güzergahınızı; Mardin'in taş mimarisiyle örülü eski şehri, Deyrulzafaran Manastırı ziyareti, Mardin mutfağından bir sofra ve yerel esnafla kurulan sahici bir sohbet üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.",
+      DE: "Das Stadion ist nur eine Station. Wir gestalten Ihre Route um die steinerne Altstadt Mardins, einen Besuch des Deyrulzafaran-Klosters, eine Tafel mit Mardiner Küche und ein echtes Gespräch mit lokalen Händlern. Der Spieltag wird zum Anlass, die Stadt kennenzulernen.",
+      EN: "The stadium is only one stop. We build your route around Mardin's stone-built old town, a visit to Deyrulzafaran Monastery, a table of Mardin cuisine, and a real conversation with local shopkeepers. Match day becomes the reason to get to know the city.",
+      KU: "Staldiyûm tenê xalek e. Em rêya we li dora bajarê kevn ê Mêrdînê yê bi mîmariya kevir, serdana Dêra Deyrulzefaranê, sifreyeke xwarina Mêrdînê û sohbeteke rastîn a bi esnafên herêmî re ava dikin. Roja maçê dibe sedemek ji bo naskirina bajêr.",
+      CKB: "یاریگا تەنها یەک وەستگەیە. ڕێگاکەت لەسەر بنەمای شاری کۆنی مێردین بە تەلارسازی بەردین، سەردانی گاسنی دەیرولزەعفەران، خوانێک لە خواردنی مێردین و گفتوگۆیەکی ڕاستەقینە لەگەڵ کاسبکارە ناوچەییەکان ئامادە دەکەین. ڕۆژی یاری دەبێتە هۆکارێک بۆ ناسینی شارەکە.",
+    },
   },
   {
     slug: "igdir",
@@ -331,6 +360,13 @@ export const TEAMS: Team[] = [
         "وەستگەکانی خواردنی ناوچەیی",
         "پلانی کاتی ئازاد بۆ ڕۆژانی بێ یاری",
       ],
+    },
+    routeDesc: {
+      TR: "Stat sadece bir durak. Güzergahınızı; Ağrı Dağı'nın manzara noktaları, Iğdır ovasında bir gezi, yerel tarım kültürüyle tanışma ve yerel esnafla kurulan sahici bir sohbet üzerine kuruyoruz. Maç günü, şehri tanımanın bir bahanesi haline gelir.",
+      DE: "Das Stadion ist nur eine Station. Wir gestalten Ihre Route um die Aussichtspunkte des Ararat, einen Ausflug in die Ebene von Iğdır, die Begegnung mit der lokalen Agrarkultur und ein echtes Gespräch mit lokalen Händlern. Der Spieltag wird zum Anlass, die Stadt kennenzulernen.",
+      EN: "The stadium is only one stop. We build your route around Mount Ararat's viewpoints, an excursion into the Iğdır plain, an encounter with the local agricultural culture, and a real conversation with local shopkeepers. Match day becomes the reason to get to know the city.",
+      KU: "Staldiyûm tenê xalek e. Em rêya we li dora xalên dîmenê yên Çiyayê Agiriyê, gerek li deşta Îgdirê, nasîna çanda çandiniyê ya herêmî û sohbeteke rastîn a bi esnafên herêmî re ava dikin. Roja maçê dibe sedemek ji bo naskirina bajêr.",
+      CKB: "یاریگا تەنها یەک وەستگەیە. ڕێگاکەت لەسەر بنەمای خاڵە دیمەنییەکانی چیای ئاگری، گەشتێک بۆ دەشتی ئیگدیر، ناسینی کەلتووری کشتوکاڵی ناوچەیی و گفتوگۆیەکی ڕاستەقینە لەگەڵ کاسبکارە ناوچەییەکان ئامادە دەکەین. ڕۆژی یاری دەبێتە هۆکارێک بۆ ناسینی شارەکە.",
     },
   },
 ];
@@ -483,7 +519,7 @@ export default function TeamSelector({
           <div>
             <div className="vc-mw-band-eyebrow">{t("mw_band_eyebrow", lang)}</div>
             <h2 className="vc-mw-band-title">{t("mw_band_title", lang)}</h2>
-            <p className="vc-mw-band-p">{t("mw_band_desc", lang)}</p>
+            <p className="vc-mw-band-p">{team.routeDesc[lang] ?? team.routeDesc.TR}</p>
             <div className="vc-mw-cta-row">
               <a className="vc-btn-cta" href={`mailto:info@visitvam.com?subject=${subjectItinerary}`}>
                 {t("mw_plan_week", lang)}

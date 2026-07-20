@@ -542,6 +542,17 @@ async function initSchema() {
     `;
   }
 
+  // Tek seferlik düzeltme: "Dil Desteği" istatistiği eskiden 6 dil planlanırken
+  // num="6" ile seed edilmişti — site artık 5 dilde yayında (TR/DE/EN/KU/CKB,
+  // bkz. footer ve "Desteklenen Diller" bölümü) ve bu satır admin panelinden
+  // hiç güncellenmemişti. Eski değerle eşleşen satırı düzeltir, admin elle
+  // farklı bir değer girmişse dokunmaz.
+  await sql`
+    UPDATE platform_stats
+    SET num = '5'
+    WHERE label_tr = 'Dil Desteği' AND num = '6';
+  `;
+
   // --- Site içeriği: Sayfa bölümlerinin sırası ve göster/gizle durumu ---
   await sql`
     CREATE TABLE IF NOT EXISTS page_sections (
