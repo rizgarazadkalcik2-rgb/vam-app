@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { ensureSchema } from "./schema";
+import { normalizePgDate } from "./pgDate";
 
 export type MatchEventKind = "match" | "news";
 
@@ -55,15 +56,9 @@ export function localizeMatchEvent(e: MatchEvent, lang: "TR" | "DE" | "EN" | "KU
 /** Postgres DATE kolonları JS Date nesnesi olarak döner; her yerde
  *  güvenli kullanım için "YYYY-MM-DD" metnine normalize ediyoruz. */
 function normalizeRow(row: MatchEvent): MatchEvent {
-  const d = row.event_date as unknown;
   return {
     ...row,
-    event_date:
-      d == null
-        ? null
-        : d instanceof Date
-          ? d.toISOString().slice(0, 10)
-          : String(d).slice(0, 10),
+    event_date: normalizePgDate(row.event_date),
   };
 }
 

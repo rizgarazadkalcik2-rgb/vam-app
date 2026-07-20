@@ -32,9 +32,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     );
   }
 
-  if (!Number.isFinite(nights) || nights < 1 || !Number.isFinite(price) || price < 0) {
+  if (!Number.isFinite(nights) || !Number.isInteger(nights) || nights < 1 || !Number.isFinite(price) || price < 0) {
     return NextResponse.json(
-      { error: "Gece sayısı en az 1, fiyat negatif olamaz." },
+      { error: "Gece sayısı en az 1 tam sayı olmalı, fiyat negatif olamaz." },
       { status: 400 }
     );
   }

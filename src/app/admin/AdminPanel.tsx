@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { VamPackage } from "@/lib/packages";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "./AdminShell";
@@ -37,6 +37,11 @@ export default function AdminPanel({
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  // Bir görsel yüklemesi devam ederken admin "Düzenle"/"Yeni Ekle"/"Vazgeç" ile
+  // farklı bir kayda geçerse, yükleme bittiğinde sonuç hâlâ AÇIK OLAN forma
+  // yazılırdı (o formun kaydına değil) — bu ref, yükleme başladığındaki "form
+  // oturumunu" damgalar; sonuç sadece oturum hâlâ aynıysa forma uygulanır.
+  const formSessionRef = useRef(0);
 
   async function refresh() {
     const res = await fetch("/api/packages");
@@ -51,12 +56,16 @@ export default function AdminPanel({
       alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
       return;
     }
-    const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      await refresh();
-    } else {
-      const data = await res.json().catch(() => null);
-      alert(data?.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Paket silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 
@@ -89,6 +98,7 @@ export default function AdminPanel({
   }
 
   function startCreate() {
+    formSessionRef.current += 1;
     setEditingId(null);
     setForm({ ...emptyForm, partnerId: partners[0]?.id || "" });
     setShowForm(true);
@@ -96,6 +106,7 @@ export default function AdminPanel({
   }
 
   function startEdit(pkg: VamPackage) {
+    formSessionRef.current += 1;
     setEditingId(pkg.id);
     setForm({
       title: pkg.title,
@@ -115,6 +126,7 @@ export default function AdminPanel({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const sessionAtStart = formSessionRef.current;
     setUploading(true);
     setError("");
 
@@ -129,19 +141,28 @@ export default function AdminPanel({
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        if (sessionAtStart === formSessionRef.current) {
+          setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        }
         return;
       }
 
-      setForm((f) => ({ ...f, imageUrl: data.url }));
+      // Yükleme başladığından beri farklı bir kayda geçilmişse bu sonucu
+      // uygulamıyoruz — o kaydın formuna ait değil.
+      if (sessionAtStart === formSessionRef.current) {
+        setForm((f) => ({ ...f, imageUrl: data.url }));
+      }
     } catch {
-      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      if (sessionAtStart === formSessionRef.current) {
+        setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      }
     } finally {
       setUploading(false);
     }
   }
 
   function cancelForm() {
+    formSessionRef.current += 1;
     setShowForm(false);
     setEditingId(null);
     setForm(emptyForm);

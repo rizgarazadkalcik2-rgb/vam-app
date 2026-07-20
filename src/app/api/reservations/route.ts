@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { createReservation, listAllReservations, listReservationsByPartner, getReservedGuestCountForPackage } from "@/lib/reservations";
+import { createReservation, createPackageReservation, listAllReservations, listReservationsByPartner } from "@/lib/reservations";
 import { getPackageById } from "@/lib/packages";
 import { getBundleById } from "@/lib/bundles";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (guestCount < 1 || guestCount > 50) {
+  if (!Number.isInteger(guestCount) || guestCount < 1 || guestCount > 50) {
     return NextResponse.json(
       { error: t("res_err_guest_count", lang) },
       { status: 400 }
@@ -139,19 +139,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const alreadyReserved = await getReservedGuestCountForPackage(pkg.id);
-    if (alreadyReserved + guestCount > pkg.capacity) {
-      return NextResponse.json(
-        { error: t("res_err_package_full", lang) },
-        { status: 400 }
-      );
-    }
-
     const totalPrice = Number(pkg.price_try) * guestCount;
 
-    reservation = await createReservation({
-      packageId: pkg.id,
-      bundleId: null,
+    // Kapasite kontrolü ve INSERT createPackageReservation içinde tek bir
+    // transaction olarak, packages satırı kilitlenerek yapılır — bkz. o
+    // fonksiyonun yorumu (reservations.ts). Burada ayrıca "önce SELECT SUM,
+    // sonra INSERT" yapmıyoruz, çünkü tam olarak bu ayrım TOCTOU yarış
+    // koşuluna yol açıyordu.
+    const result = await createPackageReservation(pkg.id, guestCount, {
       partnerId: pkg.partner_id,
       partnerName: pkg.partner_name,
       packageTitle: pkg.title,
@@ -159,10 +154,16 @@ export async function POST(req: NextRequest) {
       customerEmail,
       customerPhone,
       travelDate,
-      guestCount,
       notes,
       totalPrice,
     });
+
+    if (!result.ok) {
+      const status = result.error === "PACKAGE_NOT_FOUND" ? 404 : 400;
+      const errorKey = result.error === "PACKAGE_NOT_FOUND" ? "res_err_package_not_found" : "res_err_package_full";
+      return NextResponse.json({ error: t(errorKey, lang) }, { status });
+    }
+    reservation = result.reservation;
   } else {
     const bundle = await getBundleById(bundleId as number);
     if (!bundle) {

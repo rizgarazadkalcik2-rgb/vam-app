@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { VamPackage } from "@/lib/packages";
 import type { VamReservation } from "@/lib/reservations";
 import type { SessionPayload } from "@/lib/session";
@@ -48,6 +48,10 @@ export default function PartnerPanel({
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [passwordSubmitting, setPasswordSubmitting] = useState(false);
+  // Bir görsel yüklemesi devam ederken acente başka bir paketi düzenlemeye
+  // geçerse, yükleme bittiğinde sonuç hâlâ açık olan (farklı) forma yazılırdı.
+  // Bu ref yükleme başladığındaki "form oturumunu" damgalar.
+  const formSessionRef = useRef(0);
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault();
@@ -89,6 +93,7 @@ export default function PartnerPanel({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const sessionAtStart = formSessionRef.current;
     setUploading(true);
     setError("");
 
@@ -103,13 +108,19 @@ export default function PartnerPanel({
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        if (sessionAtStart === formSessionRef.current) {
+          setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+        }
         return;
       }
 
-      setForm((f) => ({ ...f, imageUrl: data.url }));
+      if (sessionAtStart === formSessionRef.current) {
+        setForm((f) => ({ ...f, imageUrl: data.url }));
+      }
     } catch {
-      setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      if (sessionAtStart === formSessionRef.current) {
+        setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+      }
     } finally {
       setUploading(false);
     }
@@ -136,6 +147,7 @@ export default function PartnerPanel({
         return;
       }
 
+      formSessionRef.current += 1;
       setForm(emptyForm);
       setEditingId(null);
       await refresh();
@@ -147,6 +159,7 @@ export default function PartnerPanel({
   }
 
   function startEdit(pkg: VamPackage) {
+    formSessionRef.current += 1;
     setEditingId(pkg.id);
     setForm({
       title: pkg.title,
@@ -160,6 +173,7 @@ export default function PartnerPanel({
   }
 
   function cancelEdit() {
+    formSessionRef.current += 1;
     setEditingId(null);
     setForm(emptyForm);
   }
@@ -171,12 +185,16 @@ export default function PartnerPanel({
       alert("Girilen ad eşleşmedi, silme işlemi iptal edildi.");
       return;
     }
-    const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      await refresh();
-    } else {
-      const data = await res.json().catch(() => null);
-      alert(data?.error || "Bir hata oluştu.");
+    try {
+      const res = await fetch(`/api/packages/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Bir hata oluştu.");
+      }
+    } catch {
+      alert("Paket silinemedi. Bağlantınızı kontrol edip tekrar deneyin.");
     }
   }
 

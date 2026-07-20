@@ -26,12 +26,12 @@ export async function PATCH(
   const priceTry = Number(body.priceTry) || 0;
   const capacity = Number(body.capacity) || 0;
   if (
-    !Number.isFinite(nights) || nights < 1 ||
+    !Number.isFinite(nights) || !Number.isInteger(nights) || nights < 1 ||
     !Number.isFinite(priceTry) || priceTry < 0 ||
-    !Number.isFinite(capacity) || capacity < 0
+    !Number.isFinite(capacity) || !Number.isInteger(capacity) || capacity < 0
   ) {
     return NextResponse.json(
-      { error: "Gece sayısı en az 1, fiyat ve kontenjan negatif olamaz." },
+      { error: "Gece sayısı en az 1 tam sayı olmalı, fiyat ve kontenjan negatif olmayan bir sayı olmalı." },
       { status: 400 }
     );
   }
