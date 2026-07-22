@@ -40,6 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/match-weekends', changeFrequency: 'weekly' as const, priority: 0.9 },
     { path: '/destinations', changeFrequency: 'weekly' as const, priority: 0.9 },
     { path: '/bundles', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/paketler', changeFrequency: 'weekly' as const, priority: 0.9 },
     { path: '/experiences', changeFrequency: 'weekly' as const, priority: 0.8 },
     { path: '/about', changeFrequency: 'monthly' as const, priority: 0.5 },
     { path: '/impressum', changeFrequency: 'yearly' as const, priority: 0.3 },

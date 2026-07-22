@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   await ensureSchema();
   const { rows } = await sql<VamPackage>`
-    SELECT id, title, destination, nights, price_try, capacity, description, image_url, partner_name, status
+    SELECT id, title, destination, nights, price_try, capacity, description, image_url, category, partner_name, status
     FROM packages
     WHERE status = 'active'
       AND (partner_name IS NULL OR partner_name NOT ILIKE 'test%')

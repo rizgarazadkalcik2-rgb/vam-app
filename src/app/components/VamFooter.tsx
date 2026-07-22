@@ -16,7 +16,7 @@ export default function VamFooter({ lang = "TR" }: { lang?: Lang }) {
         <div>
           <h5>{t("footer_col_platform", lang)}</h5>
           <Link href="/destinations">{t("nav_destinations", lang)}</Link>
-          <Link href="/bundles">{t("nav_bundles", lang)}</Link>
+          <Link href="/paketler">{t("nav_packages", lang)}</Link>
           <Link href="/experiences">{t("nav_experiences", lang)}</Link>
           <Link href="/match-weekends">{t("nav_matchweekends", lang)}</Link>
         </div>

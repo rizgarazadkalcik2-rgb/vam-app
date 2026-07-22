@@ -7,7 +7,7 @@ export const DICT = {
   nav_home: { TR: "Ana Sayfa", DE: "Startseite", EN: "Home", KU: "Serûpel", CKB: "سەرەکی" },
   nav_menu_label: { TR: "Menü", DE: "Menü", EN: "Menu", KU: "Menû", CKB: "مینیو" },
   nav_destinations: { TR: "Destinasyonlar", DE: "Destinationen", EN: "Destinations", KU: "Cihên Gerê", CKB: "شوێنەکان" },
-  nav_bundles: { TR: "Paketler", DE: "Pakete", EN: "Packages", KU: "Pakêt", CKB: "پاکێجەکان" },
+  nav_packages: { TR: "Paketler", DE: "Pakete", EN: "Packages", KU: "Pakêt", CKB: "پاکێجەکان" },
   nav_experiences: { TR: "Deneyimler", DE: "Erlebnisse", EN: "Experiences", KU: "Ezmûn", CKB: "ئەزموونەکان" },
   nav_matchweekends: { TR: "Match Weekends", DE: "Match Weekends", EN: "Match Weekends", KU: "Match Weekends", CKB: "Match Weekends" },
   nav_about: { TR: "Hakkımızda", DE: "Über uns", EN: "About Us", KU: "Der Barê Me De", CKB: "دەربارەمان" },
@@ -117,6 +117,23 @@ export const DICT = {
   bundle_card_eyebrow: { TR: "Rota Paketi", DE: "Routenpaket", EN: "Route Package", KU: "Pakêta Rêyê", CKB: "پاکێجی ڕێگا" },
   bundle_night: { TR: "Gece", DE: "Nächte", EN: "Nights", KU: "Şev", CKB: "شەو" },
   bundle_per_person: { TR: "kişi başı", DE: "pro Person", EN: "per person", KU: "ji bo her kesî", CKB: "بۆ هەر کەسێک" },
+
+  // Packages listing (/paketler) — acentelerin yüklediği gerçek turlar
+  pkg_eyebrow: { TR: "— Turlar", DE: "— Touren", EN: "— Tours", KU: "— Geran", CKB: "— گەشتەکان" },
+  pkg_h1: { TR: "Acentelerimizin Turları", DE: "Touren unserer Partneragenturen", EN: "Tours by Our Partner Agencies", KU: "Gerên Ajansên Me yên Hevkar", CKB: "گەشتەکانی ئاژانسە هاوبەشەکانمان" },
+  pkg_lede: {
+    TR: "Yerel acentelerimizin doğrudan yayınladığı, hemen rezerve edebileceğiniz gerçek turlar.",
+    DE: "Echte Touren, direkt von unseren lokalen Partneragenturen veröffentlicht — sofort buchbar.",
+    EN: "Real tours published directly by our local partner agencies — ready to book now.",
+    KU: "Gerên rastîn ên ku ji aliyê ajansên me yên herêmî ve rasterast hatine weşandin — amade ne ji bo rezervasyonê.",
+    CKB: "گەشتی ڕاستەقینە کە ڕاستەوخۆ لەلایەن ئاژانسە ناوخۆییەکانمانەوە بڵاوکراونەتەوە — ئامادەن بۆ ڕیزێرڤکردن.",
+  },
+  pkg_label_destination: { TR: "Destinasyon:", DE: "Destination:", EN: "Destination:", KU: "Cîh:", CKB: "شوێن:" },
+  pkg_label_category: { TR: "Deneyim:", DE: "Erlebnis:", EN: "Experience:", KU: "Ezmûn:", CKB: "ئەزموون:" },
+  pkg_empty: { TR: "Bu kriterlere uygun tur bulunamadı.", DE: "Keine Touren passen zu diesen Kriterien.", EN: "No tours match these criteria.", KU: "Li gorî van pîvanan tu ger nehat dîtin.", CKB: "هیچ گەشتێک لەگەڵ ئەم پێوەرانە ناگونجێت." },
+  pkg_show_all: { TR: "Tüm Turları Göster", DE: "Alle Touren anzeigen", EN: "Show All Tours", KU: "Hemû Geran Nîşan Bide", CKB: "هەموو گەشتەکان نیشان بدە" },
+  pkg_card_eyebrow: { TR: "Acente Turu", DE: "Partnertour", EN: "Partner Tour", KU: "Gera Ajansê", CKB: "گەشتی ئاژانس" },
+  meta_packages_title: { TR: "Turlar", DE: "Touren", EN: "Tours", KU: "Ger", CKB: "گەشتەکان" },
 
   // Bundle detail
   bundle_back: { TR: "← Tüm Paketler", DE: "← Alle Pakete", EN: "← All Packages", KU: "← Hemû Pakêt", CKB: "→ هەموو پاکێجەکان" },

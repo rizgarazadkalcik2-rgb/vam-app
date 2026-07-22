@@ -14,7 +14,7 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
     <>
       <Link href="/" prefetch={false}>{t("nav_home", lang)}</Link>
       <Link href="/destinations">{t("nav_destinations", lang)}</Link>
-      <Link href="/bundles">{t("nav_bundles", lang)}</Link>
+      <Link href="/paketler">{t("nav_packages", lang)}</Link>
       <Link href="/experiences">{t("nav_experiences", lang)}</Link>
       <Link href="/match-weekends">{t("nav_matchweekends", lang)}</Link>
       <Link href="/about">{t("nav_about", lang)}</Link>
@@ -41,7 +41,7 @@ export default function VamNavbar({ lang = "TR", currency = "TRY" }: { lang?: La
         <LanguageSwitcher lang={lang} />
         <CurrencySwitcher currency={currency} />
       </div>
-      <Link className="vc-btn-cta" href="/bundles">
+      <Link className="vc-btn-cta" href="/paketler">
         {t("nav_cta", lang)}
       </Link>
 
