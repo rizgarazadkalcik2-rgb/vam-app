@@ -14,6 +14,7 @@ export interface VamPackage {
   image_url: string | null;
   image_urls: string[];
   status: string;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +31,16 @@ export async function listPackagesByPartner(partnerId: string): Promise<VamPacka
   await ensureSchema();
   const { rows } = await sql<VamPackage>`
     SELECT * FROM packages WHERE partner_id = ${partnerId} ORDER BY created_at DESC;
+  `;
+  return rows;
+}
+
+// Ana sayfa/deneyimler sayfasında görünen sırayla aynı (bkz. api/packages/public)
+// — admin panelindeki "Ana Sayfa Sırası" bölümü bu listeyi ↑/↓ ile düzenler.
+export async function listActivePackagesBySortOrder(): Promise<VamPackage[]> {
+  await ensureSchema();
+  const { rows } = await sql<VamPackage>`
+    SELECT * FROM packages WHERE status = 'active' ORDER BY sort_order ASC, created_at DESC;
   `;
   return rows;
 }
@@ -57,9 +68,14 @@ export async function createPackage(data: {
   const imageUrls = data.imageUrls || [];
   // image_url, image_urls[0]'ı yansıtan bir kapak alanı — asıl kaynak
   // image_urls (bkz. schema.ts'teki backfill yorumu).
+  // sort_order: yeni paket her zaman ana sayfa sıralamasının SONUNA eklenir
+  // (mevcut en yüksek sıra + 1) — admin'in elle düzenlediği sırayı bozmaz.
   const { rows } = await sql<VamPackage>`
-    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description, image_url, image_urls)
-    VALUES (${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description}, ${imageUrls[0] || null}, ${JSON.stringify(imageUrls)}::jsonb)
+    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description, image_url, image_urls, sort_order)
+    VALUES (
+      ${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description}, ${imageUrls[0] || null}, ${JSON.stringify(imageUrls)}::jsonb,
+      (SELECT COALESCE(MAX(sort_order), -1) + 1 FROM packages)
+    )
     RETURNING *;
   `;
   return rows[0];
@@ -118,6 +134,26 @@ export async function updatePackage(
         RETURNING *;
       `;
   return rows[0] || null;
+}
+
+// Admin panelindeki "Ana Sayfa Sırası" ↑/↓ butonları — verilen paketin
+// sort_order'ını aktif paketler arasındaki bir komşusuyla değiştirir.
+// Zaten listenin ucundaysa (yukarı/aşağı komşusu yoksa) false döner.
+export async function reorderPackage(id: number, direction: "up" | "down"): Promise<boolean> {
+  await ensureSchema();
+  const { rows } = await sql<{ id: number; sort_order: number }>`
+    SELECT id, sort_order FROM packages WHERE status = 'active' ORDER BY sort_order ASC, created_at DESC;
+  `;
+  const index = rows.findIndex((r) => r.id === id);
+  if (index === -1) return false;
+  const neighborIndex = direction === "up" ? index - 1 : index + 1;
+  if (neighborIndex < 0 || neighborIndex >= rows.length) return false;
+
+  const current = rows[index];
+  const neighbor = rows[neighborIndex];
+  await sql`UPDATE packages SET sort_order = ${neighbor.sort_order} WHERE id = ${current.id};`;
+  await sql`UPDATE packages SET sort_order = ${current.sort_order} WHERE id = ${neighbor.id};`;
+  return true;
 }
 
 export async function deletePackage(
