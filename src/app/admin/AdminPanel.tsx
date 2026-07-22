@@ -71,6 +71,24 @@ export default function AdminPanel({
     }
   }
 
+  async function handleReorder(id: number, direction: "up" | "down") {
+    try {
+      const res = await fetch(`/api/packages/${id}/reorder`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ direction }),
+      });
+      if (res.ok) {
+        await refresh();
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Sıralama değiştirilemedi.");
+      }
+    } catch {
+      alert("Sıralama değiştirilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    }
+  }
+
   async function toggleStatus(pkg: VamPackage) {
     const newStatus = pkg.status === "active" ? "inactive" : "active";
     try {
@@ -244,6 +262,11 @@ export default function AdminPanel({
     return acc;
   }, {});
 
+  // Ana sayfada ve /experiences'ta görünen sırayla aynı (bkz. api/packages/public).
+  const activeSorted = packages
+    .filter((p) => p.status === "active")
+    .sort((a, b) => a.sort_order - b.sort_order || a.id - b.id);
+
   return (
     <AdminShell
       title="Paketler"
@@ -263,6 +286,68 @@ export default function AdminPanel({
           <StatCard label="Toplam Paket" value={packages.length} />
           <StatCard label="Aktif Paket" value={packages.filter((p) => p.status === "active").length} />
           <StatCard label="Acente Sayısı" value={Object.keys(partnerGroups).length} />
+        </div>
+
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Ana Sayfa Sırası</div>
+          <div style={{ fontSize: 12, color: "#8c8275", marginBottom: 12 }}>
+            Paketlerin ana sayfada ve Deneyimler sayfasında görünme sırası — yukarı/aşağı ok ile değiştirin.
+          </div>
+          {activeSorted.length === 0 ? (
+            <div style={{ color: "#8c8275", fontSize: 13 }}>Sıralanacak aktif paket yok.</div>
+          ) : (
+            <div style={{ display: "grid", gap: 6 }}>
+              {activeSorted.map((pkg, i) => (
+                <div
+                  key={pkg.id}
+                  style={{
+                    background: "#fff",
+                    borderRadius: 6,
+                    padding: "8px 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    boxShadow: "0 1px 3px rgba(28,20,16,0.06)",
+                  }}
+                >
+                  <span style={{ fontSize: 11, color: "#a27450", width: 18, textAlign: "center", flexShrink: 0 }}>
+                    {i + 1}
+                  </span>
+                  {pkg.image_url && (
+                    <img
+                      src={pkg.image_url}
+                      alt={pkg.title}
+                      style={{ width: 36, height: 36, objectFit: "cover", borderRadius: 4, flexShrink: 0 }}
+                    />
+                  )}
+                  <div style={{ flex: 1, fontSize: 13, minWidth: 0 }}>
+                    <span style={{ fontWeight: 600 }}>{pkg.title}</span>{" "}
+                    <span style={{ color: "#8c8275", fontSize: 11.5 }}>— {pkg.partner_name}</span>
+                  </div>
+                  <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+                    <button
+                      type="button"
+                      onClick={() => handleReorder(pkg.id, "up")}
+                      disabled={i === 0}
+                      aria-label={`${pkg.title} paketini yukarı taşı`}
+                      style={reorderBtnStyle(i === 0)}
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleReorder(pkg.id, "down")}
+                      disabled={i === activeSorted.length - 1}
+                      aria-label={`${pkg.title} paketini aşağı taşı`}
+                      style={reorderBtnStyle(i === activeSorted.length - 1)}
+                    >
+                      ↓
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {!showForm && (
@@ -634,3 +719,17 @@ const inputStyle: React.CSSProperties = {
   fontSize: 13.5,
   outline: "none",
 };
+
+function reorderBtnStyle(disabled: boolean): React.CSSProperties {
+  return {
+    width: 26,
+    height: 26,
+    borderRadius: 4,
+    border: "1px solid #e5d6bc",
+    background: disabled ? "#f6f0e4" : "#fff",
+    color: disabled ? "#c9bda3" : "#664932",
+    cursor: disabled ? "not-allowed" : "pointer",
+    fontSize: 12.5,
+    lineHeight: 1,
+  };
+}

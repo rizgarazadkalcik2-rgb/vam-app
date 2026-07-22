@@ -19,7 +19,7 @@ export async function GET() {
     WHERE status = 'active'
       AND (partner_name IS NULL OR partner_name NOT ILIKE 'test%')
       AND title NOT ILIKE 'test%'
-    ORDER BY created_at DESC;
+    ORDER BY sort_order ASC, created_at DESC;
   `;
   return NextResponse.json({ packages: rows });
 }

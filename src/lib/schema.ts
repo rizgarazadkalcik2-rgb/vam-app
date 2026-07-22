@@ -70,6 +70,27 @@ async function initSchema() {
     await sql`INSERT INTO schema_seed_state (key) VALUES ('packages_image_urls_backfill') ON CONFLICT (key) DO NOTHING;`;
   }
 
+  // Ana sayfadaki paket kartlarının sırası — admin bunu Paketler ekranındaki
+  // "Ana Sayfa Sırası" bölümünden ↑/↓ ile değiştirebilir (bkz. reorderPackage
+  // packages.ts). Yeni paketler her zaman listenin sonuna eklenir (bkz.
+  // createPackage). Tek seferlik dolgu: mevcut paketler o ana kadarki fiili
+  // sırayı (created_at DESC, yani "en yeni üstte") korusun diye numaralanır —
+  // aksi hâlde deploy anında kartlar aniden yer değiştirirdi.
+  await sql`ALTER TABLE packages ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0;`;
+  const { rows: sortOrderSeedMarker } = await sql`SELECT 1 FROM schema_seed_state WHERE key = 'packages_sort_order_backfill' LIMIT 1;`;
+  if (sortOrderSeedMarker.length === 0) {
+    await sql`
+      UPDATE packages p
+      SET sort_order = sub.rn
+      FROM (
+        SELECT id, ROW_NUMBER() OVER (ORDER BY created_at DESC) - 1 AS rn
+        FROM packages
+      ) sub
+      WHERE p.id = sub.id;
+    `;
+    await sql`INSERT INTO schema_seed_state (key) VALUES ('packages_sort_order_backfill') ON CONFLICT (key) DO NOTHING;`;
+  }
+
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
