@@ -7,6 +7,8 @@ import type { SessionPayload } from "@/lib/session";
 import AdminShell from "@/app/admin/AdminShell";
 import type { MatchEvent } from "@/lib/matchEvents";
 
+const MAX_IMAGES = 10;
+
 const emptyForm = {
   title: "",
   destination: "",
@@ -14,7 +16,7 @@ const emptyForm = {
   priceTry: 0,
   capacity: 0,
   description: "",
-  imageUrl: "",
+  imageUrls: [] as string[],
 };
 
 const TEAM_NAMES: Record<string, string> = {
@@ -89,41 +91,53 @@ export default function PartnerPanel({
   }
 
 
-  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  async function handleImagesUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(e.target.files || []);
+    e.target.value = ""; // aynı dosyaları tekrar seçebilmek için input'u sıfırla
+    if (selected.length === 0) return;
+
+    const remaining = MAX_IMAGES - form.imageUrls.length;
+    if (remaining <= 0) {
+      setError(`En fazla ${MAX_IMAGES} fotoğraf yükleyebilirsiniz.`);
+      return;
+    }
+    const files = selected.slice(0, remaining);
 
     const sessionAtStart = formSessionRef.current;
     setUploading(true);
     setError("");
 
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json().catch(() => null);
-
-      if (!res.ok) {
-        if (sessionAtStart === formSessionRef.current) {
-          setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+    // Dosyalar sırayla (paralel değil) yükleniyor — hem /api/upload'un
+    // hız sınırını rahat aşacak kadar hızlı istek atmamak hem de galerideki
+    // sırayı seçim sırasıyla eşleştirmek için.
+    for (const file of files) {
+      if (sessionAtStart !== formSessionRef.current) break;
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        const res = await fetch("/api/upload", { method: "POST", body: formData });
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          if (sessionAtStart === formSessionRef.current) {
+            setError(data?.error || "Görsel yüklenirken bir hata oluştu.");
+          }
+          continue;
         }
-        return;
+        if (sessionAtStart === formSessionRef.current) {
+          setForm((f) => ({ ...f, imageUrls: [...f.imageUrls, data.url] }));
+        }
+      } catch {
+        if (sessionAtStart === formSessionRef.current) {
+          setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
+        }
       }
-
-      if (sessionAtStart === formSessionRef.current) {
-        setForm((f) => ({ ...f, imageUrl: data.url }));
-      }
-    } catch {
-      if (sessionAtStart === formSessionRef.current) {
-        setError("Görsel yüklenirken bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
-      }
-    } finally {
-      setUploading(false);
     }
+
+    setUploading(false);
+  }
+
+  function removeImage(index: number) {
+    setForm((f) => ({ ...f, imageUrls: f.imageUrls.filter((_, i) => i !== index) }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -168,7 +182,7 @@ export default function PartnerPanel({
       priceTry: Number(pkg.price_try),
       capacity: pkg.capacity,
       description: pkg.description || "",
-      imageUrl: pkg.image_url || "",
+      imageUrls: pkg.image_urls || [],
     });
   }
 
@@ -320,36 +334,65 @@ export default function PartnerPanel({
           </label>
 
           <div style={{ marginBottom: 12 }}>
-            <label htmlFor="pkg-image-url" style={{ ...labelText, marginBottom: 6 }}>
-              Paket Görseli
+            <label htmlFor="pkg-images" style={{ ...labelText, marginBottom: 6 }}>
+              Paket Fotoğrafları ({form.imageUrls.length}/{MAX_IMAGES}) — ilk fotoğraf kapak görseli olur
             </label>
-            <input
-              id="pkg-image-url"
-              value={form.imageUrl}
-              onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-              placeholder="https://... (URL yapıştır ya da aşağıdan yükle)"
-              style={{ ...inputStyle, width: "100%", marginBottom: 8 }}
-            />
-            {form.imageUrl && (
-              <img
-                src={form.imageUrl}
-                alt="Önizleme"
+            {form.imageUrls.length > 0 && (
+              <div
                 style={{
-                  width: "100%",
-                  maxHeight: 160,
-                  objectFit: "cover",
-                  borderRadius: 4,
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
+                  gap: 8,
                   marginBottom: 8,
-                  display: "block",
                 }}
-              />
+              >
+                {form.imageUrls.map((url, i) => (
+                  <div key={url + i} style={{ position: "relative" }}>
+                    <img
+                      src={url}
+                      alt={`Fotoğraf ${i + 1}`}
+                      style={{
+                        width: "100%",
+                        height: 80,
+                        objectFit: "cover",
+                        borderRadius: 4,
+                        display: "block",
+                        border: i === 0 ? "2px solid #c4522a" : "1px solid #e5d6bc",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      aria-label={`${i + 1}. fotoğrafı kaldır`}
+                      style={{
+                        position: "absolute",
+                        top: 2,
+                        right: 2,
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: "none",
+                        background: "rgba(13,9,6,0.75)",
+                        color: "#fff",
+                        fontSize: 12,
+                        lineHeight: 1,
+                        cursor: "pointer",
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
             <input
+              id="pkg-images"
               type="file"
-              aria-label="Paket görseli dosyası yükle"
+              multiple
+              aria-label="Paket fotoğrafları yükle"
               accept="image/jpeg,image/png,image/webp"
-              onChange={handleImageUpload}
-              disabled={uploading}
+              onChange={handleImagesUpload}
+              disabled={uploading || form.imageUrls.length >= MAX_IMAGES}
               style={{ fontSize: 12.5 }}
             />
             {uploading && (

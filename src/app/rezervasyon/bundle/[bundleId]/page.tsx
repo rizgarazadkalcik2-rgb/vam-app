@@ -30,7 +30,7 @@ export default async function BundleRezervasyonPage({
         kind: "bundle",
         id: bundle.id,
         title: bundle.title,
-        imageUrl: bundle.image_url,
+        imageUrls: bundle.image_url ? [bundle.image_url] : [],
         subtitle: `${(bundle.destinations || []).join(" – ")} · ${bundle.nights} ${t("rez_night", lang)}`,
         unitPrice: Number(bundle.price),
       }}

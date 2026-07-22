@@ -30,7 +30,7 @@ export default async function RezervasyonPage({
         kind: "package",
         id: pkg.id,
         title: pkg.title,
-        imageUrl: pkg.image_url,
+        imageUrls: pkg.image_urls && pkg.image_urls.length > 0 ? pkg.image_urls : pkg.image_url ? [pkg.image_url] : [],
         subtitle: `${pkg.destination} · ${pkg.nights} ${t("rez_night", lang)} · ${pkg.partner_name}`,
         unitPrice: Number(pkg.price_try),
       }}

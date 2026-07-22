@@ -40,3 +40,11 @@ button:focus-visible {
   outline: 2px solid #c4522a !important;
   outline-offset: 1px !important;
 }
+
+/* PhotoGallery.tsx (rezervasyon sayfası) — WebKit'te scroll-snap kaydırma
+   çubuğunu gizler. `scrollbar-width: none` inline style'da zaten uygulanıyor
+   (Firefox/Chrome 121+), ama WebKit'in ::-webkit-scrollbar sözde elemanı
+   inline style ile yazılamadığı için burada tanımlanıyor. */
+.vc-photo-gallery-track::-webkit-scrollbar {
+  display: none;
+}
