@@ -36,6 +36,27 @@ export async function PATCH(
     );
   }
 
+  // Çoklu foto galerisi — en fazla MAX_IMAGES adet, hepsi dolu string olmalı.
+  // undefined ise (alan hiç gönderilmemişse) boş galeri olarak kabul edilir —
+  // tıpkı eski tek imageUrl alanında olduğu gibi, çağıran her zaman güncel
+  // listeyi tam olarak göndermeli (panellerin toggleStatus'u da böyle yapıyor).
+  const MAX_IMAGES = 10;
+  const imageUrlsRaw = body.imageUrls;
+  let imageUrls: string[] = [];
+  if (imageUrlsRaw !== undefined) {
+    if (
+      !Array.isArray(imageUrlsRaw) ||
+      imageUrlsRaw.length > MAX_IMAGES ||
+      imageUrlsRaw.some((u: unknown) => typeof u !== "string" || !u.trim())
+    ) {
+      return NextResponse.json(
+        { error: `Görsel listesi en fazla ${MAX_IMAGES} adet, dolu metin değerlerinden oluşan bir dizi olmalı.` },
+        { status: 400 }
+      );
+    }
+    imageUrls = imageUrlsRaw;
+  }
+
   try {
     const updated = await updatePackage(
       packageId,
@@ -49,7 +70,7 @@ export async function PATCH(
         capacity,
         description: body.description || "",
         status: body.status || "active",
-        imageUrl: body.imageUrl,
+        imageUrls,
         newPartnerId: body.newPartnerId,
         newPartnerName: body.newPartnerName,
       }

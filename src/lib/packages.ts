@@ -12,6 +12,7 @@ export interface VamPackage {
   capacity: number;
   description: string | null;
   image_url: string | null;
+  image_urls: string[];
   status: string;
   created_at: string;
   updated_at: string;
@@ -50,12 +51,15 @@ export async function createPackage(data: {
   priceTry: number;
   capacity: number;
   description: string;
-  imageUrl?: string;
+  imageUrls?: string[];
 }): Promise<VamPackage> {
   await ensureSchema();
+  const imageUrls = data.imageUrls || [];
+  // image_url, image_urls[0]'ı yansıtan bir kapak alanı — asıl kaynak
+  // image_urls (bkz. schema.ts'teki backfill yorumu).
   const { rows } = await sql<VamPackage>`
-    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description, image_url)
-    VALUES (${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description}, ${data.imageUrl || null})
+    INSERT INTO packages (partner_id, partner_name, title, destination, nights, price_try, capacity, description, image_url, image_urls)
+    VALUES (${data.partnerId}, ${data.partnerName}, ${data.title}, ${data.destination}, ${data.nights}, ${data.priceTry}, ${data.capacity}, ${data.description}, ${imageUrls[0] || null}, ${JSON.stringify(imageUrls)}::jsonb)
     RETURNING *;
   `;
   return rows[0];
@@ -73,12 +77,14 @@ export async function updatePackage(
     capacity: number;
     description: string;
     status: string;
-    imageUrl?: string;
+    imageUrls?: string[];
     newPartnerId?: string;
     newPartnerName?: string;
   }
 ): Promise<VamPackage | null> {
   await ensureSchema();
+  const imageUrls = data.imageUrls || [];
+  const imageUrlsJson = JSON.stringify(imageUrls);
   // partner sadece kendi paketini düzenleyebilir; admin hepsini düzenleyebilir
   // admin ayrıca paketin sahibini (acentesini) de değiştirebilir
   const { rows } = isAdmin
@@ -87,7 +93,7 @@ export async function updatePackage(
           UPDATE packages
           SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
               price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-              status = ${data.status}, image_url = ${data.imageUrl || null},
+              status = ${data.status}, image_url = ${imageUrls[0] || null}, image_urls = ${imageUrlsJson}::jsonb,
               partner_id = ${data.newPartnerId}, partner_name = ${data.newPartnerName},
               updated_at = now()
           WHERE id = ${id}
@@ -97,7 +103,8 @@ export async function updatePackage(
           UPDATE packages
           SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
               price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-              status = ${data.status}, image_url = ${data.imageUrl || null}, updated_at = now()
+              status = ${data.status}, image_url = ${imageUrls[0] || null}, image_urls = ${imageUrlsJson}::jsonb,
+              updated_at = now()
           WHERE id = ${id}
           RETURNING *;
         `
@@ -105,7 +112,8 @@ export async function updatePackage(
         UPDATE packages
         SET title = ${data.title}, destination = ${data.destination}, nights = ${data.nights},
             price_try = ${data.priceTry}, capacity = ${data.capacity}, description = ${data.description},
-            status = ${data.status}, image_url = ${data.imageUrl || null}, updated_at = now()
+            status = ${data.status}, image_url = ${imageUrls[0] || null}, image_urls = ${imageUrlsJson}::jsonb,
+            updated_at = now()
         WHERE id = ${id} AND partner_id = ${partnerId}
         RETURNING *;
       `;

@@ -54,6 +54,22 @@ async function initSchema() {
   // Eski tablolarda image_url sütunu yoksa ekle (geriye dönük uyumluluk)
   await sql`ALTER TABLE packages ADD COLUMN IF NOT EXISTS image_url TEXT;`;
 
+  // Çoklu foto galerisi: image_url artık image_urls[0]'ı yansıtan bir "kapak
+  // görseli" alanı — asıl kaynak image_urls. Tek seferlik dolgu: daha önce
+  // tek image_url ile doldurulmuş satırları diziye taşır (admin/acente hiçbir
+  // şey yapmadan mevcut görseli galeri olarak görür). schema_seed_state
+  // markeriyle korunuyor, admin galeriyi bilerek boşaltırsa bir daha çalışmaz.
+  await sql`ALTER TABLE packages ADD COLUMN IF NOT EXISTS image_urls JSONB NOT NULL DEFAULT '[]'::jsonb;`;
+  const { rows: imageUrlsSeedMarker } = await sql`SELECT 1 FROM schema_seed_state WHERE key = 'packages_image_urls_backfill' LIMIT 1;`;
+  if (imageUrlsSeedMarker.length === 0) {
+    await sql`
+      UPDATE packages
+      SET image_urls = jsonb_build_array(image_url)
+      WHERE image_url IS NOT NULL AND image_urls = '[]'::jsonb;
+    `;
+    await sql`INSERT INTO schema_seed_state (key) VALUES ('packages_image_urls_backfill') ON CONFLICT (key) DO NOTHING;`;
+  }
+
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,

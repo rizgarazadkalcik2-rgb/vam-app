@@ -5,14 +5,14 @@ import Link from "next/link";
 import type { Lang } from "@/lib/dictionary";
 import { t } from "@/lib/dictionary";
 import { formatPrice, type Currency } from "@/lib/currency";
-import SmartImage from "@/app/components/SmartImage";
+import PhotoGallery from "./PhotoGallery";
 
 /** Normalized shape so the same form serves both packages and bundles. */
 export type ReservationItem = {
   kind: "package" | "bundle";
   id: number;
   title: string;
-  imageUrl: string | null;
+  imageUrls: string[];
   subtitle: string;
   unitPrice: number;
 };
@@ -109,27 +109,7 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
   return (
     <div style={pageStyle}>
       <div style={cardStyle}>
-        {item.imageUrl && (
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: 200,
-              background: "#f6f0e4",
-              borderRadius: 8,
-              marginBottom: 20,
-              overflow: "hidden",
-            }}
-          >
-            <SmartImage
-              src={item.imageUrl}
-              alt={item.title}
-              fill
-              sizes="(max-width: 480px) 100vw, 480px"
-              style={{ objectFit: "contain" }}
-            />
-          </div>
-        )}
+        <PhotoGallery images={item.imageUrls} alt={item.title} />
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, letterSpacing: "0.15em", color: "#c4522a", textTransform: "uppercase", marginBottom: 8 }}>
             {t("rez_eyebrow", lang)}

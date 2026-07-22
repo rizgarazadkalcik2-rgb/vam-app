@@ -50,6 +50,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Çoklu foto galerisi — en fazla MAX_IMAGES adet, hepsi dolu string olmalı.
+  // undefined ise (alan hiç gönderilmemişse) boş galeri olarak kabul edilir.
+  const MAX_IMAGES = 10;
+  const imageUrlsRaw = body.imageUrls;
+  let imageUrls: string[] = [];
+  if (imageUrlsRaw !== undefined) {
+    if (
+      !Array.isArray(imageUrlsRaw) ||
+      imageUrlsRaw.length > MAX_IMAGES ||
+      imageUrlsRaw.some((u: unknown) => typeof u !== "string" || !u.trim())
+    ) {
+      return NextResponse.json(
+        { error: `Görsel listesi en fazla ${MAX_IMAGES} adet, dolu metin değerlerinden oluşan bir dizi olmalı.` },
+        { status: 400 }
+      );
+    }
+    imageUrls = imageUrlsRaw;
+  }
+
   // Admin, istediği acente adına paket ekleyebilir (body'den partnerId/partnerName gelir).
   // Partner (acente) ise her zaman kendi adına ekler, body'deki değerler göz ardı edilir.
   const partnerId =
@@ -67,7 +86,7 @@ export async function POST(req: NextRequest) {
       priceTry,
       capacity,
       description: body.description || "",
-      imageUrl: body.imageUrl || undefined,
+      imageUrls,
     });
     return NextResponse.json({ package: created }, { status: 201 });
   } catch (err) {
