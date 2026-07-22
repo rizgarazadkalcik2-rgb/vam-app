@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { updatePackage, deletePackage } from "@/lib/packages";
+import { updatePackage, deletePackage, PACKAGE_CATEGORIES } from "@/lib/packages";
 
 export async function PATCH(
   req: NextRequest,
@@ -57,6 +57,11 @@ export async function PATCH(
     imageUrls = imageUrlsRaw;
   }
 
+  const category = body.category || null;
+  if (category !== null && !PACKAGE_CATEGORIES.includes(category)) {
+    return NextResponse.json({ error: "Geçersiz kategori." }, { status: 400 });
+  }
+
   try {
     const updated = await updatePackage(
       packageId,
@@ -71,6 +76,7 @@ export async function PATCH(
         description: body.description || "",
         status: body.status || "active",
         imageUrls,
+        category,
         newPartnerId: body.newPartnerId,
         newPartnerName: body.newPartnerName,
       }

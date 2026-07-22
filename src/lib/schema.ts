@@ -91,6 +91,13 @@ async function initSchema() {
     await sql`INSERT INTO schema_seed_state (key) VALUES ('packages_sort_order_backfill') ON CONFLICT (key) DO NOTHING;`;
   }
 
+  // /paketler sayfasındaki ve ana sayfa arama kutusundaki "Erlebnis" (deneyim
+  // türü) filtresi için — bundle'lardaki gibi destinasyon adından tahmin
+  // edilen sahte bir eşleştirme değil, acentenin paket oluştururken seçtiği
+  // gerçek bir alan. Nullable: eski paketlerde boş, filtre "Tümü" dışında
+  // seçildiğinde kategorisiz paketler sonuçtan çıkar (yanlış eşleşme yerine).
+  await sql`ALTER TABLE packages ADD COLUMN IF NOT EXISTS category TEXT;`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,

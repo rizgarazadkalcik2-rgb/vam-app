@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { VamPackage } from "@/lib/packages";
+import { PACKAGE_CATEGORIES, type VamPackage } from "@/lib/packages";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "./AdminShell";
 
@@ -21,6 +21,7 @@ const emptyForm = {
   description: "",
   partnerId: "",
   imageUrls: [] as string[],
+  category: "" as string,
 };
 
 export default function AdminPanel({
@@ -104,6 +105,7 @@ export default function AdminPanel({
           description: pkg.description,
           status: newStatus,
           imageUrls: pkg.image_urls || [],
+          category: pkg.category || null,
         }),
       });
       if (res.ok) {
@@ -137,6 +139,7 @@ export default function AdminPanel({
       description: pkg.description || "",
       partnerId: pkg.partner_id,
       imageUrls: pkg.image_urls || [],
+      category: pkg.category || "",
     });
     setShowForm(true);
     setError("");
@@ -225,6 +228,7 @@ export default function AdminPanel({
       description: form.description,
       status: "active",
       imageUrls: form.imageUrls,
+      category: form.category || null,
     };
 
     if (editingId) {
@@ -455,6 +459,16 @@ export default function AdminPanel({
                 onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })}
                 style={inputStyle}
               />
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                style={inputStyle}
+              >
+                <option value="">Kategori seçilmedi</option>
+                {PACKAGE_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
 
             <textarea

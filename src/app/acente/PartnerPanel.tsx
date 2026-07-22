@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { VamPackage } from "@/lib/packages";
+import { PACKAGE_CATEGORIES, type VamPackage } from "@/lib/packages";
 import type { VamReservation } from "@/lib/reservations";
 import type { SessionPayload } from "@/lib/session";
 import AdminShell from "@/app/admin/AdminShell";
@@ -17,6 +17,7 @@ const emptyForm = {
   capacity: 0,
   description: "",
   imageUrls: [] as string[],
+  category: "" as string,
 };
 
 const TEAM_NAMES: Record<string, string> = {
@@ -183,6 +184,7 @@ export default function PartnerPanel({
       capacity: pkg.capacity,
       description: pkg.description || "",
       imageUrls: pkg.image_urls || [],
+      category: pkg.category || "",
     });
   }
 
@@ -290,7 +292,7 @@ export default function PartnerPanel({
             </label>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
             <label style={labelWrap}>
               <span style={labelText}>Gece sayısı</span>
               <input
@@ -320,6 +322,19 @@ export default function PartnerPanel({
                 onChange={(e) => setForm({ ...form, capacity: Math.max(0, Number(e.target.value)) })}
                 style={inputStyle}
               />
+            </label>
+            <label style={labelWrap}>
+              <span style={labelText}>Kategori</span>
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                style={{ ...inputStyle, width: "100%" }}
+              >
+                <option value="">Seçilmedi</option>
+                {PACKAGE_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </label>
           </div>
 

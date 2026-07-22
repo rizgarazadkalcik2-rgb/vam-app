@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { listAllPackages, listPackagesByPartner, createPackage } from "@/lib/packages";
+import { listAllPackages, listPackagesByPartner, createPackage, PACKAGE_CATEGORIES } from "@/lib/packages";
 
 export async function GET() {
   const session = await getSession();
@@ -69,6 +69,13 @@ export async function POST(req: NextRequest) {
     imageUrls = imageUrlsRaw;
   }
 
+  // Kategori opsiyonel ama gönderildiyse sabit listeden olmalı — arama/filtre
+  // (bkz. /paketler) bu değere doğrudan eşitlik kontrolüyle bakıyor.
+  const category = body.category || null;
+  if (category !== null && !PACKAGE_CATEGORIES.includes(category)) {
+    return NextResponse.json({ error: "Geçersiz kategori." }, { status: 400 });
+  }
+
   // Admin, istediği acente adına paket ekleyebilir (body'den partnerId/partnerName gelir).
   // Partner (acente) ise her zaman kendi adına ekler, body'deki değerler göz ardı edilir.
   const partnerId =
@@ -87,6 +94,7 @@ export async function POST(req: NextRequest) {
       capacity,
       description: body.description || "",
       imageUrls,
+      category,
     });
     return NextResponse.json({ package: created }, { status: 201 });
   } catch (err) {
