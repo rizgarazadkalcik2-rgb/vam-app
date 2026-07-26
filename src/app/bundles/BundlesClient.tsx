@@ -168,7 +168,7 @@ export default function BundlesClient({
                   ) : (
                     <span className="vc-card-letter">{b.title[0]}</span>
                   )}
-                  <span className="vc-card-tag">{b.nights} {t("bundle_night", lang)}</span>
+                  <span className="vc-card-tag">{b.nights} {t(b.nights === 1 ? "bundle_night_one" : "bundle_night", lang)}</span>
                   {b.badge && (
                     <span className="vc-card-tag vc-card-tag-gold" style={{ left: "auto", right: 10 }}>
                       {b.badge}
