@@ -156,7 +156,7 @@ export default async function BundleDetailPage({
 
             <div className="vc-info-row">
               <span>{t("bundle_duration_label", lang)}</span>
-              <span>{b.nights} {t("bundle_night_day", lang)} / {b.nights + 1} {t("bundle_day", lang)}</span>
+              <span>{b.nights} {t(b.nights === 1 ? "bundle_night_day_one" : "bundle_night_day", lang)} / {b.nights + 1} {t("bundle_day", lang)}</span>
             </div>
             <div className="vc-info-row">
               <span>{t("bundle_destination_label", lang)}</span>

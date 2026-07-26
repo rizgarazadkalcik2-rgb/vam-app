@@ -49,6 +49,20 @@ const securityHeaders = [
   { key: "Content-Security-Policy", value: STRICT_CSP },
 ];
 
+// 3 statik bundler sayfası (/, /about, /experiences) için başlık seti.
+// DİKKAT: bu sayfalar public/static-pages/... altına rewrite edildiği için
+// yukarıdaki "/:path*" girdisi bunlara UYGULANMIYOR (canlıda doğrulandı:
+// HSTS başlığı bu 3 sayfada eksikti, diğerlerinde vardı). Bu yüzden genel
+// güvenlik başlıklarını burada tekrar ediyoruz; sadece CSP'yi Babel
+// Standalone'un ihtiyaç duyduğu gevşek sürümüyle değiştiriyoruz.
+const staticPageHeaders = [
+  ...securityHeaders.filter((h) => h.key !== "Content-Security-Policy"),
+  // Bu sayfalar deploy sonrası CDN'de eski halleriyle takılı kalabiliyordu —
+  // "must-revalidate" her istekte orijinle doğrulama yapılmasını zorunlu kılar.
+  { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+  { key: "Content-Security-Policy", value: STATIC_PAGE_CSP },
+];
+
 const nextConfig: NextConfig = {
   images: {
     // Sadece Vercel Blob'dan gelen görseller optimize edilir — admin'in
@@ -64,36 +78,10 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
-      {
-        // Bu sayfalar (statik bundler mimarisi) deploy sonrası CDN'de eski
-        // halleriyle takılı kalabiliyordu — "no-cache, must-revalidate" her
-        // istekte orijin sunucuyla doğrulama yapılmasını zorunlu kılar,
-        // böylece bir önceki deploy'un bozuk sürümü asla takılı kalmaz.
-        //
-        // Content-Security-Policy burada da tekrar tanımlanıyor (yukarıdaki
-        // /:path* girdisinden SONRA geldiği için üzerine yazıyor) — sadece bu
-        // 3 sayfanın Babel Standalone çalışma zamanı JSX derlemesi için
-        // gereken 'unsafe-eval'i içeriyor, bkz. STATIC_PAGE_CSP tanımı.
-        source: "/",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-          { key: "Content-Security-Policy", value: STATIC_PAGE_CSP },
-        ],
-      },
-      {
-        source: "/experiences",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-          { key: "Content-Security-Policy", value: STATIC_PAGE_CSP },
-        ],
-      },
-      {
-        source: "/about",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-          { key: "Content-Security-Policy", value: STATIC_PAGE_CSP },
-        ],
-      },
+      // 3 statik bundler sayfası — bkz. staticPageHeaders tanımındaki not.
+      { source: "/", headers: staticPageHeaders },
+      { source: "/experiences", headers: staticPageHeaders },
+      { source: "/about", headers: staticPageHeaders },
     ];
   },
   async redirects() {

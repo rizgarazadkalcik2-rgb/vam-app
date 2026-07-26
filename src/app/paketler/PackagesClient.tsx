@@ -160,7 +160,7 @@ export default function PackagesClient({
                 ) : (
                   <span className="vc-card-letter">{pkg.title[0]}</span>
                 )}
-                <span className="vc-card-tag">{pkg.nights} {t("bundle_night", lang)}</span>
+                <span className="vc-card-tag">{pkg.nights} {t(pkg.nights === 1 ? "bundle_night_one" : "bundle_night", lang)}</span>
               </div>
               <div className="vc-card-body">
                 <div className="vc-card-eyebrow">{t("pkg_card_eyebrow", lang)}</div>

@@ -116,6 +116,9 @@ export const DICT = {
   bundle_show_all: { TR: "Tüm Paketleri Göster", DE: "Alle Pakete anzeigen", EN: "Show All Packages", KU: "Hemû Pakêtan Nîşan Bide", CKB: "هەموو پاکێجەکان نیشان بدە" },
   bundle_card_eyebrow: { TR: "Rota Paketi", DE: "Routenpaket", EN: "Route Package", KU: "Pakêta Rêyê", CKB: "پاکێجی ڕێگا" },
   bundle_night: { TR: "Gece", DE: "Nächte", EN: "Nights", KU: "Şev", CKB: "شەو" },
+  // Almanca/İngilizce'de 1 gece tekil — sabit çoğulla "1 Nächte" gibi hatalı
+  // çıktı oluşuyordu. TR/KU/CKB'de tekil ile çoğul aynı.
+  bundle_night_one: { TR: "Gece", DE: "Nacht", EN: "Night", KU: "Şev", CKB: "شەو" },
   bundle_per_person: { TR: "kişi başı", DE: "pro Person", EN: "per person", KU: "ji bo her kesî", CKB: "بۆ هەر کەسێک" },
 
   // Packages listing (/paketler) — acentelerin yüklediği gerçek turlar
@@ -141,6 +144,7 @@ export const DICT = {
   bundle_includes_title: { TR: "Pakete Dahil", DE: "Im Paket enthalten", EN: "Included in the Package", KU: "Di Pakêtê De Heye", CKB: "لە پاکێجەکەدا هەیە" },
   bundle_duration_label: { TR: "Süre", DE: "Dauer", EN: "Duration", KU: "Dem", CKB: "ماوە" },
   bundle_night_day: { TR: "gece", DE: "Nächte", EN: "nights", KU: "şev", CKB: "شەو" },
+  bundle_night_day_one: { TR: "gece", DE: "Nacht", EN: "night", KU: "şev", CKB: "شەو" },
   bundle_day: { TR: "gün", DE: "Tage", EN: "days", KU: "roj", CKB: "ڕۆژ" },
   bundle_destination_label: { TR: "Destinasyon", DE: "Destination", EN: "Destination", KU: "Cîh", CKB: "شوێن" },
   bundle_point_suffix: { TR: "nokta", DE: "Stationen", EN: "stops", KU: "xal", CKB: "خاڵ" },
@@ -222,6 +226,7 @@ export const DICT = {
   // Reservation form
   rez_eyebrow: { TR: "Rezervasyon", DE: "Buchung", EN: "Reservation", KU: "Rezervasyon", CKB: "ڕیزێرڤ" },
   rez_night: { TR: "gece", DE: "Nächte", EN: "nights", KU: "şev", CKB: "شەو" },
+  rez_night_one: { TR: "gece", DE: "Nacht", EN: "night", KU: "şev", CKB: "شەو" },
   rez_name: { TR: "Ad Soyad", DE: "Vor- und Nachname", EN: "Full Name", KU: "Nav û Paşnav", CKB: "ناو و ناوی باوک" },
   rez_email: { TR: "E-posta", DE: "E-Mail", EN: "Email", KU: "E-peyam", CKB: "ئیمەیل" },
   rez_phone: { TR: "Telefon", DE: "Telefon", EN: "Phone", KU: "Telefon", CKB: "تەلەفۆن" },
