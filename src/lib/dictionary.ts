@@ -12,12 +12,14 @@ export const DICT = {
   nav_matchweekends: { TR: "Match Weekends", DE: "Match Weekends", EN: "Match Weekends", KU: "Match Weekends", CKB: "Match Weekends" },
   nav_about: { TR: "Hakkımızda", DE: "Über uns", EN: "About Us", KU: "Der Barê Me De", CKB: "دەربارەمان" },
   nav_cta: { TR: "Rezervasyon", DE: "Buchung", EN: "Reservation", KU: "Rezervasyon", CKB: "ڕیزێرڤکردن" },
+  // Yaş iddiası site genelinde 12.000 — statik sayfalarda hizalanmıştı ama
+  // Next.js footer'ı (VamFooter) atlanmıştı, iki taraf farklı sayı söylüyordu.
   footer_tagline: {
-    TR: "On bin yıllık topraklarda yeni çağın turizmi.",
-    DE: "Reisen einer neuen Zeit auf zehntausendjährigem Boden.",
-    EN: "A new era of travel across ten-thousand-year-old lands.",
-    KU: "Li ser axa deh hezar salî, geriyana serdemek nû.",
-    CKB: "گەشتیاری سەردەمێکی نوێ لەسەر خاکێکی دە هەزار ساڵە.",
+    TR: "12.000 yıllık topraklarda yeni çağın turizmi.",
+    DE: "Reisen einer neuen Zeit auf 12.000 Jahre altem Boden.",
+    EN: "A new era of travel across 12,000-year-old lands.",
+    KU: "Li ser axa 12.000 salî, geriyana serdemek nû.",
+    CKB: "گەشتیاری سەردەمێکی نوێ لەسەر خاکێکی ١٢،٠٠٠ ساڵە.",
   },
   footer_col_platform: { TR: "Platform", DE: "Platform", EN: "Platform", KU: "Platform", CKB: "پلاتفۆرم" },
   footer_col_company: { TR: "Şirket", DE: "Unternehmen", EN: "Company", KU: "Şirket", CKB: "کۆمپانیا" },
@@ -89,6 +91,10 @@ export const DICT = {
   // Destination detail
   dest_back: { TR: "← Tüm Destinasyonlar", DE: "← Alle Destinationen", EN: "← All Destinations", KU: "← Hemû Cih", CKB: "→ هەموو شوێنەکان" },
   dest_features_title: { TR: "Öne Çıkan Özellikler", DE: "Highlights", EN: "Highlights", KU: "Taybetmendî", CKB: "تایبەتمەندییە دیارەکان" },
+  // "Bugün Burada" — destinasyonun insan katmanı. Tarih değil, bugün orada
+  // yaşayan hayat anlatılır (bkz. seedData.ts'teki SEED_LIVING_CULTURE notu).
+  dest_living_title: { TR: "Bugün Burada", DE: "Heute hier", EN: "Living Today", KU: "Îro Li Vir", CKB: "ئەمڕۆ لێرە" },
+  dest_living_lede: { TR: "Bu topraklarda bugün kim yaşıyor, ne pişiriyor, ne söylüyor.", DE: "Wer heute auf diesem Boden lebt, was gekocht und was erzählt wird.", EN: "Who lives on this land today — what they cook, what they tell.", KU: "Îro li ser vê axê kî dijî, çi dipêje, çi dibêje.", CKB: "ئەمڕۆ کێ لەم خاکەدا دەژی، چی لێدەنێت، چی دەگێڕێتەوە." },
   dest_related_title: { TR: "İlgili Destinasyonlar", DE: "Ähnliche Destinationen", EN: "Related Destinations", KU: "Cihên Girêdayî", CKB: "شوێنە پەیوەندیدارەکان" },
   dest_related_bundles_btn: { TR: "İlgili Paketleri Gör", DE: "Passende Pakete ansehen", EN: "View Matching Packages", KU: "Pakêtên Girêdayî Bibîne", CKB: "پاکێجە پەیوەندیدارەکان ببینە" },
   dest_reviews_suffix: { TR: "değerlendirme", DE: "Bewertungen", EN: "reviews", KU: "nirxandin", CKB: "هەڵسەنگاندن" },
@@ -225,6 +231,11 @@ export const DICT = {
 
   // Reservation form
   rez_eyebrow: { TR: "Rezervasyon", DE: "Buchung", EN: "Reservation", KU: "Rezervasyon", CKB: "ڕیزێرڤ" },
+  // Rezervasyon sayfasındaki acente kartı — VAM'ın yerel-ortaklık sütununu
+  // müşteriye görünür kılar (bkz. schema.ts'teki company_story kolon notu).
+  rez_partner_title: { TR: "Bu Turu Kim Düzenliyor", DE: "Wer diese Tour veranstaltet", EN: "Who Runs This Tour", KU: "Kî Vê Gerê Organîze Dike", CKB: "کێ ئەم گەشتە ڕێکدەخات" },
+  rez_partner_since: { TR: "yılından beri", DE: "seit", EN: "since", KU: "ji sala", CKB: "لە ساڵی" },
+  rez_partner_local: { TR: "Yerel VAM ortağı", DE: "Lokaler VAM-Partner", EN: "Local VAM partner", KU: "Hevkarê herêmî yê VAM", CKB: "هاوبەشی خۆجێیی VAM" },
   rez_night: { TR: "gece", DE: "Nächte", EN: "nights", KU: "şev", CKB: "شەو" },
   rez_night_one: { TR: "gece", DE: "Nacht", EN: "night", KU: "şev", CKB: "شەو" },
   rez_name: { TR: "Ad Soyad", DE: "Vor- und Nachname", EN: "Full Name", KU: "Nav û Paşnav", CKB: "ناو و ناوی باوک" },

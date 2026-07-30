@@ -6,6 +6,7 @@ import type { Lang } from "@/lib/dictionary";
 import { t } from "@/lib/dictionary";
 import { formatPrice, type Currency } from "@/lib/currency";
 import PhotoGallery from "./PhotoGallery";
+import SmartImage from "@/app/components/SmartImage";
 
 /** Normalized shape so the same form serves both packages and bundles. */
 export type ReservationItem = {
@@ -17,7 +18,26 @@ export type ReservationItem = {
   unitPrice: number;
 };
 
-export default function ReservationForm({ item, lang, currency }: { item: ReservationItem; lang: Lang; currency: Currency }) {
+/** Turu düzenleyen acentenin müşteriye görünen profili. Acente hikâyesini
+ *  yazmadıysa null gelir ve kart hiç render edilmez. */
+export type ReservationPartner = {
+  name: string;
+  story: string;
+  since: number | null;
+  photoUrl: string | null;
+};
+
+export default function ReservationForm({
+  item,
+  lang,
+  currency,
+  partner = null,
+}: {
+  item: ReservationItem;
+  lang: Lang;
+  currency: Currency;
+  partner?: ReservationPartner | null;
+}) {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -119,6 +139,45 @@ export default function ReservationForm({ item, lang, currency }: { item: Reserv
           </div>
           <div style={{ fontSize: 13, color: "#6f6558" }}>{item.subtitle}</div>
         </div>
+
+        {partner && (
+          <section
+            style={{
+              background: "#faf7f0",
+              border: "1px solid #e5d6bc",
+              borderRadius: 8,
+              padding: 16,
+              marginBottom: 22,
+              display: "flex",
+              gap: 14,
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+            }}
+          >
+            {partner.photoUrl && (
+              <SmartImage
+                src={partner.photoUrl}
+                alt={partner.name}
+                width={72}
+                height={72}
+                className="vc-partner-photo"
+              />
+            )}
+            <div style={{ flex: "1 1 220px", minWidth: 0 }}>
+              <div style={{ fontSize: 10.5, letterSpacing: "0.14em", textTransform: "uppercase", color: "#9b620b", marginBottom: 6 }}>
+                {t("rez_partner_title", lang)}
+              </div>
+              <div style={{ fontSize: 14.5, fontWeight: 600, marginBottom: 2 }}>{partner.name}</div>
+              <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 8 }}>
+                {t("rez_partner_local", lang)}
+                {partner.since ? ` · ${partner.since} ${t("rez_partner_since", lang)}` : ""}
+              </div>
+              <p style={{ fontSize: 13, color: "#574f44", lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>
+                {partner.story}
+              </p>
+            </div>
+          </section>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>

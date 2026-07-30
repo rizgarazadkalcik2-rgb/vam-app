@@ -59,6 +59,7 @@ export default async function DestinationDetailPage({
 
   const history = d.history || [];
   const features = d.features || [];
+  const livingCulture = d.living_culture || [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -148,6 +149,22 @@ export default async function DestinationDetailPage({
                 </div>
               ))}
             </div>
+          )}
+
+          {/* "Bugün Burada" — tarih değil, bugün orada yaşayan hayat. Bilgi
+              bölümlerinden görsel olarak ayrışsın diye ayrı, daha sakin bir
+              blok içinde duruyor (bkz. seedData.ts'teki SEED_LIVING_CULTURE). */}
+          {livingCulture.length > 0 && (
+            <section className="vc-living">
+              <h2 className="vc-section-label">{t("dest_living_title", lang)}</h2>
+              <p className="vc-living-lede">{t("dest_living_lede", lang)}</p>
+              {livingCulture.map((f, i) => (
+                <div key={i} className="vc-living-item">
+                  <h3>{f.title}</h3>
+                  <p>{f.body}</p>
+                </div>
+              ))}
+            </section>
           )}
         </main>
 

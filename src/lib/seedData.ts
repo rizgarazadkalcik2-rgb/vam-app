@@ -2120,3 +2120,185 @@ export const SEED_BUNDLES: SeedBundle[] = [
     }
   }
 ];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// "Bugün Burada" — destinasyonların insan katmanı.
+//
+// Destinasyon sayfalarındaki history/features alanları tarih ve yapı anlatıyor;
+// bu alan BUGÜN orada kimin yaşadığını, ne pişirdiğini, ne söylediğini anlatır.
+// VAM'ın çok-etnisiteli mirası burada bir rozet listesi olarak değil, gündelik
+// hayatın içinden anlatılarak temsil edilir.
+//
+// Yalnızca yaygın bilinen, tartışmasız kültürel olgular kullanılır. Bu bir
+// başlangıç taslağıdır — admin panelinden (Destinasyonlar → Bugün Burada)
+// serbestçe düzenlenebilir ve diğer destinasyonlara da eklenebilir.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface LivingCultureEntry {
+  title: string;
+  body: string;
+}
+
+export interface LivingCultureSeed {
+  slug: string;
+  tr: LivingCultureEntry[];
+  de: LivingCultureEntry[];
+}
+
+export const SEED_LIVING_CULTURE: LivingCultureSeed[] = [
+  {
+    slug: "mardin",
+    tr: [
+      {
+        title: "Bakır Ustalarının Sokağı",
+        body: "Birinci Cadde'de sabahlar çekiç sesiyle başlar. Bakır ustaları tepsiyi, cezveyi, mangalı hâlâ elde döver; çırak yanında oturur, önce sesi öğrenir, sonra vurmayı.",
+      },
+      {
+        title: "Aynı Yamaçta Farklı Sesler",
+        body: "Cami, kilise ve manastır aynı yamacı paylaşır. Sabah ezanı ile çan sesi birbirini bastırmaz — Mardin'de yüzyıllardır böyle duyulur.",
+      },
+      {
+        title: "Sofradaki Ortak Hafıza",
+        body: "Kaburga dolması, ikbebet, sembusek… Mardin mutfağı Süryani, Arap ve Kürt izlerini ayrı ayrı değil, aynı tabakta taşır.",
+      },
+    ],
+    de: [
+      {
+        title: "Die Straße der Kupferschmiede",
+        body: "In der Birinci Cadde beginnt der Morgen mit Hammerschlägen. Tabletts, Mokkakannen und Kohlebecken werden noch immer von Hand getrieben; der Lehrling sitzt daneben und lernt zuerst den Klang, dann den Schlag.",
+      },
+      {
+        title: "Verschiedene Klänge am selben Hang",
+        body: "Moschee, Kirche und Kloster teilen sich denselben Hang. Der Ruf des Muezzins und das Läuten der Glocken übertönen einander nicht — in Mardin klingt es seit Jahrhunderten so.",
+      },
+      {
+        title: "Gemeinsames Gedächtnis auf dem Tisch",
+        body: "Gefüllte Rippchen, İkbebet, Sembusek… Die Küche Mardins trägt syrisch-aramäische, arabische und kurdische Spuren nicht getrennt, sondern auf demselben Teller.",
+      },
+    ],
+  },
+  {
+    slug: "midyat",
+    tr: [
+      {
+        title: "Telkari: Gümüşten Dantel",
+        body: "Telkari ustası saç telinden ince gümüşü büker, örer, lehimler. Bir bileziğin bitmesi günler alır; bu sabır kuşaktan kuşağa aktarılır.",
+      },
+      {
+        title: "Manastırda Süregelen Dua",
+        body: "Mor Gabriel'de dua hâlâ Süryanice — İsa'nın konuştuğu Aramice'nin akrabası olan dille — okunur. Bu ses on altı yüzyıldır kesilmedi.",
+      },
+      {
+        title: "Mırra ve Misafir",
+        body: "Estel'de kahve acıdır ve fincan küçüktür. Mırra ayakta içilir, fincan geri verilir — ikram değil, karşılıklı bir selamlaşmadır.",
+      },
+    ],
+    de: [
+      {
+        title: "Telkari: Spitze aus Silber",
+        body: "Der Telkari-Meister biegt, flicht und lötet haarfeinen Silberdraht. Ein einziges Armband braucht Tage — diese Geduld wird von Generation zu Generation weitergegeben.",
+      },
+      {
+        title: "Das Gebet, das nie verstummte",
+        body: "In Mor Gabriel wird noch immer auf Syrisch-Aramäisch gebetet — einer Sprache, die mit dem Aramäisch Jesu verwandt ist. Dieser Klang ist seit sechzehn Jahrhunderten nicht abgerissen.",
+      },
+      {
+        title: "Mırra und der Gast",
+        body: "In Estel ist der Kaffee bitter und die Tasse klein. Mırra trinkt man im Stehen und reicht die Tasse zurück — kein Servieren, sondern ein wechselseitiger Gruß.",
+      },
+    ],
+  },
+  {
+    slug: "diyarbakir",
+    tr: [
+      {
+        title: "Hevsel'de Sabah",
+        body: "Surların dibindeki Hevsel Bahçeleri'nde aileler hâlâ sebze yetiştirir. Aynı toprak binlerce yıldır ekiliyor; şehir değişti, bahçe değişmedi.",
+      },
+      {
+        title: "Karpuz ve Dicle",
+        body: "Yaz akşamları Dicle kıyısında karpuz kesilir, çay demlenir. Sohbet uzar — burada acele etmek ayıp sayılır.",
+      },
+      {
+        title: "Dengbêj'in Sesi",
+        body: "Dengbêj, sazsız söyleyen anlatıcıdır; tarihi, aşkı ve yası ezberden aktarır. Sur içindeki dengbêj evlerinde bu gelenek hâlâ canlı.",
+      },
+    ],
+    de: [
+      {
+        title: "Morgen in Hevsel",
+        body: "In den Hevsel-Gärten am Fuß der Stadtmauern bauen Familien noch immer Gemüse an. Derselbe Boden wird seit Jahrtausenden bestellt; die Stadt hat sich verändert, der Garten nicht.",
+      },
+      {
+        title: "Wassermelone und Tigris",
+        body: "An Sommerabenden wird am Tigrisufer Wassermelone aufgeschnitten und Tee aufgesetzt. Das Gespräch zieht sich — Eile gilt hier als unhöflich.",
+      },
+      {
+        title: "Die Stimme des Dengbêj",
+        body: "Der Dengbêj erzählt ohne Instrument; Geschichte, Liebe und Trauer trägt er aus dem Gedächtnis vor. In den Dengbêj-Häusern der Altstadt lebt diese Tradition weiter.",
+      },
+    ],
+  },
+  {
+    slug: "van-kalesi",
+    tr: [
+      {
+        title: "Bir Buçuk Saatlik Kahvaltı",
+        body: "Van'da kahvaltı öğün değil, program. Otlu peynir, murtuğa, kavut, kaymak ve bal aynı sofraya gelir; kalkmak için acele eden misafir sayılmaz.",
+      },
+      {
+        title: "Otlu Peynirin Sırrı",
+        body: "Sirmo ve mendi gibi yayla otları peynirin içine karışır, tuz küpünde aylarca bekler. Her ailenin ot oranı farklıdır ve kimse tarifini tam vermez.",
+      },
+      {
+        title: "Akdamar'a Giden Tekne",
+        body: "Adaya giden tekne yirmi dakika sürer. Kilisenin taş kabartmaları ile gölün rengi arasındaki o kısa yolculuk, Van'ı anlatan en sade an.",
+      },
+    ],
+    de: [
+      {
+        title: "Anderthalb Stunden Frühstück",
+        body: "In Van ist das Frühstück keine Mahlzeit, sondern ein Programm. Kräuterkäse, Murtuğa, Kavut, Sahne und Honig kommen auf denselben Tisch; wer es eilig hat aufzustehen, gilt nicht als Gast.",
+      },
+      {
+        title: "Das Geheimnis des Kräuterkäses",
+        body: "Hochlandkräuter wie Sirmo und Mendi werden in den Käse eingearbeitet, der dann monatelang im Salztopf reift. Jede Familie hat ihr eigenes Verhältnis — und niemand verrät das Rezept ganz.",
+      },
+      {
+        title: "Das Boot nach Akdamar",
+        body: "Die Überfahrt zur Insel dauert zwanzig Minuten. Diese kurze Fahrt zwischen den Steinreliefs der Kirche und der Farbe des Sees ist der schlichteste Moment, der Van erklärt.",
+      },
+    ],
+  },
+  {
+    slug: "harran",
+    tr: [
+      {
+        title: "Kubbeli Evlerin Serinliği",
+        body: "Kerpiçten konik kubbeli evler, dışarısı kırk dereceyken içeride serin kalır. Bu, klimadan önce bilinen ve hâlâ unutulmayan bir mimari akıl.",
+      },
+      {
+        title: "Ovada İki Dil",
+        body: "Harran ovasında günlük hayat çoğu zaman Arapça akar, Türkçe ve Kürtçe ile iç içe geçer. Aynı sofrada üç dil duymak sıradan bir şeydir.",
+      },
+      {
+        title: "Tandırın Başında",
+        body: "Ekmek sabah erken, toprağa gömülü tandırda pişer. Misafir geldiyse tandır ikinci kez yakılır — bu, sözden daha güçlü bir hoş geldin.",
+      },
+    ],
+    de: [
+      {
+        title: "Die Kühle der Kuppelhäuser",
+        body: "Die kegelförmigen Lehmkuppelhäuser bleiben innen kühl, während draußen vierzig Grad herrschen. Ein bauliches Wissen von vor der Klimaanlage — und bis heute nicht vergessen.",
+      },
+      {
+        title: "Zwei Sprachen in der Ebene",
+        body: "In der Ebene von Harran läuft der Alltag oft auf Arabisch und verschränkt sich mit Türkisch und Kurdisch. Am selben Tisch drei Sprachen zu hören, ist hier nichts Besonderes.",
+      },
+      {
+        title: "Am Tandır",
+        body: "Das Brot wird früh am Morgen im erdversenkten Tandır gebacken. Kommt ein Gast, wird der Ofen ein zweites Mal angefeuert — ein Willkommen, stärker als jedes Wort.",
+      },
+    ],
+  },
+];

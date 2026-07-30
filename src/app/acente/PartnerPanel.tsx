@@ -33,11 +33,13 @@ export default function PartnerPanel({
   initialPackages,
   initialReservations,
   upcomingMatches = [],
+  initialProfile,
 }: {
   session: SessionPayload;
   initialPackages: VamPackage[];
   initialReservations: VamReservation[];
   upcomingMatches?: MatchEvent[];
+  initialProfile: { companyStory: string; companySince: string; companyPhotoUrl: string };
 }) {
   const [packages, setPackages] = useState(initialPackages);
   const [form, setForm] = useState(emptyForm);
@@ -51,6 +53,12 @@ export default function PartnerPanel({
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [passwordSubmitting, setPasswordSubmitting] = useState(false);
+  // Firma profili — müşteri tarafındaki "Bu turu kim düzenliyor" kartını besler
+  const [profile, setProfile] = useState(initialProfile);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [profileUploading, setProfileUploading] = useState(false);
   // Bir görsel yüklemesi devam ederken acente başka bir paketi düzenlemeye
   // geçerse, yükleme bittiğinde sonuç hâlâ açık olan (farklı) forma yazılırdı.
   // Bu ref yükleme başladığındaki "form oturumunu" damgalar.
@@ -82,6 +90,57 @@ export default function PartnerPanel({
       setPasswordError("Bir hata oluştu. Bağlantınızı kontrol edip tekrar deneyin.");
     } finally {
       setPasswordSubmitting(false);
+    }
+  }
+
+  async function handleProfilePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // aynı dosyayı tekrar seçebilmek için sıfırla
+    if (!file) return;
+    setProfileError("");
+    setProfileUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setProfileError(data?.error || "Fotoğraf yüklenemedi.");
+        return;
+      }
+      setProfile((p) => ({ ...p, companyPhotoUrl: data.url }));
+    } catch {
+      setProfileError("Fotoğraf yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setProfileUploading(false);
+    }
+  }
+
+  async function handleProfileSave(e: React.FormEvent) {
+    e.preventDefault();
+    setProfileError("");
+    setProfileSaved(false);
+    setProfileSaving(true);
+    try {
+      const res = await fetch(`/api/users/${session.userId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          companyStory: profile.companyStory,
+          companySince: profile.companySince,
+          companyPhotoUrl: profile.companyPhotoUrl,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setProfileError(data?.error || "Profil kaydedilemedi.");
+        return;
+      }
+      setProfileSaved(true);
+    } catch {
+      setProfileError("Profil kaydedilemedi. Bağlantınızı kontrol edip tekrar deneyin.");
+    } finally {
+      setProfileSaving(false);
     }
   }
 
@@ -256,6 +315,79 @@ export default function PartnerPanel({
         </div>
       )}
 
+      {/* Firma Profiliniz — bu alanlar müşteri tarafında, rezervasyon
+          sayfasındaki "Bu turu kim düzenliyor" kartında görünür. VAM'ın
+          yerel-ortaklık sözü ancak arkasında bir insan görünürse inandırıcı
+          olur; boş bırakılırsa kart müşteriye hiç gösterilmez. */}
+      <form
+        onSubmit={handleProfileSave}
+        style={{ background: "#fff", borderRadius: 8, padding: 24, marginBottom: 28, border: "1px solid #e5d6bc" }}
+      >
+        <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>Firma Profiliniz</h2>
+        <p style={{ fontSize: 12.5, color: "#6f6558", lineHeight: 1.6, marginBottom: 18 }}>
+          Burada yazdıklarınız turlarınızın rezervasyon sayfasında müşteriye gösterilir.
+          Kim olduğunuzu, hangi bölgede çalıştığınızı ve bu turları neden tasarladığınızı anlatın.
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginBottom: 14 }}>
+          <label style={labelWrap}>
+            <span style={labelText}>Kuruluş yılı</span>
+            <input
+              type="number"
+              min={1900}
+              max={new Date().getFullYear()}
+              value={profile.companySince}
+              onChange={(e) => setProfile({ ...profile, companySince: e.target.value })}
+              placeholder="örn. 2014"
+              style={{ ...inputStyle, width: "100%" }}
+            />
+          </label>
+
+          <label style={labelWrap}>
+            <span style={labelText}>Ekip / rehber fotoğrafı</span>
+            <input type="file" accept="image/*" onChange={handleProfilePhotoUpload} disabled={profileUploading} style={{ fontSize: 12.5 }} />
+            {profileUploading && <span style={{ fontSize: 11.5, color: "#6f6558" }}>Yükleniyor…</span>}
+          </label>
+        </div>
+
+        {profile.companyPhotoUrl && (
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={profile.companyPhotoUrl} alt="Firma fotoğrafı önizleme" style={{ width: 84, height: 84, objectFit: "cover", borderRadius: 6, border: "1px solid #e5d6bc" }} />
+            <button
+              type="button"
+              className="adm-btn adm-btn-ghost"
+              onClick={() => setProfile({ ...profile, companyPhotoUrl: "" })}
+            >
+              Fotoğrafı kaldır
+            </button>
+          </div>
+        )}
+
+        <label style={{ ...labelWrap, marginBottom: 14 }}>
+          <span style={labelText}>Hikâyeniz</span>
+          <textarea
+            value={profile.companyStory}
+            onChange={(e) => setProfile({ ...profile, companyStory: e.target.value })}
+            rows={5}
+            maxLength={1200}
+            placeholder="Örn. Mardin'de doğduk, on yıldır bu şehri anlatıyoruz. Rehberlerimizin hepsi buralı; turlarımızı ezberden değil, kendi sokaklarımızdan kuruyoruz."
+            style={{ ...inputStyle, width: "100%", fontFamily: "inherit", resize: "vertical" }}
+          />
+          <span style={{ fontSize: 11, color: "#8c8275" }}>{profile.companyStory.length}/1200</span>
+        </label>
+
+        {profileError && (
+          <div role="alert" style={{ color: "#a33", fontSize: 12.5, marginBottom: 10 }}>{profileError}</div>
+        )}
+        {profileSaved && (
+          <div role="status" style={{ color: "#2c7a4b", fontSize: 12.5, marginBottom: 10 }}>Profiliniz kaydedildi.</div>
+        )}
+
+        <button type="submit" className="adm-btn" disabled={profileSaving || profileUploading}>
+          {profileSaving ? "Kaydediliyor…" : "Profili Kaydet"}
+        </button>
+      </form>
 
         <form
           onSubmit={handleSubmit}

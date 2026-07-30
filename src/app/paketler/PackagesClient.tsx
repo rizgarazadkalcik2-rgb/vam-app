@@ -163,7 +163,13 @@ export default function PackagesClient({
                 <span className="vc-card-tag">{pkg.nights} {t(pkg.nights === 1 ? "bundle_night_one" : "bundle_night", lang)}</span>
               </div>
               <div className="vc-card-body">
-                <div className="vc-card-eyebrow">{t("pkg_card_eyebrow", lang)}</div>
+                {/* Eyebrow'da sadece "PARTNERTOUR" yazıyordu — turu kimin
+                    düzenlediği görünmüyordu. Acente adı burada, kartın
+                    kendisinde görünür (detay hikâye rezervasyon sayfasında). */}
+                <div className="vc-card-eyebrow">
+                  {t("pkg_card_eyebrow", lang)}
+                  {pkg.partner_name ? ` · ${pkg.partner_name}` : ""}
+                </div>
                 <div className="vc-card-title">{pkg.title}</div>
                 <div className="vc-card-desc">{pkg.description}</div>
                 <div className="vc-card-tags">

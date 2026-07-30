@@ -83,6 +83,7 @@ export async function POST(req: NextRequest) {
       reviews: body.reviews != null && body.reviews !== "" ? Number(body.reviews) : null,
       history: Array.isArray(body.history) ? body.history : [],
       features: Array.isArray(body.features) ? body.features : [],
+      livingCulture: Array.isArray(body.livingCulture) ? body.livingCulture : [],
       visitLocation: body.visitLocation || null,
       visitNearestCity: body.visitNearestCity || null,
       visitDuration: body.visitDuration || null,

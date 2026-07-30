@@ -3,6 +3,7 @@ import { getSession } from "@/lib/session";
 import { listPackagesByPartner } from "@/lib/packages";
 import { listReservationsByPartner } from "@/lib/reservations";
 import { listUpcomingMatches } from "@/lib/matchEvents";
+import { findUserById } from "@/lib/users";
 import PartnerPanel from "./PartnerPanel";
 
 export default async function AcentePage() {
@@ -15,6 +16,9 @@ export default async function AcentePage() {
   const packages = await listPackagesByPartner(session.userId);
   const reservations = await listReservationsByPartner(session.userId);
   const upcomingMatches = await listUpcomingMatches();
+  // Acentenin kendi firma profili — müşteri tarafındaki "Bu turu kim
+  // düzenliyor" kartını besleyen alanlar burada düzenlenir.
+  const me = await findUserById(session.userId);
 
   return (
     <PartnerPanel
@@ -22,6 +26,11 @@ export default async function AcentePage() {
       initialPackages={packages}
       initialReservations={reservations}
       upcomingMatches={upcomingMatches}
+      initialProfile={{
+        companyStory: me?.company_story || "",
+        companySince: me?.company_since != null ? String(me.company_since) : "",
+        companyPhotoUrl: me?.company_photo_url || "",
+      }}
     />
   );
 }
