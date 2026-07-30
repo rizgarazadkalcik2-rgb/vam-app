@@ -8,6 +8,7 @@ export interface DestinationTranslation {
   eraCaption?: string;
   history?: string[];
   features?: { title: string; body: string }[];
+  livingCulture?: { title: string; body: string }[];
   visitLocation?: string;
   visitNearestCity?: string;
   visitDuration?: string;
@@ -31,6 +32,8 @@ export interface VamDestination {
   reviews: number | null;
   history: string[];
   features: { title: string; body: string }[];
+  // "Bugün Burada" — destinasyonun insan katmanı (bkz. schema.ts'teki kolon notu)
+  living_culture: { title: string; body: string }[];
   visit_location: string | null;
   visit_nearest_city: string | null;
   visit_duration: string | null;
@@ -58,6 +61,7 @@ export interface DestinationInput {
   reviews?: number | null;
   history?: string[];
   features?: { title: string; body: string }[];
+  livingCulture?: { title: string; body: string }[];
   visitLocation?: string | null;
   visitNearestCity?: string | null;
   visitDuration?: string | null;
@@ -109,6 +113,7 @@ export function localizeDestination(d: VamDestination, lang: "TR" | "DE" | "EN" 
     era_caption: tr?.eraCaption || d.era_caption,
     history: mergeStringArray(tr?.history, d.history),
     features: mergeFeatureArray(tr?.features, d.features),
+    living_culture: mergeFeatureArray(tr?.livingCulture, d.living_culture),
     visit_location: tr?.visitLocation || d.visit_location,
     visit_nearest_city: tr?.visitNearestCity || d.visit_nearest_city,
     visit_duration: tr?.visitDuration || d.visit_duration,
@@ -161,7 +166,7 @@ export async function createDestination(data: DestinationInput): Promise<VamDest
   const { rows } = await sql<VamDestination>`
     INSERT INTO destinations (
       slug, name, region, era, era_display, era_caption, unesco, tags, image_url,
-      rating, reviews, history, features, visit_location, visit_nearest_city,
+      rating, reviews, history, features, living_culture, visit_location, visit_nearest_city,
       visit_duration, visit_best_time, related, status, translations, latitude, longitude
     ) VALUES (
       ${data.slug}, ${data.name}, ${data.region}, ${data.era || null},
@@ -169,6 +174,7 @@ export async function createDestination(data: DestinationInput): Promise<VamDest
       ${JSON.stringify(data.tags || [])}::jsonb, ${data.imageUrl || null},
       ${data.rating ?? null}, ${data.reviews ?? null},
       ${JSON.stringify(data.history || [])}::jsonb, ${JSON.stringify(data.features || [])}::jsonb,
+      ${JSON.stringify(data.livingCulture || [])}::jsonb,
       ${data.visitLocation || null}, ${data.visitNearestCity || null},
       ${data.visitDuration || null}, ${data.visitBestTime || null},
       ${JSON.stringify(data.related || [])}::jsonb, ${data.status || "active"},
@@ -194,6 +200,7 @@ export async function updateDestination(
       rating = ${data.rating ?? null}, reviews = ${data.reviews ?? null},
       history = ${JSON.stringify(data.history || [])}::jsonb,
       features = ${JSON.stringify(data.features || [])}::jsonb,
+      living_culture = ${JSON.stringify(data.livingCulture || [])}::jsonb,
       visit_location = ${data.visitLocation || null},
       visit_nearest_city = ${data.visitNearestCity || null},
       visit_duration = ${data.visitDuration || null},

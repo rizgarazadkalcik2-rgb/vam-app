@@ -78,6 +78,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       reviews: body.reviews != null && body.reviews !== "" ? Number(body.reviews) : null,
       history: Array.isArray(body.history) ? body.history : [],
       features: Array.isArray(body.features) ? body.features : [],
+      livingCulture: Array.isArray(body.livingCulture) ? body.livingCulture : [],
       visitLocation: body.visitLocation || null,
       visitNearestCity: body.visitNearestCity || null,
       visitDuration: body.visitDuration || null,

@@ -187,6 +187,22 @@
 .vc-feature h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .vc-feature p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
 
+/* "Bugün Burada" — destinasyonun insan katmanı. Bilgi bloklarından (history/
+   features) ayrışsın diye kendi zeminine ve altın sol şeridine sahip; ton
+   olarak daha editöryal, daha sakin duruyor. */
+.vc-living { margin-top: 44px; padding: 26px 26px 8px; background: var(--sand-50); border-left: 2px solid var(--gold-300); }
+.vc-living-lede { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin: -6px 0 22px; font-style: italic; }
+.vc-living-item { margin-bottom: 20px; }
+.vc-living-item:last-child { margin-bottom: 22px; }
+.vc-living-item h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.vc-living-item p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; }
+[dir="rtl"] .vc-living { border-left: none; border-right: 2px solid var(--gold-300); }
+@media (max-width: 600px) { .vc-living { padding: 20px 18px 4px; } }
+
+/* Rezervasyon sayfasındaki acente kartının fotoğrafı (SmartImage width/height
+   modunda render ediyor; köşe/kırpma burada veriliyor). */
+.vc-partner-photo { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+
 .vc-sidebar-card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 24px; position: sticky; top: 90px; margin-bottom: 18px; }
 .vc-info-row { border-top: 1px solid var(--border-subtle); padding: 11px 0; display: flex; justify-content: space-between; gap: 12px; font-size: 13.5px; }
 .vc-info-row:first-of-type { border-top: none; }

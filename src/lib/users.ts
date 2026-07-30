@@ -16,6 +16,10 @@ export interface VamUser {
   company_phone: string | null;
   company_address: string | null;
   company_services: string | null;
+  // Müşteri tarafında görünen acente hikâyesi (bkz. schema.ts'teki kolon notu)
+  company_story: string | null;
+  company_since: number | null;
+  company_photo_url: string | null;
   failed_attempts: number;
   locked_until: string | null;
   created_at: string;
@@ -57,6 +61,9 @@ export async function createUser(data: {
   companyPhone?: string | null;
   companyAddress?: string | null;
   companyServices?: string | null;
+  companyStory?: string | null;
+  companySince?: number | null;
+  companyPhotoUrl?: string | null;
 }): Promise<VamUser> {
   await ensureSchema();
   const id = `u_${data.role}_${Date.now()}`;
@@ -64,12 +71,14 @@ export async function createUser(data: {
   const { rows } = await sql<VamUser>`
     INSERT INTO users (
       id, username, password_hash, role, display_name, status,
-      company_email, company_phone, company_address, company_services
+      company_email, company_phone, company_address, company_services,
+      company_story, company_since, company_photo_url
     )
     VALUES (
       ${id}, ${data.username}, ${passwordHash}, ${data.role}, ${data.displayName}, 'active',
       ${data.companyEmail ?? null}, ${data.companyPhone ?? null},
-      ${data.companyAddress ?? null}, ${data.companyServices ?? null}
+      ${data.companyAddress ?? null}, ${data.companyServices ?? null},
+      ${data.companyStory ?? null}, ${data.companySince ?? null}, ${data.companyPhotoUrl ?? null}
     )
     RETURNING *;
   `;
@@ -114,6 +123,9 @@ export async function updateUserProfile(
     companyPhone?: string | null;
     companyAddress?: string | null;
     companyServices?: string | null;
+    companyStory?: string | null;
+    companySince?: number | null;
+    companyPhotoUrl?: string | null;
   }
 ): Promise<boolean> {
   await ensureSchema();
@@ -123,6 +135,9 @@ export async function updateUserProfile(
       company_phone = ${data.companyPhone ?? null},
       company_address = ${data.companyAddress ?? null},
       company_services = ${data.companyServices ?? null},
+      company_story = ${data.companyStory ?? null},
+      company_since = ${data.companySince ?? null},
+      company_photo_url = ${data.companyPhotoUrl ?? null},
       updated_at = now()
     WHERE id = ${id};
   `;

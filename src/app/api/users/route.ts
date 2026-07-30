@@ -64,11 +64,19 @@ export async function POST(req: NextRequest) {
   const companyPhone = body?.companyPhone?.trim?.() || null;
   const companyAddress = body?.companyAddress?.trim?.() || null;
   const companyServices = body?.companyServices?.trim?.() || null;
+  const companyStory = body?.companyStory?.trim?.() || null;
+  const companyPhotoUrl = body?.companyPhotoUrl?.trim?.() || null;
+  const sinceRaw = Number(body?.companySince);
+  const companySince =
+    Number.isInteger(sinceRaw) && sinceRaw >= 1900 && sinceRaw <= new Date().getFullYear()
+      ? sinceRaw
+      : null;
 
   try {
     const user = await createUser({
       username, password, role, displayName,
       companyEmail, companyPhone, companyAddress, companyServices,
+      companyStory, companySince, companyPhotoUrl,
     });
     const { password_hash, ...safeUser } = user;
     return NextResponse.json({ user: safeUser }, { status: 201 });

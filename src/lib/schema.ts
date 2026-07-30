@@ -1,6 +1,6 @@
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
-import { SEED_DESTINATIONS, SEED_BUNDLES } from "./seedData";
+import { SEED_DESTINATIONS, SEED_BUNDLES, SEED_LIVING_CULTURE } from "./seedData";
 
 // Şema kurulumu süreç ömründe yalnızca BİR KEZ çalışır (memoize edilmiş).
 // Önceden her API çağrısı ~10+ DDL sorgusunu tekrarlıyordu — artık ilk
@@ -121,6 +121,14 @@ async function initSchema() {
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_address TEXT;`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_services TEXT;`;
 
+  // Acente hikâyesi — müşteri tarafında görünen anlatı. Yukarıdaki alanlar
+  // operasyonel iletişim bilgisi; bunlar ise rezervasyon sayfasındaki "Bu turu
+  // kim düzenliyor" kartını besliyor. VAM'ın yerel-ortaklık sütunu ancak
+  // arkasında bir insan görünürse inandırıcı olur.
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_story TEXT;`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_since INTEGER;`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS company_photo_url TEXT;`;
+
   // GÜVENLİK: oturum (session) sürüm sayacı. JWT çerezleri 7 gün geçerli ve
   // imza doğrulaması dışında hiçbir kontrolden geçmiyordu — bir kullanıcı
   // devre dışı bırakılsa veya şifresi sıfırlansa bile elindeki eski çerez
@@ -232,6 +240,13 @@ async function initSchema() {
   await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS latitude NUMERIC;`;
   await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS longitude NUMERIC;`;
 
+  // "Bugün Burada" — destinasyonun insan katmanı. history/features tarihi ve
+  // yapıyı anlatıyor; bu alan bugün orada kimin yaşadığını anlatır (bkz.
+  // seedData.ts'teki SEED_LIVING_CULTURE notu). features ile aynı
+  // {title, body} şeklinde — admin panelindeki dizi düzenleme deseni ve
+  // localizeDestination'daki mergeFeatureArray yardımcısı aynen çalışsın diye.
+  await sql`ALTER TABLE destinations ADD COLUMN IF NOT EXISTS living_culture JSONB NOT NULL DEFAULT '[]';`;
+
   const { rows: destCount } = await sql`SELECT COUNT(*) as count FROM destinations;`;
   if (Number(destCount[0].count) === 0) {
     for (const d of SEED_DESTINATIONS) {
@@ -342,6 +357,36 @@ async function initSchema() {
     }
     await Promise.all(updates);
     await sql`INSERT INTO schema_seed_state (key) VALUES ('destinations_card_practical_fields_v1') ON CONFLICT (key) DO NOTHING;`;
+  }
+
+  // "Bugün Burada" başlangıç içeriği (5 öne çıkan destinasyon, TR + DE).
+  // Kolon tüm destinasyonlarda '[]' ile başlıyor; burada SADECE hâlâ boş olan
+  // satırlar doldurulur — admin panelinden girilmiş bir içerik varsa asla
+  // ezilmez. schema_seed_state işaretiyle korunuyor, ilk başarılı çalışmadan
+  // sonra soğuk başlangıçlarda tekrar sorgu yükü yaratmaz.
+  const { rows: livingCultureMarker } = await sql`
+    SELECT 1 FROM schema_seed_state WHERE key = 'destinations_living_culture_v1' LIMIT 1;
+  `;
+  if (livingCultureMarker.length === 0) {
+    for (const lc of SEED_LIVING_CULTURE) {
+      await sql`
+        UPDATE destinations
+        SET living_culture = ${JSON.stringify(lc.tr)}::jsonb
+        WHERE slug = ${lc.slug} AND living_culture = '[]'::jsonb;
+      `;
+      // DE çevirisi translations->DE->livingCulture altına yazılır; dil
+      // anahtarı hiç yoksa da çalışsın diye COALESCE + shallow merge deseni
+      // (bkz. yukarıdaki history/features dolgusundaki aynı not).
+      await sql`
+        UPDATE destinations
+        SET translations = translations || jsonb_build_object(
+          'DE',
+          COALESCE(translations->'DE', '{}'::jsonb) || ${JSON.stringify({ livingCulture: lc.de })}::jsonb
+        )
+        WHERE slug = ${lc.slug} AND translations #> '{DE,livingCulture}'::text[] IS NULL;
+      `;
+    }
+    await sql`INSERT INTO schema_seed_state (key) VALUES ('destinations_living_culture_v1') ON CONFLICT (key) DO NOTHING;`;
   }
 
   // Dördüncü tek seferlik geriye dönük düzeltme: Harran'ın "Ulu Cami kalıntıları"

@@ -55,16 +55,27 @@ export async function PATCH(
     await updateUserDisplayName(id, body.displayName);
   }
 
-  // Firma bilgileri (herhangi biri gönderildiyse dördünü birlikte güncelle)
+  // Firma bilgileri (herhangi biri gönderildiyse hepsini birlikte güncelle)
   if (
     "companyEmail" in body || "companyPhone" in body ||
-    "companyAddress" in body || "companyServices" in body
+    "companyAddress" in body || "companyServices" in body ||
+    "companyStory" in body || "companySince" in body || "companyPhotoUrl" in body
   ) {
+    // Kuruluş yılı: sadece makul bir aralıktaki tam sayıyı kabul et — NaN /
+    // Infinity / 5 basamaklı yıl gibi değerler sessizce null'a düşer.
+    const sinceRaw = Number(body.companySince);
+    const companySince =
+      Number.isInteger(sinceRaw) && sinceRaw >= 1900 && sinceRaw <= new Date().getFullYear()
+        ? sinceRaw
+        : null;
     await updateUserProfile(id, {
       companyEmail: body.companyEmail?.trim?.() || null,
       companyPhone: body.companyPhone?.trim?.() || null,
       companyAddress: body.companyAddress?.trim?.() || null,
       companyServices: body.companyServices?.trim?.() || null,
+      companyStory: body.companyStory?.trim?.() || null,
+      companySince,
+      companyPhotoUrl: body.companyPhotoUrl?.trim?.() || null,
     });
   }
 

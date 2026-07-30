@@ -35,6 +35,10 @@ export default function AcentelerPanel({
     companyPhone: "",
     companyAddress: "",
     companyServices: "",
+    // Müşteri tarafında görünen alanlar (rezervasyon sayfasındaki acente kartı)
+    companyStory: "",
+    companySince: "",
+    companyPhotoUrl: "",
   });
   const [profileError, setProfileError] = useState("");
   const [resetPassword, setResetPassword] = useState("");
@@ -120,6 +124,9 @@ export default function AcentelerPanel({
       companyPhone: user.company_phone || "",
       companyAddress: user.company_address || "",
       companyServices: user.company_services || "",
+      companyStory: user.company_story || "",
+      companySince: user.company_since != null ? String(user.company_since) : "",
+      companyPhotoUrl: user.company_photo_url || "",
     });
     setProfileError("");
   }
@@ -569,6 +576,41 @@ export default function AcentelerPanel({
                   rows={3}
                   style={{ ...inputStyle, resize: "vertical" }}
                 />
+              </div>
+
+              {/* Müşteriye görünen acente hikâyesi — rezervasyon sayfasındaki
+                  "Bu turu kim düzenliyor" kartını besler. Acente bunu kendi
+                  panelinden de düzenleyebilir; burası admin destek içindir. */}
+              <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid #e5d6bc" }}>
+                <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 2 }}>Müşteriye görünen profil</div>
+                <div style={{ fontSize: 11.5, color: "#8c8275", marginBottom: 12 }}>
+                  Hikâye doluysa rezervasyon sayfasında acente kartı gösterilir; boşsa kart hiç görünmez.
+                </div>
+                <div style={{ display: "grid", gap: 10 }}>
+                  <input
+                    type="number"
+                    min={1900}
+                    max={new Date().getFullYear()}
+                    placeholder="Kuruluş yılı (örn. 2014)"
+                    value={profileForm.companySince}
+                    onChange={(e) => setProfileForm({ ...profileForm, companySince: e.target.value })}
+                    style={inputStyle}
+                  />
+                  <input
+                    placeholder="Ekip / rehber fotoğrafı URL"
+                    value={profileForm.companyPhotoUrl}
+                    onChange={(e) => setProfileForm({ ...profileForm, companyPhotoUrl: e.target.value })}
+                    style={inputStyle}
+                  />
+                  <textarea
+                    placeholder="Hikâyesi — kim, hangi bölgede, neden bu turları tasarlıyor"
+                    value={profileForm.companyStory}
+                    onChange={(e) => setProfileForm({ ...profileForm, companyStory: e.target.value })}
+                    rows={5}
+                    maxLength={1200}
+                    style={{ ...inputStyle, resize: "vertical" }}
+                  />
+                </div>
               </div>
 
               {profileError && (

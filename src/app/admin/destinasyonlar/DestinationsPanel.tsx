@@ -35,6 +35,7 @@ function emptyTranslationForm() {
     eraCaption: "",
     historyText: "",
     featuresText: "",
+    livingText: "",
     visitLocation: "",
     visitNearestCity: "",
     visitDuration: "",
@@ -57,6 +58,7 @@ function emptyForm() {
     reviews: "",
     historyText: "",
     featuresText: "",
+    livingText: "",
     visitLocation: "",
     visitNearestCity: "",
     visitDuration: "",
@@ -92,6 +94,7 @@ function destinationToForm(d: VamDestination): FormState {
     reviews: d.reviews != null ? String(d.reviews) : "",
     historyText: (d.history || []).join("\n\n"),
     featuresText: (d.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+    livingText: (d.living_culture || []).map((f) => `${f.title}|${f.body}`).join("\n"),
     visitLocation: d.visit_location || "",
     visitNearestCity: d.visit_nearest_city || "",
     visitDuration: d.visit_duration || "",
@@ -108,6 +111,7 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.DE?.eraCaption || "",
         historyText: (trans.DE?.history || []).join("\n\n"),
         featuresText: (trans.DE?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        livingText: (trans.DE?.livingCulture || []).map((f) => `${f.title}|${f.body}`).join("\n"),
         visitLocation: trans.DE?.visitLocation || "",
         visitNearestCity: trans.DE?.visitNearestCity || "",
         visitDuration: trans.DE?.visitDuration || "",
@@ -120,6 +124,7 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.EN?.eraCaption || "",
         historyText: (trans.EN?.history || []).join("\n\n"),
         featuresText: (trans.EN?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        livingText: (trans.EN?.livingCulture || []).map((f) => `${f.title}|${f.body}`).join("\n"),
         visitLocation: trans.EN?.visitLocation || "",
         visitNearestCity: trans.EN?.visitNearestCity || "",
         visitDuration: trans.EN?.visitDuration || "",
@@ -132,6 +137,7 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.KU?.eraCaption || "",
         historyText: (trans.KU?.history || []).join("\n\n"),
         featuresText: (trans.KU?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        livingText: (trans.KU?.livingCulture || []).map((f) => `${f.title}|${f.body}`).join("\n"),
         visitLocation: trans.KU?.visitLocation || "",
         visitNearestCity: trans.KU?.visitNearestCity || "",
         visitDuration: trans.KU?.visitDuration || "",
@@ -144,6 +150,7 @@ function destinationToForm(d: VamDestination): FormState {
         eraCaption: trans.CKB?.eraCaption || "",
         historyText: (trans.CKB?.history || []).join("\n\n"),
         featuresText: (trans.CKB?.features || []).map((f) => `${f.title}|${f.body}`).join("\n"),
+        livingText: (trans.CKB?.livingCulture || []).map((f) => `${f.title}|${f.body}`).join("\n"),
         visitLocation: trans.CKB?.visitLocation || "",
         visitNearestCity: trans.CKB?.visitNearestCity || "",
         visitDuration: trans.CKB?.visitDuration || "",
@@ -151,6 +158,20 @@ function destinationToForm(d: VamDestination): FormState {
       },
     },
   };
+}
+
+// "Başlık|Gövde" satırlarını {title, body} dizisine çevirir. features ve
+// livingCulture ("Bugün Burada") aynı formatı kullanıyor.
+function parseTitleBodyLines(text: string): { title: string; body: string }[] {
+  return text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [title, ...rest] = line.split("|");
+      return { title: (title || "").trim(), body: rest.join("|").trim() };
+    })
+    .filter((item) => item.title);
 }
 
 function buildTranslations(f: FormState): DestinationTranslations {
@@ -164,6 +185,7 @@ function buildTranslations(f: FormState): DestinationTranslations {
       eraCaption?: string;
       history?: string[];
       features?: { title: string; body: string }[];
+      livingCulture?: { title: string; body: string }[];
       visitLocation?: string;
       visitNearestCity?: string;
       visitDuration?: string;
@@ -179,16 +201,10 @@ function buildTranslations(f: FormState): DestinationTranslations {
     if (t.visitBestTime.trim()) entry.visitBestTime = t.visitBestTime.trim();
     const history = t.historyText.split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
     if (history.length > 0) entry.history = history;
-    const features = t.featuresText
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line) => {
-        const [title, ...rest] = line.split("|");
-        return { title: (title || "").trim(), body: rest.join("|").trim() };
-      })
-      .filter((ft) => ft.title);
+    const features = parseTitleBodyLines(t.featuresText);
     if (features.length > 0) entry.features = features;
+    const livingCulture = parseTitleBodyLines(t.livingText);
+    if (livingCulture.length > 0) entry.livingCulture = livingCulture;
     if (Object.keys(entry).length > 0) out[lang] = entry;
   }
   return out;
@@ -208,15 +224,8 @@ function formToPayload(f: FormState) {
     rating: f.rating ? Number(f.rating) : null,
     reviews: f.reviews ? Number(f.reviews) : null,
     history: f.historyText.split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean),
-    features: f.featuresText
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line) => {
-        const [title, ...rest] = line.split("|");
-        return { title: (title || "").trim(), body: rest.join("|").trim() };
-      })
-      .filter((f) => f.title),
+    features: parseTitleBodyLines(f.featuresText),
+    livingCulture: parseTitleBodyLines(f.livingText),
     visitLocation: f.visitLocation.trim() || null,
     visitNearestCity: f.visitNearestCity.trim() || null,
     visitDuration: f.visitDuration.trim() || null,
@@ -633,6 +642,27 @@ export default function DestinationsPanel({
                     style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
                   />
                 </div>
+
+                <div style={{ marginBottom: 12 }}>
+                  <label style={labelStyle}>
+                    Bugün Burada ({activeTab}) — her satır <code>Başlık|Açıklama</code> formatında
+                  </label>
+                  <textarea
+                    value={form.translations[activeTab].livingText}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        translations: {
+                          ...form.translations,
+                          [activeTab]: { ...form.translations[activeTab], livingText: e.target.value },
+                        },
+                      })
+                    }
+                    rows={4}
+                    dir={activeTab === "CKB" ? "rtl" : "ltr"}
+                    style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
+                  />
+                </div>
               </>
             )}
 
@@ -781,6 +811,24 @@ export default function DestinationsPanel({
                 placeholder={"Mimari|Devasa T şeklindeki taş dikmeler\nKazı Alanı|Halen aktif arkeolojik kazı sahası"}
                 style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
               />
+            </div>
+
+            {/* "Bugün Burada" — tarih değil, bugün orada yaşayan hayat.
+                Boş bırakılırsa bölüm destinasyon sayfasında hiç görünmez. */}
+            <div style={{ marginBottom: 12 }}>
+              <label style={labelStyle}>
+                Bugün Burada — her satır <code>Başlık|Açıklama</code> formatında
+              </label>
+              <textarea
+                value={form.livingText}
+                onChange={(e) => setForm({ ...form, livingText: e.target.value })}
+                rows={4}
+                placeholder={"Bakır Ustalarının Sokağı|Birinci Cadde'de sabahlar çekiç sesiyle başlar.\nSofradaki Ortak Hafıza|Mardin mutfağı farklı izleri aynı tabakta taşır."}
+                style={{ ...inputStyle, fontFamily: "inherit", resize: "vertical" }}
+              />
+              <div style={{ fontSize: 11, color: "#888", marginTop: 4 }}>
+                Bugün orada kimin yaşadığı, ne pişirdiği, ne söylediği. Boş bırakılırsa bölüm sayfada görünmez.
+              </div>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 12 }}>
